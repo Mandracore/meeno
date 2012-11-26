@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Backbone.js • TodoMVC</title>
+  <link rel="stylesheet" href="public/stylesheets/base.css">
+</head>
+<body>
+
+
+
+
+<!-- Templates-->
+  <script type="text/template" id="stats-template">
+    <span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
+    <ul id="filters">
+      <li>
+        <a class="selected" href="#/">All</a>
+      </li>
+      <li>
+        <a href="#/active">Active</a>
+      </li>
+      <li>
+        <a href="#/completed">Completed</a>
+      </li>
+    </ul>
+    <% if (completed) { %>
+    <button id="clear-completed">Clear completed (<%= completed %>)</button>
+    <% } %>
+  </script>
+
+  <script type="text/template" id="item-template">
+    <div class="view">
+      <input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
+      <label><%= title %></label>
+      <button class="destroy"></button>
+    </div>
+    <input class="edit" value="<%= title %>">
+  </script>
+
+<!-- Code -->
+  <script src="public/javascripts/lib/jquery-1.8.3.min.js"></script>
+  <script src="public/javascripts/lib/underscore-min.js"></script>
+  <script src="public/javascripts/lib/backbone-min.js"></script>
+  <script src="public/javascripts/lib/backbone.localStorage-min.js"></script>
+  <script src="public/javascripts/models/todo.js"></script>
+  <script src="public/javascripts/collections/todos.js"></script>
+  <script src="public/javascripts/views/todo.js"></script>
+  <script src="public/javascripts/views/app.js"></script>
+  <script src="public/javascripts/routers/router.js"></script>
+  <script src="public/javascripts/app.js"></script>
+
+
+<!-- Html-->
+  <section id="todoapp">
+    <header id="header">
+      <h1>todos</h1>
+      <input id="new-todo" placeholder="What needs to be done?" autofocus>
+    </header>
+    <section id="main">
+      <input id="toggle-all" type="checkbox">
+      <label for="toggle-all">Mark all as complete</label>
+      <ul id="todo-list"></ul>
+    </section>
+    <footer id="footer"></footer>
+  </section>
+  <div id="info">
+    <p>Double-click to edit a todo</p>
+    <p>Written by <a href="https://github.com/addyosmani">Addy Osmani</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+  </div> 
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Ignore server-side vendor folder (can be reconstructed with node install)
+node_modules*
+
+# Ignore configuration files (DB password and others)
+app/config/private*
