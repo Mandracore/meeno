@@ -11,7 +11,7 @@ See [blog.mandracore.com](http://blog.mandracore.com) to read tutorials about th
 
 Download full source, then run the following command in the root folder of the app :
 ````
-node install
+npm install
 ````
 This should download the node.js modules specified in package.json.
 You can now launch the server by executing this last command :
