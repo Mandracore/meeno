@@ -22,4 +22,4 @@ You can now launch the server by executing this last command :
 ````
 node appSrv.js
 ````
-The server will be listening on port 3000 (you can modify `app/appSrv.js` to change it), so launch your favorite browser on [http://localhost:3000](http://localhost:3000) and start enjoying the app.
+The server will be listening on port 3000 (you can modify `appSrv.js` to change it), so launch your favorite browser on [http://localhost:3000](http://localhost:3000) and start enjoying the app.
