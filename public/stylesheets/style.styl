@@ -1,34 +1,109 @@
-#editor-list
-	position: fixed
-	bottom: 0
-	width: 800px
-	background-color:lightgrey
-	margin:0
-	padding:0
-	li#new-note
-		background-color:grey
-		color:white
-		font-family: Helvetica
-		padding: 0.6em
-	li.editor
-		border-top:1px solid grey
+@import 'nib'
+
+cDarkGrey  = lighten(#000000, 30%)
+cLightGrey = lighten(#000000, 90%)
+cBlueLine  = lighten(#0ABBCD, 50%)
+pLinerV    = 195px
+pHeadersV  = 40px
+pWrappPadV = pLinerV - pHeadersV
+
+body
+	background linear-gradient(top, cLightGrey 0px, cLightGrey 200px, darken(cLightGrey, 10%) 200px, cLightGrey 250px)
+	background-attachment fixed
+	min-height 100%
+	position absolute
+	top 0
+	left 0
+	width 100%
+	height 100%
+	overflow-x hidden
+#liner-bg
+	position fixed
+	height 1px
+	width 100%
+	background-color cBlueLine
+	top pLinerV
+#search-wrapper, #search-bg
+	position fixed
+	top 0
+	left 50px
+	width 300px
+	height 100%
+	margin 0
+#search-bg
+	background-color black
+	background-attachment fixed
+	z-index 1
+	opacity 0.3
+#search-wrapper, #editors-wrapper
+	padding pWrappPadV 0 0
+	z-index 2
+	overflow hidden
+	.header
+		margin 0
+		padding 0 20px 0
+		height pHeadersV 
+	.body
+		margin 0
+//==============================================================
+// Search Wrapper
+//==============================================================
+section#search-wrapper
+	.body
+		padding: 0 20px;
+ul#notes-list
+	list-style-type none
+	margin 0
+	padding 0
+	li
+		margin 0
+		padding 0
+		font-size .9em
+		&:hover
+			cursor pointer
+			color cBlueLine
+//==============================================================
+// Editor Wrapper
+//==============================================================
+section#editors-wrapper
+	position fixed
+	height 100%
+	top 0
+	left 350px
+	width 600px
+	.editor
 		.header
-			position: relative
-			background-color #CACACA
-			font-family: Helvetica
-			padding: 0.6em
-			.control
-				display:none
-				margin 0
-				padding 0
-				button
-					padding 0
-					margin 0 5px 0
-			&:hover .control
-				display:inline-block
-			.window
-				position absolute
-				right 0.6em
-				top 0.6em
-				button
-					margin-right: 5px
+			font-family Helvetica
+			padding 0.6em
+		.body
+			padding: 0 30px;
+		.controls
+			margin 0
+			padding 0
+			width 100%
+			height 30px
+		.del
+			float left
+		.quit
+			float right
+		.edit-content
+			overflow-y scroll
+			max-height 500px
+ul#editor-tabs-list
+	list-style-type none
+	margin 0
+	padding 0
+	width 100%
+	height 40px
+	li
+		margin 0
+		padding 10px 30px 10px
+		float left
+		&:hover
+			cursor pointer
+			border-top 4px solid cBlueLine
+			padding 6px 30px 10px
+	.active
+			border-top 4px solid cBlueLine
+			padding 6px 30px 10px
+

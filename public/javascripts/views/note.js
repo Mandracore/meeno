@@ -17,7 +17,7 @@ meenoAppCli.Classes.NoteView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'click p': 'edit'
+		'click': 'edit'
 	},
 
 	// The TodoView listens for changes to its model, re-rendering. Since there's
@@ -25,23 +25,26 @@ meenoAppCli.Classes.NoteView = Backbone.View.extend({
 	// app, we set a direct reference on the model for convenience.
 	initialize: function() {
 		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
-		this.model.on('editor:quit', function(){this.openInEditor = false;}, this); // the NoteEditorView notifies us that it's been closed
-		this.openInEditor = false;
 	},
 
-	// Re-renders the todo item to the current state of the model and
-	// updates the reference to the todo's edit input within the view.
+	// Re-renders the note item to the current state of the model
 	render: function() {
 		this.$el.html( this.template( this.model.toJSON() ) );
 		return this;
 	},
 
 	edit: function() {
-		if(this.openInEditor) return; // We do not want to open it twice
-		// Bug ici : on peut ouvrir deux fois une note qui vient d'être créée...
-		this.openInEditor = true;
 		console.log('editing...');
-		var noteEditorView = new meenoAppCli.Classes.NoteEditorView({ model: this.model });
-		$('#editor-list').prepend(noteEditorView.render().el);
+		if(this.model.openInEditor) { // We do not want to open it twice, we will just toggle editor
+			this.model.editorTabView.toggle();
+			return;
+		}
+
+		this.model.openInEditor = true;
+		var noteEditorTabView   = new meenoAppCli.Classes.NoteEditorTabView({ model: this.model });
+		var noteEditorView      = new meenoAppCli.Classes.NoteEditorView({ model: this.model });
+		$('#editor-tabs-list').append(noteEditorTabView.render().el);
+		$('#editor-list').append(noteEditorView.render().el);
+		noteEditorTabView.toggle();
 	}
 });

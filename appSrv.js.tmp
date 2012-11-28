@@ -9,6 +9,8 @@ var path             = require("path");
 var mongoose         = require('mongoose');
 var appSrv           = express();
 
+console.log(__dirname);
+
 // perform similar check for nested children
 //meenoApp.Models = {};
 
@@ -20,11 +22,21 @@ appSrv.configure(function(){
 	appSrv.use(express.bodyParser());
 	appSrv.use(express.methodOverride());
 	appSrv.use(appSrv.router);
-	appSrv.use(express.static(path.join(application_root, "../public")));
+	appSrv.use(express.static(path.join(application_root, "public")));
 	appSrv.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-	appSrv.set('views', path.join(application_root, "src/views"));
+	appSrv.set('views', path.join(application_root, "app/src/views"));
 	appSrv.set('view engine', 'jade')
-	appSrv.use(require('stylus').middleware({ src: __dirname + '/public' }));
+	appSrv.use(require('stylus').middleware({
+		src  : __dirname + 'public/stylesheets',
+		dest : __dirname + 'public/stylesheets',
+		compile: function (str, path) { // optional, but recommended
+			stylus(str)
+				.set('filename', path)
+				.set('compress', true)
+				.use(nib())
+				.import('nib');
+		}
+	}));
 });
 
 

@@ -13,8 +13,9 @@ meenoAppCli.Classes.Note = Backbone.Model.extend({
 	// Default attributes for the todo
 	// and ensure that each todo created has `title` and `completed` keys.
 	defaults: {
-		title  : 'Nouvelle note',
-		content: 'Saisissez ici le contenu de votre note...'
-	},
+		title     : 'Nouvelle note',
+		content   : 'Saisissez ici le contenu de votre note...',
+		created_at: new Date()
+	}
 
 });
