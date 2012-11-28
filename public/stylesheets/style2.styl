@@ -1,0 +1,115 @@
+@import 'nib'
+
+cDarkGrey     = lighten(#000000, 30%)
+cLightGrey    = lighten(#000000, 90%)
+cBlueLine     = lighten(#5e939f, 40%)
+wApp = 1000px
+wRightCol = 700px
+wLeftCol = wApp - wRightCol
+
+
+
+pyLiner       = 147px
+pHeadersV     = 40px
+pWrappPadV    = pyLiner - pHeadersV
+hTabs         = 30px
+hControls     = 30px
+
+
+//==============================================================
+// Layout 2
+//==============================================================
+
+// Fixed
+#header
+	position fixed
+	left 0
+	top	0
+	width 100%
+	height 200px
+	background linear-gradient(top, cLightGrey 0px, cLightGrey 150px, darken(cLightGrey, 10%) 150px, cLightGrey 200px)
+	background-attachment fixed
+	z-index 2
+#fixed
+	position fixed
+	top pyLiner
+	left 50%
+	margin-left - (wApp / 2)
+	padding 0
+	width wApp
+	z-index 3
+#search-tabs-list, #editor-tabs-list, #editor-controls-list
+	position absolute
+#search-tabs-list, #editor-tabs-list
+	top 0
+	height hTabs
+#search-tabs-list
+	left 0
+	width wLeftCol
+#editor-tabs-list, #editor-controls-list
+	left wLeftCol
+	width wRightCol
+#editor-controls-list
+	top hTabs
+	height hControls
+
+// Scrollables
+#scrollables
+	position absolute
+	top	pyLiner + hTabs + hControls
+	left 50%
+	margin-left - (wApp / 2)
+#note-list, #editor-note-content-list
+	position absolute
+	top	0
+	margin 0
+	padding 0
+#note-list
+	left 0
+	width wLeftCol
+#editor-note-content-list
+	left wLeftCol
+	width wRightCol
+
+
+//==============================================================
+// Backgrounds
+//==============================================================
+
+body
+	background linear-gradient(top, cLightGrey 0px, cLightGrey 150px, darken(cLightGrey, 10%) 150px, cLightGrey 200px)
+	background-attachment fixed
+
+#liner-bg
+	position fixed
+	height 1px
+	width 100%
+	background-color cBlueLine
+	top pyLiner
+	left 0
+	z-index 4
+#search-bg
+	position fixed
+	top 0
+	left 50px
+	width 300px
+	height 100%
+	margin 0
+	background-color black
+	background-attachment fixed
+	z-index 0
+	opacity 0.3
+
+//==============================================================
+// Other
+//==============================================================
+
+
+#editor-tabs-list, #search-tabs-list
+	list-style-type none
+	margin 0
+	padding 0
+	li
+		float left
+		margin 0
+		padding 10px 30px 10px

@@ -2,11 +2,40 @@
 
 cDarkGrey  = lighten(#000000, 30%)
 cLightGrey = lighten(#000000, 90%)
-cBlueLine  = lighten(#0ABBCD, 50%)
+cBlueLine  = lighten(#5e939f, 40%)
 pLinerV    = 195px
 pHeadersV  = 40px
 pWrappPadV = pLinerV - pHeadersV
 
+
+//==============================================================
+// Layout 2
+//==============================================================
+// #t2-editor {
+// left: 350px;
+// top: 200px;
+// position: absolute;
+// padding: 0 20px;
+// width: 500px;
+// }
+// top: 200px;
+// position: absolute;
+// padding: 0 20px;
+// width: 300px;
+
+
+// #t2-header
+// 	position fixed
+// 	background-color grey
+// 	top 0
+// 	left 0
+// 	width 100%
+// 	height 200px
+
+
+//==============================================================
+// Background
+//==============================================================
 body
 	background linear-gradient(top, cLightGrey 0px, cLightGrey 200px, darken(cLightGrey, 10%) 200px, cLightGrey 250px)
 	background-attachment fixed
@@ -61,7 +90,7 @@ ul#notes-list
 		font-size .9em
 		&:hover
 			cursor pointer
-			color cBlueLine
+			color lighten(cBlueLine, 50%)
 //==============================================================
 // Editor Wrapper
 //==============================================================
@@ -106,4 +135,3 @@ ul#editor-tabs-list
 	.active
 			border-top 4px solid cBlueLine
 			padding 6px 30px 10px
-
