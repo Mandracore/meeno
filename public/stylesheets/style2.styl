@@ -1,47 +1,50 @@
 @import 'nib'
 
-cDarkGrey     = lighten(#000000, 30%)
-cLightGrey    = lighten(#000000, 90%)
-cBlueLine     = lighten(#5e939f, 40%)
-wApp = 1000px
-wRightCol = 700px
-wLeftCol = wApp - wRightCol
-
-
-
-pyLiner       = 147px
-pHeadersV     = 40px
-pWrappPadV    = pyLiner - pHeadersV
-hTabs         = 30px
-hControls     = 30px
+cDarkGrey  = lighten(#000000, 30%)
+cLightGrey = lighten(#000000, 90%)
+cBlueLine  = lighten(#5e939f, 40%)
+wApp       = 1000px
+wRightCol  = 700px
+wLeftCol   = wApp - wRightCol
+zLiner     = 5
+pyLiner    = 147px
+pHeadersV  = 40px
+pWrappPadV = pyLiner - pHeadersV
+hTabs      = 40px
+hControls  = 40px
+hFadeOut   = 70px
 
 
 //==============================================================
 // Layout 2
 //==============================================================
 
-// Fixed
+// Fixed	
 #header
 	position fixed
 	left 0
 	top	0
 	width 100%
-	height 200px
-	background linear-gradient(top, cLightGrey 0px, cLightGrey 150px, darken(cLightGrey, 10%) 150px, cLightGrey 200px)
+	height pyLiner + hTabs + hControls
+	background linear-gradient(top, cLightGrey 0px, cLightGrey 150px, darken(cLightGrey, 10%) 150px,  cLightGrey pyLiner + hTabs, rgba(cLightGrey,0) pyLiner + hTabs + hControls + hFadeOut)
 	background-attachment fixed
 	z-index 2
-#fixed
+#fixed, #backgrounds
 	position fixed
-	top pyLiner
+	top 0
 	left 50%
-	margin-left - (wApp / 2)
+	margin-left -(wApp / 2)
 	padding 0
 	width wApp
-	z-index 3
+#backgrounds
+	top 0
+	height 100%
+#fixed
+	z-index zLiner + 2
 #search-tabs-list, #editor-tabs-list, #editor-controls-list
 	position absolute
 #search-tabs-list, #editor-tabs-list
-	top 0
+	top pyLiner
 	height hTabs
 #search-tabs-list
 	left 0
@@ -50,7 +53,7 @@ hControls     = 30px
 	left wLeftCol
 	width wRightCol
 #editor-controls-list
-	top hTabs
+	top pyLiner + hTabs
 	height hControls
 
 // Scrollables
@@ -87,18 +90,22 @@ body
 	background-color cBlueLine
 	top pyLiner
 	left 0
-	z-index 4
-#search-bg
-	position fixed
-	top 0
-	left 50px
-	width 300px
-	height 100%
+	z-index zLiner
+#search-bg-top, #search-bg
+	position absolute
 	margin 0
+	width wLeftCol
 	background-color black
 	background-attachment fixed
-	z-index 0
 	opacity 0.3
+#search-bg
+	top pyLiner + hTabs + hControls
+	height 100%
+	z-index 0
+#search-bg-top
+	top 0
+	height	pyLiner + hTabs + hControls
+	z-index zLiner + 1
 
 //==============================================================
 // Other
@@ -113,3 +120,16 @@ body
 		float left
 		margin 0
 		padding 10px 30px 10px
+		&:hover
+			cursor pointer
+			border-top 4px solid cBlueLine
+			padding 6px 30px 10px
+	.active
+			border-top 4px solid cBlueLine
+			padding 6px 30px 10px
+
+.editor-controls
+	padding 10px 0 0 30px
+
+.editor-note-content
+	padding 10px 0 0 30px

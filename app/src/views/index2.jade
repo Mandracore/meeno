@@ -1,8 +1,10 @@
 extends layout2
 
 block content
-	div#liner-bg
-	div#search-bg
+	div#backgrounds
+		div#liner-bg
+		div#search-bg-top
+		div#search-bg
 	div#header
 		div.app
 		div.search
@@ -23,7 +25,8 @@ block content
 				li test PHP v1
 			div#editor-controls-list
 				div.editor-controls
-					|Fermer, Supprimer, bla bla
+					button.del Supprimer
+					button.quit Fermer
 		// will scroll ------------------------------
 		div#scrollables
 			div#note-list

@@ -1,16 +1,24 @@
-#header{position:fixed;left:0;top:0;width:100%;height:200px;background:-webkit-gradient(linear, left top, left bottom, color-stop(0, #e6e6e6), color-stop(1.5, #e6e6e6), color-stop(1.5, #cfcfcf), color-stop(2, #e6e6e6));background:-webkit-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:-moz-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:-o-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:-ms-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background-attachment:fixed;z-index:2}
-#fixed{position:fixed;top:147px;left:50%;margin-left:-500px;padding:0;width:1000px;z-index:3}
+#header{position:fixed;left:0;top:0;width:100%;height:227px;background:-webkit-gradient(linear, left top, left bottom, color-stop(0, #e6e6e6), color-stop(1.5, #e6e6e6), color-stop(1.5, #cfcfcf), color-stop(1.87, #e6e6e6), color-stop(2.97, rgba(230,230,230,0)));background:-webkit-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 187px, rgba(230,230,230,0) 297px);background:-moz-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 187px, rgba(230,230,230,0) 297px);background:-o-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 187px, rgba(230,230,230,0) 297px);background:-ms-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 187px, rgba(230,230,230,0) 297px);background:linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 187px, rgba(230,230,230,0) 297px);background-attachment:fixed;z-index:2}
+#fixed,#backgrounds{position:fixed;top:0;left:50%;margin-left:-500px;padding:0;width:1000px}
+#backgrounds{top:0;height:100%}
+#fixed{z-index:7}
 #search-tabs-list,#editor-tabs-list,#editor-controls-list{position:absolute}
-#search-tabs-list,#editor-tabs-list{top:0;height:30px}
+#search-tabs-list,#editor-tabs-list{top:147px;height:40px}
 #search-tabs-list{left:0;width:300px}
 #editor-tabs-list,#editor-controls-list{left:300px;width:700px}
-#editor-controls-list{top:30px;height:30px}
-#scrollables{position:absolute;top:207px;left:50%;margin-left:-500px}
+#editor-controls-list{top:187px;height:40px}
+#scrollables{position:absolute;top:227px;left:50%;margin-left:-500px}
 #note-list,#editor-note-content-list{position:absolute;top:0;margin:0;padding:0}
 #note-list{left:0;width:300px}
 #editor-note-content-list{left:300px;width:700px}
 body{background:-webkit-gradient(linear, left top, left bottom, color-stop(0, #e6e6e6), color-stop(1.5, #e6e6e6), color-stop(1.5, #cfcfcf), color-stop(2, #e6e6e6));background:-webkit-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:-moz-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:-o-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:-ms-linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background:linear-gradient(top, #e6e6e6 0px, #e6e6e6 150px, #cfcfcf 150px, #e6e6e6 200px);background-attachment:fixed}
-#liner-bg{position:fixed;height:1px;width:100%;background-color:#9ebec6;top:147px;left:0;z-index:4}
-#search-bg{position:fixed;top:0;left:50px;width:300px;height:100%;margin:0;background-color:#000;background-attachment:fixed;z-index:0;opacity:.3;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=30);filter:alpha(opacity=30)}
+#liner-bg{position:fixed;height:1px;width:100%;background-color:#9ebec6;top:147px;left:0;z-index:5}
+#search-bg-top,#search-bg{position:absolute;margin:0;width:300px;background-color:#000;background-attachment:fixed;opacity:.3;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=30);filter:alpha(opacity=30)}
+#search-bg{top:227px;height:100%;z-index:0}
+#search-bg-top{top:0;height:227px;z-index:6}
 #editor-tabs-list,#search-tabs-list{list-style-type:none;margin:0;padding:0;}
-#editor-tabs-list li,#search-tabs-list li{float:left;margin:0;padding:10px 30px 10px}
+#editor-tabs-list li,#search-tabs-list li{float:left;margin:0;padding:10px 30px 10px;}
+#editor-tabs-list li:hover,#search-tabs-list li:hover{cursor:pointer;border-top:4px solid #9ebec6;padding:6px 30px 10px}
+#editor-tabs-list .active,#search-tabs-list .active{border-top:4px solid #9ebec6;padding:6px 30px 10px}
+.editor-controls{padding:10px 0 0 30px}
+.editor-note-content{padding:10px 0 0 30px}
