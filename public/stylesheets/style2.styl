@@ -13,11 +13,11 @@ wLeftCol      = wApp - wRightCol
 wLeftColPad   = 35px
 wRightColPad  = 50px
 zLiner        = 5
-pyLiner       = 147px
+pyLiner       = 80px
 pHeadersV     = 40px
 pWrappPadV    = pyLiner - pHeadersV
 hTabs         = 40px
-hControls     = 40px
+hControls     = 30px
 hFadeOut      = 100px
 
 
@@ -40,7 +40,9 @@ hFadeOut      = 100px
 		left wLeftCol
 		width wRightCol
 	.search, .editor
-		top pyLiner * 0.6
+		height 40px
+		overflow hidden
+		top pyLiner * 0.55 - (@height / 2)
 	.search
 		left 0
 		width wLeftCol
@@ -92,7 +94,7 @@ hFadeOut      = 100px
 //==============================================================
 
 body
-	background linear-gradient(top, cLightGrey 0px, cLightGrey 150px, darken(cLightGrey, 10%) 150px, cLightGrey 200px)
+	background linear-gradient(top, cLightGrey 0px, cLightGrey pyLiner + 3px, darken(cLightGrey, 10%) pyLiner, cLightGrey pyLiner + hTabs)
 	background-attachment fixed
 
 #header-bg
@@ -101,7 +103,7 @@ body
 	top	0
 	width 100%
 	height pyLiner + hTabs + hControls
-	background linear-gradient(top, cLightGrey 0px, cLightGrey 150px, darken(cLightGrey, 10%) 150px,  cLightGrey pyLiner + hTabs, rgba(cLightGrey,0) pyLiner + hTabs + hControls + hFadeOut)
+	background linear-gradient(top, cLightGrey 0px, cLightGrey pyLiner + 3px, darken(cLightGrey, 10%) pyLiner,  cLightGrey pyLiner + hTabs, rgba(cLightGrey,0) pyLiner + hTabs + hControls + hFadeOut)
 	background-attachment fixed
 	z-index 2
 
@@ -210,8 +212,21 @@ ul#search-tabs-list
 
 #editor-controls-list
 	padding 0 50px
-	.quit, .top
-		float right
+	height hControls
+	.editor-controls
+		background-color rgba(0, 0, 0, 0.1)
+		border-radius(4px)
+		height 100%
+		text-align right
+		padding 0 5px 0
+		line-height .9em
+		&:hover
+			background-color rgba(0, 0, 0, 0.12)
+		span, button
+			float right
+			margin 4px 0 0 5px
+		span
+			padding 5px 0 0
 
 #note-list
 	color cTextRev
@@ -222,14 +237,19 @@ ul#search-tabs-list
 		&:hover
 			color cBlueLine
 			cursor pointer
+		p
+			margin 0
+		.date
+			color cTextRevFaded
+			letter-spacing .1em
 
 .editor-note-content
-	padding 10px wRightColPad
+	padding 15px wRightColPad
 	line-height 1.5em
 	.attributes
 		margin 0 0 20px 0
-		border-left 30px solid rgba(cTextFaded, 0.3);
-		padding 0 0 0 11px
+		//border-left 30px solid rgba(cTextFaded, 0.3);
+		//padding 0 0 0 11px
 		color cTextFaded
 		line-height 1.3em
 		p
@@ -239,3 +259,5 @@ ul#search-tabs-list
 		&:hover
 			color darken(cText,80%)
 
+h1
+	margin 30px 0 15px 0
