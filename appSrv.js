@@ -49,11 +49,6 @@ appSrv.get('/', function(req, res){
 		title: 'Meeno'
 	});
 });
-appSrv.get('/2', function(req, res){
-	res.render('index2.jade', {
-		title: 'Meeno'
-	});
-});
 
 
 //------------------------------------------
