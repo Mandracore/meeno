@@ -29,22 +29,33 @@ meenoAppCli.Classes.NoteView = Backbone.View.extend({
 
 	// Re-renders the note item to the current state of the model
 	render: function() {
-		this.$el.html( this.template( this.model.toJSON() ) );
+		var json        = this.model.toJSON();
+		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
+		this.$el.html( this.template( json ) );
 		return this;
 	},
 
 	edit: function() {
-		console.log('editing...');
-		if(this.model.openInEditor) { // We do not want to open it twice, we will just toggle editor
-			this.model.editorTabView.toggle();
+
+		if (this.model.openInEditor) { // We do not want to open it twice, we will just toggle editor
+			//this.model.editorTabView.toggle(); // CORERECT HEEEERREEEEE ##################################
+			this.model.trigger('editor:toggle');
 			return;
 		}
 
-		this.model.openInEditor = true;
-		var noteEditorTabView   = new meenoAppCli.Classes.NoteEditorTabView({ model: this.model });
-		var noteEditorView      = new meenoAppCli.Classes.NoteEditorView({ model: this.model });
+		if (meenoApp.editorCounter > 3) {
+			alert("Can't open more editors");
+			return;
+		}
+		meenoAppCli.mainView.trigger('editor:counter',true);
+
+		this.model.openInEditor    = true;
+		var noteEditorTabView      = new meenoAppCli.Classes.NoteEditorTabView({ model: this.model });
+		var noteEditorControlsView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
+		var noteEditorView         = new meenoAppCli.Classes.NoteEditorView({ model: this.model });
 		$('#editor-tabs-list').append(noteEditorTabView.render().el);
-		$('#editor-list').append(noteEditorView.render().el);
-		noteEditorTabView.toggle();
+		$('#editor-controls-list').append(noteEditorControlsView.render().el);
+		$('#editor-content-list').append(noteEditorView.render().el);
+		this.model.trigger('editor:toggle');
 	}
 });

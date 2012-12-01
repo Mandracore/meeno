@@ -29,31 +29,47 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	// loading any preexisting todos that might be saved in *localStorage*.
 	initialize: function() {
 		// Events occurring to the collection registerd in javascripts/collecitons/notes.js
-		meenoAppCli.Notes.on( 'add destroy reset change', this.render, this );
+		meenoApp.editorCounter = 0;
+		meenoAppCli.Notes.on('add destroy reset change', this.render, this );
+		this.on('editor:counter', this.editorCounter, this );
 		meenoAppCli.Notes.fetch(); // Get back from localstorage, wich will fire event and thus this.render
 	},
 
 	render: function() {
-		this.$('#notes-list').html(''); // First, emptying the list
+		this.$('#note-list').html(''); // First, emptying the list
 		meenoAppCli.Notes.each(function (note) {
 			var noteView = new meenoAppCli.Classes.NoteView({ model: note });
-			$('#notes-list').append(noteView.render().el);
+			$('#note-list').append(noteView.render().el);
 		}, this);
 	},
 
 	new: function() {
-		console.log('new');
-		var newNote           = meenoAppCli.Notes.create();
-		newNote.openInEditor  = true;
-		var noteEditorTabView = new meenoAppCli.Classes.NoteEditorTabView({ model: newNote });
-		var noteEditorView    = new meenoAppCli.Classes.NoteEditorView({ model: newNote });
+		if (meenoApp.editorCounter > 3) {
+			alert("Can't open more editors");
+			return;
+		}
+		this.trigger('editor:new',true);
+		var newNote                = meenoAppCli.Notes.create();
+		newNote.openInEditor       = true;
+		var noteEditorTabView      = new meenoAppCli.Classes.NoteEditorTabView({ model: newNote });
+		var noteEditorControlsView = new meenoAppCli.Classes.NoteEditorControlsView({ model: newNote });
+		var noteEditorView         = new meenoAppCli.Classes.NoteEditorView({ model: newNote });
 		$('#editor-tabs-list').append(noteEditorTabView.render().el);
-		$('#editor-list').append(noteEditorView.render().el);
+		$('#editor-controls-list').append(noteEditorControlsView.render().el);
+		$('#editor-content-list').append(noteEditorView.render().el);
 		noteEditorTabView.toggle();
 	},
 
 	search: function() {
 		console.log('search');
+	},
+
+	editorCounter: function(add) {
+		if (add) {
+			meenoApp.editorCounter ++;
+		} else {
+			meenoApp.editorCounter --;
+		}
 	}
 
 

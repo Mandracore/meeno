@@ -9,26 +9,24 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 // The DOM element for a todo item...
 meenoAppCli.Classes.NoteEditorView = Backbone.View.extend({
 
-	//... is a list tag.
-	tagName  :  'article',
-	className:  'editor',
+	tagName  :  'div',
+	className:  'editor-content',
 
 	// Cache the template function for a single item.
 	template: _.template( $('#editor-template').html() ),
 
 	// The DOM events specific to an item.
 	events: {
-		'click .header-title'   : 'toggle',
-		'click .quit'           : 'quit',
 		'keypress .edit-content': 'save',
 		'keypress .edit-title'  : 'save',
 		'blur .edit-content'    : 'save',
-		'blur .edit-title'      : 'save',
-		'click .del'            : 'delete'
+		'blur .edit-title'      : 'save'
 	},
 
 	initialize: function() {
-		this.model.editorView = this; // Storing a reference to this view in the model for reuse in editor-tab view
+		this.$el.hide();
+		this.model.on('editor:toggle-sub', this.toggle, this); // When this event is triggered, we know that have to display this view
+		this.model.on('editor:quit destroy', this.quit, this); // When this event is triggered, we know that have to destroy this view
 	},
 
 	// Re-renders the editor item to the current state of the model
@@ -38,39 +36,30 @@ meenoAppCli.Classes.NoteEditorView = Backbone.View.extend({
 	},
 
 	save: function() {
+		var curModel = this.model;
+		curModel.trigger('editor:save','init');
 		this.model.set({
 			title  :this.$(".edit-title").html(),
 			content:this.$(".edit-content").html()
 		}).save({},{
-			success: function() {console.log("Object successfully saved.")},
-			error  : function() {console.log("Saving failed.")}
+			success: function() {
+				curModel.trigger('editor:save','success');
+			},
+			error  : function() {
+				curModel.trigger('editor:save','error');
+			}
 		});
-	},
-
-	delete: function() {
-		this.model.destroy({
-			success: function() {console.log("Object successfully deleted.")},
-			error  : function() {console.log("Deleting failed.")}
-		});
-		this.model.editorTabView.remove();
-		this.remove();
 	},
 
 	toggle: function() {
-		if (!this.$(".body").is(":visible")) {
-			// if it's not visible, that means we want to open it.
-			// We then should hide the others first
-			$("#editor-list").children().each(function(i,li){
-				$(li).find(".body").hide();
-			});
-			this.$(".body").fadeIn(500);
-		}
+		$("#editor-content-list").children().each(function(i,el){
+			$(el).hide();
+		});
+		this.$el.fadeIn(500);
 	},
 
 	quit: function() {
-		console.log('quit');
-		this.model.openInEditor = false;
-		this.model.editorTabView.remove();
+		console.log('quit editor');
 		this.remove();
 	}
 });

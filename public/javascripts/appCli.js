@@ -1,5 +1,5 @@
 //javascripts/appCli.js
-
+/*
 jQuery.fn.extend({
 	insertAtCaret: function(myValue){
 		return this.each(function(i) {
@@ -26,7 +26,7 @@ jQuery.fn.extend({
 			}
 		})
 	}
-});
+});*/
 
 
 var meenoAppCli = meenoAppCli || {};
@@ -38,5 +38,5 @@ $(function() {
 	meenoAppCli.Notes = new meenoAppCli.Classes.Notes();
 
 	// Kick things off by creating the **main view**.
-	new meenoAppCli.Classes.MainView();
+	meenoAppCli.mainView = new meenoAppCli.Classes.MainView();
 });

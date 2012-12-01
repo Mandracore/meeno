@@ -8,7 +8,7 @@ cDarkGrey     = lighten(#000000, 30%)
 cLightGrey    = lighten(#000000, 90%)
 cBlueLine     = lighten(#5e939f, 40%)
 wApp          = 1200px
-wRightCol     = 800px
+wRightCol     = 850px
 wLeftCol      = wApp - wRightCol
 wLeftColPad   = 35px
 wRightColPad  = 50px
@@ -19,6 +19,20 @@ pWrappPadV    = pyLiner - pHeadersV
 hTabs         = 40px
 hControls     = 30px
 hFadeOut      = 100px
+
+
+
+
+@font-face
+	font-family "modernpics"
+	src url("../fonts/modernpics.otf")
+
+@font-face
+	font-family "fontawesome"
+	src url("../fonts/fontawesome.ttf")
+
+//|	font-family: "meecus";
+//|	src: url(fonts/modernpics.otf) format("truetype");
 
 
 //==============================================================
@@ -40,7 +54,7 @@ hFadeOut      = 100px
 		left wLeftCol
 		width wRightCol
 	.search, .editor
-		height 40px
+		height 45px
 		overflow hidden
 		top pyLiner * 0.55 - (@height / 2)
 	.search
@@ -80,7 +94,7 @@ hFadeOut      = 100px
 	top	pyLiner + hTabs + hControls
 	left 50%
 	margin-left - (wApp / 2)
-#editor-note-content-list
+#editor-content-list
 	position absolute
 	top	0
 	margin 0
@@ -148,23 +162,23 @@ body
 
 #header
 	.search
-		.wrapper
-			padding 0 0 0 wLeftColPad
-			margin-left -10px
+		#search-wrapper
+			position relative
+			top -10px
+			padding 0 20px
+			margin 0
 			input
-				border-radius(8px)
-				padding 5px 0 5px 10px
+				padding 0
+				margin 0
 				background transparent
 				font-size 1.5em
 				border 0
 				color cTextRev
 				&:hover
-					background cDarkGrey
 					color cTextRev
-
 	.editor
 		.wrapper
-			padding 0 0 0 wRightColPad
+			padding 0 0 0 15px
 			button
 				padding 0
 				background transparent
@@ -174,6 +188,32 @@ body
 				&:hover
 					cursor pointer
 					color cText
+#new
+	text-shadow 1px 1px 1px white
+	&:before
+		font-family 'modernpics'
+		content 'r'
+		position relative
+		top 3px
+		font-size 1.5em
+		margin 0 5px 0
+
+#search-wrapper
+	p
+		border-radius(8px)
+		background transparent
+		&:hover
+			background cDarkGrey
+		&:before
+			font-family 'modernpics'
+			content 's'
+			position relative
+			top 2px
+			font-size 2.2em
+			margin 0 5px 0
+			color cTextRevFaded
+	&:hover p:before
+		color cTextRev
 
 ul#editor-tabs-list, ul#search-tabs-list
 	list-style-type none
@@ -223,8 +263,9 @@ ul#search-tabs-list
 		&:hover
 			background-color rgba(0, 0, 0, 0.12)
 		span, button
-			float right
 			margin 4px 0 0 5px
+		.del
+			float left
 		span
 			padding 5px 0 0
 
@@ -241,9 +282,8 @@ ul#search-tabs-list
 			margin 0
 		.date
 			color cTextRevFaded
-			letter-spacing .1em
 
-.editor-note-content
+.editor-content
 	padding 15px wRightColPad
 	line-height 1.5em
 	.attributes
@@ -258,6 +298,14 @@ ul#search-tabs-list
 		color cText
 		&:hover
 			color darken(cText,80%)
+	h1
+		margin 30px 0 15px 0
+	h1,h2,h3
+		text-shadow 1px 1px 1px white
 
-h1
-	margin 30px 0 15px 0
+#editor-permanent
+	div
+		padding 5px 30px 15px 30px
+		background-color rgba(0, 0, 0, 0.1)
+		box-shadow(0 0 20px rgba(0, 0, 0, 0.3))
+		border-radius(10px)

@@ -8,15 +8,10 @@ block content
 	script(type="text/template", id="editor-tab-template")
 		|<span><%= title %></span>
 	script(type="text/template", id="editor-template")
-		|<div class="body" style="display:none">
-		|	<div class="controls">
-		|		<button class="del">Supprimer</button>
-		|		<button class="quit">x</button>
-		|	</div>
-		|	<div class="attributes">
-		|		<p>Titre complet : <span contentEditable class="edit-title"><%= title %></span></p>
-		|		<p>Date de créaction : <%= created_at %></p>
-		|	</div>
+		|<div class="attributes">
+		|	<p>Titre complet : <span contentEditable class="edit-title"><%= title %></span></p>
+		|	<p>Date de créaction : <%= created_at %></p>
+		|</div>
 		|	<div contentEditable class="edit-content"><%= content %></div>
 		|</div>
 

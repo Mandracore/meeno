@@ -17,9 +17,7 @@ meenoAppCli.Classes.NoteEditorTabView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'click'        : 'toggle',
-		'keypress span': 'save',
-		'blur span'    : 'renameEnd'
+		'click'        : 'toggle'
 	},
 
 	// The TodoView listens for changes to its model, re-rendering. Since there's
@@ -27,13 +25,14 @@ meenoAppCli.Classes.NoteEditorTabView = Backbone.View.extend({
 	// app, we set a direct reference on the model for convenience.
 	initialize: function() {
 		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
-		this.model.editorTabView = this; // Storing a reference to this view in the model for reuse in note view
+		this.model.on('editor:quit destroy', this.quit, this); // When this event is triggered, we know that have to destroy this view
+		this.model.on('editor:toggle', this.toggle, this); // When this event is triggered, we know that have to destroy this view
+		
+		//this.model.editorTabView = this; // Storing a reference to this view in the model for reuse in note view
 	},
 
 	// Re-renders the editor-tab item to the current state of the model
 	render: function() {
-		if (this.$("span").is(":focus")) return this; // We don't want to re-render when we are modifying the title
-
 		var json = this.model.toJSON();
 		var title = jQuery.trim(this.model.toJSON().title)
 			.substring(0, 15) + "...";
@@ -42,35 +41,21 @@ meenoAppCli.Classes.NoteEditorTabView = Backbone.View.extend({
 		return this;
 	},
 
-	save: function() {
-		this.model.set({
-			title:this.$("span").html()
-		}).save({},{
-			success: function() {console.log("Object successfully saved.")},
-			error  : function() {console.log("Saving failed.")}
-		});
-	},
-
 	toggle: function() {
-		console.log('toggle-show');
 		if (this.$el.hasClass('active')) return;
 
-		// First, deactivate the others
+		// First, deactivate the other tabs
 		$("#editor-tabs-list").children().each(function(i,li){
 			$(li).removeClass("active");
 		});
 		// Then activate this one
 		this.$el.addClass('active');
-		this.model.editorView.toggle();
+		//this.model.editorView.toggle();
+		this.model.trigger('editor:toggle-sub'); // Communicate with the other views based on this model (editor-controls & editor)
 	},
 
-	// Will be called by editor view
-	rename: function () {
-		this.$('span').focus().select();
-	},
-
-	renameEnd: function() {
-		console.log("rename end")
-		this.save();
-	},
+	quit: function() {
+		console.log('quit tab');
+		this.remove();
+	}
 });
