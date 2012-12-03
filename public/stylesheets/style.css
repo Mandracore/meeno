@@ -32,8 +32,8 @@ body{font-family:Helvetica,Arial;font-size:.9em;color:#434343}
 #new:before{font-family:'modernpics';content:'r';position:relative;top:3px;font-size:1.5em;margin:0 5px 0}
 #search-wrapper p{-webkit-border-radius:8px;border-radius:8px;background:transparent;}
 #search-wrapper p:hover{background:#4d4d4d}
-#search-wrapper p:before{font-family:'modernpics';content:'s';position:relative;top:2px;font-size:2.2em;margin:0 5px 0;color:#858585}
-#search-wrapper:hover p:before{color:#ddd}
+#search-wrapper p:before{text-shadow:1px 1px 0 rgba(255,255,255,0.2);font-family:'modernpics';content:'s';position:relative;top:2px;font-size:2.2em;margin:0 5px 0;color:rgba(0,0,0,0.5)}
+#search-wrapper:hover p:before{color:rgba(0,0,0,0.7)}
 ul#editor-tabs-list,ul#search-tabs-list{list-style-type:none;margin:0;padding:0 30px;color:#989898;}
 ul#editor-tabs-list li,ul#search-tabs-list li{float:left;margin:0;padding:10px 20px;letter-spacing:.09em;}
 ul#editor-tabs-list li:hover,ul#search-tabs-list li:hover{cursor:pointer;border-top:4px solid #9ebec6;padding:6px 20px;color:#434343}
@@ -61,4 +61,4 @@ ul#search-tabs-list .active{border-top:4px solid #4f7b87;padding:6px 15px;color:
 .editor-content .editable:hover{color:#0d0d0d}
 .editor-content h1{margin:30px 0 15px 0}
 .editor-content h1,.editor-content h2,.editor-content h3{text-shadow:1px 1px 1px #fff}
-#editor-permanent div{padding:5px 30px 15px 30px;background-color:rgba(0,0,0,0.1);-webkit-box-shadow:0 0 20px rgba(0,0,0,0.3);box-shadow:0 0 20px rgba(0,0,0,0.3);-webkit-border-radius:10px;border-radius:10px}
+#editor-permanent div{padding:5px 30px 15px 30px;background-color:rgba(0,0,0,0.07);-webkit-box-shadow:0 0 20px rgba(0,0,0,0.3);box-shadow:0 0 20px rgba(0,0,0,0.3);-webkit-border-radius:10px;border-radius:10px}

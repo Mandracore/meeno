@@ -145,12 +145,6 @@ body
 	height	pyLiner + hTabs + hControls
 	z-index zLiner + 1
 
-.editor-icon
-	//background transparent url(../images/write.png) no-repeat 0 0;
-.search-icon
-	//background transparent url(../images/search.png) no-repeat 0 0;
-
-
 //==============================================================
 // Text and others
 //==============================================================
@@ -160,6 +154,7 @@ body
 	font-size 0.9em
 	color cText
 
+// HEADER
 #header
 	.search
 		#search-wrapper
@@ -197,7 +192,6 @@ body
 		top 3px
 		font-size 1.5em
 		margin 0 5px 0
-
 #search-wrapper
 	p
 		border-radius(8px)
@@ -205,16 +199,18 @@ body
 		&:hover
 			background cDarkGrey
 		&:before
+			text-shadow 1px 1px 0 rgba(255, 255, 255, 0.2)
 			font-family 'modernpics'
 			content 's'
 			position relative
 			top 2px
 			font-size 2.2em
 			margin 0 5px 0
-			color cTextRevFaded
+			color rgba(0,0,0,0.5)
 	&:hover p:before
-		color cTextRev
+		color rgba(0,0,0,0.7)
 
+// BODY
 ul#editor-tabs-list, ul#search-tabs-list
 	list-style-type none
 	margin 0
@@ -306,6 +302,6 @@ ul#search-tabs-list
 #editor-permanent
 	div
 		padding 5px 30px 15px 30px
-		background-color rgba(0, 0, 0, 0.1)
+		background-color rgba(0, 0, 0, 0.07)
 		box-shadow(0 0 20px rgba(0, 0, 0, 0.3))
 		border-radius(10px)
