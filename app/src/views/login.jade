@@ -1,3 +1,12 @@
 extends layout
 
 block content
+	form#login
+		h1 Log In
+		fieldset#inputs
+			input(id="username", type="text", placeholder="Username", autofocus="true", required="true")
+			input(id="password", type="password", placeholder="Password", required="true")
+		fieldset#actions
+			input(type="submit", id="submit", value="Log in")
+			a(href="#") Forgot your password ?
+			a(href="#") No account yet ? Register !

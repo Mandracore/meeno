@@ -26,12 +26,18 @@ exports.securityProxy = function (role) {
 * GET home page.
 */
 exports.index = function (req, res) {
-	res.render('index', { title: 'Meeno' });
+	res.render('index', { 
+		title: 'Meeno',
+		css  : '/stylesheets/style.css'
+	});
 };
 
 /*
 * GET/POST login page.
 */
 exports.login = function (req, res) {
-	res.render('login', { title: 'Meeno' });
+	res.render('login', {
+		title: 'Meeno - login',
+		css  : '/stylesheets/style-login.css'
+	});
 };
