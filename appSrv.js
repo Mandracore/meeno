@@ -2,32 +2,35 @@
 // DEFINING SERVER SIDE APPLICATION
 //==========================================
 
-//var meenoApp         =  meenoApp || {};
 var application_root = __dirname;
 var express          = require("express");
+var routes           = require("./app/src/routes");
+var http             = require("http");
 var path             = require("path");
 var mongoose         = require('mongoose');
 var stylus           = require('stylus');
 var nib              = require('nib');
-var appSrv           = express();
-
-console.log(application_root);
-console.log("reload");
-
+var meenoAppSrv      = express();
 
 //------------------------------------------
 // SERVER CONFIG
 //------------------------------------------
 
-appSrv.configure(function(){
-	appSrv.use(express.bodyParser());
-	appSrv.use(express.methodOverride());
-	appSrv.use(appSrv.router);
-	appSrv.use(express.static(path.join(application_root, "public")));
-	appSrv.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-	appSrv.set('views', path.join(application_root, "app/src/views"));
-	appSrv.set('view engine', 'jade');
-	appSrv.use(stylus.middleware({
+meenoAppSrv.configure(function(){
+	// app.enable('trust proxy') with proxy, see http://expressjs.com/guide.html
+	meenoAppSrv.set('port', process.env.PORT || 3000);
+	meenoAppSrv.use(express.favicon());
+	meenoAppSrv.use(express.logger('dev'));
+	meenoAppSrv.use(express.cookieParser('your secret here'));
+	meenoAppSrv.use(express.session());
+	meenoAppSrv.use(express.bodyParser());
+	meenoAppSrv.use(express.methodOverride());
+	meenoAppSrv.use(meenoAppSrv.router);
+	meenoAppSrv.use(express.static(path.join(application_root, "public")));
+	meenoAppSrv.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+	meenoAppSrv.set('views', path.join(application_root, "app/src/views"));
+	meenoAppSrv.set('view engine', 'jade');
+	meenoAppSrv.use(stylus.middleware({
 		src  : application_root + '/public/stylesheets',
 		dest : application_root + '/public/stylesheets',
 		compile: function (str, path) {
@@ -39,22 +42,22 @@ appSrv.configure(function(){
 	}));
 });
 
+meenoAppSrv.configure('development', function(){
+  meenoAppSrv.use(express.errorHandler());
+});
 
 //------------------------------------------
 // ROUTING
 //------------------------------------------
 
-appSrv.get('/', function(req, res){
-	res.render('index.jade', {
-		title: 'Meeno'
-	});
-});
-
+meenoAppSrv.get("/", routes.securityProxy("user"), routes.index);
+meenoAppSrv.get("/login", routes.login); // asecurityProxy("user") IS a function, to which meenoAppSrv.get will automatically pass req, res and next variables
+meenoAppSrv.post("/login", routes.login);
 
 //------------------------------------------
 // START SERVER
 //------------------------------------------
 
-appSrv.listen(3000,function () {
-	console.log("server is listening on port 3000");
+http.createServer(meenoAppSrv).listen(meenoAppSrv.get('port'), function(){
+  console.log("Node.js - Express server listening on port " + meenoAppSrv.get('port'));
 });

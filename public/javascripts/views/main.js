@@ -20,8 +20,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	// Delegated events for creating new items, and clearing completed ones.
 	// Events occuring to the DOM
 	events: {
-		'click #new'           : 'new', // Create new editor and refresh list of editors !
-		'keypress input#search': 'search'
+		'click #new'      : 'new', // Create new editor and refresh list of editors !
+		'keyup #search': 'search'
 	},
 
 	// At initialization we bind to the relevant events on the `Todos`
@@ -29,7 +29,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	// loading any preexisting todos that might be saved in *localStorage*.
 	initialize: function() {
 		// Events occurring to the collection registerd in javascripts/collecitons/notes.js
-		meenoApp.editorCounter = 0;
+		meenoAppCli.dispatcher = _.clone(Backbone.Events); // Launch main listener
+		meenoAppCli.editorCounter = 0;
 		meenoAppCli.Notes.on('add destroy reset change', this.render, this );
 		this.on('editor:counter', this.editorCounter, this );
 		meenoAppCli.Notes.fetch(); // Get back from localstorage, wich will fire event and thus this.render
@@ -44,7 +45,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	},
 
 	new: function() {
-		if (meenoApp.editorCounter > 3) {
+		if (meenoAppCli.editorCounter > 3) {
 			alert("Can't open more editors");
 			return;
 		}
@@ -61,14 +62,30 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	},
 
 	search: function() {
-		console.log('search');
+		var term = $("#search").val();
+		if (term == "") {
+			meenoAppCli.Notes.reset();
+			meenoAppCli.Notes.fetch();
+			console.log('Refetching whole collection');
+			return;
+		} 
+
+		
+		var pattern = new RegExp(term,"gi");
+		meenoAppCli.Notes.reset();
+		meenoAppCli.Notes.fetch();
+		meenoAppCli.Notes.reset(_.filter(meenoAppCli.Notes.models, function(data){
+			return pattern.test(data.get("title")) || pattern.test(data.get("content"));
+		}));
+
+		meenoAppCli.dispatcher.trigger('search:hi',term);
 	},
 
 	editorCounter: function(add) {
 		if (add) {
-			meenoApp.editorCounter ++;
+			meenoAppCli.editorCounter ++;
 		} else {
-			meenoApp.editorCounter --;
+			meenoAppCli.editorCounter --;
 		}
 	}
 

@@ -25,6 +25,7 @@ meenoAppCli.Classes.NoteView = Backbone.View.extend({
 	// app, we set a direct reference on the model for convenience.
 	initialize: function() {
 		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
+		meenoAppCli.dispatcher.on('search:hi', this.highlight, this);
 	},
 
 	// Re-renders the note item to the current state of the model
@@ -57,5 +58,22 @@ meenoAppCli.Classes.NoteView = Backbone.View.extend({
 		$('#editor-controls-list').append(noteEditorControlsView.render().el);
 		$('#editor-content-list').append(noteEditorView.render().el);
 		this.model.trigger('editor:toggle');
+	},
+
+	highlight: function(term) {
+		console.log('hili');
+		var hiLi = function ($where,term) {
+		    if (term != '') {
+		        var regex = new RegExp("("+term+")",'gi');
+		        $where.find(' :Contains("'+term+'")').each(function(){//chaine.replace(regex, "gr$1$1$1s");
+		            $(this).html($(this).html().replace(regex, "<span class='highlight'>$1</span>"));
+		            $(this).find('span.highlight').fadeIn("slow");
+		        });
+		    }
+		// how many did it find?
+		//    n = $("span.highlight").length;
+		//    console.log("The there is a total of: "+n);
+		};
+		hiLi(this.$el,term);
 	}
 });
