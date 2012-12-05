@@ -26,12 +26,11 @@ meenoAppSrv.configure(function(){
 	meenoAppSrv.use(express.bodyParser());
 	meenoAppSrv.use(express.methodOverride());
 	meenoAppSrv.use(meenoAppSrv.router);
-	meenoAppSrv.use(express.static(path.join(application_root, "public")));
-	meenoAppSrv.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 	meenoAppSrv.set('views', path.join(application_root, "app/src/views"));
 	meenoAppSrv.set('view engine', 'jade');
 	meenoAppSrv.use(stylus.middleware({
-		src  : application_root + '/public/stylesheets',
+		//src  : application_root + '/public/stylesheets',
+		src  : application_root + '/app/src/views',
 		dest : application_root + '/public/stylesheets',
 		compile: function (str, path) {
 			return stylus(str)
@@ -40,6 +39,8 @@ meenoAppSrv.configure(function(){
 				.use(nib());
 		}
 	}));
+	meenoAppSrv.use(express.static(path.join(application_root, "public")));
+	meenoAppSrv.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 meenoAppSrv.configure('development', function(){
