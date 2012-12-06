@@ -50,7 +50,8 @@ meenoAppSrv.configure('development', function(){
 // ROUTING
 //------------------------------------------
 
-meenoAppSrv.get("/", routes.securityProxy("user"), routes.index);
+//meenoAppSrv.get("/", routes.securityProxy("user"), routes.index);
+meenoAppSrv.get("/", routes.index);
 meenoAppSrv.get("/login", routes.login); // asecurityProxy("user") IS a function, to which meenoAppSrv.get will automatically pass req, res and next variables
 meenoAppSrv.post("/login", routes.login);
 meenoAppSrv.post("/admin", routes.admin);
