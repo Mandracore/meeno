@@ -20,7 +20,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	// Delegated events for creating new items, and clearing completed ones.
 	// Events occuring to the DOM
 	events: {
-		'click #new'      : 'new', // Create new editor and refresh list of editors !
+		'click #new'   : 'new', // Create new editor and refresh list of editors !
 		'keyup #search': 'search'
 	},
 
@@ -28,8 +28,6 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	// collection, when items are added or changed. Kick things off by
 	// loading any preexisting todos that might be saved in *localStorage*.
 	initialize: function() {
-		// Events occurring to the collection registerd in javascripts/collecitons/notes.js
-		meenoAppCli.dispatcher = _.clone(Backbone.Events); // Launch main listener
 		meenoAppCli.editorCounter = 0;
 		meenoAppCli.Notes.on('add destroy reset change', this.render, this );
 		this.on('editor:counter', this.editorCounter, this );
@@ -69,7 +67,6 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			console.log('Refetching whole collection');
 			return;
 		} 
-
 		
 		var pattern = new RegExp(term,"gi");
 		meenoAppCli.Notes.reset();

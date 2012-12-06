@@ -39,7 +39,6 @@ meenoAppCli.Classes.NoteView = Backbone.View.extend({
 	edit: function() {
 
 		if (this.model.openInEditor) { // We do not want to open it twice, we will just toggle editor
-			//this.model.editorTabView.toggle(); // CORERECT HEEEERREEEEE ##################################
 			this.model.trigger('editor:toggle');
 			return;
 		}
@@ -61,19 +60,6 @@ meenoAppCli.Classes.NoteView = Backbone.View.extend({
 	},
 
 	highlight: function(term) {
-		console.log('hili');
-		var hiLi = function ($where,term) {
-		    if (term != '') {
-		        var regex = new RegExp("("+term+")",'gi');
-		        $where.find(' :Contains("'+term+'")').each(function(){//chaine.replace(regex, "gr$1$1$1s");
-		            $(this).html($(this).html().replace(regex, "<span class='highlight'>$1</span>"));
-		            $(this).find('span.highlight').fadeIn("slow");
-		        });
-		    }
-		// how many did it find?
-		//    n = $("span.highlight").length;
-		//    console.log("The there is a total of: "+n);
-		};
-		hiLi(this.$el,term);
+		console.log('hili:'+term);
 	}
 });
