@@ -12,5 +12,6 @@ meenoAppCli.Classes.Notes = Backbone.Collection.extend({
 	model: meenoAppCli.Classes.Note, 
 
 	// Save all of the todo items under the `"todos"` namespace.
-	localStorage: new Backbone.LocalStorage('backbone-meeno-notes')
+	//localStorage: new Backbone.LocalStorage('backbone-meeno-notes')
+	url: '/api/notes'
 });

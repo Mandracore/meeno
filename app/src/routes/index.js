@@ -24,20 +24,40 @@ exports.securityProxy = function (role) {
 //------------------------------------------
 /*
 * GET home page.
+* /
 */
 exports.index = function (req, res) {
-	res.render('index', { 
+	res.render('index', {
 		title: 'Meeno',
-		css  : '/stylesheets/style.css'
+		css: '/stylesheets/index.css'
 	});
 };
 
 /*
 * GET/POST login page.
+* /login
 */
-exports.login = function (req, res) {
-	res.render('login', {
-		title: 'Meeno - login',
-		css  : '/stylesheets/style-login.css'
-	});
-};
+
+// exports.login = function (req, res) {
+// 	if (req.method == "POST") {
+// 		if(req.param('username') == "romain.latroy@gmail.com" && req.param('password') == "test") {
+// 			req.session.logged = true;
+// 			req.session.user = {
+// 				name: 'romain.latroy',
+// 				role: 'user'
+// 			}
+// 			res.redirect('/');
+// 		}
+// 		else {
+// 			res.redirect('/login');
+// 		}
+// 	}
+// 	if (req.method == "GET") {
+// 		req.params.type;
+// 		res.render('login', {
+// 			title: 'Meeno',
+// 			css: '/stylesheets/login.css'
+// 		});
+// 	}
+// };
+

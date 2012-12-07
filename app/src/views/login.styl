@@ -1,0 +1,178 @@
+@import 'nib'
+
+cText         = #434343
+cTextFaded    = lighten(#535353, 40%)
+cTextRev      = #dddddd
+cTextRevFaded = darken(#dddddd, 40%)
+cDarkGrey     = lighten(#000000, 30%)
+cLightGrey    = lighten(#000000, 90%)
+cBlueLine     = lighten(#5e939f, 40%)
+wApp          = 50%
+wRightCol     = 850px
+wLeftCol      = wApp - wRightCol
+wLeftColPad   = 35px
+wRightColPad  = 50px
+zLiner        = 5
+pyLiner       = 80px
+pHeadersV     = 40px
+pWrappPadV    = pyLiner - pHeadersV
+hTabs         = 40px
+hControls     = 30px
+hFadeOut      = 100px
+
+@font-face
+	font-family "modernpics"
+	src url("../fonts/modernpics.otf")
+
+@font-face
+	font-family "fontawesome"
+	src url("../fonts/fontawesome.ttf")
+
+
+//==============================================================
+// Layout
+//==============================================================
+
+#form-wrapper
+	position absolute
+	top 10%
+	left 50%
+	margin-left -(wApp / 2)
+	width wApp
+	border 1px solid rgba(147, 184, 189,0.8)
+	background rgb(247, 247, 247)
+	box-shadow 0pt 2px 5px rgba(105, 108, 109,  0.7) 0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset
+	border-radius(5px)
+
+#login, #register
+	padding 0 30px 30px 30px
+#register
+	display none
+
+//==============================================================
+// Text and others
+//==============================================================
+
+body
+	font-family Helvetica, Arial
+	font-size 0.9em
+	color cText
+
+/**** general text styling ****/
+#form-wrapper
+	h1
+		color rgb(6, 106, 117)
+		padding 0 0 20px 0
+		font-weight bold
+		text-align center
+		&:after
+			content ' '
+			display block
+			width 100%
+			height 2px
+			margin-top 10px
+			background linear-gradient(left, rgba(147,184,189,0) 0%, rgba(147,184,189,0.8) 20%, rgba(147,184,189,1) 53%, rgba(147,184,189,0.8) 79%, rgba(147,184,189,0) 100%)
+
+/* all the input except submit and checkbox */
+input
+	outline none
+	&:not([type="checkbox"]), :not([type="submit"])
+		width 92%
+		margin-top 4px
+		padding 10px 5px 10px 32px
+		border 1px solid rgb(178, 178, 178)
+		border-radius(3px)
+		box-shadow(0px 1px 4px 0px rgba(168, 168, 168, 0.6) inset)
+		transition all 0.2s linear
+		&:active, &:focus, &:hover
+			border 1px solid rgba(91, 90, 90, 0.7)
+			background rgba(238, 236, 240, 0.2)
+			box-shadow(0px 1px 4px 0px rgba(168, 168, 168, 0.9) inset)
+p.password, p.email
+	label
+		position relative
+		left -30px
+	&:before
+		font-family 'modernpics'
+		content 'n'
+		position relative
+		top 34px
+		left 5px
+		font-size 1.5em
+		margin 0 5px 0
+		opacity 0.5
+	&:hover
+		&:before
+			opacity 0.8
+p.email
+	&:before
+		content 'm'
+
+/*styling both submit buttons */
+p.button
+	input
+		width: 5em;
+		cursor: pointer;    
+		background: rgb(61, 157, 179);
+		padding: 8px 5px;
+		font-family: 'BebasNeueRegular','Arial Narrow',Arial,sans-serif;
+		color: #fff;
+		font-size: 24px;    
+		border: 1px solid rgb(28, 108, 122);    
+		margin-bottom: 10px;    
+		text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+		border-radius: 3px; 
+		box-shadow:
+		0px 1px 6px 4px rgba(0, 0, 0, 0.07) inset,
+		0px 0px 0px 3px rgb(254, 254, 254),
+		0px 5px 3px 3px rgb(210, 210, 210);
+		transition: all 0.2s linear;
+		&:hover
+			background rgb(74, 179, 198)
+		&:active, &:focus
+			background rgb(40, 137, 154);
+			position relative
+			top 1px
+			border 1px solid rgb(12, 76, 87)
+			box-shadow(0px 1px 6px 4px rgba(0, 0, 0, 0.2) inset)
+	&.login, &.signin
+		text-align right
+		margin 5px 0
+
+p.keeplogin
+	margin-top -5px
+	input, label
+		display inline-block
+		font-style italic
+	input
+		margin-right 5px
+	label
+		width 80%
+
+p.switch
+	color:rgb(127, 124, 124)
+	width 100%
+	margin 30px 0 0
+	padding 0
+	font-size 1.2em
+	text-align right
+	border-radius(5px)
+	background rgb(225, 234, 235)
+	button
+		display inline-block
+		padding 10px
+		margin 10px
+		font-weight bold
+		background rgb(247, 248, 241);
+		color rgb(29, 162, 193)
+		text-decoration none
+		border-radius(4px)
+		border: 1px solid rgb(203, 213, 214);
+		transition: all 0.4s  linear;
+		&:hover
+			color rgb(57, 191, 215)
+			background rgb(247, 247, 247)
+			border 1px solid rgb(74, 179, 198)
+		&:active
+			position relative
+			top 1px
