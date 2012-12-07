@@ -12,9 +12,6 @@ var stylus           = require('stylus');
 var nib              = require('nib');
 var mas              = express(); // Meeno App Server
 
-// mas.Models           = require("./app/src/models");
-// mas.routes           = {main: require("./app/src/routes"), api: require("./app/src/routes/api")};
-
 
 //------------------------------------------
 // MODELS
@@ -24,9 +21,17 @@ mas.Models = {
 	Note: mongoose.model('Note', new mongoose.Schema({
 		title: String,
 		content: String,
+		id_user: String,
 		created_at: { type: Date, default: function () {return Date.now()} },
 		updated_at: { type: Date, default: function () {return Date.now()} }
-}))};
+		})),
+	User: mongoose.model('User', new mongoose.Schema({
+		email: String,
+		password: String,
+		role: { type: String, default: "user" }
+		}))
+};
+
 
 //------------------------------------------
 // SERVER CONFIG
@@ -65,9 +70,6 @@ mas.configure('development', function(){
 
 // DB connection
 mongoose.connect('mongodb://localhost/meeno');
-//var db = mongoose.createConnection('mongodb://localhost/test');
-
-
 
 
 //------------------------------------------
@@ -95,8 +97,36 @@ mas.routes = {
 			css: '/stylesheets/index.css'
 		});
 	},
+	login: function (req, res) {
+		mas.Models.User.find({'email': req.body.email}, function(err, user) {
+			if (err) {return res.send(err);}
+			if (!user[0]) {return res.send("unknown user");}
+			if (user[0].password !== req.body.password) {return res.send("wrong password");}
+
+			// User has been successfully authentified
+			req.session.logged = true;
+			req.session.user = user;
+			return res.send(user);
+		});
+	},
+	register: function (req, res) {
+		console.log(req.body);
+
+		var user = new mas.Models.User ({
+			email   : req.body.email,
+			password: req.body.password
+		});
+		user.save(function(err) {
+			if (!err) {
+				return console.log("created");
+			} else {
+				console.log(err);
+			}
+		});
+		return res.send(user);
+	},
 	readAll: function (req, res) {
-		return mas.Models.Note.find(function(err, notes) {
+		return mas.Models.Note.find({'id_user': req.session.user.id }, function(err, notes) {
 			return res.send(notes);
 		});
 	},
@@ -151,16 +181,20 @@ mas.routes = {
 	}
 };
 
+
 //------------------------------------------
 // ROUTING
 //------------------------------------------
 
 mas.get("/", mas.routes.index);
+mas.post("/login", mas.routes.login);
+mas.post("/register", mas.routes.register);
 mas.get("/api/notes", mas.routes.securityProxy("user"), mas.routes.readAll);
 mas.get("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.readOne);
 mas.put("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.update);
 mas.post("/api/notes", mas.routes.securityProxy("user"), mas.routes.create);
 mas.delete("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.delete);
+
 
 //------------------------------------------
 // START SERVER
