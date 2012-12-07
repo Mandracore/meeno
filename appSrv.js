@@ -75,6 +75,20 @@ mongoose.connect('mongodb://localhost/meeno');
 //------------------------------------------
 
 mas.routes = {
+	securityProxy: function (role) {
+		return function (req, res, next) {
+			if(!req.session.logged) {
+				res.send(401,"Unauthorized");
+				return;
+			}
+
+			if(req.session.user && req.session.user.role === role) {
+				next();
+			} else {
+				res.send(403,"Forbidden");
+			}
+		}
+	},
 	index: function (req, res) {
 		res.render('index', {
 			title: 'Meeno',
@@ -141,15 +155,12 @@ mas.routes = {
 // ROUTING
 //------------------------------------------
 
-//mas.get("/", mas.routes.securityProxy("user"), mas.routes.index);
-//mas.get("/", mas.routes.index); // Disabling security for now
-//mas.get("/login", mas.routes.login);
 mas.get("/", mas.routes.index);
-mas.get("/api/notes", mas.routes.readAll);
-mas.get("/api/notes/:id", mas.routes.readOne);
-mas.put("/api/notes/:id", mas.routes.update);
-mas.post("/api/notes", mas.routes.create);
-mas.delete("/api/notes/:id", mas.routes.delete);
+mas.get("/api/notes", mas.routes.securityProxy("user"), mas.routes.readAll);
+mas.get("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.readOne);
+mas.put("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.update);
+mas.post("/api/notes", mas.routes.securityProxy("user"), mas.routes.create);
+mas.delete("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.delete);
 
 //------------------------------------------
 // START SERVER
