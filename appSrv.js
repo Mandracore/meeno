@@ -26,8 +26,8 @@ mas.Models = {
 		updated_at: { type: Date, default: function () {return Date.now()} }
 		})),
 	User: mongoose.model('User', new mongoose.Schema({
-		email: String,
-		password: String,
+		email: { type: String, required: true, unique: true },
+		password: { type: String, required: true },
 		role: { type: String, default: "user" }
 		}))
 };
@@ -110,20 +110,21 @@ mas.routes = {
 		});
 	},
 	register: function (req, res) {
-		console.log(req.body);
-
 		var user = new mas.Models.User ({
 			email   : req.body.email,
 			password: req.body.password
 		});
 		user.save(function(err) {
 			if (!err) {
-				return console.log("created");
+				console.log("created");
+				// User has been successfully created
+				req.session.logged = true;
+				req.session.user = user;
+				return res.send(user);
 			} else {
-				console.log(err);
+				return res.send(err);
 			}
 		});
-		return res.send(user);
 	},
 	readAll: function (req, res) {
 		return mas.Models.Note.find({'id_user': req.session.user.id }, function(err, notes) {
