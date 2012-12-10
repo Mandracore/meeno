@@ -19,9 +19,9 @@ var mas              = express(); // Meeno App Server
 
 mas.Models = {
 	Note: mongoose.model('Note', new mongoose.Schema({
+		_creator: String,
 		title: String,
 		content: String,
-		id_user: String,
 		created_at: { type: Date, default: function () {return Date.now()} },
 		updated_at: { type: Date, default: function () {return Date.now()} }
 		})),
@@ -110,36 +110,45 @@ mas.routes = {
 		});
 	},
 	register: function (req, res) {
+		if (req.body.emailSignup != req.body.emailSignupConfirm) {
+			return res.send(202, "Email addresses do not match");
+		}
+		if (req.body.passwordSignup != req.body.passwordSignupConfirm) {
+			return res.send(202, "Passwords do not match");
+		}
 		var user = new mas.Models.User ({
-			email   : req.body.email,
-			password: req.body.password
+			email   : req.body.emailSignup,
+			password: req.body.passwordSignup
 		});
 		user.save(function(err) {
 			if (!err) {
-				console.log("created");
 				// User has been successfully created
 				req.session.logged = true;
 				req.session.user = user;
 				return res.send(201, user);
 			} else {
-				return res.send(err);
+				return res.send(202, err);
 			}
 		});
 	},
 	readAll: function (req, res) {
-		return mas.Models.Note.find({'id_user': req.session.user.id }, function(err, notes) {
+		return mas.Models.Note.find({'_creator': req.session.user._id }, function(err, notes) {
 			return res.send(notes);
 		});
 	},
 	readOne: function (req, res) {
-		return mas.Models.Note.findById(req.params.id, function(err, note) {
+		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
+			if (!note) {return res.send(403,"Forbidden");}
+
 			if (!err) {
 				return res.send(note);
 			}
 		});
 	},
 	update: function (req, res) {
-		return mas.Models.Note.findById(req.params.id, function(err, note) {
+		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
+			if (!note) {return res.send(403,"Forbidden");}
+
 			note.title      = req.body.title;
 			note.content    = req.body.content;
 			note.created_at = req.body.created_at;
@@ -156,6 +165,7 @@ mas.routes = {
 	},
 	create: function (req, res) {
 		var note = new mas.Models.Note ({
+			_creator  : req.session.user._id,
 			title     : req.body.title,
 			content   : req.body.content,
 			created_at: req.body.created_at,
@@ -171,7 +181,9 @@ mas.routes = {
 		return res.send(note);
 	},
 	delete: function (req, res) {
-		return mas.Models.Note.findById(req.params.id, function(err, note) {
+		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
+
+			if (!note) {return res.send(403,"Forbidden");}
 			return note.remove(function(err) {
 				if (!err) {
 					console.log("removed");

@@ -15,10 +15,12 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	el: '#meenoApp',
 
 	events: {
-		'click #new'      : 'new',
-		'keyup #search'   : 'search',
-		'submit #login'   : 'login',
-		'submit #register': 'register'
+		'click #new'       : 'new',
+		'keyup #search'    : 'search',
+		'submit #login'    : 'login',
+		'submit #register' : 'register',
+		'click #toregister': 'toggleLR',
+		'click #tologin'   : 'toggleLR'
 	},
 
 	initialize: function() {
@@ -54,6 +56,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			$("#meenoApp").children().each(function (index, obj) {
 				if($(obj).attr('id')!='form-wrapper'){
 					$(obj).hide();
+				} else {
+					$(obj).fadeIn();
 				}
 			});
 		} else {
@@ -65,15 +69,18 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				}
 			});
 		}
+	},
 
+	toggleLR: function () {
+		$("#login").toggle();
+		$("#register").toggle();
 	},
 
 	login: function () {
-
 		if (this.logging) { return false; } // To avoid submitting twice
 		this.logging = true;
 		$('#do-login').val("please wait...");
-		var formData = $('#login').children('form').serialize();
+		var formData = $('#login').serialize();
 
 		// Attempt login on server...
 		$.ajax({
@@ -101,7 +108,34 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	},
 
 	register: function () {
+		if (this.registering) { return false; } // To avoid submitting twice
+		this.registering = true;
 		$('#do-register').val("please wait...");
+		var formData = $('#register').serialize();
+
+		// Attempt registering on server...
+		$.ajax({
+			type: 'POST',
+			url: "/register",
+			data: formData
+		})
+		.done(function(data, status, xhr) {
+			if (xhr.status != 201) {
+				$('#register').find(".errors").html(data);
+			} else {
+				$('#register').find(".errors").html("");
+				// meenoAppCli.Notes.fetch();
+				meenoAppCli.mainView.toggleAuth();
+			}
+		})
+		.fail(function() {
+			console.log("Connection to server failed");
+		})
+		.always(function() {
+			meenoAppCli.mainView.registering = false;
+			$('#do-register').val($('#do-register').attr("data-init-value"));
+		});
+		return false;
 	},
 
 	new: function() {
