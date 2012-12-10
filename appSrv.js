@@ -84,7 +84,7 @@ mas.routes = {
 				return;
 			}
 
-			if(req.session.user && req.session.user.role === role) {
+			if(req.session.user.role == role) {
 				next();
 			} else {
 				res.send(403,"Forbidden");
@@ -99,14 +99,14 @@ mas.routes = {
 	},
 	login: function (req, res) {
 		mas.Models.User.find({'email': req.body.email}, function(err, user) {
-			if (err) {return res.send(err);}
-			if (!user[0]) {return res.send("unknown user");}
-			if (user[0].password !== req.body.password) {return res.send("wrong password");}
+			if (err) {return res.send(202, err);}
+			if (!user[0]) {return res.send(202, "unknown user");}
+			if (user[0].password !== req.body.password) {return res.send(202, "wrong password");}
 
 			// User has been successfully authentified
 			req.session.logged = true;
-			req.session.user = user;
-			return res.send(user);
+			req.session.user = user[0];
+			return res.send(200, user[0]);
 		});
 	},
 	register: function (req, res) {
@@ -120,7 +120,7 @@ mas.routes = {
 				// User has been successfully created
 				req.session.logged = true;
 				req.session.user = user;
-				return res.send(user);
+				return res.send(201, user);
 			} else {
 				return res.send(err);
 			}
