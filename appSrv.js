@@ -28,6 +28,15 @@ mas.Models = {
 		updated_at: { type: Date, default: function () {return Date.now()} }
 }))};
 
+mas.Tasks = {
+	Note: mongoose.model('Task', new mongoose.Schema({
+		content: { type: String, default: function () {return 'Saisissez ici le contenu de votre tâche...';} },
+		created_at: { type: Date, default: function () {return Date.now();} },
+		updated_at: { type: Date, default: function () {return Date.now();} }
+		due_at: { type: Date, default: function () {return Date.now();} },
+		done: { type: Boolean, default: function () {return false;} },
+}))};
+
 //------------------------------------------
 // SERVER CONFIG
 //------------------------------------------
@@ -81,59 +90,117 @@ mas.routes = {
 			css: '/stylesheets/index.css'
 		});
 	},
-	readAll: function (req, res) {
-		return mas.Models.Note.find(function(err, notes) {
-			return res.send(notes);
-		});
-	},
-	readOne: function (req, res) {
-		return mas.Models.Note.findById(req.params.id, function(err, note) {
-			if (!err) {
-				return res.send(note);
-			}
-		});
-	},
-	update: function (req, res) {
-		return mas.Models.Note.findById(req.params.id, function(err, note) {
-			note.title      = req.body.title;
-			note.content    = req.body.content;
-			note.created_at = req.body.created_at;
-			note.updated_at = req.body.updated_at;
-			return note.save(function(err) {
+	notes: {
+		readAll: function (req, res) {
+			return mas.Models.Note.find(function(err, notes) {
+				return res.send(notes);
+			});
+		},
+		readOne: function (req, res) {
+			return mas.Models.Note.findById(req.params.id, function(err, note) {
 				if (!err) {
-					console.log("updated");
+					return res.send(note);
+				}
+			});
+		},
+		update: function (req, res) {
+			return mas.Models.Note.findById(req.params.id, function(err, note) {
+				note.title      = req.body.title;
+				note.content    = req.body.content;
+				note.created_at = req.body.created_at;
+				note.updated_at = req.body.updated_at;
+				return note.save(function(err) {
+					if (!err) {
+						console.log("updated");
+					} else {
+						console.log(err);
+					}
+					return res.send(note);
+				});
+			});
+		},
+		create: function (req, res) {
+			var note = new mas.Models.Note ({
+				title     : req.body.title,
+				content   : req.body.content,
+				created_at: req.body.created_at,
+				updated_at: req.body.updated_at
+			});
+			note.save(function(err) {
+				if (!err) {
+					return console.log("created");
 				} else {
 					console.log(err);
 				}
-				return res.send(note);
 			});
-		});
+			return res.send(note);
+		},
+		delete: function (req, res) {
+			return mas.Models.Note.findById(req.params.id, function(err, note) {
+				return note.remove(function(err) {
+					if (!err) {
+						console.log("removed");
+						return res.send('');
+					}
+				});
+			});
+		}
 	},
-	create: function (req, res) {
-		var note = new mas.Models.Note ({
-			title     : req.body.title,
-			content   : req.body.content,
-			created_at: req.body.created_at,
-			updated_at: req.body.updated_at
-		});
-		note.save(function(err) {
-			if (!err) {
-				return console.log("created");
-			} else {
-				console.log(err);
-			}
-		});
-		return res.send(note);
-	},
-	delete: function (req, res) {
-		return mas.Models.Note.findById(req.params.id, function(err, note) {
-			return note.remove(function(err) {
+	tasks: {
+		readAll: function (req, res) {
+			return mas.Models.Note.find(function(err, notes) {
+				return res.send(notes);
+			});
+		},
+		readOne: function (req, res) {
+			return mas.Models.Note.findById(req.params.id, function(err, note) {
 				if (!err) {
-					console.log("removed");
-					return res.send('');
+					return res.send(note);
 				}
 			});
-		});
+		},
+		update: function (req, res) {
+			return mas.Models.Note.findById(req.params.id, function(err, note) {
+				note.title      = req.body.title;
+				note.content    = req.body.content;
+				note.created_at = req.body.created_at;
+				note.updated_at = req.body.updated_at;
+				return note.save(function(err) {
+					if (!err) {
+						console.log("updated");
+					} else {
+						console.log(err);
+					}
+					return res.send(note);
+				});
+			});
+		},
+		create: function (req, res) {
+			var note = new mas.Models.Note ({
+				title     : req.body.title,
+				content   : req.body.content,
+				created_at: req.body.created_at,
+				updated_at: req.body.updated_at
+			});
+			note.save(function(err) {
+				if (!err) {
+					return console.log("created");
+				} else {
+					console.log(err);
+				}
+			});
+			return res.send(note);
+		},
+		delete: function (req, res) {
+			return mas.Models.Note.findById(req.params.id, function(err, note) {
+				return note.remove(function(err) {
+					if (!err) {
+						console.log("removed");
+						return res.send('');
+					}
+				});
+			});
+		}
 	}
 };
 
@@ -145,11 +212,16 @@ mas.routes = {
 //mas.get("/", mas.routes.index); // Disabling security for now
 //mas.get("/login", mas.routes.login);
 mas.get("/", mas.routes.index);
-mas.get("/api/notes", mas.routes.readAll);
-mas.get("/api/notes/:id", mas.routes.readOne);
-mas.put("/api/notes/:id", mas.routes.update);
-mas.post("/api/notes", mas.routes.create);
-mas.delete("/api/notes/:id", mas.routes.delete);
+mas.get("/api/notes", mas.routes.notes.readAll);
+mas.get("/api/notes/:id", mas.routes.notes.readOne);
+mas.put("/api/notes/:id", mas.routes.notes.update);
+mas.post("/api/notes", mas.routes.notes.create);
+mas.delete("/api/notes/:id", mas.routes.notes.delete);
+mas.get("/api/tasks", mas.routes.tasks.readAll);
+mas.get("/api/tasks/:id", mas.routes.tasks.readOne);
+mas.put("/api/tasks/:id", mas.routes.tasks.update);
+mas.post("/api/tasks", mas.routes.tasks.create);
+mas.delete("/api/tasks/:id", mas.routes.tasks.delete);
 
 //------------------------------------------
 // START SERVER
