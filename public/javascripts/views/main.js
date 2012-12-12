@@ -1,36 +1,26 @@
-
-// js/views/main-meeno.js
-
+// javascripts/views/main.js
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-// The Application
-// ---------------
-
-// Our overall **AppView** is the top-level piece of UI.
+//==========================================
+// TOP-LEVEL CLIENT-SIDE VIEW
+//==========================================
 meenoAppCli.Classes.MainView = Backbone.View.extend({
 
 	// Instead of generating a new element, bind to the existing skeleton of
 	// the App already present in the HTML.
 	el: '#meenoApp',
 
-	// Our template for the line of statistics at the bottom of the appCli.
-	// statsTemplate: _.template( $('#stats-template').html() ),
-
-	// Delegated events for creating new items, and clearing completed ones.
-	// Events occuring to the DOM
+	// Define here events occuring to the DOM
 	events: {
-		'click #new'           : 'new', // Create new editor and refresh list of editors !
-		'keypress input#search': 'search'
+		'click #new'           : 'new', // Create new note
+		'keypress input#search': 'search' // Look for notes...
 	},
 
-	// At initialization we bind to the relevant events on the `Todos`
-	// collection, when items are added or changed. Kick things off by
-	// loading any preexisting todos that might be saved in *localStorage*.
 	initialize: function() {
-		// Events occurring to the collection registerd in javascripts/collecitons/notes.js
+		// Define here events occuring to the model which will be listened by this view
 		meenoAppCli.Notes.on( 'add destroy reset change', this.render, this );
-		meenoAppCli.Notes.fetch(); // Get back from localstorage, wich will fire event and thus this.render
+		meenoAppCli.Notes.fetch(); // Get back from localstorage, wich will fire event "reset" and thus this.render due to code at line 22
 	},
 
 	render: function() {
@@ -53,6 +43,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	},
 
 	search: function() {
+		// Coming soon
 		console.log('search');
 	}
 

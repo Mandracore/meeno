@@ -1,17 +1,11 @@
-// js/models/note.js
+// javascripts/models/note.js
 
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var meenoAppCli = meenoAppCli || {}; // To keep us safe from namespace collision
+meenoAppCli.Classes = meenoAppCli.Classes || {}; // To store our Classes
 
-// Note Model
-// ----------
-// Our basic **Todo** model has `title` and `completed` attributes.
-// Storing a new Entity class in meenoAppCli namespace
-// Using singular for Classes like Models => Note. Using plural for Collections => Notes
+// The model of a note
 meenoAppCli.Classes.Note = Backbone.Model.extend({
-
-	// Default attributes for the todo
-	// and ensure that each todo created has `title` and `completed` keys.
+	// The defaults : a note should always have a created_at property set to now,...
 	defaults: {
 		title     : 'Nouvelle note',
 		content   : 'Saisissez ici le contenu de votre note...',

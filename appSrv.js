@@ -2,17 +2,12 @@
 // DEFINING SERVER SIDE APPLICATION
 //==========================================
 
-//var meenoApp         =  meenoApp || {};
 var application_root = __dirname;
 var express          = require("express");
 var path             = require("path");
-var mongoose         = require('mongoose');
 var stylus           = require('stylus');
 var nib              = require('nib');
 var appSrv           = express();
-
-console.log(application_root);
-console.log("reload");
 
 
 //------------------------------------------
