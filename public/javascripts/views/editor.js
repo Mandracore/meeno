@@ -31,7 +31,7 @@ meenoAppCli.Classes.NoteEditorView = Backbone.View.extend({
 		this.model.editorView = this; // Storing a reference to this view in the model for reuse in editor-tab view
 	},
 
-	// Re-renders the editor item to the current state of the model
+	// Renders the editor item to the current state of the model
 	render: function() {
 		this.$el.html( this.template( this.model.toJSON() ) );
 		return this;
@@ -57,14 +57,12 @@ meenoAppCli.Classes.NoteEditorView = Backbone.View.extend({
 	},
 
 	toggle: function() {
-		if (!this.$(".body").is(":visible")) {
-			// if it's not visible, that means we want to open it.
-			// We then should hide the others first
-			$("#editor-list").children().each(function(i,li){
-				$(li).find(".body").hide();
-			});
-			this.$(".body").fadeIn(500);
-		}
+		// First, hide the others
+		$("#editor-list").children().each(function(i,li){
+			$(li).find(".body").hide();
+		});
+		// Then, display this one
+		this.$(".body").fadeIn(500);
 	},
 
 	quit: function() {
