@@ -1,44 +1,23 @@
 extends layout
 
 block content
-	h1= title
-	p Welcome to #{title}
-
 
 	// Client-side Templates
-	script(type="text/template", id="stats-template")
-		|<span id="todo-count"><strong><%= remaining %></strong> <%= remaining === 1 ? 'item' : 'items' %> left</span>
-		|<ul id="filters">
-		|	<li>
-		|		<a class="selected" href="#/">All</a>
-		|	</li>
-		|	<li>
-		|		<a href="#/active">Active</a>
-		|	</li>
-		|	<li>
-		|		<a href="#/completed">Completed</a>
-		|	</li>
-		|</ul>
-		|<% if (completed) { %>
-		|<button id="clear-completed">Clear completed (<%= completed %>)</button>
-		|<% } %>
-	script(type="text/template", id="item-template")
-		|<div class="view">
-		|	<input class="toggle" type="checkbox" <%= completed ? 'checked' : '' %>>
-		|	<label><%= title %></label>
-		|	<button class="destroy"></button>
-		|</div>
-		|<input class="edit" value="<%= title %>">
 	script(type="text/template", id="note-template")
-		|<p><em><%= title %></em> - <%= content %></p>
+		|<%= created_at %> - <em><%= title %></em>
+	script(type="text/template", id="editor-tab-template")
+		|<span><%= title %></span>
 	script(type="text/template", id="editor-template")
-		|<div class="header">
-		|	<span class="header-title"><%= title %></span><input class="edit-title" value="<%= title %>" style="display:none">
-		|	<div class="control"><button class="rename">Renommer</button><button class="del">Supprimer</button></div>
-		|	<div class="window"><button class="toggle">&plusmn;</button> <button class="quit">x</button></div>
-		|</div>
-		|<div class="body">
-		|	<p><textarea class="edit-content"><%= content %></textarea></p>
+		|<div class="body" style="display:none">
+		|	<div class="controls">
+		|		<button class="del">Supprimer</button>
+		|		<button class="quit">x</button>
+		|	</div>
+		|	<div class="attributes">
+		|		<p>Titre complet : <span contentEditable class="edit-title"><%= title %></span></p>
+		|		<p>Date de créaction : <%= created_at %></p>
+		|	</div>
+		|	<div contentEditable class="edit-content"><%= content %></div>
 		|</div>
 
 
@@ -50,18 +29,31 @@ block content
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/collections/notes.js")
 	script(src="javascripts/views/note.js")
-	script(src="javascripts/views/note-editor.js")
+	script(src="javascripts/views/editor.js")
+	script(src="javascripts/views/editor-tab.js")
 	script(src="javascripts/views/main.js")
 	script(src="javascripts/appCli.js")
 	script(src="javascripts/routers/router.js")
 
-
 	// Application's HTML skeleton 4 Meeno
+	div#liner-bg
+	div#search-bg
 	section#meenoApp
-		h1 Lites des notes
-		article
-			ul#note-list
-		article
-			ul#editor-list
-				li#new-note
-					.header Créer une nouvelle note
+		section#header
+			h1 meeno 0.1
+		section#search-wrapper
+			div.header
+				input(id='search', value='Rechercher')
+			div.body
+				article
+					h3 Notes
+					ul#notes-list
+				article
+					h3 Tâches
+					ul#tasks-list
+		section#editors-wrapper
+			div.header
+				button#new Rédiger une note
+			div.body
+				ul#editor-tabs-list
+				div#editor-list
