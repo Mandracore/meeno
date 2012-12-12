@@ -3,20 +3,19 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-// Todo Item View
-// --------------
-
-// The DOM element for a todo item...
+//==========================================
+// The view of a note's editor
+//==========================================
 meenoAppCli.Classes.NoteEditorView = Backbone.View.extend({
 
-	//... is a list tag.
+	// Backbone will wrap the rendering of this view in a new DOM element : <article class="editor"></article>
 	tagName  :  'article',
 	className:  'editor',
 
-	// Cache the template function for a single item.
+	// The template function used to render an editor, with a template description stored within the html
 	template: _.template( $('#editor-template').html() ),
 
-	// The DOM events specific to an item.
+	// Define here events occuring to the DOM element of the view or its children
 	events: {
 		'click .header-title'   : 'toggle',
 		'click .quit'           : 'quit',
@@ -31,24 +30,24 @@ meenoAppCli.Classes.NoteEditorView = Backbone.View.extend({
 		this.model.editorView = this; // Storing a reference to this view in the model for reuse in editor-tab view
 	},
 
-	// Renders the editor item to the current state of the model
+	// Renders the editor item to the current state of related the model
 	render: function() {
-		this.$el.html( this.template( this.model.toJSON() ) );
-		return this;
+		this.$el.html( this.template( this.model.toJSON() ) ); // simply rendering the template
+		return this; // to allow us chaining operations
 	},
 
 	save: function() {
 		this.model.set({
 			title  :this.$(".edit-title").html(),
 			content:this.$(".edit-content").html()
-		}).save({},{
+		}).save({},{ // Defining callbacks to monitor the success/failure of the operation
 			success: function() {console.log("Object successfully saved.")},
 			error  : function() {console.log("Saving failed.")}
 		});
 	},
 
 	delete: function() {
-		this.model.destroy({
+		this.model.destroy({ // Defining callbacks to monitor the success/failure of the operation
 			success: function() {console.log("Object successfully deleted.")},
 			error  : function() {console.log("Deleting failed.")}
 		});
@@ -66,9 +65,8 @@ meenoAppCli.Classes.NoteEditorView = Backbone.View.extend({
 	},
 
 	quit: function() {
-		console.log('quit');
-		this.model.openInEditor = false;
-		this.model.editorTabView.remove();
-		this.remove();
+		this.model.openInEditor = false; // We mark the model as not opened to allow us reopen it in the future
+		this.model.editorTabView.remove(); // We destroy the tab view related to this model
+		this.remove(); // We destroy this (editor) view
 	}
 });

@@ -3,47 +3,45 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-// Todo Item View
-// --------------
-
-// The DOM element for a todo item...
+//==========================================
+// The view of a note's editor tab
+//==========================================
 meenoAppCli.Classes.NoteEditorTabView = Backbone.View.extend({
 
-	//... is a list tag.
+	// Backbone will wrap the rendering of this view in a new DOM element : <li></li>
 	tagName  :  'li',
 
-	// Cache the template function for a single item.
+	// The template function used to render a tab, with a template description stored within the html
 	template: _.template( $('#editor-tab-template').html() ),
 
-	// The DOM events specific to an item.
+	// Define here events occuring to the DOM element of the view or its children
 	events: {
-		'click'        : 'toggle'
+		'click' : 'toggle' // we wrote 'click' and not 'click sometag' because we want a click on any part of the view to trigger the callback defined hereafter
 	},
 
 	initialize: function() {
-		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw
+		this.model.on('change', this.render, this); // if the related model is altered in any way, we redraw
 		this.model.editorTabView = this; // Storing a reference to this view in the model for re-use in NoteView or NoteEditorView
 	},
 
-	// Renders the editor-tab item to the current state of the model
+	// Renders the editor-tab item to the current state of the related model
 	render: function() {
 		var json = this.model.toJSON();
 		var title = jQuery.trim(this.model.toJSON().title)
 			.substring(0, 15) + "...";
 
-		this.$el.html(this.template({title: title}));
+		this.$el.html(this.template({title: title})); // We only need the title of the model
 		return this;
 	},
 
 	toggle: function() {
 		// We do nothing if it's already opened
 		if (this.$el.hasClass('active')) { return; }
-		// First, deactivate the others
+		// First, deactivate the other tabs
 		$("#editor-tabs-list").children().each(function(i,li){
 			$(li).removeClass("active");
 		});
-		// Then activate this one
-		this.$el.addClass('active');
-		this.model.editorView.toggle();
+		this.$el.addClass('active'); // Then activate this tab
+		this.model.editorView.toggle(); // Finally, display the related editor
 	}
 });

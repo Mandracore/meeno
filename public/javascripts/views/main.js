@@ -7,11 +7,10 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 //==========================================
 meenoAppCli.Classes.MainView = Backbone.View.extend({
 
-	// Instead of generating a new element, bind to the existing skeleton of
-	// the App already present in the HTML.
+	// This view is bind to the DOM element of id meenoApp
 	el: '#meenoApp',
 
-	// Define here events occuring to the DOM
+	// Define here events occuring to the DOM Element of the view or its children
 	events: {
 		'click #new'           : 'new', // Create new note
 		'keypress input#search': 'search' // Look for notes...
@@ -25,6 +24,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		meenoAppCli.Notes.fetch();
 	},
 
+	// Triggers rendering of sub view NoteView
 	render: function() {
 		this.$('#notes-list').html(''); // First, emptying the list
 		meenoAppCli.Notes.each(function (note) { // Then, for each note in our collection...
@@ -35,15 +35,16 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	},
 
 	new: function() {
-		var newNote           = meenoAppCli.Notes.create();
-		newNote.openInEditor  = true;
-		var noteEditorTabView = new meenoAppCli.Classes.NoteEditorTabView({ model: newNote });
-		var noteEditorView    = new meenoAppCli.Classes.NoteEditorView({ model: newNote });
-		$('#editor-tabs-list').append(noteEditorTabView.render().el);
-		$('#editor-list').append(noteEditorView.render().el);
-		noteEditorTabView.toggle();
+		var newNote           = meenoAppCli.Notes.create(); // Create a new note in the collection meenoAppCli.Notes
+		newNote.openInEditor  = true; // we mark the new model as already opened in editor to avoid opening multiple editors for the same model
+		var noteEditorTabView = new meenoAppCli.Classes.NoteEditorTabView({ model: newNote }); // Create a tab view of this new model 
+		var noteEditorView    = new meenoAppCli.Classes.NoteEditorView({ model: newNote }); // Create an editor view of this new model 
+		$('#editor-tabs-list').append(noteEditorTabView.render().el); // Append the tab to its container
+		$('#editor-list').append(noteEditorView.render().el); // Append the editor to its container
+		noteEditorTabView.toggle(); // Display the editor of the new note
 	},
 
+	// Search notes within the collection meenoAppCli.Notes
 	search: function() {
 		// Coming soon
 		console.log('search');
