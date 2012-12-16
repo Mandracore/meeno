@@ -1,5 +1,7 @@
 # Ignore server-side vendor folder (can be reconstructed with node install)
 node_modules*
 
-# Ignore configuration files (DB password and others)
+# Ignore configuration files (DB password and others), logs,...
 app/config/private*
+app/logs*
+app/pids*
