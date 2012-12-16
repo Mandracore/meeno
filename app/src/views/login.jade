@@ -6,8 +6,8 @@ block content
 			form(action="/login", method="post", autocomplete="on")
 				h1 Log in
 				p.email
-					label(for="username") Your email address
-					input(id="username", name="username", required="required", type="text", placeholder="myemail@mail.com", autofocus)
+					label(for="email") Your email address
+					input(id="email", name="email", required="required", type="text", placeholder="myemail@mail.com", autofocus)
 				p.password
 					label(for="password") Your password
 					input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
@@ -25,11 +25,11 @@ block content
 				p
 					input(name="register", type="hidden", value="register")
 				p.email
-					label(for="username-signup") Your email address
-					input(id="username-signup", name="username-signup", required="required", type="text", placeholder="myemail@mail.com")
+					label(for="email-signup") Your email address
+					input(id="email-signup", name="email-signup", required="required", type="text", placeholder="myemail@mail.com")
 				p.email
-					label(for="username-signup-confirm") Please confirm your email address
-					input(id="username-signup-confirm", name="username-signup-confirm", required="required", type="text", placeholder="myemail@mail.com")
+					label(for="email-signup-confirm") Please confirm your email address
+					input(id="email-signup-confirm", name="email-signup-confirm", required="required", type="text", placeholder="myemail@mail.com")
 				p.password
 					label(for="password-signup") Your password
 					input(id="password-signup", name="password-signup", required="required", type="password", placeholder="eg. X8df!90EO")

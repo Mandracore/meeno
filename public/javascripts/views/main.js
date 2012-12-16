@@ -7,31 +7,39 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 // The Application
 // ---------------
 
-// Our overall **AppView** is the top-level piece of UI.
+// MainView is the master piece of UI
 meenoAppCli.Classes.MainView = Backbone.View.extend({
 
-	// Instead of generating a new element, bind to the existing skeleton of
+	// Instead of generating a new DOM element, bind to the existing skeleton of
 	// the App already present in the HTML.
 	el: '#meenoApp',
 
-	// Our template for the line of statistics at the bottom of the appCli.
-	// statsTemplate: _.template( $('#stats-template').html() ),
-
-	// Delegated events for creating new items, and clearing completed ones.
-	// Events occuring to the DOM
 	events: {
-		'click #new'   : 'new', // Create new editor and refresh list of editors !
-		'keyup #search': 'search'
+		'click #new'       : 'new',
+		'keyup #search'    : 'search',
+		'submit #login'    : 'login',
+		'submit #register' : 'register',
+		'click #toregister': 'toggleLR',
+		'click #tologin'   : 'toggleLR'
 	},
 
-	// At initialization we bind to the relevant events on the `Todos`
-	// collection, when items are added or changed. Kick things off by
-	// loading any preexisting todos that might be saved in *localStorage*.
 	initialize: function() {
+		this.auth                 = false;
+		this.logging              = false;
+		this.registering          = false;
 		meenoAppCli.editorCounter = 0;
+
 		meenoAppCli.Notes.on('add destroy reset change', this.render, this );
 		this.on('editor:counter', this.editorCounter, this );
-		meenoAppCli.Notes.fetch(); // Get back from localstorage, wich will fire event and thus this.render
+		this.on('server:auth', this.toggleAuth, this );
+		meenoAppCli.Notes.fetch({
+			error: function (collection, xhr, options) {
+				if (xhr.status == 401) {
+					console.log ("Server responded 401 - Unauthorized, displaying user authentification form");
+					meenoAppCli.mainView.trigger('server:auth');
+				}
+			}
+		});
 	},
 
 	render: function() {
@@ -40,6 +48,94 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			var noteView = new meenoAppCli.Classes.NoteView({ model: note });
 			$('#note-list').append(noteView.render().el);
 		}, this);
+	},
+
+	toggleAuth: function () {
+		this.auth = !this.auth;
+		if (this.auth) {
+			$("#meenoApp").children().each(function (index, obj) {
+				if($(obj).attr('id')!='form-wrapper'){
+					$(obj).hide();
+				} else {
+					$(obj).fadeIn();
+				}
+			});
+		} else {
+			$("#meenoApp").children().each(function (index, obj) {
+				if($(obj).attr('id')!='form-wrapper'){
+					$(obj).show();
+				} else {
+					$(obj).hide();
+				}
+			});
+		}
+	},
+
+	toggleLR: function () {
+		$("#login").toggle();
+		$("#register").toggle();
+	},
+
+	login: function () {
+		if (this.logging) { return false; } // To avoid submitting twice
+		this.logging = true;
+		$('#do-login').val("please wait...");
+		var formData = $('#login').serialize();
+
+		// Attempt login on server...
+		$.ajax({
+			type: 'POST',
+			url: "/login",
+			data: formData
+		})
+		.done(function(data, status, xhr) {
+			if (xhr.status != 200) {
+				$('#login').find(".errors").html(data);
+			} else {
+				$('#login').find(".errors").html("");
+				meenoAppCli.Notes.fetch();
+				meenoAppCli.mainView.toggleAuth();
+			}
+		})
+		.fail(function() {
+			console.log("Connection to server failed");
+		})
+		.always(function() {
+			meenoAppCli.mainView.logging = false;
+			$('#do-login').val($('#do-login').attr("data-init-value"));
+		});
+		return false;
+	},
+
+	register: function () {
+		if (this.registering) { return false; } // To avoid submitting twice
+		this.registering = true;
+		$('#do-register').val("please wait...");
+		var formData = $('#register').serialize();
+
+		// Attempt registering on server...
+		$.ajax({
+			type: 'POST',
+			url: "/register",
+			data: formData
+		})
+		.done(function(data, status, xhr) {
+			if (xhr.status != 201) {
+				$('#register').find(".errors").html(data);
+			} else {
+				$('#register').find(".errors").html("");
+				// meenoAppCli.Notes.fetch();
+				meenoAppCli.mainView.toggleAuth();
+			}
+		})
+		.fail(function() {
+			console.log("Connection to server failed");
+		})
+		.always(function() {
+			meenoAppCli.mainView.registering = false;
+			$('#do-register').val($('#do-register').attr("data-init-value"));
+		});
+		return false;
 	},
 
 	new: function() {

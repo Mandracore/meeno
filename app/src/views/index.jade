@@ -37,7 +37,47 @@ block content
 	script(src="javascripts/appCli.js")
 	script(src="javascripts/routers/router.js")
 
-	// Application's HTML skeleton
+	// Login/Register form
+	div#form-wrapper(style="display:none")
+		form#login(autocomplete="on")
+			h1 Log in
+			p.errors
+			p.email
+				label(for="email") Your email address
+				input(id="email", name="email", required="required", type="text", placeholder="myemail@mail.com", autofocus)
+			p.password
+				label(for="password") Your password
+				input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
+			p.keeplogin
+				input(id="keeplogin", name="keeplogin", type="checkbox", value="keeplogin")
+				label(for="keeplogin") Keep me logged in
+			p.button.login
+				input(id="do-login", type="submit", value="Login", data-init-value="Login")
+			p.switch
+				|Not a member yet ? 
+				button#toregister Join us
+		form#register(autocomplete="on", style="display:none")
+			h1 Sign up
+			p.errors
+			p.email
+				label(for="emailSignup") Your email address
+				input(id="emailSignup", name="emailSignup", required="required", type="text", placeholder="myemail@mail.com")
+			p.email
+				label(for="emailSignupConfirm") Please confirm your email address
+				input(id="emailSignupConfirm", name="emailSignupConfirm", required="required", type="text", placeholder="myemail@mail.com")
+			p.password
+				label(for="passwordSignup") Your password
+				input(id="passwordSignup", name="passwordSignup", required="required", type="password", placeholder="eg. X8df!90EO")
+			p.password
+				label(for="passwordSignupConfirm") Please confirm your password
+				input(id="passwordSignupConfirm", name="passwordSignupConfirm", required="required", type="password", placeholder="eg. X8df!90EO")
+			p.button.signin
+				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")		
+			p.switch
+				|Already a member ? 
+				button#tologin Go log in
+	
+	// Application skeleton
 	div#backgrounds
 		div#liner-bg
 		div#search-bg-top
