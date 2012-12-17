@@ -40,6 +40,14 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				}
 			}
 		});
+		meenoAppCli.Tags.fetch({
+			error: function (collection, xhr, options) {
+				if (xhr.status == 401) {
+					console.log ("Server responded 401 - Unauthorized, displaying user authentification form");
+					meenoAppCli.mainView.trigger('server:auth');
+				}
+			}
+		});
 	},
 
 	render: function() {

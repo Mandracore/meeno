@@ -5,8 +5,9 @@ var meenoAppCli = meenoAppCli || {};
 var ENTER_KEY = 13;
 
 $(function() {
-	// Create our global collection of **Notes**.
+	// Create our global collections
 	meenoAppCli.Notes = new meenoAppCli.Classes.Notes();
+	meenoAppCli.Tags = new meenoAppCli.Classes.Tags();
 
 	// Init listener
 	meenoAppCli.dispatcher = _.clone(Backbone.Events);
