@@ -37,8 +37,9 @@ mas.Models = {
 // SERVER CONFIG
 //------------------------------------------
 
-mas.configure(function(){
+mas.configure('development', 'production', function(){
 	// app.enable('trust proxy') with proxy, see http://expressjs.com/guide.html
+	mas.set('mode', process.env.NODE_ENV || "development");
 	mas.set('port', process.env.PORT || 3000);
 	mas.use(express.favicon());
 	mas.use(express.logger('dev'));
@@ -49,6 +50,9 @@ mas.configure(function(){
 	mas.use(mas.router);
 	mas.set('views', path.join(application_root, "app/src/views"));
 	mas.set('view engine', 'jade');
+});
+
+mas.configure('development', function(){
 	mas.use(stylus.middleware({
 		//src  : application_root + '/public/stylesheets',
 		src  : application_root + '/app/src/views',
@@ -60,13 +64,18 @@ mas.configure(function(){
 				.use(nib());
 		}
 	}));
-	mas.use(express.static(path.join(application_root, "public")));
-	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
-mas.configure('development', function(){
-  mas.use(express.errorHandler());
+mas.configure('production', function(){
+	mas.use(express.errorHandler()); 
 });
+
+mas.configure('development', 'production', function(){
+	mas.use(express.static(path.join(application_root, "public")));
+});
+
+
 
 // DB connection
 mongoose.connect('mongodb://localhost/meeno');
@@ -214,5 +223,5 @@ mas.delete("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.delete
 //------------------------------------------
 
 http.createServer(mas).listen(mas.get('port'), function(){
-  console.log("Node.js - Express server listening on port " + mas.get('port'));
+  console.log("Node.js / Express server listening on port " + mas.get('port') + " in " + mas.get('mode') + " mode");
 });
