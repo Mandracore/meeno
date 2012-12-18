@@ -63,7 +63,7 @@ mongoose.connect('mongodb://localhost/meeno');
 //------------------------------------------
 // MODELS
 //------------------------------------------
-require('./app/src/models/note.js')(mas, mongoose);
+require('./app/src/models/index.js')(mas, mongoose);
 
 //------------------------------------------
 // ROUTING
