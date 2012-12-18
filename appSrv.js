@@ -14,31 +14,10 @@ var mas              = express(); // Meeno App Server
 
 
 //------------------------------------------
-// MODELS
-//------------------------------------------
-
-mas.Models = {
-	Note: mongoose.model('Note', new mongoose.Schema({
-		_creator: String,
-		title: String,
-		content: String,
-		created_at: { type: Date, default: function () {return Date.now()} },
-		updated_at: { type: Date, default: function () {return Date.now()} }
-		})),
-	User: mongoose.model('User', new mongoose.Schema({
-		email: { type: String, required: true, unique: true },
-		password: { type: String, required: true },
-		role: { type: String, default: "user" }
-		}))
-};
-
-
-//------------------------------------------
-// SERVER CONFIG
+// SERVER CONFIGURATION
 //------------------------------------------
 
 mas.configure('development', 'production', function(){
-	// app.enable('trust proxy') with proxy, see http://expressjs.com/guide.html
 	mas.set('mode', process.env.NODE_ENV || "development");
 	mas.set('port', process.env.PORT || 3000);
 	mas.use(express.favicon());
@@ -76,147 +55,22 @@ mas.configure('development', 'production', function(){
 });
 
 
-
-// DB connection
+//------------------------------------------
+// DB CONNEXION
+//------------------------------------------
 mongoose.connect('mongodb://localhost/meeno');
 
-
 //------------------------------------------
-// ROUTES
+// MODELS
 //------------------------------------------
-
-mas.routes = {
-	securityProxy: function (role) {
-		return function (req, res, next) {
-			if(!req.session.logged) {
-				res.send(401,"Unauthorized");
-				return;
-			}
-
-			if(req.session.user.role == role) {
-				next();
-			} else {
-				res.send(403,"Forbidden");
-			}
-		}
-	},
-	index: function (req, res) {
-		res.render('index', {
-			title: 'Meeno',
-			css: '/stylesheets/index.css'
-		});
-	},
-	login: function (req, res) {
-		mas.Models.User.find({'email': req.body.email}, function(err, user) {
-			if (err) {return res.send(202, err);}
-			if (!user[0]) {return res.send(202, "unknown user");}
-			if (user[0].password !== req.body.password) {return res.send(202, "wrong password");}
-
-			// User has been successfully authentified
-			req.session.logged = true;
-			req.session.user = user[0];
-			return res.send(200, user[0]);
-		});
-	},
-	register: function (req, res) {
-		if (req.body.emailSignup != req.body.emailSignupConfirm) {
-			return res.send(202, "Email addresses do not match");
-		}
-		if (req.body.passwordSignup != req.body.passwordSignupConfirm) {
-			return res.send(202, "Passwords do not match");
-		}
-		var user = new mas.Models.User ({
-			email   : req.body.emailSignup,
-			password: req.body.passwordSignup
-		});
-		user.save(function(err) {
-			if (!err) {
-				// User has been successfully created
-				req.session.logged = true;
-				req.session.user = user;
-				return res.send(201, user);
-			} else {
-				return res.send(202, err);
-			}
-		});
-	},
-	readAll: function (req, res) {
-		return mas.Models.Note.find({'_creator': req.session.user._id }, function(err, notes) {
-			return res.send(notes);
-		});
-	},
-	readOne: function (req, res) {
-		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
-			if (!note) {return res.send(403,"Forbidden");}
-
-			if (!err) {
-				return res.send(note);
-			}
-		});
-	},
-	update: function (req, res) {
-		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
-			if (!note) {return res.send(403,"Forbidden");}
-
-			note.title      = req.body.title;
-			note.content    = req.body.content;
-			note.created_at = req.body.created_at;
-			note.updated_at = req.body.updated_at;
-			return note.save(function(err) {
-				if (!err) {
-					console.log("updated");
-				} else {
-					console.log(err);
-				}
-				return res.send(note);
-			});
-		});
-	},
-	create: function (req, res) {
-		var note = new mas.Models.Note ({
-			_creator  : req.session.user._id,
-			title     : req.body.title,
-			content   : req.body.content,
-			created_at: req.body.created_at,
-			updated_at: req.body.updated_at
-		});
-		note.save(function(err) {
-			if (!err) {
-				return console.log("created");
-			} else {
-				console.log(err);
-			}
-		});
-		return res.send(note);
-	},
-	delete: function (req, res) {
-		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
-
-			if (!note) {return res.send(403,"Forbidden");}
-			return note.remove(function(err) {
-				if (!err) {
-					console.log("removed");
-					return res.send('');
-				}
-			});
-		});
-	}
-};
-
+require('./app/src/models/note.js')(mas, mongoose);
 
 //------------------------------------------
 // ROUTING
 //------------------------------------------
-
-mas.get("/", mas.routes.index);
-mas.post("/login", mas.routes.login);
-mas.post("/register", mas.routes.register);
-mas.get("/api/notes", mas.routes.securityProxy("user"), mas.routes.readAll);
-mas.get("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.readOne);
-mas.put("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.update);
-mas.post("/api/notes", mas.routes.securityProxy("user"), mas.routes.create);
-mas.delete("/api/notes/:id", mas.routes.securityProxy("user"), mas.routes.delete);
-
+mas.security = require('./app/src/routes/security.proxy.js');
+require('./app/src/routes/main.js')(mas);
+require('./app/src/routes/api.notes.js')(mas);
 
 //------------------------------------------
 // START SERVER
