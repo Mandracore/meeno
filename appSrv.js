@@ -101,7 +101,7 @@ mas.routes = {
 		}
 	},
 	index: function (req, res) {
-		res.render('index', {
+		res.render('index_b', {
 			title: 'Meeno',
 			css: '/stylesheets/index.css'
 		});

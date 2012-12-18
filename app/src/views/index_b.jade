@@ -1,0 +1,74 @@
+extends layout
+
+block content
+
+	header
+		h1 mandracore meeno v0.2
+		ul
+			li export base
+			li déconnexion
+	ul.actions-main
+		li.note New Note
+		li.task New Task
+		li.report New Report
+
+	div#main
+		nav
+			ul#nav
+				li.help Help
+				li.browse Browse
+				li.object.note Comité de Pilotage 5
+		div#tabs
+			div.tab.help
+				article
+					section 
+						h1 Comment démarrer
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
+					section
+						h1 Rechercher du contenu
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
+			div.tab.browse
+				div.filter
+					input.search(type="text", autofocus)
+					ul
+						li.notes Notes
+						li.tasks Tasks
+						li.tags Tags
+				div.listobjects.notes
+					ul.actions-contextual
+						li.delete Duplicate
+						li.task Delete
+					ul.notes
+						li bla
+						li bla
+						li bla					
+				div.listobjects.tasks
+					ul.actions-contextual
+						li.delete Duplicate
+						li.task Delete
+					ul.notes
+						li bla
+						li bla
+						li bla					
+				div.listobjects.tags
+					ul.actions-contextual
+						li.delete Duplicate
+						li.task Delete
+					ul.notes
+						li bla
+						li bla
+						li bla
+			div.tab.object.note
+				article
+					section 
+						h1 Objectifs
+					section
+						h1 Compte-rendu
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+		div#footer
+
+
