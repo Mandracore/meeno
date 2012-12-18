@@ -15,6 +15,15 @@ module.exports = function(mas, mongoose){
 			email: { type: String, required: true, unique: true },
 			password: { type: String, required: true },
 			role: { type: String, default: "user" }
+		})),
+		Tag: mongoose.model('Tag', new mongoose.Schema({
+			_creator: String,
+			label: { type: String, required: true, unique: true }
+		})),
+		TagNote: mongoose.model('TagNote', new mongoose.Schema({
+			_creator: String,
+			_tag: String,
+			_note: String
 		}))
 	};
 }
