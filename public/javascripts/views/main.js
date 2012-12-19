@@ -32,15 +32,11 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		meenoAppCli.Notes.on('add destroy reset change', this.render, this );
 		this.on('editor:counter', this.editorCounter, this );
 		this.on('server:auth', this.toggleAuth, this );
+
 		meenoAppCli.Notes.fetch({
-			error: function (collection, xhr, options) {
-				if (xhr.status == 401) {
-					console.log ("Server responded 401 - Unauthorized, displaying user authentification form");
-					meenoAppCli.mainView.trigger('server:auth');
-				}
-			}
-		});
-		meenoAppCli.Tags.fetch({
+			// success: function (collection, xhr, options) {
+			// 	meenoAppCli.TagsNotes.fetch({});
+			// },
 			error: function (collection, xhr, options) {
 				if (xhr.status == 401) {
 					console.log ("Server responded 401 - Unauthorized, displaying user authentification form");
@@ -102,6 +98,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			} else {
 				$('#login').find(".errors").html("");
 				meenoAppCli.Notes.fetch();
+				meenoAppCli.TagsNotes.fetch();
 				meenoAppCli.mainView.toggleAuth();
 			}
 		})
@@ -152,7 +149,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			return;
 		}
 		this.trigger('editor:new',true);
-		var newNote                = meenoAppCli.Notes.create();
+		var newNote                = meenoAppCli.Notes.create({silent:true});
 		newNote.openInEditor       = true;
 		var noteEditorTabView      = new meenoAppCli.Classes.NoteEditorTabView({ model: newNote });
 		var noteEditorControlsView = new meenoAppCli.Classes.NoteEditorControlsView({ model: newNote });

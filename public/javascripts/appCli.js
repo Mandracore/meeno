@@ -7,7 +7,7 @@ var ENTER_KEY = 13;
 $(function() {
 	// Create our global collections
 	meenoAppCli.Notes = new meenoAppCli.Classes.Notes();
-	meenoAppCli.Tags = new meenoAppCli.Classes.Tags();
+	// meenoAppCli.TagsNotes = new meenoAppCli.Classes.TagsNotes();
 
 	// Init listener
 	meenoAppCli.dispatcher = _.clone(Backbone.Events);
