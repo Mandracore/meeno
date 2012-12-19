@@ -1,7 +1,8 @@
 //------------------------------------------
 // API CONTROLLERS FOR DB ACCESS
 //------------------------------------------
-
+// Won't be necessary since model access will be done through its parent : note
+/*
 module.exports = function(mas, securityProxy){
 
 	mas.get("/api/tags-notes", mas.security.proxy("user"), function (req, res) {
@@ -36,7 +37,6 @@ module.exports = function(mas, securityProxy){
 	mas.post("/api/tags-notes", mas.security.proxy("user"), function (req, res) {
 		var tagNote = new mas.Models.TagNote ({
 			_creator  : req.session.user._id,
-			label     : req.body.label
 		});
 		tagNote.save(function(err) {
 			if (!err) {
@@ -61,3 +61,4 @@ module.exports = function(mas, securityProxy){
 		});
 	});
 }
+*/

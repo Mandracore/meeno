@@ -98,7 +98,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			} else {
 				$('#login').find(".errors").html("");
 				meenoAppCli.Notes.fetch();
-				meenoAppCli.TagsNotes.fetch();
+				// meenoAppCli.TagsNotes.fetch();
 				meenoAppCli.mainView.toggleAuth();
 			}
 		})
