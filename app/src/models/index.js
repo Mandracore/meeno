@@ -7,6 +7,7 @@ module.exports = function(mas, mongoose){
 	// This sub-document of msNote will be saved through it, no need for dedicated api
 	var msTagNote = new mongoose.Schema({
 	}, { strict: false });
+
 	var msNote = new mongoose.Schema({
 		_creator: String,
 		created_at: { type: Date, default: function () {return Date.now()} },
@@ -23,6 +24,7 @@ module.exports = function(mas, mongoose){
 	var msTag = new mongoose.Schema({
 		_creator: String,
 		label: { type: String, required: true, unique: true }
+		notes: [msTagNote]
 	});
 
 	mas.Schemas = {
