@@ -103,7 +103,7 @@ mas.routes = {
 	index: function (req, res) {
 		res.render('index_b', {
 			title: 'Meeno',
-			css: '/stylesheets/index.css'
+			css: '/stylesheets/index_b.css'
 		});
 	},
 	login: function (req, res) {
