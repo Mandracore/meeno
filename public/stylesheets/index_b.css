@@ -94,6 +94,12 @@ nav ul li:hover,
 nav ul li:active {
   background-color: #fff;
 }
+nav .object {
+  white-space: nowrap;
+  max-width: 7em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 #tabs {
   background-color: #fff;
   padding: 1em;
