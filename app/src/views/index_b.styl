@@ -1,0 +1,154 @@
+// @import 'nib'
+
+cText         = #434343
+cTextFaded    = lighten(#535353, 40%)
+cTextRev      = #dddddd
+cTextRevFaded = darken(#dddddd, 40%)
+cDarkGrey     = lighten(#000000, 30%)
+cLightGrey    = lighten(#000000, 90%)
+cBlueLine     = lighten(#5e939f, 40%)
+wApp          = 1200px
+wRightCol     = 850px
+wLeftCol      = wApp - wRightCol
+wLeftColPad   = 35px
+wRightColPad  = 50px
+zLiner        = 5
+pyLiner       = 80px
+pHeadersV     = 40px
+pWrappPadV    = pyLiner - pHeadersV
+hTabs         = 40px
+hControls     = 30px
+hFadeOut      = 100px
+
+global-reset()
+reset-html5()
+
+@font-face
+	font-family "modernpics"
+	src url("../fonts/modernpics.otf")
+
+@font-face
+	font-family "fontawesome"
+	src url("../fonts/fontawesome.ttf")
+
+body
+	background-color: #999;
+	background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+	background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+	background-image: -o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+	background-image: -ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+	background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+	background-size: 13px, 29px, 37px, 53px;
+
+header,#main
+	width 100%
+	border-left 15em solid transparent
+	-moz-box-sizing border-box
+	-webkit-box-sizing border-box
+	-o-box-sizing border-box
+	box-sizing border-box
+	position relative
+
+header
+	// clearfix()
+	&:before
+	&:after
+		content: ""
+		display: table
+	&:after
+		clear: both
+	zoom: 1 if support-for-ie
+
+	h1
+		float left
+	ul
+		float right
+		list-style none
+		margin 0
+		padding 0
+		display inline-block
+		li
+			display inline-block
+			vertical-align middle
+			padding .5em
+			&.selected,&:hover,&:active
+				background-color #FFF
+
+.actions-main,.actions-contextual
+	width 15em
+	left 0
+	position fixed
+	list-style none
+	margin 0
+	padding 0
+	li
+		background-color #FFF
+.actions-main
+	top 3em
+.actions-contextual
+	top 8em
+nav
+	background-color rgba(255,255,255,.35);
+	ul
+		list-style none
+		padding 0
+		margin 0
+		display inline-block
+		li
+			display inline-block
+			padding .5em
+			vertical-align middle
+			&.selected,&:hover,&:active
+				background-color #FFF
+
+#tabs
+	background-color #FFF
+	padding 1em
+
+.tab
+	display none
+	&.selected
+		display block
+
+.browse
+	.filter
+		input 
+			width 100%
+		ul
+			list-style none
+			padding 0
+			margin 0
+			display block
+			border-top 1px cDarkGrey solid
+			li
+				border-top 3px transparent solid
+				color cDarkGrey
+				display inline-block
+				padding .5em
+				vertical-align middle
+				opacity .7
+				&.selected,&:hover,&:active
+					border-top-color cDarkGrey
+					opacity 1
+
+#footer
+	background-color rgba(0,0,0,.35);
+	color #FFF
+	// clearfix()
+	&:before
+	&:after
+		content: ""
+		display: table
+	&:after
+		clear: both
+	zoom: 1 if support-for-ie
+
+	p
+		margin 0
+		padding 1em
+	.current-action
+		float left
+	.sync-status
+		float right
+		width 15em
+		background-color rgba(0,0,0,.35)

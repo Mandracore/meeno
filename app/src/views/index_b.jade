@@ -16,7 +16,7 @@ block content
 		nav
 			ul#nav
 				li.help Help
-				li.browse Browse
+				li.browse.selected Browse
 				li.object.note Comité de Pilotage 5
 		div#tabs
 			div.tab.help
@@ -27,12 +27,12 @@ block content
 					section
 						h1 Rechercher du contenu
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
-			div.tab.browse
+			div.tab.browse.selected
 				div.filter
-					input.search(type="text", autofocus)
+					input.search(type="text", autofocus, placeholder="search or filter")
 					ul
 						li.notes Notes
-						li.tasks Tasks
+						li.tasks.selected Tasks
 						li.tags Tags
 				div.listobjects.notes
 					ul.actions-contextual
@@ -53,12 +53,14 @@ block content
 				div.listobjects.tags
 					ul.actions-contextual
 						li.delete Duplicate
-						li.task Delete
 					ul.notes
 						li bla
 						li bla
 						li bla
 			div.tab.object.note
+				ul.actions-contextual
+					li.delete Duplicate
+					li.task Delete
 				article
 					section 
 						h1 Objectifs
@@ -70,5 +72,6 @@ block content
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
 		div#footer
-
+			p.current-action Saving...
+			p.sync-status Sync. Status : In Progress...
 
