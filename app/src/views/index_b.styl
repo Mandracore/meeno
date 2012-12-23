@@ -31,7 +31,9 @@ reset-html5()
 	font-family "fontawesome"
 	src url("../fonts/fontawesome.ttf")
 
-body
+html
+	width 100%
+	height 100%
 	background-color: #999;
 	background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
 	background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
@@ -40,14 +42,16 @@ body
 	background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
 	background-size: 13px, 29px, 37px, 53px;
 
-header,#main
-	width 100%
-	border-left 15em solid transparent
-	-moz-box-sizing border-box
-	-webkit-box-sizing border-box
-	-o-box-sizing border-box
-	box-sizing border-box
+body
+	padding 0
+	margin 0 auto
+	width 100em
+	height 100%
+	display table
 	position relative
+
+ #main, .actions-main
+	display table-cell
 
 header
 	// clearfix()
@@ -58,9 +62,30 @@ header
 	&:after
 		clear: both
 	zoom: 1 if support-for-ie
-
-	h1
+	color #FFF
+	font-size 1em
+	position relative
+	top 0
+	a
 		float left
+		display inline-block
+		position relative
+		color inherit
+		text-decoration none
+		&:before
+			fSize = 2.35
+			content attr(title)
+			position absolute
+			left (-15/fSize)em
+			width (15/fSize)em
+			top .5em
+			font-size  fSize * 1em;
+			color rgba(255,255,255,.7)
+			text-align center
+	h1
+		padding .5em
+		margin 0
+		font-size 1em
 	ul
 		float right
 		list-style none
@@ -73,20 +98,53 @@ header
 			padding .5em
 			&.selected,&:hover,&:active
 				background-color #FFF
+				color black
+				cursor pointer
+	.organisation
+		color rgba(255,255,255,.5)
+		&:after
+			content "\00A0"
 
 .actions-main,.actions-contextual
 	width 15em
-	left 0
-	position fixed
+	// left 0
+	// position fixed
 	list-style none
 	margin 0
 	padding 0
 	li
-		background-color #FFF
+		padding .5em
+		margin-bottom .25em
+		cursor pointer
+		&:before
+			font-family 'modernpics'
+			position relative
+			font-size 1.5em
+			margin 0 5px 0
+
 .actions-main
-	top 3em
+	padding-top 4.5em
+	li
+		margin-right 1em
+		background-color rgba(255,255,255,.5)
+		&:before
+			content "+"
+		&:hover,&:active
+			background-color #FFF
+
 .actions-contextual
-	top 8em
+	position absolute
+	top 13em
+	left 0
+	li
+		background-color #FFF
+		&.delete:before
+			content 'X'
+		&.clone:before
+			content 'W'
+		&.related:before
+			content 'K'
+
 nav
 	background-color rgba(255,255,255,.35);
 	ul
@@ -100,7 +158,7 @@ nav
 			vertical-align middle
 			&.selected,&:hover,&:active
 				background-color #FFF
-
+				cursor pointer
 	.object
 		white-space: nowrap;
 		max-width: 7em;
@@ -110,6 +168,8 @@ nav
 #tabs
 	background-color #FFF
 	padding 1em
+	height 70%
+	overflow-y scroll
 
 .tab
 	display none
@@ -136,6 +196,12 @@ nav
 				&.selected,&:hover,&:active
 					border-top-color cDarkGrey
 					opacity 1
+					cursor pointer
+
+.listobjects
+	display none
+	&.selected
+		display block
 
 #footer
 	background-color rgba(0,0,0,.35);
@@ -148,7 +214,6 @@ nav
 	&:after
 		clear: both
 	zoom: 1 if support-for-ie
-
 	p
 		margin 0
 		padding 1em
