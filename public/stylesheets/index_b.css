@@ -142,12 +142,6 @@ header .organisation:after {
 .actions-contextual li.related:before {
   content: 'K';
 }
-.browse .actions-contextual {
-  display: none;
-}
-.browse .listobjects.selected .actions-contextual {
-  display: block;
-}
 nav {
   background-color: rgba(255,255,255,0.35);
 }
