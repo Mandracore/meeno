@@ -137,6 +137,7 @@ header
 	top 13em
 	left 0
 	li
+		display none
 		background-color #FFF
 		&.delete:before
 			content 'X'
@@ -144,6 +145,12 @@ header
 			content 'W'
 		&.related:before
 			content 'K'
+		&.selectall
+			display list-item
+			&:before
+				content 'K'
+	&.hasSelected li
+		display list-item
 
 nav
 	background-color rgba(255,255,255,.35);
