@@ -32,18 +32,17 @@ mas.configure('development', 'production', function(){
 });
 
 mas.configure('development', function(){
-
-	function compile(str, path) {
-		return stylus(str)
-			.set('filename', path)
-			.set('compress', true)
-			.use(nib());
-	}
 	mas.use(stylus.middleware({
 		//src  : application_root + '/public/stylesheets',
 		src  : application_root + '/app/src/views',
-		dest : application_root + '/public/stylesheets',
-		compile: compile
+		dest : application_root + '/public',
+		compile: function (str, path) {
+			return stylus(str)
+				.set('filename', path)
+				.set('compress', true)
+				.set('warn', true)
+				.use(nib());
+		}
 	}));
 	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
@@ -55,7 +54,6 @@ mas.configure('production', function(){
 mas.configure('development', 'production', function(){
 	mas.use(express.static(path.join(application_root, "public")));
 });
-
 
 //------------------------------------------
 // DB CONNEXION

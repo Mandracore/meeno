@@ -2,132 +2,174 @@ extends layout
 
 block content
 
-	// Client-side Templates
-	script(type="text/template", id="note-template")
-		|<p><%= title %></p>
-		|<p class="date"><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
-	script(type="text/template", id="editor-tab-template")
-		|<span><%= title %></span>
-	script(type="text/template", id="editor-controls-template")
-		|<span></span>
-		|<button class="quit">Close</button>
-		|<button class="del">Delete</button>
-	script(type="text/template", id="editor-template")
-		|	<div class="attributes">
-		|		<p><span class="fieldname">Titre complet :</span> <span class="edit-title editable" contentEditable><%= title %></span></p>
-		|		<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-		|		<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-		|		<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
-		|	</div>
-		|	<div contentEditable class="edit-content editable"><%= content %></div>
 
-	// Client-side application's scripts
-	script(src="javascripts/lib/jquery-1.8.3.min.js")
-	script(src="javascripts/lib/jquery.dateFormat-1.0.js")
-	script(src="javascripts/lib/underscore-min.js")
-	script(src="javascripts/lib/backbone.js")
-	script(src="javascripts/lib/backbone-relational.js")
-	script(src="javascripts/lib/backbone.localStorage-min.js")
-	script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
-	script(src="javascripts/models/note.js")
-	script(src="javascripts/models/tag.js")
-	//- script(src="javascripts/models/note-tag.js")
-	script(src="javascripts/collections/notes.js")
-	script(src="javascripts/collections/tags.js")
-	//- script(src="javascripts/collections/tags-notes.js")
-	script(src="javascripts/views/note.js")
-	script(src="javascripts/views/editor.js")
-	script(src="javascripts/views/editor-tab.js")
-	script(src="javascripts/views/editor-controls.js")
-	script(src="javascripts/views/main.js")
-	script(src="javascripts/appCli.js")
-	script(src="javascripts/routers/router.js")
+	ul.actions-main
+		li.note New Note
+		li.task New Task
+		li.report New Report
 
-	// Login/Register form
-	div#form-wrapper(style="display:none")
-		form#login(autocomplete="on")
-			h1 Log in
-			p.errors
-			p.email
-				label(for="email") Your email address
-				input(id="email", name="email", required="required", type="text", placeholder="myemail@mail.com", autofocus)
-			p.password
-				label(for="password") Your password
-				input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
-			p.keeplogin
-				input(id="keeplogin", name="keeplogin", type="checkbox", value="keeplogin")
-				label(for="keeplogin") Keep me logged in
-			p.button.login
-				input(id="do-login", type="submit", value="Login", data-init-value="Login")
-			p.switch
-				|Not a member yet ? 
-				button#toregister Join us
-		form#register(autocomplete="on", style="display:none")
-			h1 Sign up
-			p.errors
-			p.email
-				label(for="emailSignup") Your email address
-				input(id="emailSignup", name="emailSignup", required="required", type="text", placeholder="myemail@mail.com")
-			p.email
-				label(for="emailSignupConfirm") Please confirm your email address
-				input(id="emailSignupConfirm", name="emailSignupConfirm", required="required", type="text", placeholder="myemail@mail.com")
-			p.password
-				label(for="passwordSignup") Your password
-				input(id="passwordSignup", name="passwordSignup", required="required", type="password", placeholder="eg. X8df!90EO")
-			p.password
-				label(for="passwordSignupConfirm") Please confirm your password
-				input(id="passwordSignupConfirm", name="passwordSignupConfirm", required="required", type="password", placeholder="eg. X8df!90EO")
-			p.button.signin
-				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")		
-			p.switch
-				|Already a member ? 
-				button#tologin Go log in
-	
-	// Application skeleton
-	div#backgrounds
-		div#liner-bg
-		div#search-bg-top
-		div#search-bg
-		div#header-bg
-	div#header
-		div.app
-		div.search
-			#search-wrapper
-				p
-					input(id='search', placeholder='Rechercher')
-		div.editor
-			.wrapper
-				button#new Rédiger une note
-	div#body
-		// will stay put ------------------------------
-		div#fixed
-			// LEFT
-			#search-tabs-list-wrapper
-				ul#search-tabs-list
-					li(class="active") Notes
-					li Tâches
-			#note-list-wrapper
-				ul#note-list
-			// RIGHT
-			#editor-tabs-list-wrapper
-				ul#editor-tabs-list
-			#editor-controls-list-wrapper
-				div#editor-controls-list
-		// will scroll ------------------------------
-		div#scrollables
-			div#editor-content-list
-				div#editor-permanent.editor-content
-					div
-						h1 Bienvenue !
-						h3 Commencer à travailler
-						p
-							| Cliquez sur Rédiger une note (icône crayon ci-dessus) pour commencer à travailler.
-							| Chacune de vos notes dispose d'un certain nombre d'attributs (titre, date de création, contenu,...) dont certains ne sont pas modifiables (en particulier la date de création).
-							| Vous n'avez pas à vous préoccuper de sauvegarder votre travail : <em>meeno</em> le fait pour vous automatiquement et vous avertira uniquement en cas de problème. Vous n'aurez plus à craindre de perdre votre travail !
-							| <a href="#">En savoir plus</a>
-						h3 Où sont mes notes ?
-						p
-							| Vous pourrez accéder à vos notes via la colonne de recherche.
-							| Si vous ne voyez pas celle qui vous intéresse, pas de soucis : cliquez dans le champ Rechercher (icône loupe) et saisissez
-							| une partie du titre ou du contenu de la note pour la retrouver. Vous pouvez également saisir le nom des participants (@Romain, @Brice,...) ou des mots-clés (#projet-logistique, #infrastructure,...).
-							| <a href="#">En savoir plus</a>
+	div#main
+		header
+			a(href="/",title="meeno")
+				h1
+					span.organisation mandracore
+					| meeno v0.2
+			ul
+				li export base
+				li déconnexion
+		nav
+			ul#nav
+				li.help Help
+				li.browse.selected Browse
+				li.object.note Comité de Pilotage 5
+		div#tabs
+			div.tab.help
+				article
+					section 
+						h1 Comment démarrer
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
+					section
+						h1 Rechercher du contenu
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
+			div.tab.browse.selected
+				div.filter
+					input.search(type="text", autofocus, placeholder="search or filter")
+					ul
+						li.notes Notes
+						li.tasks.selected Tasks
+						li.tags Tags
+				div.listobjects.notes
+					ul.actions-contextual
+						li.select Select All
+						li.unselect Unselect All
+						li.clone Duplicate
+						li.delete Delete
+					ul.notes
+						li bla
+						li bla
+						li bla					
+				div.listobjects.tasks.selected
+					ul.actions-contextual.hasSelection
+						li.select Select All
+						li.unselect Unselect All
+						li.related Related Notes
+						li.delete Delete
+					ul.tasks
+						li
+							h2 
+								|titre
+								time(datetime="20121223") 23-12-2012
+								span.progress.thirdquart 
+									button.firstquart 25%
+									button.secondquart 50%
+									button.thirdquart 75%
+									button.lastquart 100%
+								span.risk.risky risky
+							ul
+								li bla
+								li bla
+						li
+							h2 
+								|titre
+								time(datetime="20121223") 23-12-2012
+								span.progress.thirdquart 
+									button.firstquart 25%
+									button.secondquart 50%
+									button.thirdquart 75%
+									button.lastquart 100%
+								span.risk.risky risky
+							ul
+								li bla
+								li bla
+						li
+							h2 
+								|titre
+								time(datetime="20121223") 23-12-2012
+								span.progress.thirdquart 
+									button.firstquart 25%
+									button.secondquart 50%
+									button.thirdquart 75%
+									button.lastquart 100%
+								span.risk.risky risky
+							ul
+								li bla
+								li bla
+						li
+							h2 
+								|titre
+								time(datetime="20121223") 23-12-2012
+								span.progress.thirdquart 
+									button.firstquart 25%
+									button.secondquart 50%
+									button.thirdquart 75%
+									button.lastquart 100%
+								span.risk.risky risky
+							ul
+								li bla
+								li bla
+						li
+							h2 
+								|titre
+								time(datetime="20121223") 23-12-2012
+								span.progress.thirdquart 
+									button.firstquart 25%
+									button.secondquart 50%
+									button.thirdquart 75%
+									button.lastquart 100%
+								span.risk.risky risky
+							ul
+								li bla
+								li bla
+						li
+							h2 
+								|titre
+								time(datetime="20121223") 23-12-2012
+								span.progress.thirdquart 
+									button.firstquart 25%
+									button.secondquart 50%
+									button.thirdquart 75%
+									button.lastquart 100%
+								span.risk.risky risky
+							ul
+								li bla
+								li bla
+						li
+							h2 
+								|titre
+								time(datetime="20121223") 23-12-2012
+								span.progress.thirdquart 
+									button.firstquart 25%
+									button.secondquart 50%
+									button.thirdquart 75%
+									button.lastquart 100%
+								span.risk.risky risky
+							ul
+								li bla
+								li bla
+				div.listobjects.tags
+					ul.actions-contextual
+						li.select Select All
+						li.unselect Unselect All
+						li.delete Delete
+					ul.tags
+						li bla
+						li bla
+						li bla
+			div.tab.object.note
+				ul.actions-contextual
+					li.delete Duplicate
+					li.task Delete
+				article
+					section 
+						h1 Objectifs
+					section
+						h1 Compte-rendu
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
+		div#footer
+			p.current-action Saving...
+			p.sync-status Sync. Status : In Progress...
+
