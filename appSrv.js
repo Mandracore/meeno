@@ -32,16 +32,18 @@ mas.configure('development', 'production', function(){
 });
 
 mas.configure('development', function(){
+
+	function compile(str, path) {
+		return stylus(str)
+			.set('filename', path)
+			.set('compress', true)
+			.use(nib());
+	}
 	mas.use(stylus.middleware({
 		//src  : application_root + '/public/stylesheets',
 		src  : application_root + '/app/src/views',
 		dest : application_root + '/public/stylesheets',
-		compile: function (str, path) {
-			return stylus(str)
-				.set('filename', path)
-				.set('compress', true)
-				.use(nib());
-		}
+		compile: compile
 	}));
 	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
