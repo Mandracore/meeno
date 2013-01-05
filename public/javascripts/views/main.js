@@ -3,6 +3,7 @@
 
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
+meenoAppCli.Views = meenoAppCli.Views || {};
 
 // The Application
 // ---------------
@@ -34,9 +35,9 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.on('server:auth', this.toggleAuth, this );
 
 		meenoAppCli.Notes.fetch({
-			// success: function (collection, xhr, options) {
-			// 	meenoAppCli.TagsNotes.fetch({});
-			// },
+			success: function (collection, xhr, options) {
+				meenoAppCli.Tags.fetch({});
+			},
 			error: function (collection, xhr, options) {
 				if (xhr.status == 401) {
 					console.log ("Server responded 401 - Unauthorized, displaying user authentification form");
@@ -177,6 +178,23 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		}));
 
 		meenoAppCli.dispatcher.trigger('search:hi',term);
+
+		// var tag0 = meenoAppCli.Tags.models[0]
+
+		// var aSearchedTags = ["50e81e8587d0b89757000008"];
+
+		// meenoAppCli.Notes.filter(function(note) {
+		// 	var passIt = 0;
+		// 	// On regarde si la note possède tous les tags présents dans l'array aSearchedTags
+		// 	_.each(aSearchedTags, function(searchedTagId) { // Loop on searched tags
+		// 		_.each(note.get("tags"), function(tag) { // Loop on the tags of the current note
+		// 			if (tag._id === searchedTagId) {passIt++; return;}
+		// 		});
+		// 	});
+		// 	if (passIt == aSearchedTags.length) {return true;}
+		// 	return false;
+		// });
+
 	},
 
 	editorCounter: function(add) {

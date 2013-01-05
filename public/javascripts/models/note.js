@@ -3,18 +3,20 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-meenoAppCli.Classes.Note = Backbone.RelationalModel.extend({
+meenoAppCli.Classes.Note = Backbone.NestedModel.extend({
 // meenoAppCli.Classes.Note = Backbone.Model.extend({
 	idAttribute: '_id',
+	tags:[],
+	/*
 	relations: [{
 		type: 'HasMany',
 		key : 'tags',
-		relatedModel: 'meenoAppCli.Classes.TagNote',
+		relatedModel: 'meenoAppCli.Classes.NoteTag',
 		reverseRelation: {
 			key: 'note',
-			includeInJSON: '_id'
+			includeInJSON: '_noteID'
 		}
-	}],
+	}],*/
 	defaults: function() {
 		return {
 			title     : 'Nouvelle note',

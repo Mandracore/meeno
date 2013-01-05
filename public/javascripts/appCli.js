@@ -7,10 +7,11 @@ var ENTER_KEY = 13;
 $(function() {
 	// Create our global collections
 	meenoAppCli.Notes = new meenoAppCli.Classes.Notes();
-	// meenoAppCli.TagsNotes = new meenoAppCli.Classes.TagsNotes();
+	meenoAppCli.Tags = new meenoAppCli.Classes.Tags();
 
 	// Init listener
-	meenoAppCli.dispatcher = _.clone(Backbone.Events);
+	//meenoAppCli.dispatcher = _.clone(Backbone.Events);
+	meenoAppCli.dispatcher = _.extend({}, Backbone.Events);
 
 	// Kick things off by creating the **main view**.
 	meenoAppCli.mainView = new meenoAppCli.Classes.MainView();
