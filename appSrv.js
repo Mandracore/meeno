@@ -33,7 +33,9 @@ mas.configure('development', 'production', function(){
 
 mas.configure('development', function(){
 	mas.use(stylus.middleware({
-		//src  : application_root + '/public/stylesheets',
+		// Beware : if you do GET localhost/stylesheets/style.css, Stylus will try to recover the following file :
+		// src + /stylesheets/style.css and save the compiled one as :
+		// dest + /stylesheets/style.css
 		src  : application_root + '/app/src/views',
 		dest : application_root + '/public',
 		compile: function (str, path) {
