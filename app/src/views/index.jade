@@ -2,7 +2,90 @@ extends layout
 
 block content
 
+	// Client-side Templates
+	script(type="text/template", id="note-template")
+		|<p><%= title %></p>
+		|<p class="date"><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
+	script(type="text/template", id="editor-tab-template")
+		|<span><%= title %></span>
+	script(type="text/template", id="editor-controls-template")
+		|<span></span>
+		|<button class="quit">Close</button>
+		|<button class="del">Delete</button>
+	script(type="text/template", id="editor-template")
+		|	<div class="attributes">
+		|		<p><span class="fieldname">Titre complet :</span> <span class="edit-title editable" contentEditable><%= title %></span></p>
+		|		<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+		|		<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+		|		<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
+		|	</div>
+		|	<div contentEditable class="edit-content editable"><%= content %></div>
 
+	// Client-side application's scripts
+	script(src="javascripts/lib/jquery-1.8.3.min.js")
+	script(src="javascripts/lib/jquery.dateFormat-1.0.js")
+	script(src="javascripts/lib/underscore-min.js")
+	script(src="javascripts/lib/backbone.js")
+	script(src="javascripts/lib/backbone-relational.js")
+	script(src="javascripts/lib/backbone.localStorage-min.js")
+	script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
+	script(src="javascripts/models/note.js")
+	script(src="javascripts/models/tag.js")
+	//- script(src="javascripts/models/note-tag.js")
+	script(src="javascripts/collections/notes.js")
+	script(src="javascripts/collections/tags.js")
+	//- script(src="javascripts/collections/tags-notes.js")
+	script(src="javascripts/views/note.js")
+	script(src="javascripts/views/editor.js")
+	script(src="javascripts/views/editor-tab.js")
+	script(src="javascripts/views/editor-controls.js")
+	script(src="javascripts/views/static-tab-nav.js")
+	script(src="javascripts/views/static-tab-content.js")
+	script(src="javascripts/views/main.js")
+	script(src="javascripts/appCli.js")
+	script(src="javascripts/routers/router.js")
+
+	// Login/Register form
+	div#form-wrapper(style="display:none")
+		form#login(autocomplete="on")
+			h1 Log in
+			p.errors
+			p.email
+				label(for="email") Your email address
+				input(id="email", name="email", required="required", type="text", placeholder="myemail@mail.com", autofocus)
+			p.password
+				label(for="password") Your password
+				input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
+			p.keeplogin
+				input(id="keeplogin", name="keeplogin", type="checkbox", value="keeplogin")
+				label(for="keeplogin") Keep me logged in
+			p.button.login
+				input(id="do-login", type="submit", value="Login", data-init-value="Login")
+			p.switch
+				|Not a member yet ? 
+				button#toregister Join us
+		form#register(autocomplete="on", style="display:none")
+			h1 Sign up
+			p.errors
+			p.email
+				label(for="emailSignup") Your email address
+				input(id="emailSignup", name="emailSignup", required="required", type="text", placeholder="myemail@mail.com")
+			p.email
+				label(for="emailSignupConfirm") Please confirm your email address
+				input(id="emailSignupConfirm", name="emailSignupConfirm", required="required", type="text", placeholder="myemail@mail.com")
+			p.password
+				label(for="passwordSignup") Your password
+				input(id="passwordSignup", name="passwordSignup", required="required", type="password", placeholder="eg. X8df!90EO")
+			p.password
+				label(for="passwordSignupConfirm") Please confirm your password
+				input(id="passwordSignupConfirm", name="passwordSignupConfirm", required="required", type="password", placeholder="eg. X8df!90EO")
+			p.button.signin
+				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")		
+			p.switch
+				|Already a member ? 
+				button#tologin Go log in
+
+	// Application skeleton
 	ul.actions-main
 		li.note New Note
 		li.task New Task
@@ -45,11 +128,11 @@ block content
 						li.clone Duplicate
 						li.delete Delete
 					ul.notes
-						li bla
-						li bla
-						li bla					
+						li Note 1
+						li Note 2
+						li Note 3				
 				div.listobjects.tasks.selected
-					ul.actions-contextual.hasSelection
+					ul.actions-contextual.hasSelected
 						li.select Select All
 						li.unselect Unselect All
 						li.related Related Notes
@@ -152,13 +235,16 @@ block content
 						li.unselect Unselect All
 						li.delete Delete
 					ul.tags
-						li bla
-						li bla
-						li bla
+						li tag1
+						li tag2
+						li tag3
+						li tag4
 			div.tab.object.note
 				ul.actions-contextual
-					li.delete Duplicate
-					li.task Delete
+					li.select Select All
+					li.unselect Unselect All
+					li.clone Duplicate
+					li.delete Delete
 				article
 					section 
 						h1 Objectifs

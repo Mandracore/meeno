@@ -26,8 +26,9 @@ header .organisation:after{content:"\00A0"}
 .actions-contextual li.delete:before{content:'X'}
 .actions-contextual li.clone:before{content:'W'}
 .actions-contextual li.related:before{content:'K'}
-.actions-contextual li.selectall{display:list-item;}
-.actions-contextual li.selectall:before{content:'K'}
+.actions-contextual li.unselect:before{content:'K'}
+.actions-contextual li.select{display:list-item;}
+.actions-contextual li.select:before{content:'K'}
 .actions-contextual.hasSelected li{display:list-item}
 nav{background-color:rgba(255,255,255,0.35);}
 nav ul{list-style:none;padding:0;margin:0;display:inline-block;}

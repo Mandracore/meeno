@@ -10,7 +10,6 @@ $(function() {
 	meenoAppCli.Tags = new meenoAppCli.Classes.Tags();
 
 	// Init listener
-	//meenoAppCli.dispatcher = _.clone(Backbone.Events);
 	meenoAppCli.dispatcher = _.extend({}, Backbone.Events);
 
 	// Kick things off by creating the **main view**.

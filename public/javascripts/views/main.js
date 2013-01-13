@@ -1,4 +1,3 @@
-
 // js/views/main-meeno.js
 
 var meenoAppCli = meenoAppCli || {};
@@ -16,12 +15,13 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	el: '#meenoApp',
 
 	events: {
-		'click #new'       : 'new',
-		'keyup #search'    : 'search',
-		'submit #login'    : 'login',
-		'submit #register' : 'register',
-		'click #toregister': 'toggleLR',
-		'click #tologin'   : 'toggleLR'
+		// 'click .actions-main .note': 'newNote', // Create new note and open it in a new tab
+		// 'click .actions-main .tag' : 'newTag', // Create a new tag in a popup window
+		'keyup #search'            : 'search',
+		'submit #login'            : 'login',
+		'submit #register'         : 'register',
+		'click #toregister'        : 'toggleLR',
+		'click #tologin'           : 'toggleLR'
 	},
 
 	initialize: function() {
@@ -30,29 +30,40 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.registering          = false;
 		meenoAppCli.editorCounter = 0;
 
-		meenoAppCli.Notes.on('add destroy reset change', this.render, this );
+		// meenoAppCli.Notes.on('add destroy reset change', this.render, this );
 		this.on('editor:counter', this.editorCounter, this );
 		this.on('server:auth', this.toggleAuth, this );
+
+		// Initialize mandatory static tabs
+		// var sound1               = Math.random(); // Sounds are used to enable cross-communication within Views without having to hard-link them
+		// var sound2               = Math.random();
+		var helpTabNavView       = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .help"), sound: "help" }); 
+		var helpTabContentView   = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .help"), sound: "help" }); 
+		var browseTabNavView     = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .browse"), sound: "browse" }); 
+		var browseTabContentView = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .browse"), sound: "browse" }); 
 
 		meenoAppCli.Notes.fetch({
 			success: function (collection, xhr, options) {
 				meenoAppCli.Tags.fetch({});
+				// // 1. Create nav views
+				// var tabHelpView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
+				// var tabBrowseView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
+				// var navHelpView = new meenoAppCli.Classes.NoteEditorControlsView({ parent: this.model });
+				// var navBrowseView = new meenoAppCli.Classes.NoteEditorControlsView({ parent: this.model });
+				// // 2. Create corresponding tabs
 			},
 			error: function (collection, xhr, options) {
+				console.log ("Server response status : "+xhr.status);
 				if (xhr.status == 401) {
-					console.log ("Server responded 401 - Unauthorized, displaying user authentification form");
+					console.log ("Unauthorized, displaying user authentification form");
 					meenoAppCli.mainView.trigger('server:auth');
 				}
 			}
 		});
 	},
 
-	render: function() {
-		this.$('#note-list').html(''); // First, emptying the list
-		meenoAppCli.Notes.each(function (note) {
-			var noteView = new meenoAppCli.Classes.NoteView({ model: note });
-			$('#note-list').append(noteView.render().el);
-		}, this);
+	toggleNav: function() {
+		console.dir(this);
 	},
 
 	toggleAuth: function () {
