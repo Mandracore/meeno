@@ -3,9 +3,11 @@ extends layout
 block content
 
 	// Client-side Templates
-	script(type="text/template", id="note-template")
+	script(type="text/template", id="overview-note-template")
 		|<p><%= title %></p>
 		|<p class="date"><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
+	script(type="text/template", id="overview-tag-template")
+		|<p><%= label %></p>
 	script(type="text/template", id="editor-tab-template")
 		|<span><%= title %></span>
 	script(type="text/template", id="editor-controls-template")
@@ -35,7 +37,8 @@ block content
 	script(src="javascripts/collections/notes.js")
 	script(src="javascripts/collections/tags.js")
 	//- script(src="javascripts/collections/tags-notes.js")
-	script(src="javascripts/views/note.js")
+	script(src="javascripts/views/overview-note.js")
+	script(src="javascripts/views/overview-tag.js")
 	script(src="javascripts/views/editor.js")
 	script(src="javascripts/views/editor-tab.js")
 	script(src="javascripts/views/editor-controls.js")
