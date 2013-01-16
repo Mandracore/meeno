@@ -7,7 +7,7 @@ block content
 		|<p><%= title %></p>
 		|<p class="date"><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
 	script(type="text/template", id="overview-tag-template")
-		|<p><%= label %></p>
+		|<span class="label"><%= label %></span><span class="edit">Edit label</span>
 	script(type="text/template", id="editor-tab-template")
 		|<span><%= title %></span>
 	script(type="text/template", id="editor-controls-template")

@@ -46,6 +46,10 @@ nav .object{white-space:nowrap;max-width:7em;overflow:hidden;text-overflow:ellip
 .listobjects.selected{display:block}
 .listobjects ul.notes li p{margin:0;}
 .listobjects ul.notes li p.date{font-size:.85em}
+.listobjects ul.tags li span.edit{display:none}
+.listobjects ul.tags li:hover span.edit{display:inline;margin:0 0 0 10px;font-size:.8em;opacity:.5;}
+.listobjects ul.tags li:hover span.edit:before{font-family:'modernpics';position:relative;font-size:1.3em;margin:0 5px 0;content:'e'}
+.listobjects ul.tags li:hover span.edit:hover{opacity:1;cursor:pointer}
 #footer{background-color:rgba(0,0,0,0.35);color:#fff;zoom:1;}
 #footer:before,#footer:after{content:"";display:table}
 #footer:after{clear:both}

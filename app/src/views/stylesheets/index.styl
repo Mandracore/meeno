@@ -215,6 +215,23 @@ nav
 		margin 0
 		&.date
 			font-size 0.85em
+	ul.tags li
+		span.edit
+			display none
+		&:hover span.edit
+			display inline
+			margin 0 0 0 10px
+			font-size 0.8em
+			opacity 0.5
+			&:before
+				font-family 'modernpics'
+				position relative
+				font-size 1.3em
+				margin 0 5px 0
+				content 'e'
+			&:hover
+				opacity 1
+				cursor pointer
 
 #footer
 	background-color rgba(0,0,0,.35);

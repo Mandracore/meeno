@@ -15,7 +15,8 @@ meenoAppCli.Classes.TagOverView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'click': 'edit'
+		'click span.edit': 'edit',
+		'blur span.label': 'save'
 	},
 
 	// The TodoView listens for changes to its model, re-rendering. Since there's
@@ -33,6 +34,9 @@ meenoAppCli.Classes.TagOverView = Backbone.View.extend({
 	},
 
 	edit: function() {
+		console.log('edit');
+		this.$("span.label").attr('contenteditable','true').focus().select();
+		document.execCommand('selectAll',false,null)
 
 		// if (this.model.openInEditor) { // We do not want to open it twice, we will just toggle editor
 		// 	this.model.trigger('editor:toggle');
@@ -53,6 +57,21 @@ meenoAppCli.Classes.TagOverView = Backbone.View.extend({
 		// $('#editor-controls-list').append(noteEditorControlsView.render().el);
 		// $('#editor-content-list').append(noteEditorView.render().el);
 		// this.model.trigger('editor:toggle');
+	},
+
+	save: function() {
+		this.$("span.label").attr('contenteditable','false');
+		console.log('save');
+		this.model.set({
+			label  :this.$("span.label").html()
+		}).save({},{
+			success: function() {
+				console.log('save success');
+			},
+			error  : function() {
+				console.log('save error');
+			}
+		});
 	},
 
 	highlight: function(term) {

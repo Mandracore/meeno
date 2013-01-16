@@ -110,7 +110,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			} else {
 				$('#login').find(".errors").html("");
 				meenoAppCli.Notes.fetch();
-				// meenoAppCli.TagsNotes.fetch();
+				meenoAppCli.Tags.fetch();
 				meenoAppCli.mainView.toggleAuth();
 			}
 		})
@@ -141,7 +141,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				$('#register').find(".errors").html(data);
 			} else {
 				$('#register').find(".errors").html("");
-				// meenoAppCli.Notes.fetch();
+				meenoAppCli.Notes.fetch();
+				meenoAppCli.Tags.fetch();
 				meenoAppCli.mainView.toggleAuth();
 			}
 		})

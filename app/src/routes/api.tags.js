@@ -22,12 +22,13 @@ module.exports = function(mas, securityProxy){
 		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 
-			tag.label      = req.body.title;
+			tag.label      = req.body.label;
 			return tag.save(function(err) {
 				if (!err) {
 					console.log("updated");
 				} else {
 					console.log(err);
+					return res.send(400,"Bad request");
 				}
 				return res.send(tag);
 			});
@@ -43,6 +44,7 @@ module.exports = function(mas, securityProxy){
 				return console.log("created");
 			} else {
 				console.log(err);
+				return res.send(400,"Bad request");
 			}
 		});
 		return res.send(tag);
