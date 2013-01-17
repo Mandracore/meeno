@@ -4,24 +4,27 @@ block content
 
 	// Client-side Templates
 	script(type="text/template", id="overview-note-template")
-		|<p><%= title %></p>
-		|<p class="date"><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
+		|<p><%= title %><span class="button edit">Edit</span><span class="button delete">Delete</span></p>
+		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
 	script(type="text/template", id="overview-tag-template")
-		|<span class="label"><%= label %></span><span class="edit">Edit label</span>
-	script(type="text/template", id="editor-tab-template")
-		|<span><%= title %></span>
-	script(type="text/template", id="editor-controls-template")
-		|<span></span>
-		|<button class="quit">Close</button>
-		|<button class="del">Delete</button>
-	script(type="text/template", id="editor-template")
-		|	<div class="attributes">
-		|		<p><span class="fieldname">Titre complet :</span> <span class="edit-title editable" contentEditable><%= title %></span></p>
-		|		<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-		|		<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-		|		<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
-		|	</div>
-		|	<div contentEditable class="edit-content editable"><%= content %></div>
+		|<span class="label attribute"><%= label %></span><span class="button edit">Edit label</span><span class="button delete">Delete</span>
+	script(type="text/template", id="tab-nav-template")
+		|<%= title %>
+	script(type="text/template", id="tab-content-template")
+		|	<ul class="actions-contextual">
+		|		<li class="clone">Duplicate</li>
+		|		<li class="delete">Delete</li>
+		|		<li class="close">Close</li>
+		|	</ul>
+		|	<article>
+		|		<section class="attributes">
+		|			<p><span class="fieldname">Titre complet :</span> <span class="edit-title editable" contentEditable><%= title %></span></p>
+		|			<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+		|			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+		|			<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
+		|		</section>
+		|		<section contentEditable class="edit-content editable"><%= content %></section>
+		|	</article>
 
 	// Client-side application's scripts
 	script(src="javascripts/lib/jquery-1.8.3.min.js")
@@ -44,6 +47,8 @@ block content
 	script(src="javascripts/views/editor-controls.js")
 	script(src="javascripts/views/static-tab-nav.js")
 	script(src="javascripts/views/static-tab-content.js")
+	script(src="javascripts/views/tab-nav.js")
+	script(src="javascripts/views/tab-content.js")
 	script(src="javascripts/views/main.js")
 	script(src="javascripts/appCli.js")
 	script(src="javascripts/routers/router.js")
@@ -151,9 +156,6 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-							ul
-								li bla
-								li bla
 						li
 							h2 
 								|titre
@@ -164,9 +166,6 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-							ul
-								li bla
-								li bla
 						li
 							h2 
 								|titre
@@ -177,9 +176,6 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-							ul
-								li bla
-								li bla
 						li
 							h2 
 								|titre
@@ -190,9 +186,6 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-							ul
-								li bla
-								li bla
 						li
 							h2 
 								|titre
@@ -203,9 +196,6 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-							ul
-								li bla
-								li bla
 						li
 							h2 
 								|titre
@@ -216,9 +206,6 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-							ul
-								li bla
-								li bla
 						li
 							h2 
 								|titre
@@ -229,9 +216,6 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-							ul
-								li bla
-								li bla
 				div.listobjects.tags
 					ul.actions-contextual
 						li.select Select All

@@ -35,8 +35,6 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.on('server:auth', this.toggleAuth, this );
 
 		// Initialize mandatory static tabs
-		// var sound1               = Math.random(); // Sounds are used to enable cross-communication within Views without having to hard-link them
-		// var sound2               = Math.random();
 		var helpTabNavView       = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .help"), sound: "help" }); 
 		var helpTabContentView   = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .help"), sound: "help" }); 
 		var browseTabNavView     = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .browse"), sound: "browse" }); 

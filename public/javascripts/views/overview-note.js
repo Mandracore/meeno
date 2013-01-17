@@ -35,20 +35,27 @@ meenoAppCli.Classes.NoteOverView = Backbone.View.extend({
 	},
 
 	edit: function() {
+		console.log('Editing note');
+		var sound          = Math.random(); // Using "sound" to make both view listen to same events...
+		var tabNavView     = new meenoAppCli.Classes.TabNavView({ model: this.model, sound: sound }); // ...and thus enable them to communicate
+		var tabContentView = new meenoAppCli.Classes.TabContentView({ model: this.model, sound: sound });
+		$("#nav").append(tabNavView.render().el);
+		$("#tabs").append(tabContentView.render().el);
+		meenoAppCli.dispatcher.trigger('tab:toggle:' + sound); // Command the two linked views to activate themselves
 
 		// if (this.model.openInEditor) { // We do not want to open it twice, we will just toggle editor
 		// 	this.model.trigger('editor:toggle');
 		// 	return;
 		// }
 
-		// if (meenoApp.editorCounter > 3) {
+		// if (meenoAppCli.editorCounter > 3) {
 		// 	alert("Can't open more editors");
 		// 	return;
 		// }
-		// meenoAppCli.mainView.trigger('editor:counter',true);
+		// meenoAppCli.dispatcher.trigger('editor:counter',true);
 
 		// this.model.openInEditor    = true;
-		// var noteEditorTabView      = new meenoAppCli.Classes.NoteEditorTabView({ model: this.model });
+		// var tab      = new meenoAppCli.Classes.NoteEditorTabView({ model: this.model });
 		// var noteEditorControlsView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
 		// var noteEditorView         = new meenoAppCli.Classes.NoteEditorView({ model: this.model });
 		// $('#editor-tabs-list').append(noteEditorTabView.render().el);

@@ -1,6 +1,4 @@
-// js/views/staticTabNav.js
-
-var meenoAppCli = meenoAppCli || {};
+var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.StaticTabNavView = Backbone.View.extend({
@@ -13,14 +11,20 @@ meenoAppCli.Classes.StaticTabNavView = Backbone.View.extend({
 		'click': 'toggle'
 	},
 
-	toggle: function() {
+	initialize: function() {
+		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.togglePartial, this);
+	},
+
+	togglePartial: function() {
 		// First, deactivate the other tabs
 		$("#nav").children().each(function(i,child){
 			$(child).removeClass("selected");
 		});
 		// Then activate this one
 		this.$el.addClass('selected');
-		// Command its content to toggle itself
-		meenoAppCli.dispatcher.trigger('tab:toggle:' + this.options.sound);
+	},
+
+	toggle: function() {
+		meenoAppCli.dispatcher.trigger('tab:toggle:' + this.options.sound); // Will be heard by this view and also by the related tabContentView
 	}
 });

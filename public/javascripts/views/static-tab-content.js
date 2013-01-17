@@ -1,8 +1,5 @@
-// js/views/staticTabContent.js
-
-var meenoAppCli = meenoAppCli || {};
+var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
-meenoAppCli.views = meenoAppCli.views || {};
 
 meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 
@@ -62,7 +59,6 @@ meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 		meenoAppCli.Notes.each(function (note) {
 			var noteOverView = new meenoAppCli.Classes.NoteOverView({ model: note });
 			$noteList.append(noteOverView.render().el);
-			meenoAppCli.views[noteOverView];
 		}, this);		
 		// Trigger rendering of tags
 		var $tagList = this.$('.listobjects.tags .tags');
@@ -70,7 +66,6 @@ meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 		meenoAppCli.Tags.each(function (tag) {
 			var tagOverView = new meenoAppCli.Classes.TagOverView({ model: tag });
 			$tagList.append(tagOverView.render().el);
-			meenoAppCli.views[tagOverView];
 		}, this);
 	},
 });
