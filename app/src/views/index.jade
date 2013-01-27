@@ -32,8 +32,12 @@ block content
 	script(src="javascripts/lib/underscore-min.js")
 	script(src="javascripts/lib/backbone.js")
 	script(src="javascripts/lib/backbone-relational.js")
-	script(src="javascripts/lib/backbone.localStorage-min.js")
+	//- script(src="javascripts/lib/backbone.localStorage-min.js")
 	script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
+	//- script(src="javascripts/lib/jquery.at.caret.min.js")
+	script(src="javascripts/lib/jquery.caret.js")
+	script(src="javascripts/lib/caret.js")
+	script(src="javascripts/lib/tools.js")
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/models/tag.js")
 	//- script(src="javascripts/models/note-tag.js")
@@ -42,6 +46,7 @@ block content
 	//- script(src="javascripts/collections/tags-notes.js")
 	script(src="javascripts/views/overview-note.js")
 	script(src="javascripts/views/overview-tag.js")
+	script(src="javascripts/views/ref-tag.js")
 	script(src="javascripts/views/editor.js")
 	script(src="javascripts/views/editor-tab.js")
 	script(src="javascripts/views/editor-controls.js")
@@ -112,7 +117,7 @@ block content
 			ul#nav
 				li.help Help
 				li.browse.selected Browse
-				li.object.note Comité de Pilotage 5
+				//li.object.note Comité de Pilotage 5
 		div#tabs
 			div.tab.help
 				article
@@ -226,22 +231,6 @@ block content
 						li tag2
 						li tag3
 						li tag4
-			div.tab.object.note
-				ul.actions-contextual
-					li.select Select All
-					li.unselect Unselect All
-					li.clone Duplicate
-					li.delete Delete
-				article
-					section 
-						h1 Objectifs
-					section
-						h1 Compte-rendu
-						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
-						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
-						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
-						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
-						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint saepe harum magni commodi sequi vel sapiente expedita animi reiciendis asperiores dolore aut nihil praesentium sunt nisi alias accusamus aliquam ipsam.
 		div#footer
 			p.current-action Saving...
 			p.sync-status Sync. Status : In Progress...

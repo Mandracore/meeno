@@ -23,13 +23,15 @@ header .organisation:after{content:"\00A0"}
 .actions-main li:hover,.actions-main li:active{background-color:#fff}
 .actions-contextual{position:absolute;top:13em;left:0;}
 .actions-contextual li{display:none;background-color:#fff;}
-.actions-contextual li.delete:before{content:'X'}
+.actions-contextual li.delete:before{content:'I'}
+.actions-contextual li.close:before{content:'X'}
 .actions-contextual li.clone:before{content:'W'}
 .actions-contextual li.related:before{content:'K'}
 .actions-contextual li.unselect:before{content:'K'}
 .actions-contextual li.select{display:list-item;}
-.actions-contextual li.select:before{content:'K'}
+.actions-contextual li.select:before{content:'%'}
 .actions-contextual.hasSelected li{display:list-item}
+.tab.object.note .actions-contextual li{display:list-item}
 nav{background-color:rgba(255,255,255,0.35);}
 nav ul{list-style:none;padding:0;margin:0;display:inline-block;}
 nav ul li{display:inline-block;padding:.5em;vertical-align:middle;}
@@ -55,6 +57,8 @@ nav .object{white-space:nowrap;max-width:7em;overflow:hidden;text-overflow:ellip
 .listobjects ul.notes span.edit:before,.listobjects ul.tags span.edit:before{content:'e'}
 .listobjects ul.notes li p{margin:0;}
 .listobjects ul.notes li p.date{font-size:.85em;opacity:.5}
+.edit-content:focus{border:0}
+.edit-content .tag{margin:3px;padding:3px;background-color:#d3d3d3;border:1px solid #808080}
 #footer{background-color:rgba(0,0,0,0.35);color:#fff;zoom:1;}
 #footer:before,#footer:after{content:"";display:table}
 #footer:after{clear:both}

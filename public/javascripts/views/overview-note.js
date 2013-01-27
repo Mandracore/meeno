@@ -15,7 +15,7 @@ meenoAppCli.Classes.NoteOverView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'click': 'edit'
+		'click .edit': 'edit'
 	},
 
 	// The TodoView listens for changes to its model, re-rendering. Since there's

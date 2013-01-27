@@ -16,6 +16,7 @@ meenoAppCli.Classes.TagOverView = Backbone.View.extend({
 	// The DOM events specific to an item.
 	events: {
 		'click span.edit': 'edit',
+		'click span.delete': 'delete',
 		'blur span.label': 'save'
 	},
 
@@ -36,27 +37,14 @@ meenoAppCli.Classes.TagOverView = Backbone.View.extend({
 	edit: function() {
 		console.log('edit');
 		this.$("span.label").attr('contenteditable','true').focus().select();
-		document.execCommand('selectAll',false,null)
+		document.execCommand('selectAll',false,null);
+	},
 
-		// if (this.model.openInEditor) { // We do not want to open it twice, we will just toggle editor
-		// 	this.model.trigger('editor:toggle');
-		// 	return;
-		// }
-
-		// if (meenoApp.editorCounter > 3) {
-		// 	alert("Can't open more editors");
-		// 	return;
-		// }
-		// meenoAppCli.mainView.trigger('editor:counter',true);
-
-		// this.model.openInEditor    = true;
-		// var noteEditorTabView      = new meenoAppCli.Classes.NoteEditorTabView({ model: this.model });
-		// var noteEditorControlsView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
-		// var noteEditorView         = new meenoAppCli.Classes.NoteEditorView({ model: this.model });
-		// $('#editor-tabs-list').append(noteEditorTabView.render().el);
-		// $('#editor-controls-list').append(noteEditorControlsView.render().el);
-		// $('#editor-content-list').append(noteEditorView.render().el);
-		// this.model.trigger('editor:toggle');
+	delete: function() {
+		this.model.destroy();
+		meenoAppCli.Tags.remove(this.model);
+		this.remove();
+		console.log('tag deleted')
 	},
 
 	save: function() {

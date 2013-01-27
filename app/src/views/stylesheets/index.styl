@@ -140,6 +140,8 @@ header
 		display none
 		background-color #FFF
 		&.delete:before
+			content 'I'
+		&.close:before
 			content 'X'
 		&.clone:before
 			content 'W'
@@ -150,9 +152,11 @@ header
 		&.select
 			display list-item
 			&:before
-				content 'K'
+				content '%'
 	&.hasSelected li
 		display list-item
+.tab.object.note .actions-contextual li
+	display list-item
 
 nav
 	background-color rgba(255,255,255,.35);
@@ -247,6 +251,16 @@ nav
 				&.date
 					font-size 0.85em
 					opacity 0.5
+
+.edit-content
+	&:focus
+		border 0
+	.tag
+		margin 3px
+		padding 3px
+		background-color lightgrey
+		border 1px solid grey
+
 
 #footer
 	background-color rgba(0,0,0,.35);

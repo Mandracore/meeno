@@ -12,10 +12,10 @@ meenoAppCli.Classes.StaticTabNavView = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.togglePartial, this);
+		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggleSub, this);
 	},
 
-	togglePartial: function() {
+	toggleSub: function() {
 		// First, deactivate the other tabs
 		$("#nav").children().each(function(i,child){
 			$(child).removeClass("selected");
