@@ -11,17 +11,32 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		'blur': 'out'
 	},
 
+/* il me faut créer quelque chose qui surveille le dom de ref-tag .html()
+Dès qu'il diminue, je lance un delete de la view complete (si la création a déjà été faite)
+if (html.length < savedhtml.length) return this.destroy
+il va me falloir malheureusement un poll...c'est dégueulasse.
+*/
+
+
 	initialize: function() {
+		this.options.locked = false;
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quit, this);
-		meenoAppCli.dispatcher.on('tab:objectEvent:' + this.$el.attr('id'), this.keyPressProxy, this);
+		meenoAppCli.dispatcher.on('tab:object:' + this.$el.attr('id'), this.keyPressProxy, this);
 		console.log(this.el);
+		this.model.on('change', this.beware, this);
+		var idx = this.$el.parent().contents().index(this.$el);
+		moveCaret (this.$el.parent()[0], idx+1);
 	},
 
 	keyPressProxy: function( event ) {
 
-		console.log("...successfully passed to subobject "+this.$el.attr('id'));
-		console.log(event.keyCode);
+		if (event.keyCode == 8 && this.options.locked) { // The user wants to remove the tag
+			console.log('removing tag');
+			this.quit();
+			return;
+		}
 
+		this.save();
 		if (event.keyCode == 13 || event.keyCode == 9) { // The user wants to stop editing tag
 			event.preventDefault();
 			return this.out();
@@ -29,51 +44,16 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	out: function() {
-		console.log ('out of this tag');
+		this.options.locked = true;
 		// Moving the caret out of the object
-		$contentEditable = this.$el.closest('section.edit-content');
-		// console.log($contentEditable);
-		// var pos = $contentEditable.caret();console.log(pos);
-		// // var offset = this.$el.html().length + 6;console.log(offset);
-		// var offset = 8;console.log(offset);
-		// $contentEditable.caret(pos + offset);console.log(pos + offset)
+		var idx = this.$el.parent().contents().index(this.$el);
+		moveCaret (this.$el.parent()[0], idx+2);		
+	},
 
-/*
+	beware: function () {
+		// Fuck : no change event is thrown when return is pressed
 
-########## TRY THIS !!! ########
-
-$('section.edit-content').index($('#m1xMm9pNa2'));
--1
-$('section.edit-content').contents().index($('#m1xMm9pNa2'));
-1
-range = document.createRange();
-range.setStart($('section.edit-content')[0],2);
-undefined
-        selection = window.getSelection();//get the selection object (allows you to change selection)
-        selection.removeAllRanges();//remove any selections already made
-        selection.addRange(range);//make the range you have just created the visible selection
-
-
-
-*/
-
-		span = this.$el[0];//This is the element that you want to move the caret to the end of
-
-        range = document.createRange();//Create a range (a range is a like the selection but invisible)
-
-		range.setStartAfter(span);
-		range.setEndAfter(span);
-		range.collapse();
-
-        // range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
-        // range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-        selection = window.getSelection();//get the selection object (allows you to change selection)
-        selection.removeAllRanges();//remove any selections already made
-        selection.addRange(range);//make the range you have just created the visible selection
-
-        // range.setStart($contentEditable, )
-
-		this.save();
+		//console.log ('beware');
 	},
 
 	save: function() {
@@ -82,14 +62,7 @@ undefined
 		})
 
 		meenoAppCli.Tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
-		this.model.save({},{ // Now that the model is into a collection, the .save() method will work
-			success: function() {
-				console.log('save success');
-			},
-			error  : function() {
-				console.log('save error');
-			}
-		});
+		this.model.save(); // Now that the model is into a collection, the .save() method will work
 	},
 
 	quit: function() {

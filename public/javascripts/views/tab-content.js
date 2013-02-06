@@ -19,6 +19,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	initialize: function() {
 		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
+		this.$el.on("keyup",this.keyPressProxy);
 	},
 
 	// Renders the tab-content item to the current state of the model
@@ -28,11 +29,12 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	},
 
 	keyPressProxy: function( event ) {
+		console.log("keyCode="+event.keyCode)
+
 		var $caretsNode = $(getCaretsNode());
 		// If we are already in an html node related to an object
 		if ($caretsNode.hasClass('object')) {
-			console.log('passing to subobject ' + $caretsNode.attr('id'));
-			meenoAppCli.dispatcher.trigger('tab:objectEvent:' + $caretsNode.attr('id'), event);
+			meenoAppCli.dispatcher.trigger('tab:object:' + $caretsNode.attr('id'), event);
 			return;
 		}
 
@@ -46,7 +48,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		event.preventDefault();
 		console.log('New tag');
 		var id = makeid();
-		pasteHtmlAtCaret("<span class='object tag' id='"+id+"'>#</span>");
+		pasteHtmlAtCaret("<span class='object tag' id='"+id+"'>#</span><span class='void'> </span>");
 		var newTag     = new meenoAppCli.Classes.Tag();
 		var newTagView = new meenoAppCli.Classes.TagRefView({ 
 			model: newTag,
@@ -82,6 +84,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 
 	quitSub: function() {
 		console.log('quit tab content');
+		this.$el.off("keyup",this.keyPressProxy)
 		this.remove();
 	},
 
