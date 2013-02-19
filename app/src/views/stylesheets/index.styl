@@ -1,5 +1,6 @@
 // @import 'nib'
 
+
 cText         = #434343
 cTextFaded    = lighten(#535353, 40%)
 cTextRev      = #dddddd
@@ -25,11 +26,7 @@ reset-html5()
 
 @font-face
 	font-family "modernpics"
-	src url("../fonts/modernpics.otf")
-
-@font-face
-	font-family "fontawesome"
-	src url("../fonts/fontawesome.ttf")
+	src url("../font/modernpics.otf")
 
 html
 	width 100%
@@ -257,16 +254,16 @@ nav
 		border 0
 	.tag
 		margin 5px
+		padding 0 5px
 		background-color lightgrey
 		opacity 0.7
 		border 1px dashed grey
-		.icon
-			display inline-block
-			content: "#"
 	.locked
 		border 1px solid black
 		opacity 1
-
+	.broken
+		border 1px solid red
+		opacity 0.7
 
 #footer
 	background-color rgba(0,0,0,.35);

@@ -25,6 +25,7 @@ meenoAppCli.Classes.NoteOverView = Backbone.View.extend({
 	// app, we set a direct reference on the model for convenience.
 	initialize: function() {
 		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
+		//attention, n'est pas impacté on delete... cette vue devrait écouter cet évènement pr rester à jour
 		meenoAppCli.dispatcher.on('search:hi', this.highlight, this);
 	},
 
