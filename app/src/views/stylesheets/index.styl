@@ -42,7 +42,7 @@ html
 body
 	padding 0
 	margin 0 auto
-	width 100em
+	width 80em
 	height 100%
 	display table
 	position relative
@@ -200,13 +200,16 @@ nav
 				border-top 3px transparent solid
 				color cDarkGrey
 				display inline-block
-				padding .5em
+				padding .5em 1em
 				vertical-align middle
 				opacity .7
 				&.selected,&:hover,&:active
 					border-top-color cDarkGrey
 					opacity 1
 					cursor pointer
+				&:before
+					margin-right 10px
+					font-size .9em
 
 .listobjects
 	display none
@@ -236,6 +239,9 @@ nav
 				&:hover
 					opacity 1
 					cursor pointer
+	.checkbox
+		margin 0 8px 0 0
+
 	ul.notes, ul.tags
 		span.delete:before
 			content 'I'
@@ -258,8 +264,15 @@ nav
 		background-color lightgrey
 		opacity 0.7
 		border 1px dashed grey
+		text-shadow white 0 1px 0
+		border-radius 5px
+		&:before
+			margin 0 5px 0 0
+			font-size .8em
+			color grey
+			text-shadow white 0 1px 0
 	.locked
-		border 1px solid black
+		border 1px solid grey
 		opacity 1
 	.broken
 		border 1px solid red

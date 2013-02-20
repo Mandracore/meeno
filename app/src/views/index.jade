@@ -3,11 +3,13 @@ extends layout
 block content
 
 	// Client-side Templates
-	script(type="text/template", id="overview-note-template")
-		|<p><%= title %><span class="button edit">Edit</span><span class="button delete">Delete</span></p>
 		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
+	script(type="text/template", id="overview-note-template")
+		|<span class="checkbox icon-check-empty"></span><span class="title attribute"><%= title %></span><span class="button edit">Edit</span><span class="button delete">Delete</span>
 	script(type="text/template", id="overview-tag-template")
-		|<span class="label attribute"><%= label %></span><span class="button edit">Edit label</span><span class="button delete">Delete</span>
+		|<span class="checkbox icon-check-empty"></span><span class="label attribute"><%= label %></span><span class="button edit">Edit label</span><span class="button delete">Delete</span>
+	script(type="text/template", id="overview-task-template")
+		|<span class="checkbox icon-check-empty"></span><span class="label attribute"><%= label %></span><span class="button edit">Edit label</span><span class="button delete">Delete</span>
 	script(type="text/template", id="tab-nav-template")
 		|<%= title %>
 	script(type="text/template", id="tab-content-template")
@@ -131,9 +133,9 @@ block content
 				div.filter
 					input.search(type="text", autofocus, placeholder="search or filter")
 					ul
-						li.notes Notes
-						li.tasks.selected Tasks
-						li.tags Tags
+						li.notes.icon-book Notes
+						li.tasks.selected.icon-tasks Tasks
+						li.tags.icon-tags Tags
 				div.listobjects.notes
 					ul.actions-contextual
 						li.select Select All

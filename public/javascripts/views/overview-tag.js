@@ -8,21 +8,19 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 meenoAppCli.Classes.TagOverView = Backbone.View.extend({
 
 	//... is a list tag.
-	tagName:  'li',
+	tagName  : 'li',
 
 	// Cache the template function for a single item.
 	template: _.template( $('#overview-tag-template').html() ),
 
 	// The DOM events specific to an item.
 	events: {
-		'click span.edit': 'edit',
-		'click span.delete': 'delete',
-		'blur span.label': 'save'
+		'click .checkbox': 'check',
+		'click .edit'    : 'edit',
+		'click .delete'  : 'delete',
+		'blur .label'    : 'save'
 	},
 
-	// The TodoView listens for changes to its model, re-rendering. Since there's
-	// a one-to-one correspondence between a **Todo** and a **TodoView** in this
-	// app, we set a direct reference on the model for convenience.
 	initialize: function() {
 		meenoAppCli.Tags.on('add destroy reset change', this.kill, this ); // Will destroy itself on those events, to prevent from memory leak
 		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
@@ -32,6 +30,16 @@ meenoAppCli.Classes.TagOverView = Backbone.View.extend({
 	render: function() {
 		this.$el.html( this.template( this.model.toJSON() ) );
 		return this;
+	},
+
+	check: function() {
+		if (this.$("span.checkbox").hasClass('icon-check')) {
+			this.$("span.checkbox").removeClass('icon-check');
+			this.$("span.checkbox").addClass('icon-check-empty');
+		} else {
+			this.$("span.checkbox").removeClass('icon-check-empty');
+			this.$("span.checkbox").addClass('icon-check');
+		}
 	},
 
 	edit: function() {

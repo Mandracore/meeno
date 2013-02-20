@@ -1,6 +1,6 @@
 @font-face{font-family:"modernpics";src:url("../font/modernpics.otf")}
 html{width:100%;height:100%;background-color:#999;background-image:-moz-linear-gradient(0,rgba(255,255,255,0.07) 50%,transparent 50%),-moz-linear-gradient(0,rgba(255,255,255,0.13) 50%,transparent 50%),-moz-linear-gradient(0,transparent 50%,rgba(255,255,255,0.17) 50%),-moz-linear-gradient(0,transparent 50%,rgba(255,255,255,0.19) 50%);background-image:-webkit-linear-gradient(0,rgba(255,255,255,0.07) 50%,transparent 50%),-webkit-linear-gradient(0,rgba(255,255,255,0.13) 50%,transparent 50%),-webkit-linear-gradient(0,transparent 50%,rgba(255,255,255,0.17) 50%),-webkit-linear-gradient(0,transparent 50%,rgba(255,255,255,0.19) 50%);background-image:-o-linear-gradient(90deg,rgba(255,255,255,0.07) 50%,transparent 50%),-o-linear-gradient(90deg,rgba(255,255,255,0.13) 50%,transparent 50%),-o-linear-gradient(90deg,transparent 50%,rgba(255,255,255,0.17) 50%),-o-linear-gradient(90deg,transparent 50%,rgba(255,255,255,0.19) 50%);background-image:-ms-linear-gradient(90deg,rgba(255,255,255,0.07) 50%,transparent 50%),-ms-linear-gradient(90deg,rgba(255,255,255,0.13) 50%,transparent 50%),-ms-linear-gradient(90deg,transparent 50%,rgba(255,255,255,0.17) 50%),-ms-linear-gradient(90deg,transparent 50%,rgba(255,255,255,0.19) 50%);background-image:linear-gradient(90deg,rgba(255,255,255,0.07) 50%,transparent 50%),linear-gradient(90deg,rgba(255,255,255,0.13) 50%,transparent 50%),linear-gradient(90deg,transparent 50%,rgba(255,255,255,0.17) 50%),linear-gradient(90deg,transparent 50%,rgba(255,255,255,0.19) 50%);background-size:13px,29px,37px,53px}
-body{padding:0;margin:0 auto;width:100em;height:100%;display:table;position:relative}
+body{padding:0;margin:0 auto;width:80em;height:100%;display:table;position:relative}
 #main,.actions-main{display:table-cell}
 header{zoom:1;color:#fff;font-size:1em;position:relative;top:0;}
 header:before,header:after{content:"";display:table}
@@ -41,8 +41,9 @@ nav .object{white-space:nowrap;max-width:7em;overflow:hidden;text-overflow:ellip
 .tab.selected{display:block}
 .browse .filter input{width:100%}
 .browse .filter ul{list-style:none;padding:0;margin:0;display:block;border-top:1px #4d4d4d solid;}
-.browse .filter ul li{border-top:3px transparent solid;color:#4d4d4d;display:inline-block;padding:.5em;vertical-align:middle;opacity:.7;}
+.browse .filter ul li{border-top:3px transparent solid;color:#4d4d4d;display:inline-block;padding:.5em 1em;vertical-align:middle;opacity:.7;}
 .browse .filter ul li.selected,.browse .filter ul li:hover,.browse .filter ul li:active{border-top-color:#4d4d4d;opacity:1;cursor:pointer}
+.browse .filter ul li:before{margin-right:10px;font-size:.9em}
 .listobjects{display:none;}
 .listobjects.selected{display:block}
 .listobjects ul.notes,.listobjects ul.tags{list-style-type:none;margin:1em 0 0;padding:0;}
@@ -52,13 +53,15 @@ nav .object{white-space:nowrap;max-width:7em;overflow:hidden;text-overflow:ellip
 .listobjects ul.notes li:hover span.button,.listobjects ul.tags li:hover span.button{opacity:.5;}
 .listobjects ul.notes li:hover span.button:before,.listobjects ul.tags li:hover span.button:before{font-family:'modernpics';position:relative;font-size:1.3em;margin:0 5px 0}
 .listobjects ul.notes li:hover span.button:hover,.listobjects ul.tags li:hover span.button:hover{opacity:1;cursor:pointer}
+.listobjects .checkbox{margin:0 8px 0 0}
 .listobjects ul.notes span.delete:before,.listobjects ul.tags span.delete:before{content:'I'}
 .listobjects ul.notes span.edit:before,.listobjects ul.tags span.edit:before{content:'e'}
 .listobjects ul.notes li p{margin:0;}
 .listobjects ul.notes li p.date{font-size:.85em;opacity:.5}
 .edit-content:focus{border:0}
-.edit-content .tag{margin:5px;padding:0 5px;background-color:#d3d3d3;opacity:.7;border:1px dashed #808080}
-.edit-content .locked{border:1px solid #000;opacity:1}
+.edit-content .tag{margin:5px;padding:0 5px;background-color:#d3d3d3;opacity:.7;border:1px dashed #808080;text-shadow:#fff 0 1px 0;border-radius:5px;}
+.edit-content .tag:before{margin:0 5px 0 0;font-size:.8em;color:#808080;text-shadow:#fff 0 1px 0}
+.edit-content .locked{border:1px solid #808080;opacity:1}
 .edit-content .broken{border:1px solid #f00;opacity:.7}
 #footer{background-color:rgba(0,0,0,0.35);color:#fff;zoom:1;}
 #footer:before,#footer:after{content:"";display:table}

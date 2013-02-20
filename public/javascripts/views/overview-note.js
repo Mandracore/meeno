@@ -4,23 +4,17 @@ var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 
-// The DOM element for a todo item...
 meenoAppCli.Classes.NoteOverView = Backbone.View.extend({
 
-	//... is a list tag.
-	tagName:  'li',
+	tagName  : 'li',
 
-	// Cache the template function for a single item.
 	template: _.template( $('#overview-note-template').html() ),
 
-	// The DOM events specific to an item.
 	events: {
-		'click .edit': 'edit'
+		'click .checkbox': 'check',
+		'click .edit'    : 'edit'
 	},
 
-	// The TodoView listens for changes to its model, re-rendering. Since there's
-	// a one-to-one correspondence between a **Todo** and a **TodoView** in this
-	// app, we set a direct reference on the model for convenience.
 	initialize: function() {
 		meenoAppCli.Notes.on('add destroy reset change', this.kill, this ); // Will destroy itself on those events, to prevent from memory leak
 		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
@@ -32,6 +26,16 @@ meenoAppCli.Classes.NoteOverView = Backbone.View.extend({
 		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
 		this.$el.html( this.template( json ) );
 		return this;
+	},
+
+	check: function() {
+		if (this.$("span.checkbox").hasClass('icon-check')) {
+			this.$("span.checkbox").removeClass('icon-check');
+			this.$("span.checkbox").addClass('icon-check-empty');
+		} else {
+			this.$("span.checkbox").removeClass('icon-check-empty');
+			this.$("span.checkbox").addClass('icon-check');
+		}
 	},
 
 	edit: function() {
