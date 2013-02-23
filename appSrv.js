@@ -53,20 +53,21 @@ mas.configure('development', 'production', function(){
 });
 
 mas.configure('development', function(){
-
-	function compile(str, path) {
-		return stylus(str)
+	mas.use(stylus.middleware({
+		// Beware : if you do GET localhost/stylesheets/style.css, Stylus will try to recover the following file :
+		// src + /stylesheets/style.css and save the compiled one as :
+		// dest + /stylesheets/style.css
+		src : application_root + '/app/src/views',
+		dest : application_root + '/public',
+		compile: function (str, path) {
+			return stylus(str)
 			.set('filename', path)
 			.set('compress', true)
+			.set('warn', true)
 			.use(nib());
-	}
-	mas.use(stylus.middleware({
-		//src  : application_root + '/public/stylesheets',
-		src  : application_root + '/app/src/views',
-		dest : application_root + '/public/stylesheets',
-		compile: compile
+		}
 	}));
-	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 mas.configure('production', function(){
