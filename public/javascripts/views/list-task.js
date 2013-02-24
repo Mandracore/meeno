@@ -5,7 +5,7 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 
 // The DOM element for a todo item...
-meenoAppCli.Classes.TagOverView = Backbone.View.extend({
+meenoAppCli.Classes.ListTaskView = Backbone.View.extend({
 
 	//... is a list tag.
 	tagName  : 'li',

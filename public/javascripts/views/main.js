@@ -34,21 +34,28 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.on('editor:counter', this.editorCounter, this );
 		this.on('server:auth', this.toggleAuth, this );
 
-		// Initialize mandatory static tabs
-		var helpTabNavView       = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .help"), sound: "help" }); 
-		var helpTabContentView   = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .help"), sound: "help" }); 
-		var browseTabNavView     = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .browse"), sound: "browse" }); 
-		var browseTabContentView = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .browse"), sound: "browse", browse: true }); 
 
 		meenoAppCli.Notes.fetch({
 			success: function (collection, xhr, options) {
-				meenoAppCli.Tags.fetch({});
+				//meenoAppCli.Tasks.fetch({});
 				// // 1. Create nav views
 				// var tabHelpView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
 				// var tabBrowseView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
 				// var navHelpView = new meenoAppCli.Classes.NoteEditorControlsView({ parent: this.model });
 				// var navBrowseView = new meenoAppCli.Classes.NoteEditorControlsView({ parent: this.model });
 				// // 2. Create corresponding tabs
+
+				meenoAppCli.Tags.fetch({
+					success: function (collection, xhr, options) {
+						// Initialize mandatory static tabs
+						var helpTabNavView       = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .help"), sound: "help" }); 
+						var helpTabContentView   = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .help"), sound: "help" }); 
+						var browseTabNavView     = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .browse"), sound: "browse" }); 
+						var browseTabContentView = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .browse"), sound: "browse", browse: true }); 
+					},
+					error: function (collection, xhr, options) {console.log('tag fetching failed')}
+				});
+
 			},
 			error: function (collection, xhr, options) {
 				console.log ("Server response status : "+xhr.status);

@@ -57,15 +57,25 @@ meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 		var $noteList = this.$('.listobjects.notes .notes');
 		$noteList.html(''); // First, emptying the list
 		meenoAppCli.Notes.each(function (note) {
-			var noteOverView = new meenoAppCli.Classes.NoteOverView({ model: note });
-			$noteList.append(noteOverView.render().el);
+			var listNoteView = new meenoAppCli.Classes.ListNoteView({ model: note });
+			$noteList.append(listNoteView.render().el);
 		}, this);		
+
+
+
+		// Trigger rendering of tasks
+		/*var $taskList = this.$('.listobjects.tasks .tasks');
+		$taskList.html(''); // First, emptying the list
+		meenoAppCli.Tasks.each(function (task) {
+			var listTaskView = new meenoAppCli.Classes.ListTaskView({ model: task });
+			$taskList.append(listTaskView.render().el);
+		}, this);*/
 		// Trigger rendering of tags
 		var $tagList = this.$('.listobjects.tags .tags');
 		$tagList.html(''); // First, emptying the list
 		meenoAppCli.Tags.each(function (tag) {
-			var tagOverView = new meenoAppCli.Classes.TagOverView({ model: tag });
-			$tagList.append(tagOverView.render().el);
+			var listTagView = new meenoAppCli.Classes.ListTagView({ model: tag });
+			$tagList.append(listTagView.render().el);
 		}, this);
 	},
 });

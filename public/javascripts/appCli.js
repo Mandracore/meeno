@@ -5,17 +5,11 @@ var meenoAppCli = meenoAppCli || {};
 var ENTER_KEY = 13;
 
 $(function() {
-	// Create our global collections
-	meenoAppCli.Notes = new meenoAppCli.Classes.Notes();
-	meenoAppCli.Tags = new meenoAppCli.Classes.Tags();
-
-	// Init listener
-	meenoAppCli.dispatcher = _.extend({}, Backbone.Events);
-
-	// Kick things off by creating the **main view**.
-	meenoAppCli.mainView = new meenoAppCli.Classes.MainView();
-
-	// Initiate Router
-	meenoAppCli.router = new meenoAppCli.Classes.Router();
-  	Backbone.history.start();
+	meenoAppCli.dispatcher = _.extend({}, Backbone.Events); // Init our app-wide listener
+	meenoAppCli.Notes      = new meenoAppCli.Classes.Notes(); // Our global collection of notes
+	//meenoAppCli.Tasks      = new meenoAppCli.Classes.Tasks(); // Our global collection of tasks
+	meenoAppCli.Tags       = new meenoAppCli.Classes.Tags(); // Our global collection of tags
+	meenoAppCli.mainView   = new meenoAppCli.Classes.MainView(); // Kick things off by creating the **main view**.
+	meenoAppCli.router     = new meenoAppCli.Classes.Router(); // Initiate Router
+  	Backbone.history.start(); // Start Backbone history recording
 });

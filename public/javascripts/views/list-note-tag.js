@@ -4,7 +4,7 @@ var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 
-meenoAppCli.Classes.NoteOverView = Backbone.View.extend({
+meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 
 	tagName  : 'li',
 
@@ -24,6 +24,18 @@ meenoAppCli.Classes.NoteOverView = Backbone.View.extend({
 	render: function() {
 		var json        = this.model.toJSON();
 		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
+
+		//var note = meenoAppCli.Notes.models[1]
+		_.each(this.model.get('tags'),function (element, index, list) {
+			console.log(element._id)
+			var tag = meenoAppCli.Tags.get(element._id);
+			console.log(tag.get('label'));
+		}, this)
+		// var tag = meenoAppCli.Tags.get(note.get('tags')[0])
+		// tag.get('label')
+
+
+
 		this.$el.html( this.template( json ) );
 		return this;
 	},
