@@ -54,7 +54,7 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 #tabs{background-color:#fff;padding:1em;height:74%;height:-moz-calc(100% - 13em);height:-webkit-calc(100% - 13em);height:calc(100% - 13em)}
 .tab{display:none;}
 .tab.selected{display:block;height:100%}
-.help,.object{overflow-y:scroll}
+.tab.help,.tab.object{overflow-y:scroll}
 .browse .filter input{width:100%}
 .browse .filter ul{list-style:none;padding:0;margin:0;display:block;border-top:1px #4d4d4d solid;}
 .browse .filter ul li{border-top:3px transparent solid;color:#4d4d4d;display:inline-block;padding:.5em;vertical-align:middle;opacity:.7;filter:alpha(opacity=70);-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";}
