@@ -6,7 +6,7 @@ module.exports = function(mas) {
 	mas.get("/", function (req, res) {
 		res.render('index', {
 			title: 'Meeno',
-			css: '/stylesheets/index.css'
+			css: '/stylesheets/style.css'
 		});
 	});
 	mas.post("/login", function (req, res) {

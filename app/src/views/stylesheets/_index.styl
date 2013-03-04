@@ -1,5 +1,3 @@
-@import 'nib'
-
 cText         = #434343
 cTextFaded    = lighten(#535353, 40%)
 cTextRev      = #dddddd
@@ -20,9 +18,6 @@ hTabs         = 40px
 hControls     = 30px
 hFadeOut      = 100px
 
-global-reset()
-reset-html5()
-
 @font-face
 	font-family "modernpics"
 	src url("../font/modernpics.otf")
@@ -35,11 +30,26 @@ html
 
 @css{
 	html{
-		background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: linear-gradient(left, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(left, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image:	-moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),
+							-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),
+							-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),
+							-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image:	-webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),
+							-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),
+							-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),
+							-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image:	-o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+							-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+							-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+							-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image:	-ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),
+							-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),
+							-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),
+							-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image:	linear-gradient(left, rgba(255,255,255,.07) 50%, transparent 50%),
+							linear-gradient(left, rgba(255,255,255,.13) 50%, transparent 50%),
+							linear-gradient(left, transparent 50%, rgba(255,255,255,.17) 50%),
+							linear-gradient(left, transparent 50%, rgba(255,255,255,.19) 50%);
 		background-size: 13px, 29px, 37px, 53px;
 	}
 }
@@ -188,7 +198,7 @@ nav
 		display block
 		height 100%
 	&.help, &.object
-		overflow-y scroll
+		overflow-y auto
 
 .browse
 	.filter
@@ -223,7 +233,7 @@ nav
 	height 'calc(%s - %s)' % (100% 4em)
 	&.selected
 		display block
-		overflow-y scroll
+		overflow-y auto
 	ul.notes, ul.tags
 		list-style-type none
 		margin 1em 0 0

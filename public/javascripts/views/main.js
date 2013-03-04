@@ -15,7 +15,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	el: '#meenoApp',
 
 	events: {
-		// 'click .actions-main .note': 'newNote', // Create new note and open it in a new tab
+		'click .actions-main .note': 'new', // Create new note and open it in a new tab
 		// 'click .actions-main .tag' : 'newTag', // Create a new tag in a popup window
 		'keyup #search'            : 'search',
 		'submit #login'            : 'login',
