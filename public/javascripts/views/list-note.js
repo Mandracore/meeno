@@ -17,19 +17,23 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 
 	initialize: function() {
 		meenoAppCli.Notes.on('add destroy reset change', this.kill, this ); // Will destroy itself on those events, to prevent from memory leak
-		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
+	},
+
+	beforeKill: function() {
+		// This listener has to be removed in order to destroy last reference to the view and allow Garbage collecting
+		meenoAppCli.Notes.off('add destroy reset change', this.kill, this );
 	},
 
 	// Re-renders the note item to the current state of the model
 	render: function() {
 		var json        = this.model.toJSON();
 		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
-
+		console.log("__________Render list-note :"+this.model.get('title'));
 		//var note = meenoAppCli.Notes.models[1]
 		_.each(this.model.get('tags'),function (element, index, list) {
-			console.log(element._id)
+
 			var tag = meenoAppCli.Tags.get(element._id);
-			console.log(tag.get('label'));
+			// console.log("Render list-note tag :"+tag.get('label'));
 		}, this)
 		// var tag = meenoAppCli.Tags.get(note.get('tags')[0])
 		// tag.get('label')
@@ -82,9 +86,5 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 
 	highlight: function(term) {
 		// console.log('hili:'+term);
-	},
-
-	kill: function() {
-		this.remove();
 	}
 });

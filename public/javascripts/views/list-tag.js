@@ -72,9 +72,5 @@ meenoAppCli.Classes.ListTagView = Backbone.View.extend({
 
 	highlight: function(term) {
 		// console.log('hili:'+term);
-	},
-
-	kill: function() {
-		this.remove();
 	}
 });

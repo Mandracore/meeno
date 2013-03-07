@@ -20,13 +20,21 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quit, this);
 		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
+		meenoAppCli.dispatcher.on('note:link:object:slave:' + this.model.cid, this.link, this);
 		this.model.on('change', this.render, this);
 		this.model.on('remove', this.quit, this);
-		if (this.options.isNew) {
+		if (this.options.isNew) { // Needed only for new tags
 			meenoAppCli.dispatcher.on('tab:object:markDom:' + this.model.cid, this.markDom, this);
-			moveCaret (this.$(".body")[0], 1); // TO ACTIVATE ONLY ON NEW TAGv!!
+			moveCaret (this.$(".body")[0], 1);
 		}
 		console.log ('Embedded tag view initialized');
+	},
+
+	render: function() {
+		console.log('rendering');
+		this.$(".body").html(this.model.get('label'));
+		if (!this.model) {this.$el.addClass('broken');}
+		return this;
 	},
 
 	keyProxy: function( event ) {
@@ -101,6 +109,7 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		this.model.save({},{ // Now that the model is into a collection, the .save() method will work
 			success: function(model, response, options) {
 				meenoAppCli.dispatcher.trigger('tab:object:markDom:' + model.cid);
+				meenoAppCli.dispatcher.trigger('note:link:object:slave:' + model.cid);
 			},
 			error  : function() {
 				console.log('saving failed');
@@ -108,19 +117,16 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		});
 	},
 
+	link: function() {
+		meenoAppCli.dispatcher.trigger('note:link:object:' + this.options.sound, {type: "link", model: this.model});
+	},
+
 	markDom: function() {
 		this.$el.attr("data-model-id",this.model.get("_id")); // Saving the model id into the DOM for further initialization
 	},
 
-	render: function() {
-		console.log('rendering');
-		this.$(".body").html(this.model.get('label'));
-		if (!this.model) {this.$el.addClass('broken');}
-		return this;
-	},
-
 	quit: function() {
 		console.log('quit embedded object view (id=' + this.$el.attr('id') + ')');
-		this.remove();
+		this.kill();
 	}
 });

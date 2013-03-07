@@ -55,7 +55,8 @@ meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 	render: function() {
 		// Trigger rendering of notes
 		var $noteList = this.$('.listobjects.notes .notes');
-		$noteList.html(''); // First, emptying the list
+		$noteList.html(''); // First, emptying the DOM list
+
 		meenoAppCli.Notes.each(function (note) {
 			var listNoteView = new meenoAppCli.Classes.ListNoteView({ model: note });
 			$noteList.append(listNoteView.render().el);

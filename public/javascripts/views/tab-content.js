@@ -19,6 +19,15 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	initialize: function() {
 		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
+		meenoAppCli.dispatcher.on('note:link:object:' + this.options.sound, this.linkObject, this);
+	},
+
+	linkObject: function (parameters) {
+		console.log('link object')
+		if (parameters.type == "tag") {
+			console.log('Linking tag to current note');
+			this.model.add('tags', parameters.model);
+		}
 	},
 
 	render: function() {
