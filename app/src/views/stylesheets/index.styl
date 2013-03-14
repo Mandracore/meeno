@@ -1,5 +1,4 @@
-// @import 'nib'
-
+@import 'nib'
 
 cText         = #434343
 cTextFaded    = lighten(#535353, 40%)
@@ -31,38 +30,38 @@ reset-html5()
 html
 	width 100%
 	height 100%
-	background-color: #999;
-	background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-	background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-	background-image: -o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-	background-image: -ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-	background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-	background-size: 13px, 29px, 37px, 53px;
+	overflow hidden
+	background-color #999
 
+@css{
+	html{
+		background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: -o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: -ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: linear-gradient(left, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(left, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-size: 13px, 29px, 37px, 53px;
+	}
+}
 body
-	padding 0
 	margin 0 auto
-	width 80em
+	width 90%
 	height 100%
-	display table
+	position relative
+	background none
+
+#main
+	height 100%
+	padding 1em 0 1em 15em
 	position relative
 
- #main, .actions-main
-	display table-cell
-
 header
-	// clearfix()
-	&:before
-	&:after
-		content: ""
-		display: table
-	&:after
-		clear: both
-	zoom: 1 if support-for-ie
+	clearfix()
 	color #FFF
 	font-size 1em
 	position relative
 	top 0
+	margin-top 1em
 	a
 		float left
 		display inline-block
@@ -75,7 +74,7 @@ header
 			position absolute
 			left (-15/fSize)em
 			width (15/fSize)em
-			top .5em
+			top -.2em
 			font-size  fSize * 1em;
 			color rgba(255,255,255,.7)
 			text-align center
@@ -104,8 +103,6 @@ header
 
 .actions-main,.actions-contextual
 	width 15em
-	// left 0
-	// position fixed
 	list-style none
 	margin 0
 	padding 0
@@ -120,7 +117,10 @@ header
 			margin 0 5px 0
 
 .actions-main
-	padding-top 4.5em
+	height 100%
+	padding-top 5.5em
+	position absolute
+	z-index 1
 	li
 		margin-right 1em
 		background-color rgba(255,255,255,.5)
@@ -131,8 +131,9 @@ header
 
 .actions-contextual
 	position absolute
-	top 13em
+	top 14em
 	left 0
+	z-index 2
 	li
 		display none
 		background-color #FFF
@@ -170,25 +171,28 @@ nav
 				background-color #FFF
 				cursor pointer
 	.object
-		white-space: nowrap;
 		max-width: 7em;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		overflow: ellipsis;
 
 #tabs
 	background-color #FFF
 	padding 1em
-	height 70%
-	overflow-y scroll
+	height 74%
+	height '-moz-calc(%s - %s)' % (100% 13em)
+	height '-webkit-calc(%s - %s)' % (100% 13em)
+	height 'calc(%s - %s)' % (100% 13em)
 
 .tab
 	display none
 	&.selected
 		display block
+		height 100%
+	&.help, &.object
+		overflow-y scroll
 
 .browse
 	.filter
-		input 
+		input
 			width 100%
 		ul
 			list-style none
@@ -200,7 +204,7 @@ nav
 				border-top 3px transparent solid
 				color cDarkGrey
 				display inline-block
-				padding .5em 1em
+				padding .5em
 				vertical-align middle
 				opacity .7
 				&.selected,&:hover,&:active
@@ -213,8 +217,13 @@ nav
 
 .listobjects
 	display none
+	height 89%
+	height '-moz-calc(%s - %s)' % (100% 4em)
+	height '-webkit-calc(%s - %s)' % (100% 4em)
+	height 'calc(%s - %s)' % (100% 4em)
 	&.selected
 		display block
+		overflow-y scroll
 	ul.notes, ul.tags
 		list-style-type none
 		margin 1em 0 0
@@ -281,14 +290,7 @@ nav
 #footer
 	background-color rgba(0,0,0,.35);
 	color #FFF
-	// clearfix()
-	&:before
-	&:after
-		content: ""
-		display: table
-	&:after
-		clear: both
-	zoom: 1 if support-for-ie
+	clearfix()
 	p
 		margin 0
 		padding 1em

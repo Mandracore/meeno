@@ -46,7 +46,7 @@ mas.configure('development', function(){
 				.use(nib());
 		}
 	}));
-	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+	mas.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 mas.configure('production', function(){
