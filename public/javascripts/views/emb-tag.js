@@ -2,25 +2,15 @@ var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.TagRefView = Backbone.View.extend({
-	// That view will always be binded to pre-existing pieces of DOM ("el" is passed directly to the class constructor)
-	// It explains why we don't need a render function
-
-	// The DOM events we listen to
-	events: {
-		// 'keypress': 'keyProxy'
-	},
-
 /*
 IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
-
 */
-
 
 	initialize: function() {
 
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quit, this);
 		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
-		meenoAppCli.dispatcher.on('note:link:object:slave:' + this.model.cid, this.link, this);
+		meenoAppCli.dispatcher.on('note:link:object:slave:' + this.model.cid, this.noteLink, this);
 		this.model.on('change', this.render, this);
 		this.model.on('remove', this.quit, this);
 		if (this.options.isNew) { // Needed only for new tags
@@ -28,6 +18,11 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 			moveCaret (this.$(".body")[0], 1);
 		}
 		console.log ('Embedded tag view initialized');
+	},
+
+	beforeKill: function() {
+		// This listener has to be removed in order to destroy last reference to the view and allow Garbage collecting
+		meenoAppCli.dispatcher.off('tab:object:markDom:' + this.model.cid, this.markDom, this);
 	},
 
 	render: function() {
@@ -78,7 +73,7 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 			if (this.$('.body').html().length > 2 && this.$el.hasClass('cleanupDone')) {
 			// We save only tags of more than 1 character
 				console.log('Locking object');
-				return this.lock();
+				return this.save();
 			}
 			console.log('won\'t lock')
 		}
@@ -92,24 +87,23 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 
 	},
 
-	lock: function() {
-		this.save();
-		this.$el.addClass("locked"); // Locking the object
-		// Moving the caret out of the object
-		var idx = this.$el.parent().contents().index(this.$el);
-		// moveCaret (this.$el.parent()[0], idx+2);		
-		moveCaret (this.$el.next()[0], 1);
-	},
-
 	save: function() {
+		// DOM manipulation
+		meenoAppCli.dispatcher.trigger('tab:object:markDom:' + this.model.cid);
+		this.$el.addClass("locked"); // Locking the object
+		var idx = this.$el.parent().contents().index(this.$el);
+		moveCaret (this.$el.next()[0], 1); // Moving the caret out of the object
+
+		// Setting/Saving Model
 		this.model.set({
 			label  :this.$(".body").html()
 		});
 		meenoAppCli.Tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 		this.model.save({},{ // Now that the model is into a collection, the .save() method will work
 			success: function(model, response, options) {
-				meenoAppCli.dispatcher.trigger('tab:object:markDom:' + model.cid);
+				// Shouting to warn the note editor that the new tag has to be linked to the note
 				meenoAppCli.dispatcher.trigger('note:link:object:slave:' + model.cid);
+
 			},
 			error  : function() {
 				console.log('saving failed');
@@ -117,8 +111,8 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		});
 	},
 
-	link: function() {
-		meenoAppCli.dispatcher.trigger('note:link:object:' + this.options.sound, {type: "link", model: this.model});
+	noteLink: function() {
+		meenoAppCli.dispatcher.trigger('note:link:object:' + this.options.sound, {type: "tag", model: this.model});
 	},
 
 	markDom: function() {

@@ -18,7 +18,7 @@ $(function() {
 		// remove all models bindings made by this view (do not affect any other observer to this model)
 		this.model.off( null, null, this );
 		// console.log ('View killed');
-		// Beware : this cannot remove event listeners referring to this view and set on other objects !
+		// Beware : this remove cannot event listeners referring to this view and set on other objects !
 	};
 
 	meenoAppCli.dispatcher = _.extend({}, Backbone.Events); // Init our app-wide listener
