@@ -28,12 +28,12 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 	render: function() {
 		var json        = this.model.toJSON();
 		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
-		console.log("__________Render list-note :"+this.model.get('title'));
+		// console.log("__________Render list-note :"+this.model.get('title'));
 		//var note = meenoAppCli.Notes.models[1]
 		_.each(this.model.get('tags'),function (element, index, list) {
 
 			var tag = meenoAppCli.Tags.get(element._id);
-			if (tag) console.log("Render note's tag :"+tag.get('label'));
+			// if (tag) console.log("Render note's tag :"+tag.get('label'));
 		}, this)
 		// var tag = meenoAppCli.Tags.get(note.get('tags')[0])
 		// tag.get('label')

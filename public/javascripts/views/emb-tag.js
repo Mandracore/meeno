@@ -33,7 +33,23 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 	},
 
 	keyProxy: function( event ) {
-		console.log('proxyed !')
+
+		//-------------------------------
+		// Autocomplete in other cases
+		//-------------------------------
+		if (event.type == "keyup") {
+			var strHint = (this.$(".body").html()).replace("&nbsp;","").toLowerCase();
+			if (strHint.length > -1) {
+				console.log("hint="+strHint)
+				var pattern = new RegExp(strHint,"i");
+				var proposals = meenoAppCli.Tags.filter(function (tag) {
+					return pattern.test(tag.get('label'));
+				});
+				console.log(proposals.map(function (obj, key) { return obj.get('label'); }));
+			}
+		}
+
+		/// Problème : le KEYDOWN ne fonctionnera pas bien pour l'autocomplete, il vaut mieux un KEYUP
 		//-------------------------------
 		// Tag cleanup
 		//-------------------------------
@@ -58,17 +74,16 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 			if (event.keyCode == 8) { // The user asked to remove the object
 				console.log('removing locked tag');
 				this.quit();
-				return;
 			} else { // The object is locked, don't do anything
 				event.preventDefault();
-				return;
 			}
+			return;
 		}
 
 		//-------------------------------
 		// Locking tags (stop edition)
 		//-------------------------------
-		if (event.keyCode == 13 || event.keyCode == 9) { 
+		if (event.keyCode == 13 || event.keyCode == 9) {
 			event.preventDefault();
 			if (this.$('.body').html().length > 2 && this.$el.hasClass('cleanupDone')) {
 			// We save only tags of more than 1 character
@@ -78,18 +93,12 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 			console.log('won\'t lock')
 		}
 
-		// We display the autocompleter !
-		// var pattern = new RegExp(this.$el.html(),"gi");
-		// var proposals = meenoAppCli.Tags.filter(function (tag) {
-		// 	return pattern.test(tag.get('label'));
-		// });
-		// console.log(proposals);
+
 
 	},
 
-	save: function() {
+	save: function () {
 		// DOM manipulation
-		meenoAppCli.dispatcher.trigger('tab:object:markDom:' + this.model.cid);
 		this.$el.addClass("locked"); // Locking the object
 		var idx = this.$el.parent().contents().index(this.$el);
 		moveCaret (this.$el.next()[0], 1); // Moving the caret out of the object
@@ -103,6 +112,7 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 			success: function(model, response, options) {
 				// Shouting to warn the note editor that the new tag has to be linked to the note
 				meenoAppCli.dispatcher.trigger('note:link:object:slave:' + model.cid);
+				meenoAppCli.dispatcher.trigger('tab:object:markDom:' + model.cid); // To save model._id within html
 
 			},
 			error  : function() {
@@ -111,11 +121,11 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		});
 	},
 
-	noteLink: function() {
+	noteLink: function () {
 		meenoAppCli.dispatcher.trigger('note:link:object:' + this.options.sound, {type: "tag", model: this.model});
 	},
 
-	markDom: function() {
+	markDom: function () {console.log('markDom')
 		this.$el.attr("data-model-id",this.model.get("_id")); // Saving the model id into the DOM for further initialization
 	},
 

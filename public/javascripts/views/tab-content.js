@@ -10,6 +10,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	// The DOM events specific to an item.
 	events: {
 		'click .close'         : 'quit',
+		'keyup .edit-content': 'keyProxy',
 		'keydown .edit-content': 'keyProxy',
 		'keypress .edit-title' : 'save',
 		'blur .edit-content'   : 'save',
@@ -33,11 +34,10 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	render: function() {
 		// Renders the tab-content item to the current state of the model
 		this.$el.html( this.template( this.model.toJSON() ) );
-
 		var view = this;
+
 		// Activating sub-views of embedded objects like tags, notes,...
 		this.$(".object").each(function (index, object) {
-
 			var $object = $(object);
 			if ($object.hasClass('tag')) {
 				var model = meenoAppCli.Tags.get($object.attr('data-model-id'));
@@ -57,8 +57,12 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	},
 
 	keyProxy: function ( event ) {
-		this.save();
+		// console.log(event)
 		// console.log("keyCode="+event.keyCode)
+
+		if (event.type == "keyup") {
+			this.save();
+		}
 	
 		var $caretsNode = $(getCaretsNode());
 
@@ -68,7 +72,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			return;
 		} else {
 		// We are not already inside an Object
-			if (event.keyCode == 51) {
+			if (event.keyCode == 51 && event.type == "keydown") {
 			// The user wants to insert a tag
 				event.preventDefault();
 				return this.newTask();
@@ -101,7 +105,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			content:this.$(".edit-content").html()
 		}).save({},{
 			success: function() {
-				console.log('successfully saved');
+				// console.log('successfully saved');
 			},
 			error  : function() {
 				console.log('saving failed');
