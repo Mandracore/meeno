@@ -88,7 +88,12 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		pasteHtmlAtCaret(
 			"<span class='object tag icon-tag' id='"+id+"'>"
 				+"<span class='icon'></span>"
-				+"<span class='body'>&nbsp;</span>"
+				+"<label>"
+					+"<datalist id='datalist_"+id+"' class='datalist'>"
+						+"<option value='Blackberry'>Blackberry</option>"
+					+"</datalist>"
+				+	"<input class='body' type='text' name='datalist_"+id+"' list='datalist_"+id+"'>"
+				+"</label>"
 			+"</span>"
 			+"<span class='void'>&nbsp;</span>");
 		var newTagView = new meenoAppCli.Classes.TagRefView({ 
