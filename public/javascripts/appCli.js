@@ -12,13 +12,14 @@ $(function() {
 		}
 
 		// same as this.$el.remove();
-		// console.log (this);
+		// console.log ("Killing : "+this.options.class);
+		console.log ("Killing : ");
 		this.remove();
 		// unbind events that are set on this view
 		this.off();
 		// remove all models bindings made by this view (do not affect any other observer to this model)
 		this.model.off( null, null, this );
-		console.log ('___________View killed___________');
+		// console.log ('___________View killed___________:');
 		// Beware : this remove cannot event listeners referring to this view and set on other objects !
 	};
 

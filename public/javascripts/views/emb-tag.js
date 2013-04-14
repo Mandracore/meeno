@@ -7,27 +7,31 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 */
 
 	initialize: function() {
+		this.options.class = "emb-tag";
 
-		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quit, this);
+		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
 		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
 		meenoAppCli.dispatcher.on('note:link:object:slave:' + this.model.cid, this.noteLink, this);
 		this.model.on('change', this.render, this);
-		this.model.on('remove', this.quit, this);
+		this.model.on('remove', this.kill, this);
 		if (this.options.isNew) { // Needed only for new tags
-			meenoAppCli.dispatcher.on('tab:object:markDom:' + this.model.cid, this.markDom, this);
+			meenoAppCli.dispatcher.on('tab:object:markDom:' + this.model.cid, this.lockSlave, this);
 			this.$(".body").focus();
-			// moveCaret (this.$(".body")[0], 1);
 		}
+		this.$("input.body").on("click", function () {console.log('testing a')})
 		console.log ('Embedded tag view initialized');
 	},
 
 	beforeKill: function() {
-		// This listener has to be removed in order to destroy last reference to the view and allow Garbage collecting
-		meenoAppCli.dispatcher.off('tab:object:markDom:' + this.model.cid, this.markDom, this);
+		// External listeners have to be removed in order to destroy last reference to the view and allow Garbage collecting
+		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.kill, this);
+		meenoAppCli.dispatcher.off('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
+		meenoAppCli.dispatcher.off('note:link:object:slave:' + this.model.cid, this.noteLink, this);
+		meenoAppCli.dispatcher.off('tab:object:markDom:' + this.model.cid, this.lockSlave, this);
 	},
 
 	render: function() {
-		console.log('rendering');
+		console.log('rendering emb-tag');
 		this.$(".body").html(this.model.get('label'));
 		if (!this.model) {this.$el.addClass('broken');}
 		return this;
@@ -38,8 +42,15 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		//-------------------------------
 		// Autocomplete in other cases
 		//-------------------------------
-		if (event.type == "keyup") {
-		/// Problème : le KEYDOWN ne fonctionnera pas bien pour l'autocomplete, il vaut mieux un KEYUP
+		if (event.type == "keyup" &&
+		event.keyCode != 33 && // page up
+		event.keyCode != 34 && // page down
+		event.keyCode != 35 && // end
+		event.keyCode != 36 && // home
+		event.keyCode != 37 && // left arrow
+		event.keyCode != 38 && // up arrow
+		event.keyCode != 39 && // right arrow
+		event.keyCode != 40) {
 			var strHint = (this.$(".body").val());
 			if (strHint.length > -1) {
 				console.log("hint="+strHint)
@@ -54,62 +65,65 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 			}
 		}
 
-		//-------------------------------
-		// Tag cleanup
-		//-------------------------------
-		// if (!this.$el.hasClass('cleanupDone') && this.$('.body').html().length == 8) {
-		// 	var sHtml = this.$('.body').html();
-		// 	this.$('.body').html(sHtml.replace(/^(\&nbsp;)| (.*)/g, "$2"));
-		// 	moveCaret (this.$(".body")[0], 1);
-		// 	this.$el.addClass('cleanupDone');
-		// }
-
+		if (event.type == "keydown") {
 		//-------------------------------
 		// Destroying tags
 		//-------------------------------
-		// We destroy the view if the user erases up to the last character of the tag
-		// Not working yet
-		if (event.keyCode == 8 && this.$('.body').val().length == 0) {
-			console.log('removing tag');
-			this.quit();
-		}
-		// We destroy the view when the object is locked and the user presses Back key
-		if (this.$el.hasClass('locked')) { console.log('locked')
-			if (event.keyCode == 8) { // The user asked to remove the object
-				console.log('removing locked tag');
-				this.quit();
-			} else { // The object is locked, don't do anything
-				event.preventDefault();
+
+			// We destroy the view if the user erases up to the last character of the tag
+			if (event.keyCode == 8 && this.$('.body').val().length == 0) {
+				console.log('removing tag');
+				this.kill();
 			}
-			return;
-		}
+			// We destroy the view when the object is locked and the user presses Back key
+			if (this.$el.hasClass('locked')) {
+				if (event.keyCode == 8) { // The user asked to remove the object
+					console.log('removing locked tag');
+					this.kill();
+				} else { // The object is locked, don't do anything unless moving caret
+					if (event.keyCode != 33 && // page up
+						event.keyCode != 34 && // page down
+						event.keyCode != 35 && // end
+						event.keyCode != 36 && // home
+						event.keyCode != 37 && // left arrow
+						event.keyCode != 38 && // up arrow
+						event.keyCode != 39 && // right arrow
+						event.keyCode != 40) { // down arrow
+						event.preventDefault();
+					}
+				}
+				return;
+			}
 
 		//-------------------------------
 		// Locking tags (stop edition)
 		//-------------------------------
-		if (event.keyCode == 13 || event.keyCode == 9) {
-			event.preventDefault();
-			if (this.$('.body').val().length > 2) {
-			// We save only tags of more than 1 character
-				console.log('Locking object');
-				return this.save();
+			if (event.keyCode == 13 || event.keyCode == 9) {
+				event.preventDefault();
+				if (this.$('.body').val().length > 2) {
+				// We save only tags of more than 2 characters
+					return this.lock();
+				}
+				console.log('won\'t lock')
 			}
-			console.log('won\'t lock')
 		}
-
-
-
 	},
 
-	save: function () {
-		// DOM manipulation
+	lock: function () {
+		console.log('############# Locking object #############');
+
+		// First DOM manipulation
 		this.$el.addClass("locked"); // Locking the object
-		var idx = this.$el.parent().contents().index(this.$el);
+		var newTagLabel = this.$(".body").val();
+		var $newSpan = $("<span>",{class:"body"}).html(newTagLabel);
+
+		this.$(".body").parent().remove();
+		this.$el.append($newSpan);
 		moveCaret (this.$el.next()[0], 1); // Moving the caret out of the object
 
 		// Setting/Saving Model
 		this.model.set({
-			label  :this.$(".body").val()
+			label  :this.$(".body").html()
 		});
 		meenoAppCli.Tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 		this.model.save({},{ // Now that the model is into a collection, the .save() method will work
@@ -125,16 +139,12 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		});
 	},
 
+	lockSlave: function () {
+		// Second DOM manipulation : saving the model id into the DOM for further initialization
+		this.$el.attr("data-model-id",this.model.get("_id"));
+	},
+
 	noteLink: function () {
 		meenoAppCli.dispatcher.trigger('note:link:object:' + this.options.sound, {type: "tag", model: this.model});
-	},
-
-	markDom: function () {
-		this.$el.attr("data-model-id",this.model.get("_id")); // Saving the model id into the DOM for further initialization
-	},
-
-	quit: function() {
-		console.log('quit embedded object view (id=' + this.$el.attr('id') + ')');
-		this.kill();
 	}
 });

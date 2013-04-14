@@ -16,7 +16,8 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		meenoAppCli.Notes.on('add destroy reset change', this.kill, this ); // Will destroy itself on those events, to prevent from memory leak
+		this.options.class = "list-note";
+		meenoAppCli.Notes.on('add destroy reset change', this.kill, this ); // The views are re-drawn by static-tab-content so here we just destroy the old sub-views
 	},
 
 	beforeKill: function() {

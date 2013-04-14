@@ -41,13 +41,13 @@ module.exports = function(mas, securityProxy){
 		});
 		tag.save(function(err) {
 			if (!err) {
-				return console.log("created");
+				console.log("created");
+				return res.send(tag);
 			} else {
 				console.log(err);
 				return res.send(400,"Bad request");
 			}
 		});
-		return res.send(tag);
 	});
 	mas.delete("/api/tags/:id", mas.security.proxy("user"), function (req, res) {
 		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {

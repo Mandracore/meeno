@@ -22,12 +22,18 @@ meenoAppCli.Classes.ListTagView = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		meenoAppCli.Tags.on('add destroy reset change', this.kill, this ); // Will destroy itself on those events, to prevent from memory leak
-		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
+		this.options.class = "list-tag";
+		meenoAppCli.Tags.on('add destroy reset change', this.kill, this ); // The views are re-drawn by static-tab-content so here we just destroy the old sub-views
+	},
+ 
+	beforeKill: function() {
+		// This listener has to be removed in order to destroy last reference to the view and allow Garbage collecting
+		meenoAppCli.Tags.off('add destroy reset change', this.kill, this );
 	},
 
 	// Re-renders the note item to the current state of the model
 	render: function() {
+		console.log ("re-rendering list-tag");
 		this.$el.html( this.template( this.model.toJSON() ) );
 		return this;
 	},
