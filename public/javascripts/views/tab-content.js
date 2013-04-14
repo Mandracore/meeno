@@ -34,7 +34,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		if (parameters.type == "tag") {
 			this.model.add('tags', parameters.model);
 			this.model.save();
-			console.log('Tag linked to current note');
+			console.log('Tag "'+parameters.model.get('label')+'" linked to current note');
 		}
 	},
 
