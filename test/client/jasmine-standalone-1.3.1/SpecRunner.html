@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Jasmine Spec Runner</title>
+
+  <link rel="shortcut icon" type="image/png" href="lib/jasmine-1.3.1/jasmine_favicon.png">
+  <link rel="stylesheet" type="text/css" href="lib/jasmine-1.3.1/jasmine.css">
+  <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine.js"></script>
+  <script type="text/javascript" src="lib/jasmine-1.3.1/jasmine-html.js"></script>
+
+  <!-- include source files here... -->
+  <!--script type="text/javascript" src="src/Player.js"></script>
+  <script type="text/javascript" src="src/Song.js"></script-->
+
+  <script type="text/javascript" src="../../../public/javascripts/lib/modernizr-2.6.2.min.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/jquery-1.8.3.min.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/jquery.dateFormat-1.0.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/underscore-min.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/backbone.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/backbone-relational.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/backbone-nested-v1.1.2.min.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/jquery.caret.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/caret.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/lib/tools.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/models/note.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/models/tag.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/collections/notes.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/collections/tags.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/list-note.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/list-tag.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/list-task.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/emb-tag.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/static-tab-nav.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/static-tab-content.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/tab-nav.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/tab-content.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/views/main.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/appCli.js"></script>
+  <script type="text/javascript" src="../../../public/javascripts/routers/router.js"></script>
+
+  <!-- include spec files here... -->
+  <!--script type="text/javascript" src="spec/SpecHelper.js"></script>
+  <script type="text/javascript" src="spec/PlayerSpec.js"></script-->
+  <script type="text/javascript" src="../spec/main.js"></script>
+
+  <script type="text/javascript">
+    (function() {
+      var jasmineEnv = jasmine.getEnv();
+      jasmineEnv.updateInterval = 1000;
+
+      var htmlReporter = new jasmine.HtmlReporter();
+
+      jasmineEnv.addReporter(htmlReporter);
+
+      jasmineEnv.specFilter = function(spec) {
+        return htmlReporter.specFilter(spec);
+      };
+
+      var currentWindowOnload = window.onload;
+
+      window.onload = function() {
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
+      };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
+    })();
+  </script>
+
+</head>
+
+<body>
+</body>
+</html>

@@ -39,8 +39,6 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 		// var tag = meenoAppCli.Tags.get(note.get('tags')[0])
 		// tag.get('label')
 
-
-
 		this.$el.html( this.template( json ) );
 		return this;
 	},

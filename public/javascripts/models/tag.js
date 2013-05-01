@@ -7,7 +7,9 @@ meenoAppCli.Classes.Tag = Backbone.NestedModel.extend({
 	idAttribute: "_id",
 	defaults: function() {
 		return {
-			label     : 'New Tag'
+			label     : 'New Tag',
+			created_at: new Date(),
+			updated_at: new Date()
 		};
 	}
 });

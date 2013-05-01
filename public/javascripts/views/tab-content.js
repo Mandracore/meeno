@@ -20,7 +20,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	initialize: function() {
 		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
-		meenoAppCli.dispatcher.on('note:link:object:' + this.options.sound, this.linkObject, this);
+		// meenoAppCli.dispatcher.on('note:link:object:' + this.options.sound, this.linkObject, this);
 	},
 
 	beforeKill: function() {
@@ -28,14 +28,6 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		meenoAppCli.dispatcher.off('tab:toggle:' + this.options.sound, this.toggle, this);
 		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.quitSub, this);
 		meenoAppCli.dispatcher.off('note:link:object:' + this.options.sound, this.linkObject, this);
-	},
-
-	linkObject: function (parameters) {
-		if (parameters.type == "tag") {
-			this.model.add('tags', parameters.model);
-			this.model.save();
-			console.log('Tag "'+parameters.model.get('label')+'" linked to current note');
-		}
 	},
 
 	render: function() {
@@ -96,7 +88,6 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			"<span class='object tag icon-tag' id='"+id+"'>"
 				+"<label class='datalist-wrapper'>"
 					+"<datalist id='datalist_"+id+"' class='datalist'>"
-						+"<option value='Blackberry'>Blackberry</option>"
 					+"</datalist>"
 				+	"<input class='body' type='text' name='datalist_"+id+"' list='datalist_"+id+"'>"
 				+"</label>"
@@ -106,7 +97,8 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			model: newTag,
 			el: $("#"+id), // We bind the sub view to the element we just created
 			sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
-			isNew: true
+			isNew: true,
+			note: this.model
 		});
 	},
 
@@ -119,7 +111,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 				// console.log('successfully saved');
 			},
 			error  : function() {
-				console.log('saving failed');
+				console.log('Saving note modifications failed');
 			}
 		});
 	},

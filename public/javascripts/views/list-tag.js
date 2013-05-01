@@ -33,7 +33,7 @@ meenoAppCli.Classes.ListTagView = Backbone.View.extend({
 
 	// Re-renders the note item to the current state of the model
 	render: function() {
-		console.log ("re-rendering list-tag");
+		console.log ("R[list-tag]");
 		this.$el.html( this.template( this.model.toJSON() ) );
 		return this;
 	},

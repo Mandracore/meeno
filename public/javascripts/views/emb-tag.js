@@ -2,9 +2,6 @@ var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.TagRefView = Backbone.View.extend({
-/*
-IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
-*/
 
 	initialize: function() {
 		this.options.class = "emb-tag";
@@ -16,8 +13,13 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		if (this.options.isNew) { // Needed only for new tags
 			this.$(".body").focus();
 		}
-		this.$("input.body").on("click", function () {console.log('testing a')})
+		// this.$(".datalistoption").on("click", function () {console.log('testing a')})
+		// $(this.$el.attr('id')+" option").on("click", function(event){
+		// 	alert("ALERT");
+		// });
+		$("#tabs").on("click", ".trick",  function () {alert('testing a')})
 		console.log ('Embedded tag view initialized');
+
 	},
 
 	beforeKill: function() {
@@ -27,7 +29,7 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 	},
 
 	render: function() {
-		console.log('rendering emb-tag');
+		console.log ("R[emb-tag]");
 		this.$(".body").html(this.model.get('label'));
 		if (!this.model) {this.$el.addClass('broken');}
 		return this;
@@ -49,13 +51,12 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 		event.keyCode != 40) {
 			var strHint = (this.$(".body").val());
 			if (strHint.length > -1) {
-				console.log("hint="+strHint)
 				var pattern = new RegExp(strHint,"i");
 				var proposals = meenoAppCli.Tags.filter(function (tag) {
 					return pattern.test(tag.get('label'));
 				});
 				var datalistOptions = proposals.map(function (obj, key) { 
-					return "<option value='"+obj.get('label')+"'>"+obj.get('label')+"</option>"; 
+					return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>"; 
 				});
 				this.$(".datalist").html(datalistOptions);
 			}
@@ -74,7 +75,8 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 			// We destroy the view when the object is locked and the user presses Back key
 			if (this.$el.hasClass('locked')) {
 				if (event.keyCode == 8) { // The user asked to remove the object
-					console.log('removing locked tag');
+					console.log('...Removing locked tag...');
+					this.unlink();
 					this.kill();
 				} else { // The object is locked, don't do anything unless moving caret
 					if (event.keyCode != 33 && // page up
@@ -98,40 +100,106 @@ IL MANQUE TOUTE LA PARTIE DE CREATION DU LINK AVEC LA NOTE !!!
 				event.preventDefault();
 				if (this.$('.body').val().length > 2) {
 				// We save only tags of more than 2 characters
-					return this.lock();
+					return this.freeze();
 				}
 				console.log('won\'t lock')
 			}
 		}
 	},
 
-	lock: function () {
+		// Apparemment buggé, reste à déterminer pourquoi.
+	freeze: function () {
 		console.log('############# Locking object #############');
+
 		var view = this;
+		var inputVal = this.$(".body").val();
+		var existing = meenoAppCli.Tags.find(function (tag) { return tag.get('label') == inputVal });
 
-		// Setting/Saving Model
-		this.model.set({
-			label  :this.$(".body").val()
+		if (existing == undefined) {
+			console.log('## Creating new tag');
+			this.model.set({
+				label  :this.$(".body").val()
+			});
+			meenoAppCli.Tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+			this.model.save({},{ // Now that the model is into a collection, the .save() method will work
+				success: function(model, response, options) {
+					view.link ({
+						success: function () {
+							view.transform(view.$(".body").val());
+							view.clean();
+							view.lock();
+							console.log('Tag "'+view.model.get('label')+'" linked to current note');
+						},
+						error: function () {
+							view.dirty();
+							console.log('Impossible to link Tag "'+view.model.get('label')+'" to current note');
+						}
+					});
+					moveCaret (view.$el.next()[0], 1); // Moving the caret out of the object
+				},
+				error  : function() {
+					console.log('!!! Saving new model failed');
+					view.dirty();
+				}
+			});
+		} else {
+			console.log('## Linking to existing tag');
+			this.model = existing;
+			this.link ({
+				success: function () {
+					view.transform(view.$(".body").val());
+					view.clean();
+					view.lock();
+					console.log('Tag "'+view.model.get('label')+'" linked to current note');
+				},
+				error: function () {
+					view.dirty();
+					console.log('Impossible to link Tag "'+view.model.get('label')+'" to current note');
+				}
+			});
+			moveCaret (view.$el.next()[0], 1); // Moving the caret out of the object
+		}
+	},
+
+	lock: function () {
+		console.log('Locking object');
+		this.$el.addClass("locked");
+		this.$el.attr("data-model-id",this.model.get("_id"));
+	},
+
+	dirty: function () {
+		console.log('Breaking object');
+		this.$el.addClass("broken");
+	},
+
+	clean: function () {
+		console.log('Cleaning object');
+		this.$el.removeClass("broken");
+	},
+
+	transform: function (newLabel) {
+		var $newSpan = $("<span>",{class:"body"}).html(newLabel);
+		this.$(".body").parent().remove();
+		this.$el.append($newSpan);
+	},
+
+	link: function (callbacks) {
+		console.log('--trying to link tag')
+		var view = this;
+		this.options.note.add('tags', this.model);
+		this.options.note.save({},{
+			success: callbacks.success,
+			error  : callbacks.error
 		});
-		meenoAppCli.Tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
-		this.model.save({},{ // Now that the model is into a collection, the .save() method will work
-			success: function(model, response, options) {
-				// DOM manipulation
-				view.$el.addClass("locked").removeClass("broken"); // Visually locking/repairing the object
-				view.$el.attr("data-model-id",view.model.get("_id"));
-				var newTagLabel = view.$(".body").val();
-				var $newSpan = $("<span>",{class:"body"}).html(newTagLabel);
-				view.$(".body").parent().remove();
-				view.$el.append($newSpan);
-				moveCaret (view.$el.next()[0], 1); // Moving the caret out of the object
+	},
 
-				// Shouting to warn the note editor that the new tag has to be linked to the note
-				meenoAppCli.dispatcher.trigger('note:link:object:' + view.options.sound, {type: "tag", model: view.model});
-			},
-			error  : function() {
-				console.log('saving failed');
-				view.$el.addClass("broken");
-			}
+	unlink: function (note, callbacks) {
+		console.log('--trying to unlink tag')
+		var view = this;
+		note.add('tags', this.model);
+		note.save({},{
+			success: callbacks.success,
+			error  : callbacks.error
 		});
 	}
 });
