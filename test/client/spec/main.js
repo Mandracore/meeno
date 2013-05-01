@@ -18,6 +18,15 @@ describe("Note model", function() {
 			expect(this.note.get('content')).toBe('Saisissez ici le contenu de votre note...');
 		});
 	});
+
+	describe("when modifying a note", function() {
+		it("should have updated updated_at attribute", function() {
+			var time0 = this.note.get('updated_at');
+			// Modify object...
+			var time1 = this.note.get('updated_at');
+			expect(time1 - time0).toBeGreaterThan(0);
+		});
+	});
 });
 
 describe("Tag model", function() {
@@ -35,6 +44,15 @@ describe("Tag model", function() {
 		});		
 		it("should have a default label attribute", function() {
 			expect(this.tag.get('label')).toBe('New Tag');
+		});
+	});
+
+	describe("when modifying a tag", function() {
+		it("should have updated updated_at attribute", function() {
+			var time0 = this.tag.get('updated_at');
+			// Modify object...
+			var time1 = this.tag.get('updated_at');
+			expect(time1 - time0).toBeGreaterThan(0);
 		});
 	});
 });
