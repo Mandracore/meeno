@@ -20,14 +20,12 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	initialize: function() {
 		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
-		// meenoAppCli.dispatcher.on('note:link:object:' + this.options.sound, this.linkObject, this);
 	},
 
 	beforeKill: function() {
 		// External listeners have to be removed in order to destroy last reference to the view and allow Garbage collecting
 		meenoAppCli.dispatcher.off('tab:toggle:' + this.options.sound, this.toggle, this);
 		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.quitSub, this);
-		meenoAppCli.dispatcher.off('note:link:object:' + this.options.sound, this.linkObject, this);
 	},
 
 	render: function() {

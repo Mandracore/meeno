@@ -18,8 +18,8 @@ meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
 
 		if (this.options.browse) {
-			meenoAppCli.Notes.on('add destroy reset change', this.render, this );
-			meenoAppCli.Tags.on('add destroy reset change', this.render, this );
+			meenoAppCli.Notes.on('add destroy reset change', this.renderNotes, this );
+			meenoAppCli.Tags.on('add destroy reset change', this.renderTags, this );
 			this.render();
 		}
 	},
@@ -52,31 +52,28 @@ meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 	filterTags: function() {this.filter(1);},
 	filterTasks: function() {this.filter(2);},
 
-	render: function() {
-		// Trigger rendering of notes
+	renderNotes: function () {
 		var $noteList = this.$('.listobjects.notes .notes');
 		$noteList.html(''); // First, emptying the DOM list
 
 		meenoAppCli.Notes.each(function (note) {
 			var listNoteView = new meenoAppCli.Classes.ListNoteView({ model: note });
 			$noteList.append(listNoteView.render().el);
-		}, this);		
+		}, this);
+	},
 
-
-
-		// Trigger rendering of tasks
-		/*var $taskList = this.$('.listobjects.tasks .tasks');
-		$taskList.html(''); // First, emptying the list
-		meenoAppCli.Tasks.each(function (task) {
-			var listTaskView = new meenoAppCli.Classes.ListTaskView({ model: task });
-			$taskList.append(listTaskView.render().el);
-		}, this);*/
-		// Trigger rendering of tags
+	renderTags: function () {
 		var $tagList = this.$('.listobjects.tags .tags');
-		$tagList.html(''); // First, emptying the list
+		$tagList.html(''); // First, emptying the DOM list
+
 		meenoAppCli.Tags.each(function (tag) {
 			var listTagView = new meenoAppCli.Classes.ListTagView({ model: tag });
 			$tagList.append(listTagView.render().el);
 		}, this);
+	},
+
+	render: function () {
+		this.renderNotes();
+		this.renderTags();
 	},
 });

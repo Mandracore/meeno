@@ -56,3 +56,31 @@ describe("Tag model", function() {
 		});
 	});
 });
+
+describe("Task model", function() {
+
+	beforeEach(function() {
+		this.task = new meenoAppCli.Classes.Task();
+	});
+
+	describe("when creating a new task", function() {
+		it("should have a default created_at attribute", function() {
+			expect((new Date()).getTime() - this.task.get('created_at').getTime()).toBeGreaterThan(-1);
+		});	
+		it("should have a default updated_at attribute", function() {
+			expect((new Date()).getTime() - this.task.get('updated_at').getTime()).toBeGreaterThan(-1);
+		});		
+		it("should have a default label attribute", function() {
+			expect(this.task.get('label')).toBe('New task');
+		});
+	});
+
+	describe("when modifying a task", function() {
+		it("should have updated updated_at attribute", function() {
+			var time0 = this.task.get('updated_at');
+			// Modify object...
+			var time1 = this.task.get('updated_at');
+			expect(time1 - time0).toBeGreaterThan(0);
+		});
+	});
+});

@@ -27,10 +27,10 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 
 	// Re-renders the note item to the current state of the model
 	render: function() {
+		console.log ("R[list-note]");
 		var json        = this.model.toJSON();
 		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
-		// console.log("__________Render list-note :"+this.model.get('title'));
-		//var note = meenoAppCli.Notes.models[1]
+
 		_.each(this.model.get('tags'),function (element, index, list) {
 
 			var tag = meenoAppCli.Tags.get(element._id);
