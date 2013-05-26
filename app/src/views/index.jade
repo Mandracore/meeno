@@ -25,7 +25,7 @@ block content
 		|			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
 		|			<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
 		|		</section>
-		|		<section contentEditable class="edit-content editable"><%= content %></section>
+		|		<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
 		|	</article>
 
 	// Client-side application's scripts
@@ -39,28 +39,32 @@ block content
 	//- script(src="javascripts/lib/backbone.localStorage-min.js")
 	script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
 	//- script(src="javascripts/lib/jquery.at.caret.min.js")
-	script(src="javascripts/lib/keymaster.min.js")
-	script(src="javascripts/lib/backbone.shortcuts.min.js")
+	//- script(src="javascripts/lib/keymaster.min.js")
+	//- script(src="javascripts/lib/backbone.shortcuts.min.js")
+	script(src="javascripts/lib/mousetrap.min.js")
+	//- script(src="javascripts/lib/mousetrap-global.js")
+	//- script(src="javascripts/lib/mousetrap-global-bind.min.js")
+	script(src="javascripts/lib/backbone.mousetrap.js")
 	script(src="javascripts/lib/jquery.caret.js")
 	script(src="javascripts/lib/caret.js")
 	script(src="javascripts/lib/tools.js")
 
 	//- Application specific scripts
+	script(src="javascripts/appCli.js")
+	script(src="javascripts/routers/router.js")
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/models/tag.js")
 	script(src="javascripts/collections/notes.js")
 	script(src="javascripts/collections/tags.js")
+	script(src="javascripts/views/main.js")
+	script(src="javascripts/views/static-tab-content.js")
+	script(src="javascripts/views/tab-nav.js")
+	script(src="javascripts/views/static-tab-nav.js")
+	script(src="javascripts/views/tab-content.js")
 	script(src="javascripts/views/list-note.js")
 	script(src="javascripts/views/list-tag.js")
 	script(src="javascripts/views/list-task.js")
 	script(src="javascripts/views/emb-tag.js")
-	script(src="javascripts/views/static-tab-nav.js")
-	script(src="javascripts/views/static-tab-content.js")
-	script(src="javascripts/views/tab-nav.js")
-	script(src="javascripts/views/tab-content.js")
-	script(src="javascripts/views/main.js")
-	script(src="javascripts/appCli.js")
-	script(src="javascripts/routers/router.js")
 
 	// Login/Register form
 	div#form-wrapper(style="display:none")

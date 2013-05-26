@@ -18,18 +18,17 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		'blur .edit-title'     : 'save'
 	},
 
-    shortcuts: {
-        'ctrl+alt+3': 'newTag',
+    keyboardEvents: {
+        '#': 'newTag',
         'ctrl+alt+t': 'newTask',
-        'ctrl+alt+0': 'newPerson'
+        't t t': 'newTask',
+        '@': 'newPerson'
     },
 
 	initialize: function() {
+		Backbone.View.prototype.initialize.apply(this, arguments);
 		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
-
-        _.extend(this, new Backbone.Shortcuts);
-        this.delegateShortcuts();
 	},
 
 	beforeKill: function() {
@@ -82,13 +81,6 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			var id     = makeid();
 			var newTag = new meenoAppCli.Classes.Tag();
 
-			if (event.preventDefault) {
-				event.preventDefault();
-			} else {
-				// internet explorer
-				event.returnValue = false;
-			}
-
 			pasteHtmlAtCaret(
 				"<span class='object tag icon-tag' id='"+id+"'>"
 					+"<label class='datalist-wrapper'>"
@@ -106,6 +98,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 				note: this.model
 			});
 			this.save();
+			return false;
 		}
 	},
 
