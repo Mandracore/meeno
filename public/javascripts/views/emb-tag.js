@@ -5,11 +5,24 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'keyup'  : 'keyUp',
-		'keydown' : 'keyDown'
+		'keyup'  : 'keyUp'/*,
+		'keydown' : 'keyDown'*/
+	},
+
+	keyboardEvents: {
+		// some issue with mousetrap on chrome
+		// '#': 'newTag',
+		// '@': 'newPerson',
+		'esc': 'tryLock',
+		'return': 'tryLock',
+		'enter': 'tryLock',
+		'tab': 'tryLock',
+		'backspace': 'tryDelete',
+		'del': 'tryDelete'
 	},
 
 	initialize: function() {
+		Backbone.View.prototype.initialize.apply(this, arguments);
 		this.options.class = "emb-tag";
 
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
@@ -68,58 +81,74 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		}
 	},
 
-	keyDown: function( event ) {
-		//-------------------------------
-		// Destroying tags
-		//-------------------------------
+	// keyDown: function( event ) {
+	// 	//-------------------------------
+	// 	// Destroying tags
+	// 	//-------------------------------
 
-		// We destroy the view if the user erases up to the last character of the tag
-		if (event.keyCode == 8 && this.$('.body').val().length) {
-			console.log('removing tag');
-			this.kill();
-		}
-		// We destroy the view when the object is locked and the user presses Back key
-		if (this.$el.hasClass('locked')) {
-			if (event.keyCode == 8) { // The user asked to remove the object
-				console.log('...Removing locked tag...');
-				this.unlink();
-				this.kill();
-			} else { // The object is locked, don't do anything unless moving caret
-				if (event.keyCode != 33 && // page up
-					event.keyCode != 34 && // page down
-					event.keyCode != 35 && // end
-					event.keyCode != 36 && // home
-					event.keyCode != 37 && // left arrow
-					event.keyCode != 38 && // up arrow
-					event.keyCode != 39 && // right arrow
-					event.keyCode != 40) { // down arrow
-					event.preventDefault();
-				}
-			}
-			return;
-		}
+	// 	// We destroy the view if the user erases up to the last character of the tag
+	// 	if (event.keyCode == 8 && this.$('.body').val().length) {
+	// 		console.log('removing tag');
+	// 		this.kill();
+	// 	}
+	// 	// We destroy the view when the object is locked and the user presses Back key
+	// 	if (this.$el.hasClass('locked')) {
+	// 		if (event.keyCode == 8) { // The user asked to remove the object
+	// 			console.log('...Removing locked tag...');
+	// 			this.unlink();
+	// 			this.kill();
+	// 		} else { // The object is locked, don't do anything unless moving caret
+	// 			if (event.keyCode != 33 && // page up
+	// 				event.keyCode != 34 && // page down
+	// 				event.keyCode != 35 && // end
+	// 				event.keyCode != 36 && // home
+	// 				event.keyCode != 37 && // left arrow
+	// 				event.keyCode != 38 && // up arrow
+	// 				event.keyCode != 39 && // right arrow
+	// 				event.keyCode != 40) { // down arrow
+	// 				event.preventDefault();
+	// 			}
+	// 		}
+	// 		return;
+	// 	}
+	// },
 
+	tryLock: function(){
+		console.log('Try to lock');
 		//-------------------------------
 		// Locking tags (stop edition)
 		//-------------------------------
-		if (event.keyCode == 13 || event.keyCode == 9) {
-			event.preventDefault();
-			if (this.$('.body').val().length > 2) {
+		if (this.$('.body').val().length > 2) {
 			// We save only tags of more than 2 characters
-				return this.freeze();
-			}
+			this.freeze();
+		} else {
 			console.log('won\'t lock');
 		}
-
+		return false;
 	},
 
-		// Apparemment buggé, reste à déterminer pourquoi.
+	tryDelete: function(){
+		//-------------------------------
+		// Destroying tags
+		//-------------------------------
+		console.log('Try to delete');
+		if(this.$('.body').val().length){
+			console.log('removing tag');
+			this.kill();
+		}
+		if (this.$el.hasClass('locked')) {
+			console.log('...Removing locked tag...');
+			this.unlink();
+			this.kill();
+		}
+	},
+	// Apparemment buggé, reste à déterminer pourquoi.
 	freeze: function () {
 		console.log('############# Locking object #############');
 
 		var view = this;
 		var inputVal = this.$(".body").val();
-		var existing = meenoAppCli.Tags.find(function (tag) { return tag.get('label') == inputVal });
+		var existing = meenoAppCli.Tags.find(function (tag) { return tag.get('label') == inputVal; });
 
 		if (!existing) {
 			console.log('## Creating new tag');

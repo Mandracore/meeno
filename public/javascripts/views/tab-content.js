@@ -23,7 +23,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		// '#': 'newTag',
 		// '@': 'newPerson',
 		'ctrl+alt+3': 'newTag',
-		'ctrl+alt+0': 'newPerson'
+		'ctrl+alt+0': 'newPerson',
 		'ctrl+alt+t': 'newTask',
 		't t t': 'newTask'
 	},
@@ -71,11 +71,11 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		var newTag = new meenoAppCli.Classes.Tag();
 
 		pasteHtmlAtCaret(
-			"<span class='object tag icon-tag' id='"+id+"'>"
+			"<span class='object tag icon-tag mousetrap' id='"+id+"'>"
 				+"<label class='datalist-wrapper'>"
 					+"<datalist id='datalist_"+id+"' class='datalist'>"
 					+"</datalist>"
-				+	"<input class='body' type='text' name='datalist_"+id+"' list='datalist_"+id+"'>"
+				+	"<input class='body' type='text' pattern='.{3,}' name='datalist_"+id+"' list='datalist_"+id+"'>"
 				+"</label>"
 			+"</span>"
 			+"<span class='void'>&nbsp;</span>");
