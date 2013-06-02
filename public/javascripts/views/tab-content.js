@@ -18,12 +18,15 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		'blur .edit-title'     : 'save'
 	},
 
-    keyboardEvents: {
-        '#': 'newTag',
-        'ctrl+alt+t': 'newTask',
-        't t t': 'newTask',
-        '@': 'newPerson'
-    },
+	keyboardEvents: {
+		// some issue with mousetrap on chrome
+		// '#': 'newTag',
+		// '@': 'newPerson',
+		'ctrl+alt+3': 'newTag',
+		'ctrl+alt+0': 'newPerson'
+		'ctrl+alt+t': 'newTask',
+		't t t': 'newTask'
+	},
 
 	initialize: function() {
 		Backbone.View.prototype.initialize.apply(this, arguments);
@@ -62,91 +65,60 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		return this;
 	},
 
-	keyProxy: function (event) {
-		var $caretsNode = $(getCaretsNode());
+	newTag: function () {
+		console.log('New tag');
+		var id     = makeid();
+		var newTag = new meenoAppCli.Classes.Tag();
 
-		if ($caretsNode.parent().hasClass('object')) {
-		// If we are already in an html node related to an object, we dispatch the event to the right sub-view
-			meenoAppCli.dispatcher.trigger('tab:object:key:' + $caretsNode.parent().attr('id'), event);
-			return false;
-		} else {
-		// We are not already inside an Object
-			return true;
-		}
+		pasteHtmlAtCaret(
+			"<span class='object tag icon-tag' id='"+id+"'>"
+				+"<label class='datalist-wrapper'>"
+					+"<datalist id='datalist_"+id+"' class='datalist'>"
+					+"</datalist>"
+				+	"<input class='body' type='text' name='datalist_"+id+"' list='datalist_"+id+"'>"
+				+"</label>"
+			+"</span>"
+			+"<span class='void'>&nbsp;</span>");
+		var newTagView = new meenoAppCli.Classes.TagRefView({
+			model: newTag,
+			el: $("#"+id), // We bind the sub view to the element we just created
+			sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
+			isNew: true,
+			note: this.model
+		});
+		this.save();
+		return false;
 	},
 
-	newTag: function ( event ) {
-		if(this.keyProxy(event)){
-			console.log('New tag');
-			var id     = makeid();
-			var newTag = new meenoAppCli.Classes.Tag();
-
-			pasteHtmlAtCaret(
-				"<span class='object tag icon-tag' id='"+id+"'>"
-					+"<label class='datalist-wrapper'>"
-						+"<datalist id='datalist_"+id+"' class='datalist'>"
-						+"</datalist>"
-					+	"<input class='body' type='text' name='datalist_"+id+"' list='datalist_"+id+"'>"
-					+"</label>"
-				+"</span>"
-				+"<span class='void'>&nbsp;</span>");
-			var newTagView = new meenoAppCli.Classes.TagRefView({
-				model: newTag,
-				el: $("#"+id), // We bind the sub view to the element we just created
-				sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
-				isNew: true,
-				note: this.model
-			});
-			this.save();
-			return false;
-		}
+	newTask: function () {
+		console.log('New task');
+		// Don't do anything for now
+		this.save();
+		return false;
 	},
 
-	newTask: function ( event ) {
-		if(this.keyProxy(event)){
-			console.log('New task');
-			// Don't do anything for now
-			if (event.preventDefault) {
-				event.preventDefault();
-			} else {
-				// internet explorer
-				event.returnValue = false;
-			}
-			this.save();
-		}
-	},
-
-	newPerson: function ( event ) {
-		if(this.keyProxy(event)){
-			console.log('New person');
-			// Don't do anything for now
-			if (event.preventDefault) {
-				event.preventDefault();
-			} else {
-				// internet explorer
-				event.returnValue = false;
-			}
-			this.save();
-		}
+	newPerson: function () {
+		console.log('New person');
+		// Don't do anything for now
+		this.save();
+		return false;
 	},
 
 	save: function() {
-		if(this.keyProxy()){
-			this.numberOfEdit++;
-			if(this.numberOfEdit==this.limitNumberOfEdit){
-				this.model.set({
-					title  :this.$(".edit-title").html(),
-					content:this.$(".edit-content").html()
-				}).save({},{
-					success: function() {
-						console.log('successfully saved');
-					},
-					error  : function() {
-						console.log('Saving note modifications failed');
-					}
-				});
-				this.numberOfEdit=0;
-			}
+		this.numberOfEdit++;
+		if(this.numberOfEdit==this.limitNumberOfEdit){
+			this.model.set({
+				title  :this.$(".edit-title").html(),
+				content:this.$(".edit-content").html()
+			}).save({},{
+				success: function() {
+					console.log('successfully saved');
+				},
+				error  : function() {
+					console.log('Saving note modifications failed');
+				}
+			});
+			this.numberOfEdit=0;
 		}
 	},
 
@@ -165,6 +137,7 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	},
 
 	quit: function() {
+		this.save();
 		meenoAppCli.dispatcher.trigger('tab:quit:'+this.options.sound); // Will be heard by this view and its sub views
 		meenoAppCli.dispatcher.trigger('tab:toggle:browse');
 	}

@@ -3,6 +3,12 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
+	// The DOM events specific to an item.
+	events: {
+		'keyup'  : 'keyUp',
+		'keydown' : 'keyDown'
+	},
+
 	initialize: function() {
 		this.options.class = "emb-tag";
 
@@ -35,13 +41,12 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		return this;
 	},
 
-	keyProxy: function( event ) {
+	keyUp: function( event ) {
 
 		//-------------------------------
 		// Autocomplete in other cases
 		//-------------------------------
-		if (event.type == "keyup" &&
-		event.keyCode != 33 && // page up
+		if (event.keyCode != 33 && // page up
 		event.keyCode != 34 && // page down
 		event.keyCode != 35 && // end
 		event.keyCode != 36 && // home
@@ -55,56 +60,57 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 				var proposals = meenoAppCli.Tags.filter(function (tag) {
 					return pattern.test(tag.get('label'));
 				});
-				var datalistOptions = proposals.map(function (obj, key) { 
-					return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>"; 
+				var datalistOptions = proposals.map(function (obj, key) {
+					return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>";
 				});
 				this.$(".datalist").html(datalistOptions);
 			}
 		}
+	},
 
-		if (event.type == "keydown") {
+	keyDown: function( event ) {
 		//-------------------------------
 		// Destroying tags
 		//-------------------------------
 
-			// We destroy the view if the user erases up to the last character of the tag
-			if (event.keyCode == 8 && this.$('.body').val().length == 0) {
-				console.log('removing tag');
+		// We destroy the view if the user erases up to the last character of the tag
+		if (event.keyCode == 8 && this.$('.body').val().length) {
+			console.log('removing tag');
+			this.kill();
+		}
+		// We destroy the view when the object is locked and the user presses Back key
+		if (this.$el.hasClass('locked')) {
+			if (event.keyCode == 8) { // The user asked to remove the object
+				console.log('...Removing locked tag...');
+				this.unlink();
 				this.kill();
-			}
-			// We destroy the view when the object is locked and the user presses Back key
-			if (this.$el.hasClass('locked')) {
-				if (event.keyCode == 8) { // The user asked to remove the object
-					console.log('...Removing locked tag...');
-					this.unlink();
-					this.kill();
-				} else { // The object is locked, don't do anything unless moving caret
-					if (event.keyCode != 33 && // page up
-						event.keyCode != 34 && // page down
-						event.keyCode != 35 && // end
-						event.keyCode != 36 && // home
-						event.keyCode != 37 && // left arrow
-						event.keyCode != 38 && // up arrow
-						event.keyCode != 39 && // right arrow
-						event.keyCode != 40) { // down arrow
-						event.preventDefault();
-					}
+			} else { // The object is locked, don't do anything unless moving caret
+				if (event.keyCode != 33 && // page up
+					event.keyCode != 34 && // page down
+					event.keyCode != 35 && // end
+					event.keyCode != 36 && // home
+					event.keyCode != 37 && // left arrow
+					event.keyCode != 38 && // up arrow
+					event.keyCode != 39 && // right arrow
+					event.keyCode != 40) { // down arrow
+					event.preventDefault();
 				}
-				return;
 			}
+			return;
+		}
 
 		//-------------------------------
 		// Locking tags (stop edition)
 		//-------------------------------
-			if (event.keyCode == 13 || event.keyCode == 9) {
-				event.preventDefault();
-				if (this.$('.body').val().length > 2) {
-				// We save only tags of more than 2 characters
-					return this.freeze();
-				}
-				console.log('won\'t lock')
+		if (event.keyCode == 13 || event.keyCode == 9) {
+			event.preventDefault();
+			if (this.$('.body').val().length > 2) {
+			// We save only tags of more than 2 characters
+				return this.freeze();
 			}
+			console.log('won\'t lock');
 		}
+
 	},
 
 		// Apparemment buggé, reste à déterminer pourquoi.
@@ -115,7 +121,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		var inputVal = this.$(".body").val();
 		var existing = meenoAppCli.Tags.find(function (tag) { return tag.get('label') == inputVal });
 
-		if (existing == undefined) {
+		if (!existing) {
 			console.log('## Creating new tag');
 			this.model.set({
 				label  :this.$(".body").val()
@@ -184,7 +190,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	link: function (callbacks) {
-		console.log('--trying to link tag')
+		console.log('--trying to link tag');
 		var view = this;
 		this.options.note.add('tags', this.model);
 		this.options.note.save({},{
@@ -194,7 +200,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	unlink: function (note, callbacks) {
-		console.log('--trying to unlink tag')
+		console.log('--trying to unlink tag');
 		var view = this;
 		note.add('tags', this.model);
 		note.save({},{
