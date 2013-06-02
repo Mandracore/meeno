@@ -13,8 +13,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		// some issue with mousetrap on chrome
 		// '#': 'newTag',
 		// '@': 'newPerson',
-		'esc': 'tryLock',
-		'return': 'tryLock',
+		'esc': 'tryDelete',
 		'enter': 'tryLock',
 		'tab': 'tryLock',
 		'backspace': 'tryDelete',
@@ -132,7 +131,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		// Destroying tags
 		//-------------------------------
 		console.log('Try to delete');
-		if(this.$('.body').val().length){
+		if(!this.$('.body').val().length){
 			console.log('removing tag');
 			this.kill();
 		}

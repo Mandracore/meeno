@@ -71,11 +71,11 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		var newTag = new meenoAppCli.Classes.Tag();
 
 		pasteHtmlAtCaret(
-			"<span class='object tag icon-tag mousetrap' id='"+id+"'>"
+			"<span class='object tag icon-tag' id='"+id+"'>"
 				+"<label class='datalist-wrapper'>"
 					+"<datalist id='datalist_"+id+"' class='datalist'>"
 					+"</datalist>"
-				+	"<input class='body' type='text' pattern='.{3,}' name='datalist_"+id+"' list='datalist_"+id+"'>"
+				+	"<input class='body mousetrap' type='text' pattern='.{3,}' name='datalist_"+id+"' list='datalist_"+id+"'>"
 				+"</label>"
 			+"</span>"
 			+"<span class='void'>&nbsp;</span>");
