@@ -27,6 +27,12 @@ block content
 		|		</section>
 		|		<section contentEditable class="edit-content editable"><%= content %></section>
 		|	</article>
+	script(type="text/template", id="emb-tag-template")
+		|<label class='datalist-wrapper'>
+		|	<datalist id='datalist_<%= id %>' class='datalist'>
+		|	</datalist>
+		|	<input class='body' type='text' name='datalist_<%= id %>' list='datalist_<%= id %>'>
+		|</label>
 
 	// Client-side application's scripts
 	script(src="javascripts/lib/modernizr-2.6.2.min.js")

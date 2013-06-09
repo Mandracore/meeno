@@ -3,6 +3,10 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
+	tagName  :  'span',
+	className:  'object tag icon-tag',
+	template : _.template( $('#emb-tag-template').html() ),
+
 	initialize: function() {
 		this.options.class = "emb-tag";
 
@@ -10,16 +14,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
 		this.model.on('change', this.render, this);
 		this.model.on('remove', this.kill, this);
-		if (this.options.isNew) { // Needed only for new tags
-			this.$(".body").focus();
-		}
-		// this.$(".datalistoption").on("click", function () {console.log('testing a')})
-		// $(this.$el.attr('id')+" option").on("click", function(event){
-		// 	alert("ALERT");
-		// });
-		$("#tabs").on("click", ".trick",  function () {alert('testing a')})
-		console.log ('Embedded tag view initialized');
-
+		console.log ('Init[emb_tag]');
 	},
 
 	beforeKill: function() {
@@ -30,8 +25,11 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	render: function() {
 		console.log ("R[emb-tag]");
-		this.$(".body").html(this.model.get('label'));
-		if (!this.model) {this.$el.addClass('broken');}
+		this.$el.attr('id', this.options.id)
+		var templateData = {
+			id: this.options.id
+		}
+		this.$el.html( this.template( templateData ) );
 		return this;
 	},
 

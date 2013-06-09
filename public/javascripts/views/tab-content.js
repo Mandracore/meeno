@@ -82,22 +82,20 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		console.log('New tag');
 		var id     = makeid();
 		var newTag = new meenoAppCli.Classes.Tag();
-		pasteHtmlAtCaret(
-			"<span class='object tag icon-tag' id='"+id+"'>"
-				+"<label class='datalist-wrapper'>"
-					+"<datalist id='datalist_"+id+"' class='datalist'>"
-					+"</datalist>"
-				+	"<input class='body' type='text' name='datalist_"+id+"' list='datalist_"+id+"'>"
-				+"</label>"
-			+"</span>"
-			+"<span class='void'>&nbsp;</span>");
 		var newTagView = new meenoAppCli.Classes.TagRefView({ 
+			id: id,
 			model: newTag,
-			el: $("#"+id), // We bind the sub view to the element we just created
 			sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
 			isNew: true,
-			note: this.model
+			note: this.model // Has to be refined to diminish memory consumtion
 		});
+		var myhtml = newTagView.render().$el.clone().wrap('<div></div>');
+		console.log(myhtml.html())
+		pasteHtmlAtCaret(
+			newTagView.render().$el.clone().wrap('<div></div>').html() + // The tag itself with a trick to get its html back
+			"<span class='void'>&nbsp;</span>" // A place to put the caret
+		);
+		newTagView.$(".body").focus(); // Focusing on input
 	},
 
 	save: function() {

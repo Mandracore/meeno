@@ -10,3 +10,20 @@ describe("List tag view", function() {
 		});
 	});
 });
+
+describe("Embedded tag view", function() {
+
+	beforeEach(function() {
+		this.view = new meenoAppCli.Classes.TagRefView();
+	});
+
+	describe("when instantiated", function() {
+		it("should be a list element", function() {
+			expect(this.view.el.nodeName).toEqual("UL");
+		});
+		it("should have the classes 'object' and 'tag'", function() {
+			expect($(this.view.el).hasClass('object')).toBeTruthy();
+			expect($(this.view.el).hasClass('todos')).toBeTruthy();
+		});
+	});
+});
