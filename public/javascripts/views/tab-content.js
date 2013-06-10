@@ -89,10 +89,9 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			isNew: true,
 			note: this.model // Has to be refined to diminish memory consumtion
 		});
-		var myhtml = newTagView.render().$el.clone().wrap('<div></div>');
-		console.log(myhtml.html())
+		var newTagHtml = $("<div></div>").append(newTagView.render().$el.clone()).html();
 		pasteHtmlAtCaret(
-			newTagView.render().$el.clone().wrap('<div></div>').html() + // The tag itself with a trick to get its html back
+			newTagHtml + // The tag itself with a trick to get its html back
 			"<span class='void'>&nbsp;</span>" // A place to put the caret
 		);
 		newTagView.$(".body").focus(); // Focusing on input
