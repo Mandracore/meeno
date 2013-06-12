@@ -13,6 +13,11 @@ describe("List tag view", function() {
 
 describe("Embedded tag view", function() {
 
+	// beforeEach(function() {
+	// 	setFixtures('<ul class="todos"></ul>');
+	//  loadFixtures(fixtureUrl[, fixtureUrl, ...])
+	// });
+
 	beforeEach(function() {
 		this.view = new meenoAppCli.Classes.TagRefView();
 	});

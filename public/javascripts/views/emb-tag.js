@@ -5,15 +5,15 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	tagName  :  'span',
 	className:  'object tag icon-tag',
-	template : _.template( $('#emb-tag-template').html() ),
+	// template : _.template( $('#emb-tag-template').html() ),
 
 	initialize: function() {
 		this.options.class = "emb-tag";
 
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
 		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
-		this.model.on('change', this.render, this);
-		this.model.on('remove', this.kill, this);
+		// this.model.on('change', this.render, this);
+		// this.model.on('remove', this.kill, this);
 		console.log ('Init[emb_tag]');
 	},
 

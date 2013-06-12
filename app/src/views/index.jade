@@ -3,6 +3,7 @@ extends layout
 block content
 
 	// Client-side Templates
+	// This part of the DOM must be ready before defining the views as they use it for templating
 		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
 	script(type="text/template", id="overview-note-template")
 		|<span class="checkbox icon-check-empty"></span><span class="title attribute"><%= title %></span><span class="button edit">Edit</span><span class="button delete">Delete</span>
