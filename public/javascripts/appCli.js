@@ -4,7 +4,7 @@ var meenoAppCli = meenoAppCli || {};
 
 var ENTER_KEY = 13;
 
-$(function() {
+$(function() { // This ensures the code will be executed when DOM is ready
 
 	Backbone.View.prototype.kill = function () {
 		if (this.beforeKill) {
