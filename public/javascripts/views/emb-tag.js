@@ -5,8 +5,8 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'keyup'  : 'keyUp'/*,
-		'keydown' : 'keyDown'*/
+		'keyup'  : 'keyUp',
+		'keydown' : 'keyDown'
 	},
 
 	keyboardEvents: {
@@ -80,37 +80,27 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		}
 	},
 
-	// keyDown: function( event ) {
-	// 	//-------------------------------
-	// 	// Destroying tags
-	// 	//-------------------------------
-
-	// 	// We destroy the view if the user erases up to the last character of the tag
-	// 	if (event.keyCode == 8 && this.$('.body').val().length) {
-	// 		console.log('removing tag');
-	// 		this.kill();
-	// 	}
-	// 	// We destroy the view when the object is locked and the user presses Back key
-	// 	if (this.$el.hasClass('locked')) {
-	// 		if (event.keyCode == 8) { // The user asked to remove the object
-	// 			console.log('...Removing locked tag...');
-	// 			this.unlink();
-	// 			this.kill();
-	// 		} else { // The object is locked, don't do anything unless moving caret
-	// 			if (event.keyCode != 33 && // page up
-	// 				event.keyCode != 34 && // page down
-	// 				event.keyCode != 35 && // end
-	// 				event.keyCode != 36 && // home
-	// 				event.keyCode != 37 && // left arrow
-	// 				event.keyCode != 38 && // up arrow
-	// 				event.keyCode != 39 && // right arrow
-	// 				event.keyCode != 40) { // down arrow
-	// 				event.preventDefault();
-	// 			}
-	// 		}
-	// 		return;
-	// 	}
-	// },
+	keyDown: function( event ) {
+		console.log('key down');
+		if (this.$el.hasClass('locked') &&
+			event.keyCode != 33 && // page up
+			event.keyCode != 34 && // page down
+			event.keyCode != 35 && // end
+			event.keyCode != 36 && // home
+			event.keyCode != 37 && // left arrow
+			event.keyCode != 38 && // up arrow
+			event.keyCode != 39 && // right arrow
+			event.keyCode != 40) { // down arrow
+			console.log('bien locké');
+			// The object is locked, don't do anything unless moving caret
+			if (event.preventDefault) {
+				event.preventDefault();
+			} else {
+				// internet explorer
+				event.returnValue = false;
+			}
+		}
+	},
 
 	tryLock: function(){
 		console.log('Try to lock');
