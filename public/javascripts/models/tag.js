@@ -6,7 +6,7 @@ meenoAppCli.Classes.Tag = Backbone.RelationalModel.extend({
 	relations: [{
 		type: 'HasMany',
 		key: 'noteLinks',
-		relatedModel: 'linkNoteTag',
+		relatedModel: 'meenoAppCli.Classes.linkNoteTag',
 		reverseRelation: {
 			key: 'tag'
 		}

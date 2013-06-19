@@ -10,6 +10,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	initialize: function() {
 		this.options.class = "emb-tag";
 		this.options.id = !this.options.id ? 0 : this.options.id;
+
 		if (this.model) {
 			this.model.on('change', this.render, this);
 			this.model.on('remove', this.kill, this);
@@ -18,6 +19,12 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
 		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
 		console.log ('Init[emb_tag]');
+		console.log (this.el);
+		console.log (this.$el);
+		console.log (this.$el.children());
+		console.log (this.$('label'));
+		console.log (this.$('.body'));
+		console.log (this.$('input'));
 	},
 
 	beforeKill: function() {
@@ -100,6 +107,8 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		//-------------------------------
 			if (event.keyCode == 13 || event.keyCode == 9) {
 				event.preventDefault();
+				console.log("nb of charss in input:"+this.$el.find('.body').val().length)
+				console.log("nb of charss in input:"+this.$('input').val().length)
 				if (this.$('.body').val().length > 2) {
 				// We save only tags of more than 2 characters
 					return this.freeze();

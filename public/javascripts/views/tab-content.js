@@ -72,14 +72,14 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			if (event.keyCode == 51 && event.type == "keydown") {
 			// The user wants to insert a tag
 				event.preventDefault();
-				return this.newTask();
+				return this.newTag();
 			}
 			// The user is just typing some text
 		}
 	},
 
-	newTask: function () {
-		console.log('New tag');
+	newTag: function () {
+		console.log('>>> New tag');
 		var id     = makeid();
 		var newTag = new meenoAppCli.Classes.Tag();
 		var newTagView = new meenoAppCli.Classes.TagRefView({ 
@@ -89,12 +89,12 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			isNew: true,
 			note: this.model // Has to be refined to diminish memory consumtion
 		});
-		var newTagHtml = $("<div></div>").append(newTagView.render().$el.clone()).html();
+		var newTagHtml = $("<div></div>").append(newTagView.render().$el).html();
 		pasteHtmlAtCaret(
 			newTagHtml + // The tag itself with a trick to get its html back
 			"<span class='void'>&nbsp;</span>" // A place to put the caret
 		);
-		newTagView.$(".body").focus(); // Focusing on input
+		$("#"+id+" .body").focus(); // Focusing on input
 	},
 
 	save: function() {

@@ -4,6 +4,7 @@ block content
 	// Fur future use
 		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
 
+
 	// Client-side Templates
 	// This part of the DOM must be ready before defining the views as they use it for templating
 	include clientSideTemplates.html
@@ -16,11 +17,12 @@ block content
 	script(src="javascripts/lib/backbone.js")
 	script(src="javascripts/lib/backbone-relational.js")
 	//- script(src="javascripts/lib/backbone.localStorage-min.js")
-	script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
+	//- script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
 	//- script(src="javascripts/lib/jquery.at.caret.min.js")
 	script(src="javascripts/lib/jquery.caret.js")
 	script(src="javascripts/lib/caret.js")
 	script(src="javascripts/lib/tools.js")
+	script(src="javascripts/models/link-note-tag.js")
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/models/tag.js")
 	script(src="javascripts/collections/notes.js")

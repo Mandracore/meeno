@@ -11,7 +11,7 @@ meenoAppCli.Classes.Router = Backbone.Router.extend({
 	},
 
 	setFilter: function( param ) {
-		console.log("param:"+param);
+		console.log("Router param:"+param);
 	}
 });
 
