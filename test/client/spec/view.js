@@ -1,7 +1,32 @@
+describe("Editor view", function() {
+
+	beforeEach(function() {
+		loadFixtures('clientSideTemplates.html');
+		this.view = new meenoAppCli.Classes.EditorView();
+	});
+
+	describe("when instantiated", function() {
+		it("should instante two sub views", function() {
+			expect (this.view.slaves.nav.el).toEqual("SPAN");
+			expect (this.view.slaves.content.el).toEqual("SPAN");
+		});
+	});
+
+	describe("when quit", function() {
+		it("should first kill its two sub views", function() {
+			spyOn(this.view.slaves.nav, 'quit');
+			spyOn(this.view.slaves.content, 'quit');
+			this.view.quit();
+			expect(this.view.slaves.nav.quit).toHaveBeenCalled();
+			expect(this.view.slaves.content.quit).toHaveBeenCalled();
+		});
+	});
+});
+
+
 describe("Embedded tag view", function() {
 
 	beforeEach(function() {
-		// loadFixtures('../../../../../../app/src/views/clientSideTemplates.html');
 		loadFixtures('clientSideTemplates.html');
 		this.view = new meenoAppCli.Classes.TagRefView();
 	});

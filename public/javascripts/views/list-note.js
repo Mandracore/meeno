@@ -55,6 +55,12 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 
 	edit: function() {
 		console.log('Editing note');
+
+		/* CIBLE : 
+		var newEditor = new meenoAppCli.Classes.EditorView ({ model: this.model });
+		newEditor.toggle();
+		*/
+
 		var sound          = Math.random(); // Using "sound" to make both view listen to same events...
 		var tabNavView     = new meenoAppCli.Classes.TabNavView({ model: this.model, sound: sound }); // ...and thus enable them to communicate
 		var tabContentView = new meenoAppCli.Classes.TabContentView({ model: this.model, sound: sound });

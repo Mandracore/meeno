@@ -94,7 +94,8 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 			newTagHtml + // The tag itself with a trick to get its html back
 			"<span class='void'>&nbsp;</span>" // A place to put the caret
 		);
-		$("#"+id+" .body").focus(); // Focusing on input
+		newTagView.$el = $("#"+id); // Linking the DOM to the view
+		newTagView.$(".body").focus(); // Focusing on input
 	},
 
 	save: function() {
