@@ -4,14 +4,18 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 meenoAppCli.Classes.EditorView = Backbone.View.extend({
 
 	initialize: function() {
-		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
-		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
+		this.children = {
+			tab  : new meenoAppCli.Classes.EditorTabView({ model: this.model }),
+			body : new meenoAppCli.Classes.EditorBodyView({ model: this.model })
+		}
+		$("#nav").append(this.children.tab.render().el);
+		$("#tabs").append(this.children.body.render().el);
 	},
 
 	beforeKill: function() {
-		// External listeners have to be removed in order to destroy last reference to the view and allow Garbage collecting
-		meenoAppCli.dispatcher.off('tab:toggle:' + this.options.sound, this.toggle, this);
-		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.quitSub, this);
+		console.log('Killing editor');
+		this.children.tab.kill();
+		this.children.body.kill();
 	},
 
 	render: function() {
@@ -19,21 +23,7 @@ meenoAppCli.Classes.EditorView = Backbone.View.extend({
 	},
 
 	toggle: function() {
-		// First, deactivate the other tabs' content
-		$("#tabs").children().each(function(i,child){
-			$(child).removeClass("selected");
-		});
-		// Then activate this one
-		this.$el.addClass('selected');
-	},
-
-	quitSub: function() {
-		console.log('quit tab content');
-		this.remove();
-	},
-
-	quit: function() {
-		meenoAppCli.dispatcher.trigger('tab:quit:'+this.options.sound); // Will be heard by this view and its sub views
-		meenoAppCli.dispatcher.trigger('tab:toggle:browse');
+		this.children.tab.toggle();
+		this.children.body.toggle();
 	}
 });

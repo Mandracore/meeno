@@ -1,7 +1,7 @@
 var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-meenoAppCli.Classes.TabContentView = Backbone.View.extend({
+meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	tagName  :  'div',
 	className:  'tab object note',
@@ -17,16 +17,9 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		'blur .edit-title'     : 'save'
 	},
 
-	initialize: function() {
-		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
-		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
-	},
+	initialize: function() {},
 
-	beforeKill: function() {
-		// External listeners have to be removed in order to destroy last reference to the view and allow Garbage collecting
-		meenoAppCli.dispatcher.off('tab:toggle:' + this.options.sound, this.toggle, this);
-		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.quitSub, this);
-	},
+	beforeKill: function() {},
 
 	render: function() {
 		// Renders the tab-content item to the current state of the model
@@ -119,15 +112,5 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		});
 		// Then activate this one
 		this.$el.addClass('selected');
-	},
-
-	quitSub: function() {
-		console.log('quit tab content');
-		this.remove();
-	},
-
-	quit: function() {
-		meenoAppCli.dispatcher.trigger('tab:quit:'+this.options.sound); // Will be heard by this view and its sub views
-		meenoAppCli.dispatcher.trigger('tab:toggle:browse');
 	}
 });
