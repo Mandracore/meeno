@@ -14,6 +14,7 @@ meenoAppCli.Classes.EditorView = Backbone.View.extend({
 
 	beforeKill: function() {
 		console.log('Killing editor');
+		meenoAppCli.dispatcher.trigger('tab:toggle:browse');
 		this.children.tab.kill();
 		this.children.body.kill();
 	},

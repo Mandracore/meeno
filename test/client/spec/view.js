@@ -1,12 +1,12 @@
-describe("Editor view", function() {
+describe("Browser view", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
-		this.view = new meenoAppCli.Classes.EditorView();
+		this.view = new meenoAppCli.Classes.BrowserView();
 	});
 
 	describe("when instantiated", function() {
-		it("should instante two sub views", function() {
+		it("should instantiate two sub views", function() {
 			expect (this.view.slaves.nav.el).toEqual("SPAN");
 			expect (this.view.slaves.content.el).toEqual("SPAN");
 		});
@@ -19,6 +19,33 @@ describe("Editor view", function() {
 			this.view.quit();
 			expect(this.view.slaves.nav.quit).toHaveBeenCalled();
 			expect(this.view.slaves.content.quit).toHaveBeenCalled();
+		});
+	});
+});
+
+describe("Editor view", function() {
+
+	beforeEach(function() {
+		loadFixtures('clientSideTemplates.html');
+		this.view = new meenoAppCli.Classes.EditorView();
+		// Need to fake a model here // var newNote   = meenoAppCli.Notes.create({silent:true});
+	});
+
+	describe("when rendered", function() {
+		it("should render two sub views", function() {
+			$("#sandbox").append(this.view.render().$el);
+			expect (this.view.children.tab.el).toEqual("LI");
+			expect (this.view.children.body.el).toEqual("DIV");
+		});
+	});
+
+	describe("when killed", function() {
+		it("should first kill its two sub views", function() {
+			spyOn(this.view.children.tab, 'kill');
+			spyOn(this.view.children.body, 'kill');
+			this.view.kill();
+			expect(this.view.children.tab.kill).toHaveBeenCalled();
+			expect(this.view.children.body.kill).toHaveBeenCalled();
 		});
 	});
 });
