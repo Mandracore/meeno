@@ -3,9 +3,9 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.EditorTabView = Backbone.View.extend({
 
-	tagName  :  'li', // The View will generate itself within a <tagName> element (its top-level element)...
-	className:  'object note', // ... and will apply itself those classes : <tagName class="className1 className2[...]"
-	template : _.template( $('#tab-nav-template').html() ), // ... and will finally use this template to render the related model with passed to the constructor
+	tagName   : 'li', // The View will generate itself within a <tagName> element (its top-level element)...
+	className : 'object note', // ... and will apply itself those classes : <tagName class="className1 className2[...]"
+	template  : '#editor-tab-template', // ... and will finally use this template to render the related model with passed to the constructor
 
 	// The DOM events we listen to
 	events: {
@@ -20,7 +20,8 @@ meenoAppCli.Classes.EditorTabView = Backbone.View.extend({
 
 	// Renders the tab-nav item to the current state of the model
 	render: function() {
-		this.$el.html( this.template( this.model.toJSON() ) );
+		var templateFn = _.template( $(this.template).html() );
+		this.$el.html( templateFn( this.model.toJSON() ) );
 		return this;
 	},
 

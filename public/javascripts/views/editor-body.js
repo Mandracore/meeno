@@ -3,27 +3,30 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
-	tagName  :  'div',
-	className:  'tab object note',
-	template : _.template( $('#tab-content-template').html() ),
+	tagName   : 'div',
+	className : 'tab object note',
+	template  : '#editor-body-template',
 
 	// The DOM events specific to an item.
 	events: {
-		'click .close'         : 'quit',
-		'keyup .edit-content': 'keyProxy',
-		'keydown .edit-content': 'keyProxy',
-		'keypress .edit-title' : 'save',
-		'blur .edit-content'   : 'save',
-		'blur .edit-title'     : 'save'
+		'click .kill'           : 'delegatedKill',
+		'keyup .edit-content'   : 'keyProxy',
+		'keydown .edit-content' : 'keyProxy',
+		'keypress .edit-title'  : 'save',
+		'blur .edit-content'    : 'save',
+		'blur .edit-title'      : 'save'
 	},
 
 	initialize: function() {},
 
-	beforeKill: function() {},
+	delegatedKill: function() {
+		this.options.parent.kill();
+	},
 
 	render: function() {
 		// Renders the tab-content item to the current state of the model
-		this.$el.html( this.template( this.model.toJSON() ) );
+		var templateFn = _.template( $(this.template).html() );
+		this.$el.html( templateFn( this.model.toJSON() ) );
 		var view = this;
 
 		// Activating sub-views of embedded objects like tags, notes,...
