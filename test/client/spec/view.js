@@ -27,15 +27,24 @@ describe("Editor view", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
-		this.view = new meenoAppCli.Classes.EditorView();
-		// Need to fake a model here // var newNote   = meenoAppCli.Notes.create({silent:true});
+		this.note = new meenoAppCli.Classes.Note()
+		this.view  = new meenoAppCli.Classes.EditorView ({ model: this.note });
 	});
 
 	describe("when rendered", function() {
 		it("should render two sub views", function() {
 			$("#sandbox").append(this.view.render().$el);
-			expect (this.view.children.tab.el).toEqual("LI");
-			expect (this.view.children.body.el).toEqual("DIV");
+			expect (this.view.children.tab.el.nodeName).toEqual("LI");
+			expect (this.view.children.body.el.nodeName).toEqual("DIV");
+		});
+	});
+
+	describe("when click on 'Close' button", function() {
+		it("should kill itself", function() {
+			$("#sandbox").append(this.view.render().$el);
+			spyOn(this.view, 'kill');
+			this.view.children.body.$('.kill').trigger('click');
+			expect(this.view.kill).toHaveBeenCalled();
 		});
 	});
 
@@ -46,6 +55,22 @@ describe("Editor view", function() {
 			this.view.kill();
 			expect(this.view.children.tab.kill).toHaveBeenCalled();
 			expect(this.view.children.body.kill).toHaveBeenCalled();
+		});
+	});
+
+	describe("when click on 'Delete' button", function() {
+		beforeEach(function() {
+			$("#sandbox").append(this.view.render().$el);
+		});
+		it("should delete its model", function() {
+			spyOn(this.view, 'kill');
+			this.view.children.body.$('.kill').trigger('click');
+			expect(this.view.kill).toHaveBeenCalled();
+		});
+		it("should kill itself", function() {
+			spyOn(this.view, 'kill');
+			this.view.children.body.$('.kill').trigger('click');
+			expect(this.view.kill).toHaveBeenCalled();
 		});
 	});
 });
