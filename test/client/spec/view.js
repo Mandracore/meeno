@@ -29,22 +29,13 @@ describe("Editor view", function() {
 		loadFixtures('clientSideTemplates.html');
 		this.note = new meenoAppCli.Classes.Note()
 		this.view  = new meenoAppCli.Classes.EditorView ({ model: this.note });
+		$("#sandbox").append(this.view.render().$el);
 	});
 
 	describe("when rendered", function() {
 		it("should render two sub views", function() {
-			$("#sandbox").append(this.view.render().$el);
 			expect (this.view.children.tab.el.nodeName).toEqual("LI");
 			expect (this.view.children.body.el.nodeName).toEqual("DIV");
-		});
-	});
-
-	describe("when click on 'Close' button", function() {
-		it("should kill itself", function() {
-			$("#sandbox").append(this.view.render().$el);
-			spyOn(this.view, 'kill');
-			this.view.children.body.$('.kill').trigger('click');
-			expect(this.view.kill).toHaveBeenCalled();
 		});
 	});
 
@@ -58,18 +49,32 @@ describe("Editor view", function() {
 		});
 	});
 
-	describe("when click on 'Delete' button", function() {
-		beforeEach(function() {
-			$("#sandbox").append(this.view.render().$el);
+	describe("when click on 'Duplicate' button", function() {
+		it("should duplicate its model", function() {
+			expect(false).toBe(true);
 		});
-		it("should delete its model", function() {
+		it("should open and toggle a new editor", function() {
+			expect(false).toBe(true);
+		});
+	});
+
+	describe("when click on 'Close' button", function() {
+		it("should kill itself", function() {
 			spyOn(this.view, 'kill');
 			this.view.children.body.$('.kill').trigger('click');
 			expect(this.view.kill).toHaveBeenCalled();
 		});
+	});
+
+	describe("when click on 'Delete' button", function() {
+		it("should delete its model", function() {
+			spyOn(this.note, 'destroy');
+			this.view.children.body.$('.delete').trigger('click');
+			expect(this.note.destroy).toHaveBeenCalled();
+		});
 		it("should kill itself", function() {
 			spyOn(this.view, 'kill');
-			this.view.children.body.$('.kill').trigger('click');
+			this.view.children.body.$('.delete').trigger('click');
 			expect(this.view.kill).toHaveBeenCalled();
 		});
 	});

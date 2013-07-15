@@ -10,6 +10,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	// The DOM events specific to an item.
 	events: {
 		'click .kill'           : 'delegatedKill',
+		'click .delete'         : 'delete',
 		'keyup .edit-content'   : 'keyProxy',
 		'keydown .edit-content' : 'keyProxy',
 		'keypress .edit-title'  : 'save',
@@ -20,6 +21,14 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	initialize: function() {},
 
 	delegatedKill: function() {
+		this.options.parent.kill();
+	},
+
+	delete: function() {
+		this.model.destroy({
+			success: function() {console.log("Object successfully deleted.")},
+			error  : function() {console.log("Deleting failed.")}
+		});
 		this.options.parent.kill();
 	},
 
