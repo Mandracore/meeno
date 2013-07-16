@@ -9,7 +9,7 @@ meenoAppCli.Classes.EditorTabView = Backbone.View.extend({
 
 	// The DOM events we listen to
 	events: {
-		'click': 'toggle'
+		'click': 'delegatedToggle'
 	},
 
 	initialize: function() {
@@ -23,6 +23,10 @@ meenoAppCli.Classes.EditorTabView = Backbone.View.extend({
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html( templateFn( this.model.toJSON() ) );
 		return this;
+	},
+
+	delegatedToggle: function() {
+		this.options.parent.toggle();
 	},
 
 	toggle: function() {
