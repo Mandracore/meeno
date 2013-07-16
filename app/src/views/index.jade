@@ -1,32 +1,13 @@
 extends layout
 
 block content
+	// Fur future use
+		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
+
 
 	// Client-side Templates
-		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
-	script(type="text/template", id="overview-note-template")
-		|<span class="checkbox icon-check-empty"></span><span class="title attribute"><%= title %></span><span class="button edit">Edit</span><span class="button delete">Delete</span>
-	script(type="text/template", id="overview-tag-template")
-		|<span class="checkbox icon-check-empty"></span><span class="label attribute"><%= label %></span><span class="button related">Related notes</span><span class="button edit">Edit</span><span class="button delete">Delete</span>
-	script(type="text/template", id="overview-task-template")
-		|<span class="checkbox icon-check-empty"></span><span class="label attribute"><%= label %></span><span class="button edit">Edit label</span><span class="button delete">Delete</span>
-	script(type="text/template", id="tab-nav-template")
-		|<%= title %>
-	script(type="text/template", id="tab-content-template")
-		|	<ul class="actions-contextual">
-		|		<li class="clone">Duplicate</li>
-		|		<li class="delete">Delete</li>
-		|		<li class="close">Close</li>
-		|	</ul>
-		|	<article>
-		|		<section class="attributes">
-		|			<p><span class="fieldname">Titre complet :</span> <span class="edit-title editable" contentEditable><%= title %></span></p>
-		|			<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-		|			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-		|			<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
-		|		</section>
-		|		<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
-		|	</article>
+	// This part of the DOM must be ready before defining the views as they use it for templating
+	include clientSideTemplates.html
 
 	// Client-side application's scripts
 	//- Libraries scripts
@@ -37,7 +18,7 @@ block content
 	script(src="javascripts/lib/backbone.js")
 	script(src="javascripts/lib/backbone-relational.js")
 	//- script(src="javascripts/lib/backbone.localStorage-min.js")
-	script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
+	//- script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
 	//- script(src="javascripts/lib/jquery.at.caret.min.js")
 	script(src="javascripts/lib/mousetrap.min.js")
 	script(src="javascripts/lib/backbone.mousetrap.js")
@@ -46,21 +27,23 @@ block content
 	script(src="javascripts/lib/tools.js")
 
 	//- Application specific scripts
-	script(src="javascripts/appCli.js")
-	script(src="javascripts/routers/router.js")
+	script(src="javascripts/models/link-note-tag.js")
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/models/tag.js")
 	script(src="javascripts/collections/notes.js")
 	script(src="javascripts/collections/tags.js")
-	script(src="javascripts/views/main.js")
-	script(src="javascripts/views/static-tab-content.js")
-	script(src="javascripts/views/tab-nav.js")
-	script(src="javascripts/views/static-tab-nav.js")
-	script(src="javascripts/views/tab-content.js")
 	script(src="javascripts/views/list-note.js")
 	script(src="javascripts/views/list-tag.js")
 	script(src="javascripts/views/list-task.js")
 	script(src="javascripts/views/emb-tag.js")
+	script(src="javascripts/views/static-tab-nav.js")
+	script(src="javascripts/views/static-tab-content.js")
+	script(src="javascripts/views/editor-tab.js")
+	script(src="javascripts/views/editor-body.js")
+	script(src="javascripts/views/editor.js")
+	script(src="javascripts/views/main.js")
+	script(src="javascripts/appCli.js")
+	script(src="javascripts/routers/router.js")
 
 	// Login/Register form
 	div#form-wrapper(style="display:none")

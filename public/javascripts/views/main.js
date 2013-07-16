@@ -15,23 +15,21 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	el: '#meenoApp',
 
 	events: {
-		// 'click .actions-main .note': 'newNote', // Create new note and open it in a new tab
+		'click .actions-main .note'   : 'newNote', // Create new note and open it in a new tab
 		// 'click .actions-main .tag' : 'newTag', // Create a new tag in a popup window
-		'keyup #search'            : 'search',
-		'submit #login'            : 'login',
-		'submit #register'         : 'register',
-		'click #toregister'        : 'toggleLR',
-		'click #tologin'           : 'toggleLR'
+		'keyup #search'               : 'search',
+		'submit #login'               : 'login',
+		'submit #register'            : 'register',
+		'click #toregister'           : 'toggleLR',
+		'click #tologin'              : 'toggleLR',
 	},
 
 	initialize: function() {
 		this.auth                 = false;
 		this.logging              = false;
 		this.registering          = false;
-		meenoAppCli.editorCounter = 0;
 
 		// meenoAppCli.Notes.on('add destroy reset change', this.render, this );
-		this.on('editor:counter', this.editorCounter, this );
 		this.on('server:auth', this.toggleAuth, this );
 
 
@@ -161,21 +159,10 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		return false;
 	},
 
-	new: function() {
-		if (meenoAppCli.editorCounter > 3) {
-			alert("Can't open more editors");
-			return;
-		}
-		this.trigger('editor:new',true);
-		var newNote                = meenoAppCli.Notes.create({silent:true});
-		newNote.openInEditor       = true;
-		var noteEditorTabView      = new meenoAppCli.Classes.NoteEditorTabView({ model: newNote });
-		var noteEditorControlsView = new meenoAppCli.Classes.NoteEditorControlsView({ model: newNote });
-		var noteEditorView         = new meenoAppCli.Classes.NoteEditorView({ model: newNote });
-		$('#editor-tabs-list').append(noteEditorTabView.render().el);
-		$('#editor-controls-list').append(noteEditorControlsView.render().el);
-		$('#editor-content-list').append(noteEditorView.render().el);
-		noteEditorTabView.toggle();
+	newNote: function() {
+		var newNote   = meenoAppCli.Notes.create({silent:true});
+		var newEditor = new meenoAppCli.Classes.EditorView ({ model: newNote });
+		newEditor.toggle();
 	},
 
 	search: function() {

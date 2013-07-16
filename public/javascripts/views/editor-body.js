@@ -1,17 +1,19 @@
 var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-meenoAppCli.Classes.TabContentView = Backbone.View.extend({
+meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
-	tagName          :  'div',
-	className        :  'tab object note',
-	template         : _.template( $('#tab-content-template').html() ),
-	numberOfEdit     :  0,
-	limitNumberOfEdit:  5,
+
+	tagName           : 'div',
+	className         : 'tab object note',
+	template          : '#editor-body-template',
+	numberOfEdit      : 0,
+	limitNumberOfEdit : 5,
 
 	// The DOM events specific to an item.
 	events: {
-		'click .close'         : 'quit',
+		'click .kill'          : 'delegatedKill',
+		'click .delete'        : 'delete',
 		'keyup .edit-content'  : 'save',
 		'keypress .edit-title' : 'save',
 		'blur .edit-content'   : 'save',
@@ -28,21 +30,24 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		't t t': 'newTask'
 	},
 
-	initialize: function() {
-		Backbone.View.prototype.initialize.apply(this, arguments);
-		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
-		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.quitSub, this);
+	initialize: function() {},
+
+	delegatedKill: function() {
+		this.options.parent.kill();
 	},
 
-	beforeKill: function() {
-		// External listeners have to be removed in order to destroy last reference to the view and allow Garbage collecting
-		meenoAppCli.dispatcher.off('tab:toggle:' + this.options.sound, this.toggle, this);
-		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.quitSub, this);
+	delete: function() {
+		this.model.destroy({
+			success: function() {console.log("Object successfully deleted.");},
+			error  : function() {console.log("Deleting failed.");}
+		});
+		this.options.parent.kill();
 	},
 
 	render: function() {
 		// Renders the tab-content item to the current state of the model
-		this.$el.html( this.template( this.model.toJSON() ) );
+		var templateFn = _.template( $(this.template).html() );
+		this.$el.html( templateFn( this.model.toJSON() ) );
 		var view = this;
 
 		// Activating sub-views of embedded objects like tags, notes,...
@@ -66,26 +71,23 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 	},
 
 	newTag: function () {
-		console.log('New tag');
+		console.log('>>> New tag');
 		var id     = makeid();
 		var newTag = new meenoAppCli.Classes.Tag();
-
-		pasteHtmlAtCaret(
-			"<span class='object tag icon-tag' id='"+id+"'>"
-				+"<label class='datalist-wrapper'>"
-					+"<datalist id='datalist_"+id+"' class='datalist'>"
-					+"</datalist>"
-				+	"<input class='body mousetrap' type='text' pattern='.{3,}' name='datalist_"+id+"' list='datalist_"+id+"'>"
-				+"</label>"
-			+"</span>"
-			+"<span class='void'>&nbsp;</span>");
 		var newTagView = new meenoAppCli.Classes.TagRefView({
+			id: id,
 			model: newTag,
-			el: $("#"+id), // We bind the sub view to the element we just created
 			sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
 			isNew: true,
-			note: this.model
+			note: this.model // Has to be refined to diminish memory consumtion
 		});
+		var newTagHtml = $("<div></div>").append(newTagView.render().$el).html();
+		pasteHtmlAtCaret(
+			newTagHtml + // The tag itself with a trick to get its html back
+			"<span class='void'>&nbsp;</span>" // A place to put the caret
+		);
+		newTagView.$el = $("#"+id); // Linking the DOM to the view
+		newTagView.$(".body").focus(); // Focusing on input
 		this.save();
 		return false;
 	},
@@ -129,16 +131,5 @@ meenoAppCli.Classes.TabContentView = Backbone.View.extend({
 		});
 		// Then activate this one
 		this.$el.addClass('selected');
-	},
-
-	quitSub: function() {
-		console.log('quit tab content');
-		this.remove();
-	},
-
-	quit: function() {
-		this.save();
-		meenoAppCli.dispatcher.trigger('tab:quit:'+this.options.sound); // Will be heard by this view and its sub views
-		meenoAppCli.dispatcher.trigger('tab:toggle:browse');
 	}
 });

@@ -3,6 +3,10 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
+	tagName   :'span',
+	className :'object tag icon-tag',
+	template  :'#emb-tag-template',
+
 	// The DOM events specific to an item.
 	events: {
 		'keyup'  : 'keyUp',
@@ -23,21 +27,16 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	initialize: function() {
 		Backbone.View.prototype.initialize.apply(this, arguments);
 		this.options.class = "emb-tag";
+		this.options.id = !this.options.id ? 0 : this.options.id;
+
+		if (this.model) {
+			this.model.on('change', this.render, this);
+			this.model.on('remove', this.kill, this);
+		}
 
 		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
 		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
-		this.model.on('change', this.render, this);
-		this.model.on('remove', this.kill, this);
-		if (this.options.isNew) { // Needed only for new tags
-			this.$(".body").focus();
-		}
-		// this.$(".datalistoption").on("click", function () {console.log('testing a')})
-		// $(this.$el.attr('id')+" option").on("click", function(event){
-		// 	alert("ALERT");
-		// });
-		$("#tabs").on("click", ".trick",  function () {alert('testing a')})
-		console.log ('Embedded tag view initialized');
-
+		console.log ('Init[emb_tag]');
 	},
 
 	beforeKill: function() {
@@ -48,8 +47,12 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	render: function() {
 		console.log ("R[emb-tag]");
-		this.$(".body").html(this.model.get('label'));
-		if (!this.model) {this.$el.addClass('broken');}
+		this.$el.attr('id', this.options.id);
+		var templateData = {
+			id: this.options.id
+		};
+		var templateFn = _.template( $(this.template).html() );
+		this.$el.html( templateFn( templateData ) );
 		return this;
 	},
 
@@ -110,6 +113,8 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		if (this.$('.body').val().length > 2) {
 			// We save only tags of more than 2 characters
 			this.freeze();
+			console.log("nb of charss in input:"+this.$el.find('.body').val().length);
+			console.log("nb of charss in input:"+this.$('input').val().length);
 		} else {
 			console.log('won\'t lock');
 		}
@@ -136,8 +141,9 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		console.log('############# Locking object #############');
 
 		var view = this;
-		var inputVal = this.$(".body").val();
-		var existing = meenoAppCli.Tags.find(function (tag) { return tag.get('label') == inputVal; });
+		var existing = meenoAppCli.Tags.find(function (tag) {
+			return tag.get('label') == this.$(".body").val();
+		});
 
 		if (!existing) {
 			console.log('## Creating new tag');
@@ -209,8 +215,17 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	link: function (callbacks) {
 		console.log('--trying to link tag');
-		var view = this;
-		this.options.note.add('tags', this.model);
+		// var view = this;
+		// this.options.note.add('tags', this.model);
+
+		// var lion = new Animal( { species: 'Lion', livesIn: artis } );
+		this.options.note.get('tagLinks').add( { tag: this.model } );
+		/*
+		var newLink = new meenoAppCli.Classes.linkNoteTag ({
+			note: this.options.note,
+			tag: this.model
+		});*/
+
 		this.options.note.save({},{
 			success: callbacks.success,
 			error  : callbacks.error
