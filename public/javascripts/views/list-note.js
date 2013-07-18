@@ -56,6 +56,7 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 	edit: function() {
 		console.log('Editing note');
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: this.model });
+		newEditor.render();
 		newEditor.toggle();
 	},
 

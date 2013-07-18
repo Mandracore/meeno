@@ -35,6 +35,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	clone: function() {
 		var cloneModel = this.model.clone();
+		meenoAppCli.Notes.add(cloneModel);
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: cloneModel });
 		newEditor.toggle();
 	},

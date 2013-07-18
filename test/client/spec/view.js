@@ -1,4 +1,4 @@
-describe("Browser view", function() {
+describe("Browser", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
@@ -23,7 +23,7 @@ describe("Browser view", function() {
 	});
 });
 
-describe("Editor view", function() {
+describe("Editor", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
@@ -49,6 +49,7 @@ describe("Editor view", function() {
 		});
 	});
 
+	// Describe basic cloning feat, no cloning of relationships yet
 	describe("when click on 'Duplicate' button", function() {
 		it("should duplicate its model", function() {
 			spyOn(this.view.model, 'clone');
@@ -75,14 +76,13 @@ describe("Editor view", function() {
 			this.view.children.body.$('.delete').trigger('click');
 			expect(this.note.destroy).toHaveBeenCalled();
 		});
-		it("should kill itself", function() {
+		it("should kill itself", function() {l
 			spyOn(this.view, 'kill');
 			this.view.children.body.$('.delete').trigger('click');
 			expect(this.view.kill).toHaveBeenCalled();
 		});
 	});
 });
-
 
 describe("Embedded tag view", function() {
 
