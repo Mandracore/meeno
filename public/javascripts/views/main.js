@@ -46,8 +46,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				meenoAppCli.Tags.fetch({
 					success: function (collection, xhr, options) {
 						// Initialize mandatory static tabs
-						new meenoAppCli.Classes.HelperView(); 
-						new meenoAppCli.Classes.BrowserView(); 
+						meenoAppCli.helper  = new meenoAppCli.Classes.HelperView(); 
+						meenoAppCli.browser = new meenoAppCli.Classes.BrowserView(); 
 					},
 					error: function (collection, xhr, options) {console.log('tag fetching failed')}
 				});

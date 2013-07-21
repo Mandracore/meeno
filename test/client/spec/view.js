@@ -21,6 +21,15 @@ describe("Browser", function() {
 			expect(this.view.slaves.content.quit).toHaveBeenCalled();
 		});
 	});
+
+	describe("when using the search function", function() {
+		it("should allow to filter notes by their title or content", function() {
+		});
+		it("should allow to filter tags by their title or content", function() {
+		});
+		it("should allow to filter tasks by their title or content", function() {
+		});
+	});
 });
 
 describe("Editor", function() {

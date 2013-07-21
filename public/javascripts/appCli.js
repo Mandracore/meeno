@@ -28,6 +28,9 @@ $(function() { // This ensures the code will be executed when DOM is ready
 	meenoAppCli.Tags       = new meenoAppCli.Classes.Tags(); // Our global collection of tags
 	meenoAppCli.mainView   = new meenoAppCli.Classes.MainView(); // Kick things off by creating the **main view**.
 	meenoAppCli.router     = new meenoAppCli.Classes.Router(); // Initiate Router
+	meenoAppCli.counters = {
+		openedEditors: 0
+	};
 
 
 	Backbone.history.start(); // Start Backbone history recording
