@@ -21,7 +21,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		'submit #login'               : 'login',
 		'submit #register'            : 'register',
 		'click #toregister'           : 'toggleLR',
-		'click #tologin'              : 'toggleLR',
+		'click #tologin'              : 'toggleLR'
 	},
 
 	initialize: function() {
@@ -46,12 +46,12 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				meenoAppCli.Tags.fetch({
 					success: function (collection, xhr, options) {
 						// Initialize mandatory static tabs
-						var helpTabNavView       = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .help"), sound: "help" }); 
-						var helpTabContentView   = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .help"), sound: "help" }); 
-						var browseTabNavView     = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .browse"), sound: "browse" }); 
-						var browseTabContentView = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .browse"), sound: "browse", browse: true }); 
+						var helpTabNavView       = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .help"), sound: "help" });
+						var helpTabContentView   = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .help"), sound: "help" });
+						var browseTabNavView     = new meenoAppCli.Classes.StaticTabNavView({ el: $("#nav .browse"), sound: "browse" });
+						var browseTabContentView = new meenoAppCli.Classes.StaticTabContentView({ el: $("#tabs .browse"), sound: "browse", browse: true });
 					},
-					error: function (collection, xhr, options) {console.log('tag fetching failed')}
+					error: function (collection, xhr, options) {console.log('tag fetching failed');}
 				});
 
 			},
@@ -172,8 +172,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			meenoAppCli.Notes.fetch();
 			console.log('Refetching whole collection');
 			return;
-		} 
-		
+		}
+
 		var pattern = new RegExp(term,"gi");
 		meenoAppCli.Notes.reset();
 		meenoAppCli.Notes.fetch();

@@ -31,13 +31,13 @@
 			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
 			<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
 		</section>
-		<section contentEditable class="edit-content editable"><%= content %></section>
+		<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
 	</article>
 </script>
 <script type="text/template" id="emb-tag-template" style="display: none;">
 	<label class='datalist-wrapper'>
 		<datalist id='datalist_<%= id %>' class='datalist'>
 		</datalist>
-		<input class='body' type='text' name='datalist_<%= id %>' list='datalist_<%= id %>'>
+		<input class='body mousetrap' type='text' name='datalist_<%= id %>' list='datalist_<%= id %>'>
 	</label>
 </script>

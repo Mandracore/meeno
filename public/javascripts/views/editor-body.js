@@ -14,8 +14,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	events: {
 		'click .kill'          : 'delegatedKill',
 		'click .delete'        : 'delete',
-		'keyup .edit-content'  : 'save',
-		'keypress .edit-title' : 'save',
+		'keypress'             : 'save',
 		'blur .edit-content'   : 'save',
 		'blur .edit-title'     : 'save'
 	},
@@ -24,13 +23,14 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		// some issue with mousetrap on chrome
 		// '#': 'newTag',
 		// '@': 'newPerson',
-		'ctrl+alt+3': 'newTag',
-		'ctrl+alt+0': 'newPerson',
-		'ctrl+alt+t': 'newTask',
-		't t t': 'newTask'
+		'ctrl+alt+shift+h': 'newTag',
+		'ctrl+alt+shift+a': 'newPerson',
+		'ctrl+alt+shift+t': 'newTask'
 	},
 
-	initialize: function() {},
+	initialize: function() {
+		Backbone.View.prototype.initialize.apply(this, arguments);
+	},
 
 	delegatedKill: function() {
 		this.options.parent.kill();
@@ -93,14 +93,14 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	},
 
 	newTask: function () {
-		console.log('New task');
+		console.log('>>> New task');
 		// Don't do anything for now
 		this.save();
 		return false;
 	},
 
 	newPerson: function () {
-		console.log('New person');
+		console.log('>>> New person');
 		// Don't do anything for now
 		this.save();
 		return false;

@@ -9,14 +9,10 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'keyup'  : 'keyUp',
-		'keydown' : 'keyDown'
+		'keypress': 'keyPress'
 	},
 
 	keyboardEvents: {
-		// some issue with mousetrap on chrome
-		// '#': 'newTag',
-		// '@': 'newPerson',
 		'esc': 'tryDelete',
 		'enter': 'tryLock',
 		'tab': 'tryLock',
@@ -56,19 +52,22 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		return this;
 	},
 
-	keyUp: function( event ) {
+	keyPress: function( event ) {
+		// because keypress only catches printable characters were are safe
 
-		//-------------------------------
-		// Autocomplete in other cases
-		//-------------------------------
-		if (event.keyCode != 33 && // page up
-		event.keyCode != 34 && // page down
-		event.keyCode != 35 && // end
-		event.keyCode != 36 && // home
-		event.keyCode != 37 && // left arrow
-		event.keyCode != 38 && // up arrow
-		event.keyCode != 39 && // right arrow
-		event.keyCode != 40) {
+		if (this.$el.hasClass('locked')){
+			console.log('bien locké');
+			// The object is locked, don't do anything unless moving caret
+			if (event.preventDefault) {
+				event.preventDefault();
+			} else {
+				// internet explorer
+				event.returnValue = false;
+			}
+		} else{
+			//-------------------------------
+			// Autocomplete in other cases
+			//-------------------------------
 			var strHint = (this.$(".body").val());
 			if (strHint.length > -1) {
 				var pattern = new RegExp(strHint,"i");
@@ -83,30 +82,15 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		}
 	},
 
-	keyDown: function( event ) {
-		console.log('key down');
-		if (this.$el.hasClass('locked') &&
-			event.keyCode != 33 && // page up
-			event.keyCode != 34 && // page down
-			event.keyCode != 35 && // end
-			event.keyCode != 36 && // home
-			event.keyCode != 37 && // left arrow
-			event.keyCode != 38 && // up arrow
-			event.keyCode != 39 && // right arrow
-			event.keyCode != 40) { // down arrow
-			console.log('bien locké');
-			// The object is locked, don't do anything unless moving caret
-			if (event.preventDefault) {
-				event.preventDefault();
-			} else {
-				// internet explorer
-				event.returnValue = false;
-			}
-		}
-	},
-
-	tryLock: function(){
+	tryLock: function( event ){
 		console.log('Try to lock');
+		if (event.preventDefault) {
+			event.preventDefault();
+		} else {
+			// internet explorer
+			event.returnValue = false;
+		}
+
 		//-------------------------------
 		// Locking tags (stop edition)
 		//-------------------------------
@@ -118,7 +102,6 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		} else {
 			console.log('won\'t lock');
 		}
-		return false;
 	},
 
 	tryDelete: function(){
@@ -136,6 +119,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 			this.kill();
 		}
 	},
+
 	// Apparemment buggé, reste à déterminer pourquoi.
 	freeze: function () {
 		console.log('############# Locking object #############');
