@@ -1,7 +1,7 @@
 var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
+meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	// That view will be binded to a pre-existing piece of DOM
 	// ("el" is passed directly to the class constructor : see http://backbonejs.org/#View-constructor)
@@ -15,13 +15,9 @@ meenoAppCli.Classes.StaticTabContentView = Backbone.View.extend ({
 	},
 
 	initialize: function() {
-		meenoAppCli.dispatcher.on('tab:toggle:' + this.options.sound, this.toggle, this);
-
-		if (this.options.browse) {
-			meenoAppCli.Notes.on('add destroy reset change', this.renderNotes, this );
-			meenoAppCli.Tags.on('add destroy reset change', this.renderTags, this );
-			this.render();
-		}
+		meenoAppCli.Notes.on('add destroy reset change', this.renderNotes, this );
+		meenoAppCli.Tags.on('add destroy reset change', this.renderTags, this );
+		this.render();
 	},
 
 	toggle: function() {

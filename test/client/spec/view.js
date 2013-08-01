@@ -1,4 +1,4 @@
-describe("Browser view", function() {
+describe("Browser", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
@@ -21,13 +21,22 @@ describe("Browser view", function() {
 			expect(this.view.slaves.content.quit).toHaveBeenCalled();
 		});
 	});
+
+	describe("when using the search function", function() {
+		it("should allow to filter notes by their title or content", function() {
+		});
+		it("should allow to filter tags by their title or content", function() {
+		});
+		it("should allow to filter tasks by their title or content", function() {
+		});
+	});
 });
 
-describe("Editor view", function() {
+describe("Editor", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
-		this.note = new meenoAppCli.Classes.Note()
+		this.note = new meenoAppCli.Classes.Note();
 		this.view  = new meenoAppCli.Classes.EditorView ({ model: this.note });
 		$("#sandbox").append(this.view.render().$el);
 	});
@@ -49,12 +58,16 @@ describe("Editor view", function() {
 		});
 	});
 
+	// Describe basic cloning feat, no cloning of relationships yet
 	describe("when click on 'Duplicate' button", function() {
 		it("should duplicate its model", function() {
-			expect(false).toBe(true);
+			spyOn(this.view.model, 'clone');
+			this.view.children.body.$('.clone').trigger('click');
+			expect(this.view.model.clone).toHaveBeenCalled();
 		});
 		it("should open and toggle a new editor", function() {
-			expect(false).toBe(true);
+			this.view.children.body.$('.clone').trigger('click');
+			expect(this.view.children.body.$el).toBeHidden();
 		});
 	});
 
@@ -72,14 +85,13 @@ describe("Editor view", function() {
 			this.view.children.body.$('.delete').trigger('click');
 			expect(this.note.destroy).toHaveBeenCalled();
 		});
-		it("should kill itself", function() {
+		it("should kill itself", function() {l
 			spyOn(this.view, 'kill');
 			this.view.children.body.$('.delete').trigger('click');
 			expect(this.view.kill).toHaveBeenCalled();
 		});
 	});
 });
-
 
 describe("Embedded tag view", function() {
 
@@ -105,7 +117,7 @@ describe("Embedded tag view", function() {
 		describe("when pressing any key but the back key with caret inside", function() {
 			it("should not be altered", function() {
 				$("#sandbox").append(this.view.render().$el);
-				
+
 				var initHtml = this.view.$el.html();
 				var keyEvent = jQuery.Event("keydown");
 				keyEvent.which = 50; // # Some key code value

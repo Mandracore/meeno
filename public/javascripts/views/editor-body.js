@@ -14,6 +14,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	events: {
 		'click .kill'          : 'delegatedKill',
 		'click .delete'        : 'delete',
+		'click .clone'          : 'clone',
 		'keypress'             : 'save',
 		'blur .edit-content'   : 'save',
 		'blur .edit-title'     : 'save'
@@ -42,6 +43,13 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			error  : function() {console.log("Deleting failed.");}
 		});
 		this.options.parent.kill();
+	},
+
+	clone: function() {
+		var cloneModel = this.model.clone();
+		meenoAppCli.Notes.add(cloneModel);
+		var newEditor = new meenoAppCli.Classes.EditorView ({ model: cloneModel });
+		newEditor.toggle();
 	},
 
 	render: function() {

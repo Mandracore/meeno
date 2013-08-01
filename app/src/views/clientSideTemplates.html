@@ -26,10 +26,9 @@
 	</ul>
 	<article>
 		<section class="attributes">
-			<p><span class="fieldname">Titre complet :</span> <span class="edit-title editable" contentEditable><%= title %></span></p>
+			<p><h1><span class="edit-title editable" contentEditable><%= title %></span></h1></p>
 			<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
 			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-			<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
 		</section>
 		<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
 	</article>
