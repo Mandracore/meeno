@@ -109,9 +109,8 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	trySave: function() {
 		this.numberOfEdit++;
-		if(this.numberOfEdit==this.limitNumberOfEdit){
+		if(this.numberOfEdit >= this.limitNumberOfEdit){
 			this.save();
-			this.numberOfEdit=0;
 		}
 	},
 
@@ -122,6 +121,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		}).save({},{
 			success: function() {
 				console.log('successfully saved');
+				this.numberOfEdit=0;
 			},
 			error  : function() {
 				console.log('Saving note modifications failed');
