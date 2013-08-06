@@ -79,7 +79,8 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			model: newTag,
 			sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
 			isNew: true,
-			note: this.model // Has to be refined to diminish memory consumtion
+			note: this.model, // Has to be refined to diminish memory consumtion
+			parent: this
 		});
 		var newTagHtml = $("<div></div>").append(newTagView.render().$el).html();
 		pasteHtmlAtCaret(
