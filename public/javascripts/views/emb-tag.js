@@ -9,15 +9,15 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'keypress': 'keyPress'
+		'keypress .body': 'tryEdit'
 	},
 
 	keyboardEvents: {
-		'esc': 'tryDelete',
-		'enter': 'tryLock',
-		'tab': 'tryLock',
-		'backspace': 'tryDelete',
-		'del': 'tryDelete'
+		'esc'       : 'tryDelete',
+		'enter'     : 'tryLock',
+		'tab'       : 'tryLock',
+		'backspace' : 'tryDelete',
+		'del'       : 'tryDelete'
 	},
 
 	initialize: function() {
@@ -52,8 +52,9 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		return this;
 	},
 
-	keyPress: function( event ) {
+	tryEdit: function( event ) {
 		// because keypress only catches printable characters were are safe
+		console.log('keypress');
 
 		if (this.$el.hasClass('locked')){
 			console.log('bien locké');
@@ -65,6 +66,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 				event.returnValue = false;
 			}
 		} else{
+			console.log('autocomplete');
 			//-------------------------------
 			// Autocomplete in other cases
 			//-------------------------------
@@ -83,25 +85,17 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	tryLock: function( event ){
-		console.log('Try to lock');
-		if (event.preventDefault) {
-			event.preventDefault();
-		} else {
-			// internet explorer
-			event.returnValue = false;
-		}
-
 		//-------------------------------
 		// Locking tags (stop edition)
 		//-------------------------------
 		if (this.$('.body').val().length > 2) {
 			// We save only tags of more than 2 characters
 			this.freeze();
-			console.log("nb of charss in input:"+this.$el.find('.body').val().length);
-			console.log("nb of charss in input:"+this.$('input').val().length);
 		} else {
 			console.log('won\'t lock');
 		}
+
+		return false;
 	},
 
 	tryDelete: function(){
@@ -139,9 +133,10 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 				success: function(model, response, options) {
 					view.link ({
 						success: function () {
-							view.transform(view.$(".body").val());
+							view.transform(view.model.get('label'));
 							view.clean();
 							view.lock();
+							view.options.parent.save();
 							console.log('Tag "'+view.model.get('label')+'" linked to current note');
 						},
 						error: function () {
@@ -164,6 +159,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 					view.transform(view.$(".body").val());
 					view.clean();
 					view.lock();
+					view.options.parent.save();
 					console.log('Tag "'+view.model.get('label')+'" linked to current note');
 				},
 				error: function () {

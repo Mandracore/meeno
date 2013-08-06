@@ -3,7 +3,6 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
-
 	tagName           : 'div',
 	className         : 'tab object note',
 	template          : '#editor-body-template',
@@ -12,10 +11,10 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'click .kill'          : 'delegatedKill',
+		'click .close'         : 'delegatedKill',
 		'click .delete'        : 'delete',
-		'click .clone'          : 'clone',
-		'keypress'             : 'save',
+		'click .clone'         : 'clone',
+		'keypress'             : 'trySave',
 		'blur .edit-content'   : 'save',
 		'blur .edit-title'     : 'save'
 	},
@@ -23,9 +22,9 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	keyboardEvents: {
 		// some issue with mousetrap on chrome
 		// '#': 'newTag',
-		// '@': 'newPerson',
+		// '@': 'newEntity',
 		'ctrl+alt+shift+h': 'newTag',
-		'ctrl+alt+shift+a': 'newPerson',
+		'ctrl+alt+shift+a': 'newEntity',
 		'ctrl+alt+shift+t': 'newTask'
 	},
 
@@ -34,6 +33,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	},
 
 	delegatedKill: function() {
+		this.save();
 		this.options.parent.kill();
 	},
 
@@ -46,6 +46,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	},
 
 	clone: function() {
+		this.save();
 		var cloneModel = this.model.clone();
 		meenoAppCli.Notes.add(cloneModel);
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: cloneModel });
@@ -107,29 +108,33 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		return false;
 	},
 
-	newPerson: function () {
+	newEntity: function () {
 		console.log('>>> New person');
 		// Don't do anything for now
 		this.save();
 		return false;
 	},
 
-	save: function() {
+	trySave: function() {
 		this.numberOfEdit++;
 		if(this.numberOfEdit==this.limitNumberOfEdit){
-			this.model.set({
-				title  :this.$(".edit-title").html(),
-				content:this.$(".edit-content").html()
-			}).save({},{
-				success: function() {
-					console.log('successfully saved');
-				},
-				error  : function() {
-					console.log('Saving note modifications failed');
-				}
-			});
+			this.save();
 			this.numberOfEdit=0;
 		}
+	},
+
+	save: function() {
+		this.model.set({
+			title  :this.$(".edit-title").html(),
+			content:this.$(".edit-content").html()
+		}).save({},{
+			success: function() {
+				console.log('successfully saved');
+			},
+			error  : function() {
+				console.log('Saving note modifications failed');
+			}
+		});
 	},
 
 	toggle: function() {
