@@ -19,15 +19,6 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		'blur .edit-title'     : 'save'
 	},
 
-	keyboardEvents: {
-		// some issue with mousetrap on chrome
-		// '#': 'newTag',
-		// '@': 'newEntity',
-		'ctrl+alt+shift+h': 'newTag',
-		'ctrl+alt+shift+a': 'newEntity',
-		'ctrl+alt+shift+t': 'newTask'
-	},
-
 	initialize: function() {
 		Backbone.View.prototype.initialize.apply(this, arguments);
 	},
@@ -146,3 +137,5 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		this.$el.addClass('selected');
 	}
 });
+
+_.extend(meenoAppCli.Classes.EditorBodyView.prototype, meenoAppCli.l18n.EditorBodyView);
