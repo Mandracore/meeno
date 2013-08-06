@@ -4,9 +4,9 @@
 
 // Beware namespace collision
 var application_root = __dirname;
-var express          = require("express");
 var http             = require("http");
 var path             = require("path");
+var express          = require("express");
 var mongoose         = require('mongoose');
 var stylus           = require('stylus');
 var nib              = require('nib');
