@@ -25,8 +25,10 @@ block content
 	script(src="javascripts/models/link-note-tag.js")
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/models/tag.js")
+	script(src="javascripts/models/tasks.js")
 	script(src="javascripts/collections/notes.js")
 	script(src="javascripts/collections/tags.js")
+	script(src="javascripts/collections/tasks.js")
 	script(src="javascripts/views/list-note.js")
 	script(src="javascripts/views/list-tag.js")
 	script(src="javascripts/views/list-task.js")
@@ -115,12 +117,12 @@ block content
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
 			div.tab.browse.selected
 				div.filter
-					input.search(type="text", autofocus, placeholder="search or filter")
 					ul
 						li.notes.icon-book Notes
 						li.tasks.selected.icon-tasks Tasks
 						li.tags.icon-tags Tags
 				div.listobjects.notes
+					input.search.notes(type="text", autofocus, placeholder="search notes")
 					ul.actions-contextual
 						li.select Select All
 						li.unselect Unselect All
@@ -131,6 +133,7 @@ block content
 						li Note 2
 						li Note 3				
 				div.listobjects.tasks.selected
+					input.search.tasks(type="text", autofocus, placeholder="search tasks")
 					ul.actions-contextual.hasSelected
 						li.select Select All
 						li.unselect Unselect All
@@ -177,37 +180,8 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-						li
-							h2 
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
-						li
-							h2 
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
-						li
-							h2 
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
 				div.listobjects.tags
+					input.search.tags(type="text", autofocus, placeholder="search tags")
 					ul.actions-contextual
 						li.select Select All
 						li.unselect Unselect All

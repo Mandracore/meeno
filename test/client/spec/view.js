@@ -2,32 +2,41 @@ describe("Browser", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
-		this.view = new meenoAppCli.Classes.BrowserView();
+		this.browser = new meenoAppCli.Classes.BrowserView();
 	});
 
-	describe("when instantiated", function() {
-		it("should instantiate two sub views", function() {
-			expect (this.view.slaves.nav.el).toEqual("SPAN");
-			expect (this.view.slaves.content.el).toEqual("SPAN");
+	describe("when asked to filter objects", function() {
+
+		beforeEach(function() {
+			this.note = new meenoAppCli.Classes.Note();
+			// add to a collection
+			this.tag  = new meenoAppCli.Classes.Tag();
+			// add to a collection
+			this.task = new meenoAppCli.Classes.Task();
+			// add to a collection
+			appendSetFixtures(sandbox());
+		});
+
+		describe("if it's a note", function() {
+			it("should hide unnecessary note views", function() {
+				expect(false).toBe(true);
+			});
 		});
 	});
 
-	describe("when quit", function() {
-		it("should first kill its two sub views", function() {
-			spyOn(this.view.slaves.nav, 'quit');
-			spyOn(this.view.slaves.content, 'quit');
-			this.view.quit();
-			expect(this.view.slaves.nav.quit).toHaveBeenCalled();
-			expect(this.view.slaves.content.quit).toHaveBeenCalled();
-		});
-	});
 
-	describe("when using the search function", function() {
-		it("should allow to filter notes by their title or content", function() {
+	describe("when asked to select all notes", function() {
+		it("should check all checkbox of the visible notes", function() {
 		});
 		it("should allow to filter tags by their title or content", function() {
 		});
 		it("should allow to filter tasks by their title or content", function() {
+		});
+	});
+
+	describe("when asked to select visible notes", function() {
+		it("should check all checkbox of the displayed", function() {
+			expect(false).toBe(true);
 		});
 	});
 });
@@ -36,6 +45,7 @@ describe("Editor", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
+		appendSetFixtures(sandbox());
 		this.note = new meenoAppCli.Classes.Note();
 		this.view  = new meenoAppCli.Classes.EditorView ({ model: this.note });
 		$("#sandbox").append(this.view.render().$el);
@@ -85,7 +95,7 @@ describe("Editor", function() {
 			this.view.children.body.$('.delete').trigger('click');
 			expect(this.note.destroy).toHaveBeenCalled();
 		});
-		it("should kill itself", function() {l
+		it("should kill itself", function() {
 			spyOn(this.view, 'kill');
 			this.view.children.body.$('.delete').trigger('click');
 			expect(this.view.kill).toHaveBeenCalled();
@@ -97,7 +107,7 @@ describe("Embedded tag view", function() {
 
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
-		setFixtures(sandbox());
+		appendSetFixtures(sandbox());
 		this.view = new meenoAppCli.Classes.TagRefView();
 	});
 
