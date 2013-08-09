@@ -50,7 +50,7 @@ function pasteHtmlAtCaret(html) {
 function moveCaret (node, index) {
 	var range = document.createRange();
 	range.setStart(node,index);
-	range.collapse();
+	range.collapse(true);
 	var selection = window.getSelection();//get the selection object (allows you to change selection)
 	selection.removeAllRanges();//remove any selections already made
 	selection.addRange(range);//make the range you have just created the visible selection

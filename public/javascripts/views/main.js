@@ -160,6 +160,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	newNote: function() {
 		var newNote   = meenoAppCli.Notes.create({silent:true});
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: newNote });
+		newEditor.render();
 		newEditor.toggle();
 	},
 

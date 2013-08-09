@@ -82,12 +82,14 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			note: this.model, // Has to be refined to diminish memory consumtion
 			parent: this
 		});
-		var newTagHtml = $("<div></div>").append(newTagView.render().$el).html();
+		newTagView.undelegateEvents();
+		var newTagHtml = $("<div></div>").append(newTagView.render().el).html();
 		pasteHtmlAtCaret(
 			newTagHtml + // The tag itself with a trick to get its html back
 			"<span class='void'>&nbsp;</span>" // A place to put the caret
 		);
 		newTagView.$el = $("#"+id); // Linking the DOM to the view
+		newTagView.delegateEvents(); // Binding all events
 		newTagView.$(".body").focus(); // Focusing on input
 		this.save();
 		return false;
@@ -109,8 +111,9 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	trySave: function() {
 		this.numberOfEdit++;
-		if(this.numberOfEdit >= this.limitNumberOfEdit){
+		if(this.numberOfEdit == this.limitNumberOfEdit){
 			this.save();
+			this.numberOfEdit=0;
 		}
 	},
 
@@ -121,7 +124,6 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		}).save({},{
 			success: function() {
 				console.log('successfully saved');
-				this.numberOfEdit=0;
 			},
 			error  : function() {
 				console.log('Saving note modifications failed');

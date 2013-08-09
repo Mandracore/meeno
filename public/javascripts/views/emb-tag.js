@@ -9,13 +9,13 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'keypress .body': 'tryEdit'
+		'input': 'autocomplete',
+		'blur .body': 'tryLock'
 	},
 
 	keyboardEvents: {
 		'esc'       : 'tryDelete',
 		'enter'     : 'tryLock',
-		'tab'       : 'tryLock',
 		'backspace' : 'tryDelete',
 		'del'       : 'tryDelete'
 	},
@@ -30,20 +30,19 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 			this.model.on('remove', this.kill, this);
 		}
 
-		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
-		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
+		// meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
 		console.log ('Init[emb_tag]');
 	},
 
 	beforeKill: function() {
 		// External listeners have to be removed in order to destroy last reference to the view and allow Garbage collecting
-		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.kill, this);
-		meenoAppCli.dispatcher.off('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
+		// meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.kill, this);
 	},
 
 	render: function() {
 		console.log ("R[emb-tag]");
 		this.$el.attr('id', this.options.id);
+		this.$el.attr('contentEditable',false);
 		var templateData = {
 			id: this.options.id
 		};
@@ -52,35 +51,21 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		return this;
 	},
 
-	tryEdit: function( event ) {
-		// because keypress only catches printable characters were are safe
-		console.log('keypress');
-
-		if (this.$el.hasClass('locked')){
-			console.log('bien locké');
-			// The object is locked, don't do anything unless moving caret
-			if (event.preventDefault) {
-				event.preventDefault();
-			} else {
-				// internet explorer
-				event.returnValue = false;
-			}
-		} else{
-			console.log('autocomplete');
-			//-------------------------------
-			// Autocomplete in other cases
-			//-------------------------------
-			var strHint = (this.$(".body").val());
-			if (strHint.length > -1) {
-				var pattern = new RegExp(strHint,"i");
-				var proposals = meenoAppCli.Tags.filter(function (tag) {
-					return pattern.test(tag.get('label'));
-				});
-				var datalistOptions = proposals.map(function (obj, key) {
-					return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>";
-				});
-				this.$(".datalist").html(datalistOptions);
-			}
+	autocomplete: function() {
+		console.log('autocomplete');
+		//-------------------------------
+		// Autocomplete in other cases
+		//-------------------------------
+		var strHint = (this.$(".body").val());
+		if (strHint.length > -1) {
+			var pattern = new RegExp(strHint,"i");
+			var proposals = meenoAppCli.Tags.filter(function (tag) {
+				return pattern.test(tag.get('label'));
+			});
+			var datalistOptions = proposals.map(function (obj, key) {
+				return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>";
+			});
+			this.$(".datalist").html(datalistOptions);
 		}
 	},
 
