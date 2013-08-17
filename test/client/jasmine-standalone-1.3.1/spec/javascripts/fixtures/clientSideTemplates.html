@@ -1,19 +1,14 @@
 <script type="text/template" id="overview-note-template" style="display: none;">
-	<span class="checkbox icon-check-empty"></span><span class="title attribute"><%= title %></span>
-	<span class="button edit">Edit</span><span class="button delete">Delete</span>
+	<span class="checkbox icon-check-empty"></span>
+	<span class="edit title attribute"><%= title %></span>
 </script>
 <script type="text/template" id="overview-tag-template" style="display: none;">
 	<span class="checkbox icon-check-empty"></span>
-	<span class="label attribute"><%= label %></span>
-	<span class="button related">Related notes</span>
-	<span class="button edit">Edit</span>
-	<span class="button delete">Delete</span>
+	<span class="edit label attribute"><%= label %></span>
 </script>
 <script type="text/template" id="overview-task-template" style="display: none;">
 	<span class="checkbox icon-check-empty"></span>
-	<span class="label attribute"><%= label %></span>
-	<span class="button edit">Edit label</span>
-	<span class="button delete">Delete</span>
+	<span class="edit label attribute"><%= label %></span>
 </script>
 <script type="text/template" id="editor-tab-template" style="display: none;">
 	<%= title %>
@@ -26,10 +21,9 @@
 	</ul>
 	<article>
 		<section class="attributes">
-			<p><span class="fieldname">Titre complet :</span> <span class="edit-title editable" contentEditable><%= title %></span></p>
+			<p><h1><span class="edit-title editable" contentEditable><%= title %></span></h1></p>
 			<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
 			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-			<p><span class="fieldname">Participants :</span> <span class="edit-title editable" contentEditable>@TJO @CMI @RLA</span></p>
 		</section>
 		<section contentEditable class="edit-content editable"><%= content %></section>
 	</article>

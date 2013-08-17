@@ -72,7 +72,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	searchTags  : function () {this.search("tags");},
 	searchTasks : function () {this.search("tasks");},
 	search      : function (collName) {
-		var sKey = this.$(".search."+objectClass).val();
+		var sKey = this.$(".search."+collName).val();
 		console.log('search='+sKey);
 		this.filters[collName] = sKey;
 		this.renderCollection(collName);
@@ -88,24 +88,28 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	renderCollection: function (collName) {
 		var modelClasses = {
-			notes : "ListNoteView",
-			tags  : "ListTagView",
-			tasks : "ListTaskView",
+			"notes" : "ListNoteView",
+			"tags"  : "ListTagView",
+			"tasks" : "ListTaskView",
 		}
+
+		console.log(this.children[collName])
 
 		var $list = this.$('.listobjects.'+collName+' .'+collName);
 		$list.html(''); // First, emptying the DOM
-		_.each(this.children[collName], function (child) { // Second, killing children views of right collection
+		_.each(this.children[collName], function (child, index) { // Second, killing children views of right collection
 			child.kill();
 		});
+		this.children[collName] = [];
 
+		console.log(this.children[collName])
 		// Third, filling the DOM again
 		this.collections[collName].search(this.filters[collName]).each(function (item) {
-			// fruits.push("Kiwi")
 			var view = new meenoAppCli.Classes[modelClasses[collName]]({ model: item });
 			this.children[collName].push (view);
 			$list.append(view.render().el);
 		}, this);
 
+		console.log(this.children[collName])
 	},
 });

@@ -18,7 +18,10 @@ describe("Browser", function() {
 		});
 
 		describe("if it's a note", function() {
-			it("should hide unnecessary note views", function() {
+			it("should kill existing note views and empty DOM", function() {
+				expect(false).toBe(true);
+			});
+			it("should display only correct the right models", function() {
 				expect(false).toBe(true);
 			});
 		});
@@ -27,10 +30,13 @@ describe("Browser", function() {
 
 	describe("when asked to select all notes", function() {
 		it("should check all checkbox of the visible notes", function() {
+			expect(false).toBe(true);
 		});
 		it("should allow to filter tags by their title or content", function() {
+			expect(false).toBe(true);
 		});
 		it("should allow to filter tasks by their title or content", function() {
+			expect(false).toBe(true);
 		});
 	});
 

@@ -70,8 +70,8 @@ describe("Task model", function() {
 		it("should have a default updated_at attribute", function() {
 			expect((new Date()).getTime() - this.task.get('updated_at').getTime()).toBeGreaterThan(-1);
 		});		
-		it("should have a default label attribute", function() {
-			expect(this.task.get('label')).toBe('New task');
+		it("should have a default description attribute", function() {
+			expect(this.task.get('description')).toBe('New Task');
 		});
 	});
 
