@@ -49,8 +49,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 						meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {
 							notes : meenoAppCli.notes,
 							tags  : meenoAppCli.tags,
-							tasks : meenoAppCli.tasks,
-						}}); 
+							tasks : meenoAppCli.tasks
+						}});
 					},
 					error: function (collection, xhr, options) {console.log('tag fetching failed')}
 				});

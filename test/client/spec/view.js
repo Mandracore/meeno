@@ -1,20 +1,37 @@
 describe("Browser", function() {
 
 	beforeEach(function() {
-		loadFixtures('clientSideTemplates.html');
-		this.browser = new meenoAppCli.Classes.BrowserView();
+		loadFixtures('clientSideTemplates.html'); // Inserting the client side templates into the fixtures area of the DOM
+		appendSetFixtures(sandbox()); // Inserting a #sanbox div into the fixtures area of the DOM
+		appendSetFixtures(
+			'<div id="nav"><div class="browse"></div></div>'+
+			'<div id="tabs"><div class="browse">'+
+				'<div class="listobjects notes selected"><ul class="notes"></ul></div>'+
+				'<div class="listobjects tasks"><ul class="tasks"></ul></div>'+
+				'<div class="listobjects tags"><ul class="tags"></ul></div>'+
+			'</div></div>'
+		);
+		// Preparing models
+		this.note = new meenoAppCli.Classes.Note();
+		this.notes = new meenoAppCli.Classes.Notes();
+		this.notes.add([this.note]);
+		this.tag  = new meenoAppCli.Classes.Tag();
+		this.tags = new meenoAppCli.Classes.Tags();
+		this.tags.add([this.tag]);
+		this.task = new meenoAppCli.Classes.Task();
+		this.tasks = new meenoAppCli.Classes.Tasks();
+		this.tasks.add([this.task]);
+		// Initializing browser
+		this.browser = new meenoAppCli.Classes.BrowserView({ collections : {
+			notes : this.notes,
+			tags  : this.tags,
+			tasks : this.tasks,
+		}});
 	});
 
 	describe("when asked to filter objects", function() {
 
 		beforeEach(function() {
-			this.note = new meenoAppCli.Classes.Note();
-			// add to a collection
-			this.tag  = new meenoAppCli.Classes.Tag();
-			// add to a collection
-			this.task = new meenoAppCli.Classes.Task();
-			// add to a collection
-			appendSetFixtures(sandbox());
 		});
 
 		describe("if it's a note", function() {
@@ -29,25 +46,11 @@ describe("Browser", function() {
 
 	describe("when a collection is modified", function() {
 
-		beforeEach(function() {
-			this.note = new meenoAppCli.Classes.Note();
-			this.notes = new meenoAppCli.Classes.Notes();
-			this.notes.add([this.note]);
-			// add to a collection
-			this.tag  = new meenoAppCli.Classes.Tag();
-			this.tags = new meenoAppCli.Classes.Tags();
-			this.tags.add([this.tag]);
-			// add to a collection
-			this.task = new meenoAppCli.Classes.Task();
-			this.tasks = new meenoAppCli.Classes.Tasks();
-			this.tasks.add([this.task]);
-			// add to a collection
-			appendSetFixtures(sandbox());
-		});
-
 		describe("if it's a note", function() {
-			it("should kill existing note views, empty DOM and fill it again with new views", function() {
-				expect(false).toBe(true);
+			it("should relaunch notes rendering", function() {
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.note.set({title:'test'});
+				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('notes');
 			});
 		});
 	});
