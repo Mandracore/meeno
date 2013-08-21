@@ -9,32 +9,30 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// It's meant to be used for both Help and Browse tabs, which explains some functions won't be used in some cases
 
 	events: {
-		'click .filter .notes'           : 'toggleNotes',
-		'click .filter .tags'            : 'toggleTags',
-		'click .filter .tasks'           : 'toggleTasks',
-		'keyup .search.notes' : 'searchNotes',
-		'keyup .search.tags'  : 'searchTags',
-		'keyup .search.tasks' : 'searchTasks'
+		'click .filter .notes' : 'toggleNotes',
+		'click .filter .tags'  : 'toggleTags',
+		'click .filter .tasks' : 'toggleTasks',
+		'keyup .search.notes'  : 'searchNotes',
+		'keyup .search.tags'   : 'searchTags',
+		'keyup .search.tasks'  : 'searchTasks'
 	},
 
 	initialize: function() {
-		meenoAppCli.Notes.on('add destroy reset change', this.renderNotes, this );
-		meenoAppCli.Tags.on('add destroy reset change', this.renderTags, this );
 		this.children = {
 			"notes" : [],
 			"tags"  : [],
 			"tasks" : []
-		};
-		this.collections = {
-			"notes" : meenoAppCli.Notes,
-			"tags"  : meenoAppCli.Tags,
-			"tasks" : meenoAppCli.Tasks
 		};
 		this.filters = {
 			"notes" : {},
 			"tags"  : {},
 			"tasks" : {}
 		};
+
+		this.options.collections.notes.on('change', this.renderCollection('notes'), this );
+		this.options.collections.tags.on('change:label', this.renderCollection('tags'), this );
+		this.options.collections.tasks.on('change:description', this.renderCollection('tasks'), this );
+
 		this.render();
 	},
 
@@ -49,11 +47,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	// --------------------------------------------------------------------------------
 	// Toggle business objet type displayed by the browser
-	toggleNotes : function () {this.toggleObject(0);},
-	toggleTags  : function () {this.toggleObject(1);},
-	toggleTasks : function () {this.toggleObject(2);},
-	toggleObject: function (iObject) {
-		var objectClass = (iObject == 0 ? "notes" : (iObject == 1 ? "tags" : "tasks"));
+	toggleNotes  : function () {this.toggleObject("notes");},
+	toggleTags   : function () {this.toggleObject("tags");},
+	toggleTasks  : function () {this.toggleObject("tasks");},
+	toggleObject : function (objectClass) {
 		// First, the command
 		this.$el.find(".filter ul").children().each(function(i,child){
 			$(child).removeClass("selected");
@@ -72,44 +69,60 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	searchTags  : function () {this.search("tags");},
 	searchTasks : function () {this.search("tasks");},
 	search      : function (collName) {
-		var sKey = this.$(".search."+collName).val();
+		var sKey = this.$(".search."+collName.toLowerCase()).val();
 		console.log('search='+sKey);
 		this.filters[collName] = sKey;
 		this.renderCollection(collName);
+
+
+		// var tag0 = meenoAppCli.Tags.models[0]
+
+		// var aSearchedTags = ["50e81e8587d0b89757000008"];
+
+		// meenoAppCli.Notes.filter(function(note) {
+		// 	var passIt = 0;
+		// 	// On regarde si la note possède tous les tags présents dans l'array aSearchedTags
+		// 	_.each(aSearchedTags, function(searchedTagId) { // Loop on searched tags
+		// 		_.each(note.get("tags"), function(tag) { // Loop on the tags of the current note
+		// 			if (tag._id === searchedTagId) {passIt++; return;}
+		// 		});
+		// 	});
+		// 	if (passIt == aSearchedTags.length) {return true;}
+		// 	return false;
+		// });
 	},
 
 	// --------------------------------------------------------------------------------
 	// Render business objects' sub views 
-	render: function () {
+	render : function () {
 		this.renderCollection('notes');
 		this.renderCollection('tags');
 		this.renderCollection('tasks');
 	},
 
-	renderCollection: function (collName) {
+	renderCollection : function (collName) {
 		var modelClasses = {
 			"notes" : "ListNoteView",
 			"tags"  : "ListTagView",
 			"tasks" : "ListTaskView",
 		}
 
+		console.log("renderCollection:"+collName)
 		console.log(this.children[collName])
 
+		// First, emptying the DOM
 		var $list = this.$('.listobjects.'+collName+' .'+collName);
-		$list.html(''); // First, emptying the DOM
-		_.each(this.children[collName], function (child, index) { // Second, killing children views of right collection
+		$list.html('');
+		// Second, killing children views of right collection
+		_.each(this.children[collName], function (child, index) { 
 			child.kill();
 		});
 		this.children[collName] = [];
-
-		console.log(this.children[collName])
 		// Third, filling the DOM again
-		this.collections[collName].search(this.filters[collName]).each(function (item) {
+		this.options.collections[collName].search(this.filters[collName]).each(function (item) {
 			var view = new meenoAppCli.Classes[modelClasses[collName]]({ model: item });
 			this.children[collName].push (view);
 			$list.append(view.render().el);
 		}, this);
-
-		console.log(this.children[collName])
 	},
 });

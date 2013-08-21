@@ -1,5 +1,3 @@
-// js/views/note.js
-
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
@@ -15,18 +13,10 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 		'click .edit'    : 'edit'
 	},
 
-	initialize: function() {
-		this.options.class = "list-note";
-		meenoAppCli.Notes.on('add destroy reset change', this.kill, this ); // The views are re-drawn by static-tab-content so here we just destroy the old sub-views
-	},
-
-	beforeKill: function() {
-		// This listener has to be removed in order to destroy last reference to the view and allow Garbage collecting
-		meenoAppCli.Notes.off('add destroy reset change', this.kill, this );
-	},
+	initialize: function() {},
 
 	// Re-renders the note item to the current state of the model
-	render: function() {
+	render: function () {
 		console.log ("R[list-note]");
 		var json        = this.model.toJSON();
 		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');

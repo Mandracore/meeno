@@ -21,10 +21,7 @@ meenoAppCli.Classes.ListTaskView = Backbone.View.extend({
 		'blur .label'    : 'save'
 	},
 
-	initialize: function() {
-		meenoAppCli.Tags.on('add destroy reset change', this.kill, this ); // Will destroy itself on those events, to prevent from memory leak
-		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
-	},
+	initialize: function() {},
 
 	// Re-renders the note item to the current state of the model
 	render: function() {

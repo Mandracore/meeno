@@ -50,7 +50,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		this.$(".object").each(function (index, object) {
 			var $object = $(object);
 			if ($object.hasClass('tag')) {
-				var model = meenoAppCli.Tags.get($object.attr('data-model-id'));
+				var model = meenoAppCli.tags.get($object.attr('data-model-id'));
 				if (model) {
 					var subView  = new meenoAppCli.Classes.TagRefView({ 
 						model: model,
@@ -117,7 +117,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			content:this.$(".edit-content").html()
 		}).save({},{
 			success: function() {
-				// console.log('successfully saved');
+				console.log('successfully saved');
 			},
 			error  : function() {
 				console.log('Saving note modifications failed');

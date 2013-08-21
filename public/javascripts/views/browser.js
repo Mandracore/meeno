@@ -7,7 +7,7 @@ meenoAppCli.Classes.BrowserView = Backbone.View.extend({
 		meenoAppCli.dispatcher.on('tab:toggle:browser', this.toggle, this);
 		this.children = {
 			tab  : new meenoAppCli.Classes.BrowserTabView({ el: $("#nav .browse"), parent: this }),
-			body : new meenoAppCli.Classes.BrowserBodyView({ el: $("#tabs .browse"), parent: this })
+			body : new meenoAppCli.Classes.BrowserBodyView({ el: $("#tabs .browse"), parent: this, collections: this.options.collections })
 		};
 	},
 
