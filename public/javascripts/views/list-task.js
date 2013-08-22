@@ -1,19 +1,11 @@
-// js/views/note.js
-
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-
-// The DOM element for a todo item...
 meenoAppCli.Classes.ListTaskView = Backbone.View.extend({
-
-	//... is a list tag.
 	tagName  : 'li',
+	template : '#overview-task-template',
 
-	// Cache the template function for a single item.
-	template: _.template( $('#overview-tag-template').html() ),
-
-	// The DOM events specific to an item.
+	// The DOM events specific to an item
 	events: {
 		'click .checkbox': 'check',
 		'click .edit'    : 'edit',
@@ -25,7 +17,9 @@ meenoAppCli.Classes.ListTaskView = Backbone.View.extend({
 
 	// Re-renders the note item to the current state of the model
 	render: function() {
-		this.$el.html( this.template( this.model.toJSON() ) );
+		console.log ("R[list-task]");
+		var templateFn = _.template( $(this.template).html() );
+		this.$el.html (templateFn (json));
 		return this;
 	},
 

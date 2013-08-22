@@ -1,13 +1,11 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-
 meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
-
 	tagName  : 'li',
-
-	template: _.template( $('#overview-note-template').html() ),
-
+	template : '#overview-note-template',
+	
+	// The DOM events specific to an item.
 	events: {
 		'click .checkbox': 'check',
 		'click .edit'    : 'edit'
@@ -29,7 +27,9 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 		// var tag = meenoAppCli.Tags.get(note.get('tags')[0])
 		// tag.get('label')
 
-		this.$el.html( this.template( json ) );
+		var templateFn = _.template( $(this.template).html() );
+		this.$el.html (templateFn (json));
+
 		return this;
 	},
 
