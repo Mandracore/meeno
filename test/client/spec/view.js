@@ -52,6 +52,9 @@ describe("Browser", function() {
 				this.note.set({title:'test'});
 				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('notes');
 			});
+			it("but only if we updated 'title' attribute", function() {
+				expect(false).toBe(true);
+			});
 		});
 	});
 

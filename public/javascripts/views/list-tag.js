@@ -19,7 +19,7 @@ meenoAppCli.Classes.ListTagView = Backbone.View.extend({
 	render: function() {
 		console.log ("R[list-tag]");
 		var templateFn = _.template( $(this.template).html() );
-		this.$el.html (templateFn (json));
+		this.$el.html (templateFn (this.model.toJSON()));
 		return this;
 	},
 

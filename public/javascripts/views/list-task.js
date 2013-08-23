@@ -19,7 +19,7 @@ meenoAppCli.Classes.ListTaskView = Backbone.View.extend({
 	render: function() {
 		console.log ("R[list-task]");
 		var templateFn = _.template( $(this.template).html() );
-		this.$el.html (templateFn (json));
+		this.$el.html (templateFn (this.model.toJSON()));
 		return this;
 	},
 

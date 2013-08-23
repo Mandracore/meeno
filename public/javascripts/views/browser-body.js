@@ -29,9 +29,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tasks" : {}
 		};
 
-		this.options.collections.notes.on('change', this.renderCollection('notes'), this );
-		this.options.collections.tags.on('change:label', this.renderCollection('tags'), this );
-		this.options.collections.tasks.on('change:description', this.renderCollection('tasks'), this );
+		this.options.collections.notes.on('change', null, { collName: 'notes' }, this.renderCollection, this );
+		this.options.collections.tags.on('change:label', null, { collName: 'tags' }, this.renderCollection, this );
+		this.options.collections.tasks.on('change:description', null, { collName: 'tasks' }, this.renderCollection, this );
 
 		this.render();
 	},
@@ -100,12 +100,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.renderCollection('tasks');
 	},
 
-	renderCollection : function (collName) {
-		var modelClasses = {
-			"notes" : "ListNoteView",
-			"tags"  : "ListTagView",
-			"tasks" : "ListTaskView",
-		}
+	renderCollection : function (event) {
+		// var collName = (typeof event == "string" ) ? event : "notes"; // Function called by this.render or by event listener ?
+		var collName = (typeof event == "string" ) ? event : event.data.collName; // Function called by this.render or by event listener ?
 
 		console.log("renderCollection:"+collName)
 		console.log(this.children[collName])
@@ -120,7 +117,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.children[collName] = [];
 		// Third, filling the DOM again
 		this.options.collections[collName].search(this.filters[collName]).each(function (item) {
-			var view = new meenoAppCli.Classes[modelClasses[collName]]({ model: item });
+			if (collName == "notes") { var view = new meenoAppCli.Classes.ListNoteView({ model: item }); }
+			if (collName == "tags") { var view = new meenoAppCli.Classes.ListTagView({ model: item }); }
+			if (collName == "tasks") { var view = new meenoAppCli.Classes.ListTaskView({ model: item }); }
 			this.children[collName].push (view);
 			$list.append(view.render().el);
 		}, this);
