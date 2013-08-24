@@ -28,10 +28,17 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tags"  : {},
 			"tasks" : {}
 		};
+		// Impossible de passer des variables
+		// Passer à listenTo
+		// En proditer pour changer tous les .on() afin de permettre le garbage collecting, par exemple dans editor-tab
+		this.listenTo(this.options.collections.notes, 'change:title', this.renderCollectionNotes);
+		this.listenTo(this.options.collections.tags, 'change:label', this.renderCollectionTags);
+		this.listenTo(this.options.collections.tasks, 'change:description', this.renderCollectionTasks);
 
-		this.options.collections.notes.on('change', null, { collName: 'notes' }, this.renderCollection, this );
-		this.options.collections.tags.on('change:label', null, { collName: 'tags' }, this.renderCollection, this );
-		this.options.collections.tasks.on('change:description', null, { collName: 'tasks' }, this.renderCollection, this );
+
+		// this.options.collections.notes.on('change:title', this.renderCollectionNotes, this );
+		// this.options.collections.tags.on('change:label', this.renderCollectionTags, this );
+		// this.options.collections.tasks.on('change:description', this.renderCollectionTasks, this );
 
 		this.render();
 	},
@@ -94,16 +101,16 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	// --------------------------------------------------------------------------------
 	// Render business objects' sub views 
-	render : function () {
+	renderCollectionNotes : function () {return this.renderCollection("notes");},
+	renderCollectionTags : function () {return this.renderCollection("tags");},
+	renderCollectionTasks : function () {return this.renderCollection("tasks");},
+	render : function (event) {
 		this.renderCollection('notes');
 		this.renderCollection('tags');
 		this.renderCollection('tasks');
 	},
 
-	renderCollection : function (event) {
-		// var collName = (typeof event == "string" ) ? event : "notes"; // Function called by this.render or by event listener ?
-		var collName = (typeof event == "string" ) ? event : event.data.collName; // Function called by this.render or by event listener ?
-
+	renderCollection : function (collName) {
 		console.log("renderCollection:"+collName)
 		console.log(this.children[collName])
 

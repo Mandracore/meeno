@@ -53,7 +53,9 @@ describe("Browser", function() {
 				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('notes');
 			});
 			it("but only if we updated 'title' attribute", function() {
-				expect(false).toBe(true);
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.note.set({content:'test'});
+				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
 			});
 		});
 	});
