@@ -58,6 +58,30 @@ describe("Browser", function() {
 				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
 			});
 		});
+		describe("if it's a tag", function() {
+			it("should relaunch tags rendering", function() {
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.tag.set({label:'test'});
+				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('tags');
+			});
+			it("but only if we updated 'label' attribute", function() {
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.tag.set({color:'#aaaaaa'});
+				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
+			});
+		});
+		describe("if it's a task", function() {
+			it("should relaunch tasks rendering", function() {
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.task.set({description:'test'});
+				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('tasks');
+			});
+			it("but only if we updated 'description' attribute", function() {
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.task.set({due:'2013-08-23 20:00:00'});
+				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
+			});
+		});
 	});
 
 
