@@ -13,7 +13,7 @@ meenoAppCli.Classes.EditorTabView = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		this.model.on('change', this.render, this); // if the model is altered in any way, we redraw (it could be triggered in the editor view)
+		this.listenTo(this.model, 'change:title', this.render); // If the model's title is updated, the view will be redrawn
 	},
 
 	beforeKill: function() {},

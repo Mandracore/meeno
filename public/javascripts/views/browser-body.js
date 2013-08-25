@@ -28,18 +28,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tags"  : {},
 			"tasks" : {}
 		};
-		// Impossible de passer des variables
-		// Passer à listenTo
-		// En proditer pour changer tous les .on() afin de permettre le garbage collecting, par exemple dans editor-tab
+
 		this.listenTo(this.options.collections.notes, 'change:title', this.renderCollectionNotes);
 		this.listenTo(this.options.collections.tags, 'change:label', this.renderCollectionTags);
 		this.listenTo(this.options.collections.tasks, 'change:description', this.renderCollectionTasks);
-
-
-		// this.options.collections.notes.on('change:title', this.renderCollectionNotes, this );
-		// this.options.collections.tags.on('change:label', this.renderCollectionTags, this );
-		// this.options.collections.tasks.on('change:description', this.renderCollectionTasks, this );
-
 		this.render();
 	},
 
