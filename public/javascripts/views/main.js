@@ -27,21 +27,13 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.auth                 = false;
 		this.logging              = false;
 		this.registering          = false;
-
-		// meenoAppCli.Notes.on('add destroy reset change', this.render, this );
 		this.on('server:auth', this.toggleAuth, this );
+		this.fetchData();
+	},
 
-
+	fetchData: function() {
 		meenoAppCli.notes.fetch({
 			success: function (collection, xhr, options) {
-				//meenoAppCli.Tasks.fetch({});
-				// // 1. Create nav views
-				// var tabHelpView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
-				// var tabBrowseView = new meenoAppCli.Classes.NoteEditorControlsView({ model: this.model });
-				// var navHelpView = new meenoAppCli.Classes.NoteEditorControlsView({ parent: this.model });
-				// var navBrowseView = new meenoAppCli.Classes.NoteEditorControlsView({ parent: this.model });
-				// // 2. Create corresponding tabs
-
 				meenoAppCli.tags.fetch({
 					success: function (collection, xhr, options) {
 						// Initialize mandatory static tabs
@@ -100,6 +92,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		if (this.logging) { return false; } // To avoid submitting twice
 		this.logging = true;
 		$('#do-login').val("please wait...");
+		var self = this;
 		var formData = $('#login').serialize();
 
 		// Attempt login on server...
@@ -113,16 +106,15 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				$('#login').find(".errors").html(data);
 			} else {
 				$('#login').find(".errors").html("");
-				meenoAppCli.notes.fetch();
-				meenoAppCli.tags.fetch();
-				meenoAppCli.mainView.toggleAuth();
+				self.toggleAuth();
+				self.fetchData();
 			}
 		})
 		.fail(function() {
 			console.log("Connection to server failed");
 		})
 		.always(function() {
-			meenoAppCli.mainView.logging = false;
+			self.logging = false;
 			$('#do-login').val($('#do-login').attr("data-init-value"));
 		});
 		return false;
@@ -132,6 +124,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		if (this.registering) { return false; } // To avoid submitting twice
 		this.registering = true;
 		$('#do-register').val("please wait...");
+		var self = this;
 		var formData = $('#register').serialize();
 
 		// Attempt registering on server...
@@ -145,16 +138,15 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				$('#register').find(".errors").html(data);
 			} else {
 				$('#register').find(".errors").html("");
-				meenoAppCli.notes.fetch();
-				meenoAppCli.tags.fetch();
-				meenoAppCli.mainView.toggleAuth();
+				self.toggleAuth();
+				self.fetchData();
 			}
 		})
 		.fail(function() {
 			console.log("Connection to server failed");
 		})
 		.always(function() {
-			meenoAppCli.mainView.registering = false;
+			self.registering = false;
 			$('#do-register').val($('#do-register').attr("data-init-value"));
 		});
 		return false;
