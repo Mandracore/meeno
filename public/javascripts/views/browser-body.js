@@ -104,7 +104,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	renderCollection : function (collName) {
 		console.log("renderCollection:"+collName)
-		console.log(this.children[collName])
 
 		// First, emptying the DOM
 		var $list = this.$('.listobjects.'+collName+' .'+collName);

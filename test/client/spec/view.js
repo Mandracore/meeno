@@ -29,6 +29,18 @@ describe("Browser", function() {
 		}});
 	});
 
+	describe("when asked to display notes", function() {
+		it("should embed the related tags", function() {
+			this.linkNoteTag = new meenoAppCli.Classes.linkNoteTag({
+				note: this.note,
+				tag: this.tag,
+			});
+			// Browser should automatically redraw
+			expect(this.note.$el).toContain('span.related-tag');
+			expect(this.note.$('span.related-tag')).toContainText(this.tag.get('label'));
+		});
+	});
+
 	describe("when asked to filter objects", function() {
 
 		beforeEach(function() {
@@ -83,7 +95,6 @@ describe("Browser", function() {
 			});
 		});
 	});
-
 
 	describe("when asked to select all notes", function() {
 		it("should check all checkbox of the visible notes", function() {

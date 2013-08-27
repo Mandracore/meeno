@@ -4,6 +4,32 @@ describe("Note model", function() {
 		this.note = new meenoAppCli.Classes.Note();
 	});
 
+	it("can be related to a tag through a link", function() {
+		// Preparing models
+		this.note = new meenoAppCli.Classes.Note({title:"My test note"});
+		this.tag  = new meenoAppCli.Classes.Tag({label:"My test tag"});
+		this.linkNoteTag = new meenoAppCli.Classes.linkNoteTag({
+			note: this.note,
+			tag: this.tag,
+		});
+
+		expect(this.note.get('tagLinks').at(0).get('note').get('title')).toEqual("My test note");;
+		expect(this.note.get('tagLinks').at(0).get('tag').get('label')).toEqual("My test tag");;
+	});
+
+	it("can be related to a task through a link", function() {
+		// Preparing models
+		this.note = new meenoAppCli.Classes.Note({title:"My test note"});
+		this.task  = new meenoAppCli.Classes.Task({description:"My test task"});
+		this.linkNoteTask = new meenoAppCli.Classes.linkNoteTask({
+			note: this.note,
+			task: this.task,
+		});
+
+		expect(this.note.get('taskLinks').at(0).get('note').get('title')).toEqual("My test note");;
+		expect(this.note.get('taskLinks').at(0).get('task').get('description')).toEqual("My test task");;
+	});
+
 	describe("when creating a new note", function() {
 		it("should have a default created_at attribute", function() {
 			expect((new Date()).getTime() - this.note.get('created_at').getTime()).toBeGreaterThan(-1);
@@ -27,6 +53,7 @@ describe("Note model", function() {
 			expect(time1 - time0).toBeGreaterThan(0);
 		});
 	});
+
 });
 
 describe("Tag model", function() {
