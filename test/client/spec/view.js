@@ -64,9 +64,17 @@ describe("Browser", function() {
 				this.note.set({title:'test'});
 				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('notes');
 			});
-			it("but only if we updated 'title' attribute", function() {
+			it("but only if we updated 'title' attribute...", function() {
 				spyOn(this.browser.children.body, 'renderCollection');
 				this.note.set({content:'test'});
+				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
+			});	
+			it("...or linked a tag to it", function() {
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.linkNoteTask = new meenoAppCli.Classes.linkNoteTask({
+					note: this.note,
+					tag: this.tag,
+				});
 				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
 			});
 		});
