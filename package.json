@@ -1,15 +1,27 @@
 {
-  "name": "meeno",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "start": "node app"
-  },
-  "dependencies": {
-    "express": "3.0.3",
-    "jade": "*",
-    "stylus": "*",
-    "nib": "*",
-    "mongoose": "*"
-  }
+	"name": "meeno",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"start": "node appSrv.js"
+	},
+	"dependencies": {
+		"grunt":"0.4.x",
+		"express": "3.x.x",
+		"jade": "0.37.x",
+		"stylus": "0.37.x",
+		"nib": "1.x.x",
+		"grunt-autoprefixer": "0.2.x",
+		"mongoose": "3.x.x"
+	},
+	"devDependencies": {
+		"yuidocjs": "0.3.x",
+		"grunt-build-docs": "0.4.x",
+		"jshint": "2.x.x",
+		"grunt-contrib-jshint": "0.6.x"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Mandracore/meeno.git"
+	}
 }

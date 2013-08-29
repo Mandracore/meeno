@@ -1,0 +1,15 @@
+{
+	"name": "meeno",
+	"version": "0.0.1",
+	"options": {
+			"linkNatives"	: true,
+			"outdir"		: "./doc",
+			"tabtospace"	: 4,
+			"markdown"		: {
+				"gfm"			: true,
+				"tables"		: true,
+				"breaks"		: true,
+				"smartLists"	: true
+			}
+	}
+}
