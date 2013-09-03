@@ -150,12 +150,14 @@ describe("Editor", function() {
 		});
 	});
 
-	// Describe basic cloning feat, no cloning of relationships yet
 	describe("when click on 'Duplicate' button", function() {
 		it("should duplicate its model", function() {
 			spyOn(this.view.model, 'clone');
 			this.view.children.body.$('.clone').trigger('click');
 			expect(this.view.model.clone).toHaveBeenCalled();
+		});
+		it("should recreate the links to the same models", function() {
+			expect(false).toBe(true);
 		});
 		it("should open and toggle a new editor", function() {
 			this.view.children.body.$('.clone').trigger('click');
@@ -183,6 +185,108 @@ describe("Editor", function() {
 			expect(this.view.kill).toHaveBeenCalled();
 		});
 	});
+
+	describe("when editing the note's content", function() {
+
+		describe("on keypress", function() {
+			describe("if a selection is active", function() {
+				describe("with one end within an object", function() {
+					it("it shouldn't do anything whatever the key or combo of keys pressed", function() {
+						expect(false).toBe(true);
+					});
+				});
+				describe("with both ends within an object", function() {
+					it("it should never allow object creation", function() {
+						expect(false).toBe(true);
+					});	
+					describe("that is locked", function() {
+						it("it should delete the object if keys DEL or BACK or pressed", function() {
+							expect(false).toBe(true);
+						});
+						it("it shouldn't do anything if any other keys are pressed", function() {
+							expect(false).toBe(true);
+						});
+					});
+					describe("that is not locked", function() {
+						it("it should follow normal behaviour", function() {
+							expect(false).toBe(true);
+						});
+					});
+				});
+				describe("with both ends outside objects and selection containing objects", function() {
+					it("it should delete all links to embedded objects in selection if character keys or DEL/BACK/ENTER keys are pressed", function() {
+						expect(false).toBe(true);
+					});	
+					it("it should create a tag if the right combo is pressed", function() {
+						expect(false).toBe(true);
+					});
+					it("it should create a task if the right combo is pressed", function() {
+						expect(false).toBe(true);
+					});
+				});
+			});
+			describe("if no selection is active", function() {
+				describe("with caret outside object", function() {
+					it("it should create a tag if the right combo is pressed", function() {
+						expect(false).toBe(true);
+					});
+					it("it should create a task if the right combo is pressed", function() {
+						expect(false).toBe(true);
+					});
+				});
+				describe("with caret inside object", function() {
+					it("it should never allow object creation", function() {
+						expect(false).toBe(true);
+					});	
+					describe("that is locked", function() {
+						it("it should delete the object if keys DEL or BACK or pressed", function() {
+							expect(false).toBe(true);
+						});
+						it("it shouldn't do anything if any other keys are pressed", function() {
+							expect(false).toBe(true);
+						});
+					});
+					describe("that is not locked", function() {
+						it("it should follow normal behaviour", function() {
+							expect(false).toBe(true);
+						});
+					});
+				});
+			});
+		});
+
+		describe("when caret outside of any embedded object", function() {
+			describe("on keypress of the combos for tag creation", function() {
+				it("it should insert a tag DOM object at caret position and place the caret inside it", function() {
+					expect(false).toBe(true);
+				});
+			});
+		});
+		describe("when caret inside of an embedded object", function() {
+			it("it should desactivate all keyboard shorcuts for object creation", function() {
+				expect(false).toBe(true);
+			});
+			describe("it should desactivate all keyboard shorcuts for object creation", function() {
+				it("it should desactivate all keyboard shorcuts for object creation", function() {
+					expect(false).toBe(true);
+				});
+			});
+		});
+
+		// Keypress 
+
+		// Essayer de distinguer également tous les cas de figure séleciton
+		// Sélection avec 2 bords dans un objet
+		// Sélection avec un bord dans un objet
+		// Sélection hors objet
+		// Pas de selection - caret dans objet
+		// Pas de selection - caret hors objet
+		describe("if keypress is detected and a selection of text is active", function() {
+			it("it should unlink all objects embedded inside selection", function() {
+				expect(false).toBe(true);
+			});
+		});
+	});	
 });
 
 describe("Embedded tag view", function() {

@@ -16,15 +16,10 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 			this.model.on('remove', this.kill, this);
 		}
 
-		meenoAppCli.dispatcher.on('tab:quit:' + this.options.sound, this.kill, this);
-		meenoAppCli.dispatcher.on('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
-		console.log ('Init[emb_tag]');
-	},
+		this.listenTo(meenoAppCli.dispatcher, 'tab:quit:' + this.options.sound, this.kill);
+		this.listenTo(meenoAppCli.dispatcher, 'tab:object:key:' + this.$el.attr('id'), this.keyProxy);
 
-	beforeKill: function() {
-		// External listeners have to be removed in order to destroy last reference to the view and allow Garbage collecting
-		meenoAppCli.dispatcher.off('tab:quit:' + this.options.sound, this.kill, this);
-		meenoAppCli.dispatcher.off('tab:object:key:' + this.$el.attr('id'), this.keyProxy, this);
+		console.log ('Init[emb_tag]');
 	},
 
 	render: function() {
@@ -55,7 +50,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 			var strHint = (this.$(".body").val());
 			if (strHint.length > -1) {
 				var pattern = new RegExp(strHint,"i");
-				var proposals = meenoAppCli.Tags.filter(function (tag) {
+				var proposals = meenoAppCli.tags.filter(function (tag) {
 					return pattern.test(tag.get('label'));
 				});
 				var datalistOptions = proposals.map(function (obj, key) { 
@@ -117,7 +112,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		console.log('############# Locking object #############');
 
 		var view = this;
-		var existing = meenoAppCli.Tags.find(function (tag) {
+		var existing = meenoAppCli.tags.find(function (tag) {
 			return tag.get('label') == this.$(".body").val() 
 		});
 
@@ -126,7 +121,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 			this.model.set({
 				label  :this.$(".body").val()
 			});
-			meenoAppCli.Tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+			meenoAppCli.tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 			this.model.save({},{ // Now that the model is into a collection, the .save() method will work
 				success: function(model, response, options) {
 					view.link ({
