@@ -10,6 +10,7 @@ block content
 	include clientSideTemplates.html
 
 	// Client-side application's scripts
+	//- Libraries scripts
 	script(src="javascripts/lib/modernizr-2.6.2.min.js")
 	script(src="javascripts/lib/jquery-1.8.3.min.js")
 	script(src="javascripts/lib/jquery.dateFormat-1.0.js")
@@ -19,9 +20,13 @@ block content
 	//- script(src="javascripts/lib/backbone.localStorage-min.js")
 	//- script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
 	//- script(src="javascripts/lib/jquery.at.caret.min.js")
+	script(src="javascripts/lib/mousetrap.min.js")
+	script(src="javascripts/lib/backbone.mousetrap.js")
 	script(src="javascripts/lib/jquery.caret.js")
 	script(src="javascripts/lib/caret.js")
 	script(src="javascripts/lib/tools.js")
+
+	//- Application specific scripts
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/models/tag.js")
 	script(src="javascripts/models/tasks.js")
@@ -30,6 +35,7 @@ block content
 	script(src="javascripts/collections/notes.js")
 	script(src="javascripts/collections/tags.js")
 	script(src="javascripts/collections/tasks.js")
+	script(src="javascripts/l18n/"+ locale + ".js")
 	script(src="javascripts/views/list-note.js")
 	script(src="javascripts/views/list-tag.js")
 	script(src="javascripts/views/list-task.js")
@@ -64,7 +70,7 @@ block content
 			p.button.login
 				input(id="do-login", type="submit", value="Login", data-init-value="Login")
 			p.switch
-				|Not a member yet ? 
+				|Not a member yet ?
 				button#toregister Join us
 		form#register(autocomplete="on", style="display:none")
 			h1 Sign up
@@ -82,9 +88,9 @@ block content
 				label(for="passwordSignupConfirm") Please confirm your password
 				input(id="passwordSignupConfirm", name="passwordSignupConfirm", required="required", type="password", placeholder="eg. X8df!90EO")
 			p.button.signin
-				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")		
+				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")
 			p.switch
-				|Already a member ? 
+				|Already a member ?
 				button#tologin Go log in
 
 	// Application skeleton
@@ -110,7 +116,7 @@ block content
 		div#tabs
 			div.tab.help
 				article
-					section 
+					section
 						h1 Comment démarrer
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
 					section
@@ -132,7 +138,7 @@ block content
 					ul.notes
 						li Note 1
 						li Note 2
-						li Note 3				
+						li Note 3
 				div.listobjects.tasks.selected
 					input.search.tasks(type="text", autofocus, placeholder="search tasks")
 					ul.actions-contextual.hasSelected
@@ -142,40 +148,40 @@ block content
 						li.delete Delete
 					ul.tasks
 						li
-							h2 
+							h2
 								|titre
 								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
+								span.progress.thirdquart
 									button.firstquart 25%
 									button.secondquart 50%
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
 						li
-							h2 
+							h2
 								|titre
 								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
+								span.progress.thirdquart
 									button.firstquart 25%
 									button.secondquart 50%
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
 						li
-							h2 
+							h2
 								|titre
 								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
+								span.progress.thirdquart
 									button.firstquart 25%
 									button.secondquart 50%
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
 						li
-							h2 
+							h2
 								|titre
 								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
+								span.progress.thirdquart
 									button.firstquart 25%
 									button.secondquart 50%
 									button.thirdquart 75%

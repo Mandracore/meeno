@@ -1,5 +1,3 @@
-// js/views/main-meeno.js
-
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 meenoAppCli.Views = meenoAppCli.Views || {};
@@ -20,7 +18,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		'submit #login'               : 'login',
 		'submit #register'            : 'register',
 		'click #toregister'           : 'toggleLR',
-		'click #tologin'              : 'toggleLR',
+		'click #tologin'              : 'toggleLR'
 	},
 
 	initialize: function() {
@@ -44,7 +42,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 							tasks : meenoAppCli.tasks
 						}});
 					},
-					error: function (collection, xhr, options) {console.log('tag fetching failed')}
+					error: function (collection, xhr, options) {console.log('tag fetching failed');}
 				});
 
 			},
@@ -155,6 +153,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	newNote: function() {
 		var newNote   = meenoAppCli.notes.create({silent:true});
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: newNote });
+		newEditor.render();
 		newEditor.toggle();
-	},
+	}
 });

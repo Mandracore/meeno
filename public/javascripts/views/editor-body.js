@@ -3,37 +3,41 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
-	tagName   : 'div',
-	className : 'tab object note',
-	template  : '#editor-body-template',
+	tagName           : 'div',
+	className         : 'tab object note',
+	template          : '#editor-body-template',
+	numberOfEdit      : 0,
+	limitNumberOfEdit : 5,
 
 	// The DOM events specific to an item.
 	events: {
-		'click .kill'           : 'delegatedKill',
-		'click .delete'         : 'delete',
-		'click .clone'          : 'clone',
-		'keyup .edit-content'   : 'keyProxy',
-		'keydown .edit-content' : 'keyProxy',
-		'keypress .edit-title'  : 'save',
-		'blur .edit-content'    : 'save',
-		'blur .edit-title'      : 'save'
+		'click .close'         : 'delegatedKill',
+		'click .delete'        : 'delete',
+		'click .clone'         : 'clone',
+		'keypress'             : 'trySave',
+		'blur .edit-content'   : 'save',
+		'blur .edit-title'     : 'save'
 	},
 
-	initialize: function() {},
+	initialize: function() {
+		Backbone.View.prototype.initialize.apply(this, arguments);
+	},
 
 	delegatedKill: function() {
+		this.save();
 		this.options.parent.kill();
 	},
 
 	delete: function() {
 		this.model.destroy({
-			success: function() {console.log("Object successfully deleted.")},
-			error  : function() {console.log("Deleting failed.")}
+			success: function() {console.log("Object successfully deleted.");},
+			error  : function() {console.log("Deleting failed.");}
 		});
 		this.options.parent.kill();
 	},
 
 	clone: function() {
+		this.save();
 		var cloneModel = this.model.clone();
 		meenoAppCli.Notes.add(cloneModel);
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: cloneModel });
@@ -52,7 +56,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			if ($object.hasClass('tag')) {
 				var model = meenoAppCli.tags.get($object.attr('data-model-id'));
 				if (model) {
-					var subView  = new meenoAppCli.Classes.TagRefView({ 
+					var subView  = new meenoAppCli.Classes.TagRefView({
 						model: model,
 						el   : $object[0], // We bind the sub view to the element we just created
 						sound: view.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
@@ -66,49 +70,51 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		return this;
 	},
 
-	keyProxy: function ( event ) {
-		// console.log(event)
-		// console.log("keyCode="+event.keyCode)
-
-		if (event.type == "keyup") {
-			this.save();
-		}
-	
-		var $caretsNode = $(getCaretsNode());
-
-		if ($caretsNode.parent().hasClass('object')) {
-		// If we are already in an html node related to an object, we dispatch the event to the right sub-view
-			meenoAppCli.dispatcher.trigger('tab:object:key:' + $caretsNode.parent().attr('id'), event);
-			return;
-		} else {
-		// We are not already inside an Object
-			if (event.keyCode == 51 && event.type == "keydown") {
-			// The user wants to insert a tag
-				event.preventDefault();
-				return this.newTag();
-			}
-			// The user is just typing some text
-		}
-	},
-
 	newTag: function () {
 		console.log('>>> New tag');
 		var id     = makeid();
 		var newTag = new meenoAppCli.Classes.Tag();
-		var newTagView = new meenoAppCli.Classes.TagRefView({ 
+		var newTagView = new meenoAppCli.Classes.TagRefView({
 			id: id,
 			model: newTag,
 			sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
 			isNew: true,
-			note: this.model // Has to be refined to diminish memory consumtion
+			note: this.model, // Has to be refined to diminish memory consumtion
+			parent: this
 		});
-		var newTagHtml = $("<div></div>").append(newTagView.render().$el).html();
+		newTagView.undelegateEvents();
+		var newTagHtml = $("<div></div>").append(newTagView.render().el).html();
 		pasteHtmlAtCaret(
 			newTagHtml + // The tag itself with a trick to get its html back
 			"<span class='void'>&nbsp;</span>" // A place to put the caret
 		);
 		newTagView.$el = $("#"+id); // Linking the DOM to the view
+		newTagView.delegateEvents(); // Binding all events
 		newTagView.$(".body").focus(); // Focusing on input
+		this.save();
+		return false;
+	},
+
+	newTask: function () {
+		console.log('>>> New task');
+		// Don't do anything for now
+		this.save();
+		return false;
+	},
+
+	newEntity: function () {
+		console.log('>>> New person');
+		// Don't do anything for now
+		this.save();
+		return false;
+	},
+
+	trySave: function() {
+		this.numberOfEdit++;
+		if(this.numberOfEdit == this.limitNumberOfEdit){
+			this.save();
+			this.numberOfEdit=0;
+		}
 	},
 
 	save: function() {
@@ -134,3 +140,5 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		this.$el.addClass('selected');
 	}
 });
+
+_.extend(meenoAppCli.Classes.EditorBodyView.prototype, meenoAppCli.l18n.EditorBodyView);
