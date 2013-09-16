@@ -29,9 +29,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tasks" : {}
 		};
 
-		this.listenTo(this.options.collections.notes, 'change:title', this.renderCollectionNotes);
-		this.listenTo(this.options.collections.tags, 'change:label', this.renderCollectionTags);
-		this.listenTo(this.options.collections.tasks, 'change:description', this.renderCollectionTasks);
+		this.listenTo(this.options.collections.notes, 'change:title add remove', this.renderCollectionNotes);
+		this.listenTo(this.options.collections.tags, 'change:label add remove', this.renderCollectionTags);
+		this.listenTo(this.options.collections.tasks, 'change:description add remove', this.renderCollectionTasks);
 		this.render();
 	},
 

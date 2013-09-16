@@ -21,10 +21,12 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	initialize: function() {
 		Backbone.View.prototype.initialize.apply(this, arguments);
+		this.children = [];
 	},
 
 	delegatedKill: function() {
 		this.save();
+		_.map (this.children, function(child) {return child.kill();});
 		this.options.parent.kill();
 	},
 
@@ -73,11 +75,8 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	newTag: function () {
 		console.log('>>> New tag');
 		var id     = makeid();
-		var newTag = new meenoAppCli.Classes.Tag();
 		var newTagView = new meenoAppCli.Classes.TagRefView({
 			id: id,
-			model: newTag,
-			sound: this.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
 			isNew: true,
 			note: this.model, // Has to be refined to diminish memory consumtion
 			parent: this
@@ -91,6 +90,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		newTagView.$el = $("#"+id); // Linking the DOM to the view
 		newTagView.delegateEvents(); // Binding all events
 		newTagView.$(".body").focus(); // Focusing on input
+		this.children.push (newTagView);
 		this.save();
 		return false;
 	},
@@ -123,7 +123,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			content:this.$(".edit-content").html()
 		}).save({},{
 			success: function() {
-				console.log('successfully saved');
+				console.log('Note successfully saved');
 			},
 			error  : function() {
 				console.log('Saving note modifications failed');
