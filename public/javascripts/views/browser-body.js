@@ -24,9 +24,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tasks" : []
 		};
 		this.filters = {
-			"notes" : {},
-			"tags"  : {},
-			"tasks" : {}
+			"notes" : "",
+			"tags"  : "",
+			"tasks" : ""
 		};
 
 		this.listenTo(this.options.collections.notes, 'change:title add remove', this.renderCollectionNotes);
