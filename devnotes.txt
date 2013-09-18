@@ -1,0 +1,8 @@
+// Prochaine feat. à mettre en place :
+
+taglinks.each(function(taglink){console.log(taglink.get('tag').get('label'))})
+test6
+sssdqss33
+undefined
+
+La mise en relation des objets fonctionne, l'objet note est mis à jour mais je n'ai pas de collection tagLinks à sauvegarder.

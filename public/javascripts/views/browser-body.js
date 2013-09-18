@@ -72,23 +72,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		console.log('search='+sKey);
 		this.filters[collName] = sKey;
 		this.renderCollection(collName);
-
-
-		// var tag0 = meenoAppCli.Tags.models[0]
-
-		// var aSearchedTags = ["50e81e8587d0b89757000008"];
-
-		// meenoAppCli.Notes.filter(function(note) {
-		// 	var passIt = 0;
-		// 	// On regarde si la note possède tous les tags présents dans l'array aSearchedTags
-		// 	_.each(aSearchedTags, function(searchedTagId) { // Loop on searched tags
-		// 		_.each(note.get("tags"), function(tag) { // Loop on the tags of the current note
-		// 			if (tag._id === searchedTagId) {passIt++; return;}
-		// 		});
-		// 	});
-		// 	if (passIt == aSearchedTags.length) {return true;}
-		// 	return false;
-		// });
 	},
 
 	// --------------------------------------------------------------------------------
