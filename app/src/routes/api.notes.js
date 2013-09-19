@@ -26,7 +26,8 @@ module.exports = function(mas, securityProxy){
 			note.updated_at = req.body.updated_at;
 			note.title      = req.body.title;
 			note.content    = req.body.content;
-			note.tags       = req.body.tags;
+			note.tagLinks   = req.body.tagLinks;
+			console.log(note.tagLinks);
 			return note.save(function(err) {
 				if (!err) {
 					console.log("updated");
@@ -45,7 +46,6 @@ module.exports = function(mas, securityProxy){
 			updated_at: req.body.updated_at,
 			title     : req.body.title,
 			content   : req.body.content,
-			tags      : req.body.tags
 		});
 		note.save(function(err) {
 			if (!err) {

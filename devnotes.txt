@@ -6,3 +6,33 @@ sssdqss33
 undefined
 
 La mise en relation des objets fonctionne, l'objet note est mis à jour mais je n'ai pas de collection tagLinks à sauvegarder.
+Les nouveaux objets taglinks sont bien créés mais ne sont pas sauvegardés. D'ailleurs la sauvegarde de la note ne déclenche pas la sauvegarde de ses taglinks. On a un set qui est fait, pas de save.
+Problème : je peux pas vraiment les ajouter à une collection puisque ces objets sont créés sans moi.
+Mais si je décide de les fetcher, je fais comment?
+
+Essayer de renseigner une url pour la sauvegarde du model (dans le model) tagLink
+Regarder si quand on sauvegarde la note on sauvegarde aussi le model
+
+SI tout ça ne donne rien, je peux réintégrer les tagLinks à l'intérieur des documents Note pour que ce soient les notes qui les portent. Reste à savoir comment gérer la relation HasOne dedans...
+
+
+Ca pourrait donner cela :
+
+$.forum.Thread = Backbone.RelationalModel.extend({
+    urlRoot: '/api/thread',
+    idAttribute: '_id',
+    relations: [{
+        type: Backbone.HasMany,
+        key: 'messages', // tagLinks
+        relatedModel: '$.forum.Message',
+        reverseRelation: {
+            key: 'thread',
+            includeInJSON: '_id',
+        },
+    }]
+});
+
+je peux juste tester cela
+
+19/09
+On envoie au serveur tous les taglinks serialisés quand on sauvegarde la note. Reste à bien l'interpréter côté serveur.
