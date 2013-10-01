@@ -12,12 +12,12 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		'input'      : 'autocomplete'
 	},
 
-	keyboardEvents: {
+	/*keyboardEvents: {
 		'esc'       : 'delete',
 		'enter'     : 'lock',
 		'backspace' : 'delete',
 		'del'       : 'delete'
-	},
+	},*/
 
 	initialize: function() {
 		this.options.isLocked = false;
@@ -65,7 +65,8 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	delete: function () {
 		if (this.options.isLocked) {
-			console.log('...Removing locked tag...');
+			console.log('============== Removing locked tag ==============');
+			console.log(this);
 			this.unlink();
 			this.kill();
 		}
@@ -76,7 +77,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		this.$el.addClass("broken");
 	},
 
-	lock: function (event) {
+	lock: function (event) {console.log("locking")
 		if (!this.options.isLocked) {
 			if (this.$('.body').val().length <= 2) {
 				// We save only tags of more than 2 characters
@@ -131,8 +132,9 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	unlink: function () {
-		console.log('------ trying to unlink tag ------');
-		this.options.note.get('tagLinks').remove( this.options.note.get('tagLinks').find({tag:this.model}) );
+		console.log('------ TESTtrying to unlink tag ------');
+		this.options.note.get('tagLinks').remove( 
+			this.options.note.get('tagLinks').find(function(tagLink){return tagLink.get('tag') == tag }) );
 		this.options.note.save ({},{
 			success: console.log('Object successfully unlinked'),
 			error  : console.error ('impossible to unlink object')

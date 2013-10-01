@@ -36,3 +36,7 @@ je peux juste tester cela
 
 19/09
 On envoie au serveur tous les taglinks serialisés quand on sauvegarde la note. Reste à bien l'interpréter côté serveur.
+
+30/09
+Développer la suppression des tags
+Développer les actions liées aux ranges

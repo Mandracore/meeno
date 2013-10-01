@@ -1,6 +1,9 @@
 <script type="text/template" id="overview-note-template" style="display: none;">
 	<span class="checkbox icon-check-empty"></span>
-	<span class="edit title attribute"><%= title %></span>
+	<span class="edit title attribute"><%= note.title %></span>
+	<span class="tags attribute">
+	<% _.each(tags, function(tag) { %>  <span>[<%= tag %>]</span> <% }); %>
+	</span>
 </script>
 <script type="text/template" id="overview-tag-template" style="display: none;">
 	<span class="checkbox icon-check-empty"></span>
