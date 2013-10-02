@@ -9,9 +9,11 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 
 	// The DOM events specific to an item.
 	events: {
-		'input'      : 'autocomplete'
+		'input'    : 'autocomplete',
+		'keypress' : 'keyProxy'
 	},
 
+	// Mousetrap is not working since it can't act on a reduced scope of the DOM
 	/*keyboardEvents: {
 		'esc'       : 'delete',
 		'enter'     : 'lock',
@@ -23,17 +25,26 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		this.options.isLocked = false;
 		Backbone.View.prototype.initialize.apply(this, arguments);
 		this.options.class = "emb-tag";
-		this.options.id = !this.options.id ? 0 : this.options.id;
+		this.options.id = (this.el == undefined) ? makeid() : this.$el.attr('id');
 
 		if (this.model) {
 			this.options.isLocked = true;
 			this.listenTo(this.model, 'change', this.render);
 			this.listenTo(this.model, 'remove', this.kill);
 		}
-
-		this.listenTo(meenoAppCli.dispatcher, 'tab:quit:' + this.options.sound, this.kill);
+		this.listenTo(this.options.note, 'change:content', this.checkChanges);
 
 		console.log ('Init[emb_tag]');
+	},
+
+	checkChanges: function () {
+		console.log('Checking DOM changes')
+		console.log(this.options.parentDOM)
+		if (!this.options.parentDOM.find(this.$el)) {	this.unlink(); }
+	},
+
+	keyProxy: function() {
+		console.log('keyProxy')
 	},
 
 	render: function() {
@@ -134,7 +145,7 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	unlink: function () {
 		console.log('------ TESTtrying to unlink tag ------');
 		this.options.note.get('tagLinks').remove( 
-			this.options.note.get('tagLinks').find(function(tagLink){return tagLink.get('tag') == tag }) );
+			this.options.note.get('tagLinks').find(function(tagLink){return tagLink.get('tag') == this.model }) );
 		this.options.note.save ({},{
 			success: console.log('Object successfully unlinked'),
 			error  : console.error ('impossible to unlink object')

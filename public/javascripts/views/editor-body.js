@@ -59,11 +59,13 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 				var model = meenoAppCli.tags.get($object.attr('data-model-id'));
 				if (model) {
 					var subView  = new meenoAppCli.Classes.TagRefView({
-						model: model,
-						el   : $object[0], // We bind the sub view to the element we just created
-						sound: view.options.sound, // This sub view will also listen to the same sound (for exiting in particular)
-						isNew: false
+						model     : model,
+						el        : $object[0], // We bind the sub view to the element we just created
+						note      : this.model,
+						parent    : this,
+						parentDOM : $object[0].closest('section.edit-content')
 					});
+					this.children.push (subView);
 				} else {
 					$object.addClass('broken');
 				}
@@ -74,12 +76,9 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	newTag: function () {
 		console.log('>>> New tag');
-		var id     = makeid();
 		var newTagView = new meenoAppCli.Classes.TagRefView({
-			id: id,
-			isNew: true,
-			note: this.model, // Has to be refined to diminish memory consumtion
-			parent: this
+			note   : this.model,
+			parent : this
 		});
 		newTagView.undelegateEvents();
 		var newTagHtml = $("<div></div>").append(newTagView.render().el).html();
@@ -87,8 +86,9 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			newTagHtml + // The tag itself with a trick to get its html back
 			"<span class='void'>&nbsp;</span>" // A place to put the caret
 		);
-		newTagView.$el = $("#"+id); // Linking the DOM to the view
+		newTagView.$el = $("#" + newTagView.options.id); // Linking the DOM to the view
 		newTagView.delegateEvents(); // Binding all events
+		newTagView.options.parentDOM = this.$el.closest('section.edit-content');
 		newTagView.$(".body").focus(); // Focusing on input
 		this.children.push (newTagView);
 		this.save();

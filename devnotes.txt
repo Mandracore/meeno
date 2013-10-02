@@ -40,3 +40,7 @@ On envoie au serveur tous les taglinks serialisés quand on sauvegarde la note. 
 30/09
 Développer la suppression des tags
 Développer les actions liées aux ranges
+Le seul moyen de bien détecter la disparition des objets c'est via le contentEsitable change
+
+Idée de génie :!!!
+A chaque Keypress, je vérifie que je peux retrouver tous les $el de mes vues dans le DOM. S'ils ont disparu, c'est que la vue doit être supprimée et le lien cassé !!!
