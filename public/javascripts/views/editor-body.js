@@ -63,7 +63,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 						el        : $object[0], // We bind the sub view to the element we just created
 						note      : this.model,
 						parent    : this,
-						parentDOM : $object[0].closest('section.edit-content')
+						parentDOM : this.$("section.edit-content")
 					});
 					this.children.push (subView);
 				} else {
@@ -88,7 +88,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		);
 		newTagView.$el = $("#" + newTagView.options.id); // Linking the DOM to the view
 		newTagView.delegateEvents(); // Binding all events
-		newTagView.options.parentDOM = this.$el.closest('section.edit-content');
+		newTagView.options.parentDOM = this.$("section.edit-content");
 		newTagView.$(".body").focus(); // Focusing on input
 		this.children.push (newTagView);
 		this.save();

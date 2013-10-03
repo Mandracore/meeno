@@ -25,22 +25,30 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		this.options.isLocked = false;
 		Backbone.View.prototype.initialize.apply(this, arguments);
 		this.options.class = "emb-tag";
-		this.options.id = (this.el == undefined) ? makeid() : this.$el.attr('id');
 
 		if (this.model) {
+			this.options.id = this.$el.attr('id');
 			this.options.isLocked = true;
 			this.listenTo(this.model, 'change', this.render);
 			this.listenTo(this.model, 'remove', this.kill);
+		} else {
+			this.options.id = makeid();
 		}
 		this.listenTo(this.options.note, 'change:content', this.checkChanges);
 
 		console.log ('Init[emb_tag]');
+		console.log (this.el);
+		console.log (this.options.id);
 	},
 
 	checkChanges: function () {
-		console.log('Checking DOM changes')
-		console.log(this.options.parentDOM)
-		if (!this.options.parentDOM.find(this.$el)) {	this.unlink(); }
+		console.log('======Checking DOM changes')
+		if (this.options.parentDOM.find(this.$el).length == 0) {
+			console.log("DOM not found");
+			if (this.model) {this.kill();}
+			this.unlink();
+		}
+		else {console.log('DOM found')}
 	},
 
 	keyProxy: function() {
@@ -74,14 +82,14 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		}
 	},
 
-	delete: function () {
-		if (this.options.isLocked) {
-			console.log('============== Removing locked tag ==============');
-			console.log(this);
-			this.unlink();
-			this.kill();
-		}
-	},
+	// delete: function () {
+	// 	if (this.options.isLocked) {
+	// 		console.log('============== Removing locked tag ==============');
+	// 		console.log(this);
+	// 		this.unlink();
+	// 		this.kill();
+	// 	}
+	// },
 
 	error: function (msg) {
 		console.error(msg);
@@ -143,12 +151,12 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	unlink: function () {
-		console.log('------ TESTtrying to unlink tag ------');
+		console.log('------ trying to unlink tag ------');
 		this.options.note.get('tagLinks').remove( 
 			this.options.note.get('tagLinks').find(function(tagLink){return tagLink.get('tag') == this.model }) );
 		this.options.note.save ({},{
 			success: console.log('Object successfully unlinked'),
-			error  : console.error ('impossible to unlink object')
+			error  : console.error ('Impossible to unlink object')
 		});
 	}
 });
