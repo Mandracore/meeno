@@ -51,8 +51,10 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		else {console.log('DOM found')}
 	},
 
-	keyProxy: function() {
-		console.log('keyProxy')
+	keyProxy: function(event) {
+		if (event.keyCode == 13 || event.keyCode == 9) {
+			this.lock();
+		}
 	},
 
 	render: function() {

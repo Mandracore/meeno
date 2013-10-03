@@ -50,7 +50,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		// Renders the tab-content item to the current state of the model
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html( templateFn( this.model.toJSON() ) );
-		var view = this;
+		var self = this;
 
 		// Activating sub-views of embedded objects like tags, notes,...
 		this.$(".object").each(function (index, object) {
@@ -61,11 +61,11 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 					var subView  = new meenoAppCli.Classes.TagRefView({
 						model     : model,
 						el        : $object[0], // We bind the sub view to the element we just created
-						note      : this.model,
-						parent    : this,
-						parentDOM : this.$("section.edit-content")
+						note      : self.model,
+						parent    : self,
+						parentDOM : self.$("section.edit-content")
 					});
-					this.children.push (subView);
+					self.children.push (subView);
 				} else {
 					$object.addClass('broken');
 				}
