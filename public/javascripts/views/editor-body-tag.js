@@ -37,8 +37,6 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		this.listenTo(this.options.note, 'change:content', this.checkChanges);
 
 		console.log ('Init[emb_tag]');
-		console.log (this.el);
-		console.log (this.options.id);
 	},
 
 	checkChanges: function () {
