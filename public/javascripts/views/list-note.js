@@ -11,7 +11,9 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 		'click .edit'    : 'edit'
 	},
 
-	initialize: function() {},
+	initialize: function() {
+		this.listenTo(this.model, 'change', this.render);
+	},
 
 	// Re-renders the note item to the current state of the model
 	render: function () {
