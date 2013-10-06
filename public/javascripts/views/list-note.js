@@ -12,7 +12,7 @@ meenoAppCli.Classes.ListNoteView = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		this.listenTo(this.model, 'change', this.render);
+		this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
 	},
 
 	// Re-renders the note item to the current state of the model

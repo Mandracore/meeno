@@ -132,7 +132,6 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 				moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
 				console.log('Tag "'+self.model.get('label')+'" linked to current note');
 				self.options.isLocked = true;
-				self.options.parent.save();
 			},
 			error: function () {self.error('Impossible to link new Tag "'+self.model.get('label')+'" to current note');}
 		});
