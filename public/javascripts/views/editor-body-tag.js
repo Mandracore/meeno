@@ -13,14 +13,6 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		'keypress' : 'keyProxy'
 	},
 
-	// Mousetrap is not working since it can't act on a reduced scope of the DOM
-	/*keyboardEvents: {
-		'esc'       : 'delete',
-		'enter'     : 'lock',
-		'backspace' : 'delete',
-		'del'       : 'delete'
-	},*/
-
 	initialize: function() {
 		this.options.isLocked = false;
 		Backbone.View.prototype.initialize.apply(this, arguments);
@@ -40,13 +32,15 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	checkChanges: function () {
-		console.log('======Checking DOM changes')
 		if (this.options.parentDOM.find(this.$el).length == 0) {
-			console.log("DOM not found");
-			if (this.model) {this.kill();}
-			this.unlink();
+			console.log(this.cid+"'s DOM element has been removed");
+			if (!this.model) {
+				this.kill();
+			} else {
+				this.unlink();
+			}
 		}
-		else {console.log('DOM found')}
+		else {console.log(this.cid+"'s DOM element still exists");}
 	},
 
 	keyProxy: function(event) {
@@ -82,15 +76,6 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 		}
 	},
 
-	// delete: function () {
-	// 	if (this.options.isLocked) {
-	// 		console.log('============== Removing locked tag ==============');
-	// 		console.log(this);
-	// 		this.unlink();
-	// 		this.kill();
-	// 	}
-	// },
-
 	error: function (msg) {
 		console.error(msg);
 		this.$el.addClass("broken");
@@ -99,14 +84,13 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	lock: function (event) {console.log("locking")
 		if (!this.options.isLocked) {
 			if (this.$('.body').val().length <= 2) {
-				// We save only tags of more than 2 characters
-				console.log('##WARNING## tag too short to lock');
+				console.log('##WARNING## tag too short to lock'); // We save only tags of more than 2 characters
 			} else {
 				console.log('______ Locking Object ______');
 
-				var view = this;
+				var self = this;
 				var selectedModel = meenoAppCli.tags.find(function (tag) {
-					return tag.get('label') == this.$(".body").val() 
+					return tag.get('label') == self.$(".body").val() 
 				});
 
 				if (!selectedModel) {
@@ -116,10 +100,14 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 					});
 					meenoAppCli.tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					this.model.save({},{ // Now that the model is into a collection, the .save() method will work
-						success: function () {view.link ();},
-						error  : function () {view.error("Impossible to save new model");}
+						success: function () {self.link ();},
+						error  : function () {self.error("Impossible to save new model");}
 					});
 				} else {
+					if (_.contains(this.options.note.get('tagLinks').pluck('tag'), selectedModel)) {
+						console.log('tag already linked');
+						return;
+					}
 					console.log('--- Linking to selected tag ---');
 					this.model = selectedModel;
 					this.link ();
@@ -151,12 +139,12 @@ meenoAppCli.Classes.TagRefView = Backbone.View.extend({
 	},
 
 	unlink: function () {
-		console.log('------ trying to unlink tag ------');
-		this.options.note.get('tagLinks').remove( 
-			this.options.note.get('tagLinks').find(function(tagLink){return tagLink.get('tag') == this.model }) );
+		var self = this;
+		var tagLink2rem = this.options.note.get('tagLinks').find(function(tagLink){return tagLink.get('tag') == self.model });
+		this.options.note.get('tagLinks').remove(tagLink2rem);
 		this.options.note.save ({},{
-			success: console.log('Object successfully unlinked'),
-			error  : console.error ('Impossible to unlink object')
+			success: function () {console.log('Object successfully unlinked');self.kill();},
+			error: function () {console.error('Impossible to unlink object');self.kill();}
 		});
 	}
 });

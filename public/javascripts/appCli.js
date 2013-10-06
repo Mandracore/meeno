@@ -9,15 +9,12 @@ $(function() { // This ensures the code will be executed when DOM is ready
 			this.beforeKill();
 		}
 
-		// same as this.$el.remove();
-		// console.log ("Killing : "+this.options.class);
 		console.log ("[Kill]");
 		this.remove();
 		// unbind events that are set on this view
 		this.off();
 		// remove all models bindings made by this view (do not affect any other observer to this model)
-		this.model.off( null, null, this );
-		// console.log ('___________View killed___________:');
+		if (this.model) {this.model.off( null, null, this );}
 		// Beware : this remove cannot event listeners referring to this view and set on other objects !
 	};
 	meenoAppCli.dispatcher = _.extend({}, Backbone.Events); // Init our app-wide listener
