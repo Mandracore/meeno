@@ -38,7 +38,7 @@ header .organisation:after{content:"\00A0"}
 .actions-main li:before{content:"+"}
 .actions-main li:hover,.actions-main li:active{background-color:#fff}
 .actions-contextual{position:absolute;top:14em;left:0;z-index:2;}
-.actions-contextual li{display:none;background-color:#fff;}
+.actions-contextual li{background-color:#fff;}
 .actions-contextual li.delete:before{content:'I'}
 .actions-contextual li.close:before{content:'X'}
 .actions-contextual li.clone:before{content:'W'}
@@ -71,7 +71,7 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .listobjects ul.notes li:hover span.button,.listobjects ul.tags li:hover span.button{opacity:.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);filter:alpha(opacity=50);}
 .listobjects ul.notes li:hover span.button:before,.listobjects ul.tags li:hover span.button:before{font-family:'modernpics';position:relative;font-size:1.3em;margin:0 5px 0}
 .listobjects ul.notes li:hover span.button:hover,.listobjects ul.tags li:hover span.button:hover{opacity:1;-ms-filter:none;filter:none;cursor:pointer}
-.listobjects .checkbox{margin:0 8px 0 0}
+.listobjects .checkbox{margin:0 8px 0 0;display:none}
 .listobjects ul.notes span.delete:before,.listobjects ul.tags span.delete:before{content:'I'}
 .listobjects ul.notes li p{margin:0;}
 .listobjects ul.notes li p.date{font-size:.85em;opacity:.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);filter:alpha(opacity=50)}
