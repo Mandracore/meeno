@@ -130,15 +130,23 @@ block content
 						li.tasks.selected.icon-tasks Tasks
 						li.tags.icon-tags Tags
 				div.listobjects.notes
-					input.search.notes(type="text", autofocus, placeholder="search notes")
+					div
+						input.search.notes(type="text", autofocus, placeholder="search notes")
+					div.action-box.delete
+						button.select-all Tout sélectionner
+						button.unselect-all Tout déslectionner
+						button.action Supprimer
 					ul.actions-contextual
-						li.delete Delete notes
+						li.delete
+							span.action Delete notes
+							span.cancel Cancel
 					ul.notes
 						li Note 1
 						li Note 2
 						li Note 3
 				div.listobjects.tasks.selected
-					input.search.tasks(type="text", autofocus, placeholder="search tasks")
+					div
+						input.search.tasks(type="text", autofocus, placeholder="search tasks")
 					ul.actions-contextual.hasSelected
 						li.delete Delete tasks
 					ul.tasks
@@ -183,7 +191,8 @@ block content
 									button.lastquart 100%
 								span.risk.risky risky
 				div.listobjects.tags
-					input.search.tags(type="text", autofocus, placeholder="search tags")
+					div
+						input.search.tags(type="text", autofocus, placeholder="search tags")
 					ul.actions-contextual
 						li.delete Delete tags
 					ul.tags

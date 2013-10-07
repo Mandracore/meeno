@@ -44,3 +44,6 @@ Le seul moyen de bien détecter la disparition des objets c'est via le contentEs
 
 Idée de génie :!!!
 A chaque Keypress, je vérifie que je peux retrouver tous les $el de mes vues dans le DOM. S'ils ont disparu, c'est que la vue doit être supprimée et le lien cassé !!!
+
+07/10
+Déplacer la boîte qui contient selectAll/unSelectAll pour qu'elle puisse être commune à toutes les actions (trop fasitidieux sinon)

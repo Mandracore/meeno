@@ -9,12 +9,14 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// It's meant to be used for both Help and Browse tabs, which explains some functions won't be used in some cases
 
 	events: {
-		'click .filter .notes' : 'toggleNotes',
-		'click .filter .tags'  : 'toggleTags',
-		'click .filter .tasks' : 'toggleTasks',
-		'keyup .search.notes'  : 'searchNotes',
-		'keyup .search.tags'   : 'searchTags',
-		'keyup .search.tasks'  : 'searchTasks'
+		'click .filter .notes'                                 : 'toggleNotes',
+		'click .filter .tags'                                  : 'toggleTags',
+		'click .filter .tasks'                                 : 'toggleTasks',
+		'keyup .search.notes'                                  : 'searchNotes',
+		'keyup .search.tags'                                   : 'searchTags',
+		'keyup .search.tasks'                                  : 'searchTasks',
+		'click .listobjects.notes .actions-contextual .delete' : 'deleteNotesToggle',
+		'click .listobjects.notes .action-box .delete' : 'selectNotesToggle',
 	},
 
 	initialize: function() {
@@ -60,6 +62,17 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			$(child).removeClass("selected");
 		});
 		this.$el.find(".listobjects."+objectClass).addClass('selected');
+	},
+
+	// --------------------------------------------------------------------------------
+	// Delete objects
+	deleteNotesToggle: function () {
+		// Display selectors or hide them
+		this.$(".listobjects.notes span.checkbox").toggle();
+		this.$(".listobjects.notes .actions-contextual .action").toggle();
+		this.$(".listobjects.notes .actions-contextual .cancel").toggle();
+		this.$(".listobjects.notes .action-box").toggle();
+
 	},
 
 	// --------------------------------------------------------------------------------
