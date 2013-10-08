@@ -46,4 +46,10 @@ Idée de génie :!!!
 A chaque Keypress, je vérifie que je peux retrouver tous les $el de mes vues dans le DOM. S'ils ont disparu, c'est que la vue doit être supprimée et le lien cassé !!!
 
 07/10
-Déplacer la boîte qui contient selectAll/unSelectAll pour qu'elle puisse être commune à toutes les actions (trop fasitidieux sinon)
+Déplacer la boîte qui contient selectAll/unSelectAll pour qu'elle puisse être commune à toutes les actions (trop fasitidieux sinon). Binder ces boutons à des Evnts pour les toggler
+
+Règles : 
+- si tout est sélectionné => Déselectionner tout
+- si rien n'est sélectionné => Selectionner tout
+- si mélange => Selectionner tout + Déselectionner tout
+- je lance un évt : au toggle d'une action, à la sélection d'un objet

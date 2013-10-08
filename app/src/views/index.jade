@@ -131,11 +131,12 @@ block content
 						li.tags.icon-tags Tags
 				div.listobjects.notes
 					div
-						input.search.notes(type="text", autofocus, placeholder="search notes")
-					div.action-box.delete
+						input.search(type="text", autofocus, placeholder="search notes")
+					div.actions-contextual-selection
 						button.select-all Tout sélectionner
 						button.unselect-all Tout déslectionner
-						button.action Supprimer
+					div.actions-contextual-trigger
+						button.delete Supprimer
 					ul.actions-contextual
 						li.delete
 							span.action Delete notes
@@ -146,7 +147,7 @@ block content
 						li Note 3
 				div.listobjects.tasks.selected
 					div
-						input.search.tasks(type="text", autofocus, placeholder="search tasks")
+						input.search(type="text", autofocus, placeholder="search tasks")
 					ul.actions-contextual.hasSelected
 						li.delete Delete tasks
 					ul.tasks
@@ -160,39 +161,9 @@ block content
 									button.thirdquart 75%
 									button.lastquart 100%
 								span.risk.risky risky
-						li
-							h2
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
-						li
-							h2
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
-						li
-							h2
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
 				div.listobjects.tags
 					div
-						input.search.tags(type="text", autofocus, placeholder="search tags")
+						input.search(type="text", autofocus, placeholder="search tags")
 					ul.actions-contextual
 						li.delete Delete tags
 					ul.tags

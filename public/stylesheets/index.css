@@ -72,9 +72,11 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .listobjects ul.notes li:hover span.button:before,.listobjects ul.tags li:hover span.button:before{font-family:'modernpics';position:relative;font-size:1.3em;margin:0 5px 0}
 .listobjects ul.notes li:hover span.button:hover,.listobjects ul.tags li:hover span.button:hover{opacity:1;-ms-filter:none;filter:none;cursor:pointer}
 .listobjects .checkbox{margin:0 8px 0 0;display:none}
-.listobjects .action-box{display:none;}
-.listobjects .action-box .select-all,.listobjects .action-box .action{display:inline-block}
-.listobjects .action-box .unselect-all{display:none}
+.listobjects .actions-contextual-trigger{display:none;}
+.listobjects .actions-contextual-trigger button{display:none}
+.listobjects .actions-contextual-selection{display:none;}
+.listobjects .actions-contextual-selection .select-all,.listobjects .actions-contextual-selection .action{display:inline-block}
+.listobjects .actions-contextual-selection .unselect-all{display:none}
 .listobjects .actions-contextual .cancel{display:none}
 .listobjects ul.notes span.delete:before,.listobjects ul.tags span.delete:before{content:'I'}
 .listobjects ul.notes li p{margin:0;}

@@ -9,14 +9,14 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// It's meant to be used for both Help and Browse tabs, which explains some functions won't be used in some cases
 
 	events: {
-		'click .filter .notes'                                 : 'toggleNotes',
-		'click .filter .tags'                                  : 'toggleTags',
-		'click .filter .tasks'                                 : 'toggleTasks',
-		'keyup .search.notes'                                  : 'searchNotes',
-		'keyup .search.tags'                                   : 'searchTags',
-		'keyup .search.tasks'                                  : 'searchTasks',
-		'click .listobjects.notes .actions-contextual .delete' : 'deleteNotesToggle',
-		'click .listobjects.notes .action-box .delete' : 'selectNotesToggle',
+		'click .filter .notes'                                                 : 'toggleNotes',
+		'click .filter .tags'                                                  : 'toggleTags',
+		'click .filter .tasks'                                                 : 'toggleTasks',
+		'keyup .search'                                                        : 'search',
+		'click .listobjects.notes .actions-contextual .delete'                 : 'deleteToggle',
+		'click .listobjects.notes .actions-contextual-selection .select-all'   : 'selectAll',
+		'click .listobjects.notes .actions-contextual-selection .unselect-all' : 'unSelectAll',
+		'click span.checkbox'                                                  : 'selection',
 	},
 
 	initialize: function() {
@@ -37,6 +37,33 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.render();
 	},
 
+	// --------------------------------------------------------------------------------
+	// Selection of objects
+	selection : function (event) {
+		var $listObjects = !event.listObjects ? $(event.target).closest(".listobjects") : $(event.listObjects);
+		var countUnselected = $listObjects.find("span.checkbox.icon-check-empty").length;
+		if (countUnselected == 0) { // "Unselect all" only
+			$listObjects.find(".actions-contextual-selection .select-all").hide();
+			$listObjects.find(".actions-contextual-selection .unselect-all").show();
+		} else {
+			var countSelected = $listObjects.find("span.checkbox.icon-check").length;
+			if (countSelected == 0) { // "Select all" only
+				$listObjects.find(".actions-contextual-selection .select-all").show();
+				$listObjects.find(".actions-contextual-selection .unselect-all").hide();
+			} else { // "Select all" and "Unselect all"
+				$listObjects.find(".actions-contextual-selection .select-all").show();
+				$listObjects.find(".actions-contextual-selection .unselect-all").show();
+			}
+		}
+	},
+
+	selectAll: function(event) {
+		var $listObjects = $(event.target).closest(".listObjects");
+		$listObjects.find("span.checkbox.icon-check").addClass(".icon-check-empty").removeClass(".icon-check");
+	},
+
+	// --------------------------------------------------------------------------------
+	// Toggle the browser
 	toggle: function() {
 		// First, deactivate the other tabs' content
 		$("#tabs").children().each(function(i,child){
@@ -66,22 +93,26 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	// --------------------------------------------------------------------------------
 	// Delete objects
-	deleteNotesToggle: function () {
+	deleteToggle: function (event) {
+		var $listObjects = $(event.target).closest(".listobjects");
 		// Display selectors or hide them
-		this.$(".listobjects.notes span.checkbox").toggle();
-		this.$(".listobjects.notes .actions-contextual .action").toggle();
-		this.$(".listobjects.notes .actions-contextual .cancel").toggle();
-		this.$(".listobjects.notes .action-box").toggle();
+		$listObjects.find("span.checkbox").toggle();
+		$listObjects.find(".actions-contextual .action").toggle();
+		$listObjects.find(".actions-contextual .cancel").toggle();
+		$listObjects.find(".actions-contextual-trigger").toggle();
+		$listObjects.find(".actions-contextual-selection").toggle();
 
+		if ($listObjects.find(".actions-contextual-selection").is(":visible")) {
+			this.selection($listObjects);
+		}
 	},
 
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
-	searchNotes : function () {this.search("notes");},
-	searchTags  : function () {this.search("tags");},
-	searchTasks : function () {this.search("tasks");},
-	search      : function (collName) {
-		var sKey = this.$(".search."+collName.toLowerCase()).val();
+	search : function (event) {
+		var $listObjects = $(event.target).closest(".listObjects");
+		var collName = $target.hasClass("notes") ? "notes" : ($target.hasClass("tags") ? "tags" : "tasks");
+		var sKey = $(event.target).find(".search."+collName.toLowerCase()).val();
 		console.log('search='+sKey);
 		this.filters[collName] = sKey;
 		this.renderCollection(collName);
