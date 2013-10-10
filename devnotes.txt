@@ -53,3 +53,7 @@ Règles :
 - si rien n'est sélectionné => Selectionner tout
 - si mélange => Selectionner tout + Déselectionner tout
 - je lance un évt : au toggle d'une action, à la sélection d'un objet
+
+
+10/10/13
+Si je sélectionne des object, puis que j'ouvre une note que je modifie de manière à ce qu'elle soit re rendered dans le browser, qd je retourne dans ce dernier il n'y a plus sa box de sélection.

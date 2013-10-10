@@ -40,7 +40,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// --------------------------------------------------------------------------------
 	// Selection of objects
 	selection : function (event) {
-		var $listObjects = !event.listObjects ? $(event.target).closest(".listobjects") : $(event.listObjects);
+		var $listObjects = $(event.target).closest(".listobjects");
 		var countUnselected = $listObjects.find("span.checkbox.icon-check-empty").length;
 		if (countUnselected == 0) { // "Unselect all" only
 			$listObjects.find(".actions-contextual-selection .select-all").hide();
@@ -57,9 +57,20 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		}
 	},
 
-	selectAll: function(event) {
-		var $listObjects = $(event.target).closest(".listObjects");
-		$listObjects.find("span.checkbox.icon-check").addClass(".icon-check-empty").removeClass(".icon-check");
+	selectAll: function (event) {
+		var $listObjects = $(event.target).closest(".listobjects");
+		$listObjects.find("span.checkbox").each(function (idx, checkbox) {
+			$(checkbox).addClass("icon-check").removeClass("icon-check-empty");
+		});
+		this.selection(event);
+	},
+
+	unSelectAll: function (event) {
+		var $listObjects = $(event.target).closest(".listobjects");
+		$listObjects.find("span.checkbox").each(function (idx, checkbox) {
+			$(checkbox).addClass("icon-check-empty").removeClass("icon-check");
+		});
+		this.selection(event);
 	},
 
 	// --------------------------------------------------------------------------------
@@ -100,18 +111,19 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		$listObjects.find(".actions-contextual .action").toggle();
 		$listObjects.find(".actions-contextual .cancel").toggle();
 		$listObjects.find(".actions-contextual-trigger").toggle();
+		$listObjects.find(".actions-contextual-trigger .delete").toggle();
 		$listObjects.find(".actions-contextual-selection").toggle();
 
 		if ($listObjects.find(".actions-contextual-selection").is(":visible")) {
-			this.selection($listObjects);
+			this.selection(event);
 		}
 	},
 
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
 	search : function (event) {
-		var $listObjects = $(event.target).closest(".listObjects");
-		var collName = $target.hasClass("notes") ? "notes" : ($target.hasClass("tags") ? "tags" : "tasks");
+		var $listObjects = $(event.target).closest(".listobjects");
+		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 		var sKey = $(event.target).find(".search."+collName.toLowerCase()).val();
 		console.log('search='+sKey);
 		this.filters[collName] = sKey;
