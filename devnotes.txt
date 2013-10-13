@@ -57,3 +57,7 @@ Règles :
 
 10/10/13
 Si je sélectionne des object, puis que j'ouvre une note que je modifie de manière à ce qu'elle soit re rendered dans le browser, qd je retourne dans ce dernier il n'y a plus sa box de sélection.
+
+12/10/2013
+Pour déclencher évt sur les bons models, envoyer depuis brwser-body this.children.notes.deleteIfSelected()
+Changer les list-tag, list-note,...en browser-body-objects

@@ -9,14 +9,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// It's meant to be used for both Help and Browse tabs, which explains some functions won't be used in some cases
 
 	events: {
-		'click .filter .notes'                                                 : 'toggleNotes',
-		'click .filter .tags'                                                  : 'toggleTags',
-		'click .filter .tasks'                                                 : 'toggleTasks',
-		'keyup .search'                                                        : 'search',
-		'click .listobjects.notes .actions-contextual .delete'                 : 'deleteToggle',
-		'click .listobjects.notes .actions-contextual-selection .select-all'   : 'selectAll',
-		'click .listobjects.notes .actions-contextual-selection .unselect-all' : 'unSelectAll',
-		'click span.checkbox'                                                  : 'selection',
+		'click .filter li'                                  : 'toggleObject',
+		'keyup .search'                                     : 'search',
+		'click .actions-contextual .delete'                 : 'deleteToggle',
+		'click .actions-contextual-selection .select-all'   : 'selectAll',
+		'click .actions-contextual-selection .unselect-all' : 'unSelectAll',
+		'click span.checkbox'                               : 'selection',
+		'click .actions-contextual-trigger button'          : 'actionTrigger',
 	},
 
 	initialize: function() {
@@ -31,23 +30,32 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tasks" : ""
 		};
 
-		this.listenTo(this.options.collections.notes, 'add remove', this.renderCollectionNotes);
-		this.listenTo(this.options.collections.tags, 'add remove', this.renderCollectionTags);
-		this.listenTo(this.options.collections.tasks, 'add remove', this.renderCollectionTasks);
+		this.listenTo(this.options.collections.notes, 'add remove', function() {this.renderCollection("notes");});
+		this.listenTo(this.options.collections.tags, 'add remove', function() {this.renderCollection("tags");});
+		this.listenTo(this.options.collections.tasks, 'add remove', function() {this.renderCollection("taks");});
+		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:resetSelection', function () {this.resetSelection("notes");});
+		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:resetSelection', function () {this.resetSelection("tags");});
+		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:resetSelection', function () {this.resetSelection("tasks");});
 		this.render();
 	},
 
 	// --------------------------------------------------------------------------------
-	// Selection of objects
+	// Mass actions
+	resetSelection: function(collName) {
+		this.$(".listobjects ."+collName+" span.checkbox").each(function (idx, checkbox) {
+			$(checkbox).addClass("icon-check-empty").removeClass("icon-check");
+		});
+	},
+
 	selection : function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		var countUnselected = $listObjects.find("span.checkbox.icon-check-empty").length;
-		if (countUnselected == 0) { // "Unselect all" only
+		if (countUnselected === 0) { // "Unselect all" only
 			$listObjects.find(".actions-contextual-selection .select-all").hide();
 			$listObjects.find(".actions-contextual-selection .unselect-all").show();
 		} else {
 			var countSelected = $listObjects.find("span.checkbox.icon-check").length;
-			if (countSelected == 0) { // "Select all" only
+			if (countSelected === 0) { // "Select all" only
 				$listObjects.find(".actions-contextual-selection .select-all").show();
 				$listObjects.find(".actions-contextual-selection .unselect-all").hide();
 			} else { // "Select all" and "Unselect all"
@@ -73,37 +81,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.selection(event);
 	},
 
-	// --------------------------------------------------------------------------------
-	// Toggle the browser
-	toggle: function() {
-		// First, deactivate the other tabs' content
-		$("#tabs").children().each(function(i,child){
-			$(child).removeClass("selected");
-		});
-		// Then activate this one
-		this.$el.addClass('selected');
-	},
-
-	// --------------------------------------------------------------------------------
-	// Toggle business objet type displayed by the browser
-	toggleNotes  : function () {this.toggleObject("notes");},
-	toggleTags   : function () {this.toggleObject("tags");},
-	toggleTasks  : function () {this.toggleObject("tasks");},
-	toggleObject : function (objectClass) {
-		// First, the command
-		this.$el.find(".filter ul").children().each(function(i,child){
-			$(child).removeClass("selected");
-		});
-		this.$el.find(".filter li."+objectClass).addClass('selected');
-		// Then, the contents
-		this.$el.children(".listobjects").each(function(i,child){
-			$(child).removeClass("selected");
-		});
-		this.$el.find(".listobjects."+objectClass).addClass('selected');
-	},
-
-	// --------------------------------------------------------------------------------
-	// Delete objects
 	deleteToggle: function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		// Display selectors or hide them
@@ -119,6 +96,42 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		}
 	},
 
+	actionTrigger: function (event) {
+		// Which list objects are we working on ?
+		var $listObjects = $(event.target).closest(".listobjects");
+		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+		// Which action do we want to trigger ?
+		var action = $(event.target).attr('class');
+		meenoAppCli.dispatcher.trigger("browser:"+collName+":"+action);
+	},
+
+	// --------------------------------------------------------------------------------
+	// Toggle the browser
+	toggle: function() {
+		// First, deactivate the other tabs' content
+		$("#tabs").children().each(function(i,child){
+			$(child).removeClass("selected");
+		});
+		// Then activate this one
+		this.$el.addClass('selected');
+	},
+
+	// --------------------------------------------------------------------------------
+	// Toggle business objet type displayed by the browser
+	toggleObject : function (event) {
+		var objectClass = $(event.target).hasClass("notes") ? "notes" : ($(event.target).hasClass("tags") ? "tags" : "tasks");
+		// First, the command
+		this.$el.find(".filter ul").children().each(function(i,child){
+			$(child).removeClass("selected");
+		});
+		this.$el.find(".filter li."+objectClass).addClass('selected');
+		// Then, the contents
+		this.$el.children(".listobjects").each(function(i,child){
+			$(child).removeClass("selected");
+		});
+		this.$el.find(".listobjects."+objectClass).addClass('selected');
+	},
+
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
 	search : function (event) {
@@ -132,9 +145,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	// --------------------------------------------------------------------------------
 	// Render business objects' sub views 
-	renderCollectionNotes : function () {return this.renderCollection("notes");},
-	renderCollectionTags : function () {return this.renderCollection("tags");},
-	renderCollectionTasks : function () {return this.renderCollection("tasks");},
 	render : function (event) {
 		this.renderCollection('notes');
 		this.renderCollection('tags');
@@ -142,23 +152,24 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	renderCollection : function (collName) {
-		console.log("renderCollection:"+collName)
+		console.log("renderCollection:"+collName);
 
 		// First, emptying the DOM
 		var $list = this.$('.listobjects.'+collName+' .'+collName);
 		$list.html('');
 		// Second, killing children views of right collection
-		_.each(this.children[collName], function (child, index) { 
+		_.each(this.children[collName], function (child, index) {
 			child.kill();
 		});
 		this.children[collName] = [];
 		// Third, filling the DOM again
+		var newView = {};
 		this.options.collections[collName].search(this.filters[collName]).each(function (item) {
-			if (collName == "notes") { var view = new meenoAppCli.Classes.ListNoteView({ model: item }); }
-			if (collName == "tags") { var view = new meenoAppCli.Classes.ListTagView({ model: item }); }
-			if (collName == "tasks") { var view = new meenoAppCli.Classes.ListTaskView({ model: item }); }
-			this.children[collName].push (view);
-			$list.append(view.render().el);
+			if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: item }); }
+			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: item }); }
+			if (collName == "tasks") { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: item }); }
+			this.children[collName].push (newView);
+			$list.append(newView.render().el);
 		}, this);
 	},
 });
