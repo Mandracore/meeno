@@ -11,7 +11,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 			'click .delete'  : 'delete',
 			'blur .label'    : 'save'
 		});
-	}
+	},
 
 	// Renders the tag item to the current state of the model
 	render: function() {

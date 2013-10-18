@@ -61,3 +61,9 @@ Si je sélectionne des object, puis que j'ouvre une note que je modifie de mani�
 12/10/2013
 Pour déclencher évt sur les bons models, envoyer depuis brwser-body this.children.notes.deleteIfSelected()
 Changer les list-tag, list-note,...en browser-body-objects
+
+18/10/2013
+Comment faire si on a plusieurs actions possibles, on peut pas avoir tout le monde affiché en même temps... Comment gérer les conflits ? Pas de soucis pour selectall/unselectall mais pour le reste si. Voir également quoi faire qd un browser-body-object est rerendered, si une action est en cours, le toggle ne marchera plus.
+Cas 1 : tout est fermé, un simple toggle marche. Le toggle marchera toujours si tout est fermé.
+Cas 2 : un type est ouvert et on veut le fermer. Son toggle marche
+Cas 3 : on veut toggle qqch alors que qqch d'autre est ouvert. Il faut faire en premier le toggle de l'action ouverte puis celui de l'autre action

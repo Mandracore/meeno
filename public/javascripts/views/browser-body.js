@@ -19,6 +19,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	initialize: function() {
+		var deleteInProgress = false;
+
 		this.children = {
 			"notes" : [],
 			"tags"  : [],
@@ -82,6 +84,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	deleteToggle: function (event) {
+		deleteInProgress = !deleteInProgress;
 		var $listObjects = $(event.target).closest(".listobjects");
 		// Display selectors or hide them
 		$listObjects.find("span.checkbox").toggle();
