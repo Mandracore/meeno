@@ -30,5 +30,21 @@
 		"$":true,
 		"_":true,
 		"Backbone":true
+		'require':true,
+		'define':true,
+		'jasmine',
+		'isCommonJS',
+		'exports',
+		'spyOn',
+		'it',
+		'xit',
+		'expect',
+		'runs',
+		'waits',
+		'waitsFor',
+		'beforeEach',
+		'beforeAfter',
+		'describe',
+		'xdescribe'
 	}
 }

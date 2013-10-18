@@ -18,7 +18,14 @@
 		"yuidocjs": "0.3.x",
 		"grunt-build-docs": "0.4.x",
 		"jshint": "2.x.x",
-		"grunt-contrib-jshint": "0.6.x"
+		"grunt-contrib-jshint": "0.6.x",
+		"warn": "0.x.x",
+		"grunt-complexity": "0.x.x",
+		"karma": "0.10.x",
+		"grunt-karma": "0.7.x",
+		"karma-detect-browsers": "~0.1",
+		"karma-coverage": "~0.1",
+		"karma-jasmine": "~0.1"
 	},
 	"repository": {
 		"type": "git",
