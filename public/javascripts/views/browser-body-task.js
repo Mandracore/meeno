@@ -18,6 +18,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 		console.log ("R[list-task]");
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (this.model.toJSON()));
+		meenoAppCli.dispatcher.trigger("browser:tasks:reSyncSelectors");
 		return this;
 	},
 

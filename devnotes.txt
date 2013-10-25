@@ -67,3 +67,9 @@ Comment faire si on a plusieurs actions possibles, on peut pas avoir tout le mon
 Cas 1 : tout est fermé, un simple toggle marche. Le toggle marchera toujours si tout est fermé.
 Cas 2 : un type est ouvert et on veut le fermer. Son toggle marche
 Cas 3 : on veut toggle qqch alors que qqch d'autre est ouvert. Il faut faire en premier le toggle de l'action ouverte puis celui de l'autre action
+
+
+25/10/2013
+Si un refresh de la liste des objets est délenché :
+Cas 1 : une action est déjà ouverte. L'objet re rendered va se désynchroniser des autres
+Cas 2 : aucune action en cours. Rien à faire

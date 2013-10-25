@@ -17,7 +17,7 @@ meenoAppCli.Classes.BrowserBodyNoteView = meenoAppCli.Classes.BrowserBodyObjectV
 
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (json));
-
+		meenoAppCli.dispatcher.trigger("browser:notes:reSyncSelectors");
 		return this;
 	},
 

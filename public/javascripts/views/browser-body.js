@@ -19,7 +19,11 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	initialize: function() {
-		var deleteInProgress = false;
+		this.deleteInProgress = {
+			"notes" : false,
+			"tags"  : false,
+			"tasks" : false
+		};
 
 		this.children = {
 			"notes" : [],
@@ -35,18 +39,18 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(this.options.collections.notes, 'add remove', function() {this.renderCollection("notes");});
 		this.listenTo(this.options.collections.tags, 'add remove', function() {this.renderCollection("tags");});
 		this.listenTo(this.options.collections.tasks, 'add remove', function() {this.renderCollection("taks");});
-		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:resetSelection', function () {this.resetSelection("notes");});
-		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:resetSelection', function () {this.resetSelection("tags");});
-		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:resetSelection', function () {this.resetSelection("tasks");});
+		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
+		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
+		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
 		this.render();
 	},
 
 	// --------------------------------------------------------------------------------
 	// Mass actions
-	resetSelection: function(collName) {
-		this.$(".listobjects ."+collName+" span.checkbox").each(function (idx, checkbox) {
-			$(checkbox).addClass("icon-check-empty").removeClass("icon-check");
-		});
+	reSyncSelectors: function(collName) {
+		if (this.deleteInProgress[collName]) {
+			this.$(".listobjects ."+collName+" span.checkbox").show(); // Display object selectors or hide them
+		}
 	},
 
 	selection : function (event) {
@@ -84,10 +88,11 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	deleteToggle: function (event) {
-		deleteInProgress = !deleteInProgress;
 		var $listObjects = $(event.target).closest(".listobjects");
-		// Display selectors or hide them
-		$listObjects.find("span.checkbox").toggle();
+		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+		this.deleteInProgress[collName] = !this.deleteInProgress[collName];
+
+		$listObjects.find("span.checkbox").toggle(); // Display object selectors or hide them
 		$listObjects.find(".actions-contextual .action").toggle();
 		$listObjects.find(".actions-contextual .cancel").toggle();
 		$listObjects.find(".actions-contextual-trigger").toggle();
