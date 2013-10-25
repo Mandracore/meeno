@@ -165,13 +165,19 @@ block content
 				div.listobjects.tags
 					div
 						input.search(type="text", autofocus, placeholder="search tags")
+					div.actions-contextual-selection
+						button.select-all Tout sélectionner
+						button.unselect-all Tout déselectionner
+					div.actions-contextual-trigger
+						button.delete Supprimer
 					ul.actions-contextual
-						li.delete Delete tags
+						li.delete
+							span.action Delete tags
+							span.cancel Cancel
 					ul.tags
-						li tag1
-						li tag2
-						li tag3
-						li tag4
+						li Tag 1
+						li Tag 2
+						li Tag 3
 		div#footer
 			p.current-action Saving...
 			p.sync-status Sync. Status : In Progress...

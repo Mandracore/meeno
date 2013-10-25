@@ -73,3 +73,5 @@ Cas 3 : on veut toggle qqch alors que qqch d'autre est ouvert. Il faut faire en 
 Si un refresh de la liste des objets est délenché :
 Cas 1 : une action est déjà ouverte. L'objet re rendered va se désynchroniser des autres
 Cas 2 : aucune action en cours. Rien à faire
+//////////////
+Mettre à jour les objets dans les notes s'ils sont modifiés par ailleurs (tags et tasks)
