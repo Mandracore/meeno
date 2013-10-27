@@ -1,34 +1,104 @@
 {
-	"name": "meeno",
-	"version": "0.0.1",
-	"private": true,
-	"scripts": {
-		"start": "node appSrv.js"
-	},
-	"dependencies": {
-		"grunt":"0.4.x",
-		"express": "3.x.x",
-		"jade": "0.37.x",
-		"stylus": "0.37.x",
-		"nib": "1.x.x",
-		"grunt-autoprefixer": "0.2.x",
-		"mongoose": "3.x.x"
-	},
-	"devDependencies": {
-		"yuidocjs": "0.3.x",
-		"grunt-build-docs": "0.4.x",
-		"jshint": "2.x.x",
-		"grunt-contrib-jshint": "0.6.x",
-		"warn": "0.x.x",
-		"grunt-complexity": "0.x.x",
-		"karma": "0.10.x",
-		"grunt-karma": "0.7.x",
-		"karma-detect-browsers": "~0.1",
-		"karma-coverage": "~0.1",
-		"karma-jasmine": "~0.1"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Mandracore/meeno.git"
-	}
+  "name": "meeno",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Note-taking web app designed for both professional and personal use.",
+  "homepage": "http://github.com/Mandracore/meeno",
+  "contributors": [
+    {
+      "name": "arcandre"
+    },
+    {
+      "name": "ObjectifMars",
+      "email": "lujan.objectifmars@gmail.com"
+    }
+  ],
+  "scripts": {
+    "start": "node appSrv.js",
+    "test": "start ./test/client/jasmine-standalone-1.3.1/SpecRunner.html"
+  },
+  "dependencies": {
+    "mongoose": "3.x.x",
+    "express": "3.x.x",
+    "jade": "0.35.x",
+    "stylus": "0.37.x",
+    "nib": "1.x.x",
+    "grunt": "0.4.x",
+    "grunt-autoprefixer": "0.2.x"
+  },
+  "devDependencies": {
+    "yuidocjs": "0.3.x",
+    "jshint": "2.x.x",
+    "bower": "1.2.x",
+    "warn": "0.x.x",
+    "karma": "0.10.x",
+    "karma-detect-browsers": "~0.1",
+    "karma-coverage": "~0.1",
+    "karma-jasmine": "~0.1",
+    "grunt": "0.4.x",
+    "grunt-contrib-jshint": "0.6.x",
+    "grunt-contrib-yuidoc": "0.5.x",
+    "grunt-contrib-requirejs": "0.4.x",
+    "grunt-complexity": "0.x.x",
+    "grunt-karma": "0.7.x",
+    "glob": "3.2.x",
+    "grunt-contrib-csslint": "0.1.x",
+    "grunt-appcache": "0.1.x",
+    "grunt-contrib-htmlmin": "0.1.x",
+    "grunt-bower-requirejs": "0.7.x",
+    "grunt-autoprefixer": "0.2.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mandracore/meeno.git"
+  },
+  "jshintConfig": {
+    "bitwise": true,
+    "browser": true,
+    "camelcase": true,
+    "curly": true,
+    "devel": true,
+    "evil": false,
+    "forin": false,
+    "immed": true,
+    "indent": 4,
+    "latedef": true,
+    "maxerr": 100,
+    "newcap": true,
+    "noarg": true,
+    "node": true,
+    "passfail": false,
+    "proto": true,
+    "quotmark": "double",
+    "regexdash": false,
+    "regexp": true,
+    "shadow": false,
+    "smarttabs": false,
+    "strict": false,
+    "trailing": true,
+    "undef": true,
+    "unused": true,
+    "white": false,
+    "globals": {
+      "$": true,
+      "_": true,
+      "Backbone": true,
+      "require": true,
+      "define": true,
+      "jasmine": true,
+      "isCommonJS": true,
+      "exports": true,
+      "spyOn": true,
+      "it": true,
+      "xit": true,
+      "expect": true,
+      "runs": true,
+      "waits": true,
+      "waitsFor": true,
+      "beforeEach": true,
+      "beforeAfter": true,
+      "describe": true,
+      "xdescribe": true
+    }
+  }
 }
