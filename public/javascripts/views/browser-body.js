@@ -24,7 +24,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tags"  : false,
 			"tasks" : false
 		};
-
 		this.children = {
 			"notes" : [],
 			"tags"  : [],
@@ -145,7 +144,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	search : function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-		var sKey = $(event.target).find(".search."+collName.toLowerCase()).val();
+		var sKey = $(event.target).val();
 		console.log('search='+sKey);
 		this.filters[collName] = sKey;
 		this.renderCollection(collName);

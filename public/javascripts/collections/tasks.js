@@ -7,7 +7,7 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 
 	search : function(letters){
 		if(letters == "") return this;
-		var pattern = new RegExp(letters,"gi");
+		var pattern = new RegExp(letters,"i");
 		return _(this.filter(function(data) {
 		  	return (pattern.test(data.get("description")));
 		}));

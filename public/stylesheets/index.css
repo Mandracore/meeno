@@ -4,7 +4,7 @@ ol,ul{list-style:none}
 table{border-collapse:separate;border-spacing:0;vertical-align:middle}
 caption,th,td{text-align:left;font-weight:normal;vertical-align:middle}
 a img{border:none}
-article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,main{margin:0;padding:0;border:0;outline:0;display:block}
+article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary{margin:0;padding:0;border:0;outline:0;display:block}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
 audio:not([controls]),[hidden]{display:none}
 @font-face{font-family:"modernpics";src:url("../font/modernpics.otf")}
@@ -59,7 +59,7 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .tab.help,.tab.object{overflow-y:scroll}
 .browse .filter input{width:100%}
 .browse .filter ul{list-style:none;padding:0;margin:0;display:block;border-top:1px #4d4d4d solid;}
-.browse .filter ul li{border-top:3px transparent solid;color:#4d4d4d;display:inline-block;padding:.5em;vertical-align:middle;opacity:.7;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";filter:alpha(opacity=70);}
+.browse .filter ul li{border-top:3px transparent solid;color:#4d4d4d;display:inline-block;padding:.5em;vertical-align:middle;opacity:.7;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);filter:alpha(opacity=70);}
 .browse .filter ul li.selected,.browse .filter ul li:hover,.browse .filter ul li:active{border-top-color:#4d4d4d;opacity:1;-ms-filter:none;filter:none;cursor:pointer}
 .browse .filter ul li:before{margin-right:10px;font-size:.9em}
 .listobjects{display:none;height:89%;height:-moz-calc(100% - 4em);height:-webkit-calc(100% - 4em);height:calc(100% - 4em);}
@@ -67,8 +67,8 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .listobjects ul.notes,.listobjects ul.tags{list-style-type:none;margin:1em 0 0;padding:0;}
 .listobjects ul.notes li,.listobjects ul.tags li{margin:0;padding:.5em;}
 .listobjects ul.notes li:hover,.listobjects ul.tags li:hover{background-color:rgba(0,0,0,0.1)}
-.listobjects ul.notes li span.button,.listobjects ul.tags li span.button{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);text-shadow:1px 1px 1px #fff;margin:0 0 0 10px;font-size:.9em}
-.listobjects ul.notes li:hover span.button,.listobjects ul.tags li:hover span.button{opacity:.5;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter:alpha(opacity=50);}
+.listobjects ul.notes li span.button,.listobjects ul.tags li span.button{opacity:0;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0);filter:alpha(opacity=0);text-shadow:1px 1px 1px #fff;margin:0 0 0 10px;font-size:.9em}
+.listobjects ul.notes li:hover span.button,.listobjects ul.tags li:hover span.button{opacity:.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);filter:alpha(opacity=50);}
 .listobjects ul.notes li:hover span.button:before,.listobjects ul.tags li:hover span.button:before{font-family:'modernpics';position:relative;font-size:1.3em;margin:0 5px 0}
 .listobjects ul.notes li:hover span.button:hover,.listobjects ul.tags li:hover span.button:hover{opacity:1;-ms-filter:none;filter:none;cursor:pointer}
 .listobjects .checkbox{margin:0 8px 0 0;display:none}
@@ -80,18 +80,18 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .listobjects .actions-contextual .cancel{display:none}
 .listobjects ul.notes span.delete:before,.listobjects ul.tags span.delete:before{content:'I'}
 .listobjects ul.notes li p{margin:0;}
-.listobjects ul.notes li p.date{font-size:.85em;opacity:.5;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";filter:alpha(opacity=50)}
+.listobjects ul.notes li p.date{font-size:.85em;opacity:.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);filter:alpha(opacity=50)}
 .listobjects ul.notes span.tags span{color:#808080}
-.tab .editable{opacity:.7;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";filter:alpha(opacity=70);}
+.tab .editable{opacity:.7;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);filter:alpha(opacity=70);}
 .tab .editable:hover,.tab .editable:focus{opacity:1;-ms-filter:none;filter:none}
 .tab h1{font-size:2em}
 .tab section.edit-content{margin:20px 0 0 0}
 .edit-content:focus{border:0}
 .edit-content input{border:0;background-color:transparent}
-.edit-content .tag{margin:5px;padding:0 5px;background-color:#d3d3d3;opacity:.7;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";filter:alpha(opacity=70);border:1px dashed #808080;text-shadow:#fff 0 1px 0;-webkit-border-radius:5px;border-radius:5px;}
+.edit-content .tag{margin:5px;padding:0 5px;background-color:#d3d3d3;opacity:.7;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);filter:alpha(opacity=70);border:1px dashed #808080;text-shadow:#fff 0 1px 0;-webkit-border-radius:5px;border-radius:5px;}
 .edit-content .tag:before{margin:0 5px 0 0;font-size:.8em;color:#808080;text-shadow:#fff 0 1px 0}
 .edit-content .locked{border:1px solid #808080;opacity:1;-ms-filter:none;filter:none}
-.edit-content .broken{border:1px solid #f00;opacity:.7;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";filter:alpha(opacity=70)}
+.edit-content .broken{border:1px solid #f00;opacity:.7;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=70);filter:alpha(opacity=70)}
 #footer{background-color:rgba(0,0,0,0.35);color:#fff;zoom:1;}
 #footer:before,#footer:after{content:"";display:table}
 #footer:after{clear:both}

@@ -15,6 +15,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 
 	// Renders the tag item to the current state of the model
 	render: function() {
+		this.collName = "tasks";
 		console.log ("R[list-task]");
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (this.model.toJSON()));
