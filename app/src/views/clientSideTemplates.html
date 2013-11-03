@@ -11,7 +11,7 @@
 </script>
 <script type="text/template" id="overview-task-template" style="display: none;">
 	<span class="checkbox icon-check-empty"></span>
-	<span class="edit label attribute"><%= description %></span>
+	<span class="edit label attribute"><%= label %></span>
 </script>
 <script type="text/template" id="editor-tab-template" style="display: none;">
 	<%= title %>
@@ -31,7 +31,14 @@
 		<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
 	</article>
 </script>
-<script type="text/template" id="emb-tag-template" style="display: none;">
+<script type="text/template" id="editor-body-tag-template" style="display: none;">
+	<label class='datalist-wrapper'>
+		<datalist id='datalist_<%= id %>' class='datalist'>
+		</datalist>
+		<input class='body mousetrap' type='text' name='datalist_<%= id %>' list='datalist_<%= id %>'>
+	</label>
+</script>
+<script type="text/template" id="editor-body-task-template" style="display: none;">
 	<label class='datalist-wrapper'>
 		<datalist id='datalist_<%= id %>' class='datalist'>
 		</datalist>

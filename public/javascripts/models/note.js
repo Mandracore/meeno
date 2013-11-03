@@ -7,7 +7,6 @@ meenoAppCli.Classes.Note = Backbone.RelationalModel.extend({
 		type: 'HasMany',
 		key: 'tagLinks',
 		relatedModel: 'meenoAppCli.Classes.LinkNoteTag',
-		// collectionType: 'meenoAppCli.Classes.LinkNoteTags', /// Peut être plutôt utile pour quand on veut fetcher ?
 		reverseRelation: {
 			key: 'note',
 			includeInJSON: '_id'

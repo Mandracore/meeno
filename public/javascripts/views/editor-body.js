@@ -58,7 +58,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			if ($object.hasClass('tag')) {
 				var model = meenoAppCli.tags.get($object.attr('data-model-id'));
 				if (model) {
-					var subView  = new meenoAppCli.Classes.TagRefView({
+					var subView  = new meenoAppCli.Classes.EditorBodyTagView({
 						model     : model,
 						el        : $object[0], // We bind the sub view to the element we just created
 						note      : self.model,
@@ -76,7 +76,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	newTag: function () {
 		console.log('>>> New tag');
-		var newTagView = new meenoAppCli.Classes.TagRefView({
+		var newTagView = new meenoAppCli.Classes.EditorBodyTagView({
 			note   : this.model,
 			parent : this
 		});
@@ -97,7 +97,22 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 
 	newTask: function () {
 		console.log('>>> New task');
-		// Don't do anything for now
+		var newTaskView = new meenoAppCli.Classes.EditorBodyTaskView({
+			note   : this.model,
+			parent : this
+		});
+		console.log('>>> New task DONE');
+		newTaskView.undelegateEvents();
+		var newTaskHtml = $("<div></div>").append(newTaskView.render().el).html();
+		pasteHtmlAtCaret(
+			newTaskHtml + // The tag itself with a trick to get its html back
+			"<span class='void'>&nbsp;</span>" // A place to put the caret
+		);
+		newTaskView.$el = $("#" + newTaskView.options.id); // Linking the DOM to the view
+		newTaskView.delegateEvents(); // Binding all events
+		newTaskView.options.parentDOM = this.$("section.edit-content");
+		newTaskView.$(".body").focus(); // Focusing on input
+		this.children.push (newTaskView);
 		this.save();
 		return false;
 	},

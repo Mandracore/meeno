@@ -2,14 +2,14 @@ var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
-	model: meenoAppCli.Classes.Tag, 
+	model: meenoAppCli.Classes.Task,
 	url: '/api/tasks',
 
 	search : function(letters){
-		if(letters == "") return this;
+		if(letters === "") return this;
 		var pattern = new RegExp(letters,"i");
 		return _(this.filter(function(data) {
-		  	return (pattern.test(data.get("description")));
+			return (pattern.test(data.get("label")) || pattern.test(data.get("description")));
 		}));
 	}
 });

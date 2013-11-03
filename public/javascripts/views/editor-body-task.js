@@ -1,11 +1,11 @@
 var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-meenoAppCli.Classes.EditorBodyTagView = Backbone.View.extend({
+meenoAppCli.Classes.EditorBodyTaskView = Backbone.View.extend({
 
 	tagName   :'span',
-	className :'object tag icon-tag',
-	template  :'#editor-body-tag-template',
+	className :'object task icon-tasks',
+	template  :'#editor-body-task-template',
 
 	// The DOM events specific to an item.
 	events: {
@@ -27,7 +27,7 @@ meenoAppCli.Classes.EditorBodyTagView = Backbone.View.extend({
 		}
 		this.listenTo(this.options.note, 'change:content', this.checkChanges);
 
-		console.log ('Init[emb_tag]');
+		console.log ('Init[emb_task]');
 	},
 
 	checkChanges: function () {
@@ -49,7 +49,7 @@ meenoAppCli.Classes.EditorBodyTagView = Backbone.View.extend({
 	},
 
 	render: function() {
-		console.log ("R[emb-tag]");
+		console.log ("R[emb-task]");
 		this.$el.attr('id', this.options.id);
 		this.$el.attr('contentEditable',false);
 		var templateData = {
@@ -65,8 +65,8 @@ meenoAppCli.Classes.EditorBodyTagView = Backbone.View.extend({
 		var strHint = (this.$(".body").val());
 		if (strHint.length > -1) {
 			var pattern = new RegExp(strHint,"i");
-			var proposals = meenoAppCli.tags.filter(function (tag) {
-				return pattern.test(tag.get('label'));
+			var proposals = meenoAppCli.tasks.filter(function (task) {
+				return pattern.test(task.get('label'));
 			});
 			var datalistOptions = proposals.map(function (obj, key) {
 				return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>";
@@ -84,31 +84,31 @@ meenoAppCli.Classes.EditorBodyTagView = Backbone.View.extend({
 		console.log("locking");
 		if (!this.options.isLocked) {
 			if (this.$('.body').val().length <= 2) {
-				console.log('##WARNING## tag too short to lock'); // We save only tags of more than 2 characters
+				console.log('##WARNING## task too short to lock'); // We save only tasks of more than 2 characters
 			} else {
 				console.log('______ Locking Object ______');
 
 				var self = this;
-				var selectedModel = meenoAppCli.tags.find(function (tag) {
-					return tag.get('label') == self.$(".body").val();
+				var selectedModel = meenoAppCli.tasks.find(function (task) {
+					return task.get('label') == self.$(".body").val();
 				});
 
 				if (!selectedModel) {
-					console.log('--- Creating new tag ---');
-					this.model = new meenoAppCli.Classes.Tag({
+					console.log('--- Creating new task ---');
+					this.model = new meenoAppCli.Classes.Task({
 						label : this.$(".body").val()
 					});
-					meenoAppCli.tags.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+					meenoAppCli.tasks.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					this.model.save({},{ // Now that the model is into a collection, the .save() method will work
 						success: function () {self.link ();},
 						error  : function () {self.error("Impossible to save new model");}
 					});
 				} else {
-					if (_.contains(this.options.note.get('tagLinks').pluck('tag'), selectedModel)) {
-						console.log('tag already linked');
+					if (_.contains(this.options.note.get('taskLinks').pluck('task'), selectedModel)) {
+						console.log('task already linked');
 						return;
 					}
-					console.log('--- Linking to selected tag ---');
+					console.log('--- Linking to selected task ---');
 					this.model = selectedModel;
 					this.link ();
 				}
@@ -117,9 +117,9 @@ meenoAppCli.Classes.EditorBodyTagView = Backbone.View.extend({
 	},
 
 	link: function () {
-		console.log('------ trying to link tag');
+		console.log('------ trying to link task');
 		var self = this;
-		this.options.note.get('tagLinks').add( { tag: this.model } );
+		this.options.note.get('taskLinks').add( { task: this.model } );
 		this.options.note.save({},{
 			success: function () {
 				var $newSpan = $("<span>",{class:"body"}).html(self.model.get('label'));
@@ -130,17 +130,17 @@ meenoAppCli.Classes.EditorBodyTagView = Backbone.View.extend({
 				self.$el.attr("data-model-id",self.model.get("_id"));
 				self.isLocked = true;
 				moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
-				console.log('Tag "'+self.model.get('label')+'" linked to current note');
+				console.log('Task "'+self.model.get('label')+'" linked to current note');
 				self.options.isLocked = true;
 			},
-			error: function () {self.error('Impossible to link new Tag "'+self.model.get('label')+'" to current note');}
+			error: function () {self.error('Impossible to link new Task "'+self.model.get('label')+'" to current note');}
 		});
 	},
 
 	unlink: function () {
 		var self = this;
-		var tagLink2rem = this.options.note.get('tagLinks').find(function(tagLink){return tagLink.get('tag') == self.model; });
-		this.options.note.get('tagLinks').remove(tagLink2rem);
+		var taskLink2rem = this.options.note.get('taskLinks').find(function(taskLink){return taskLink.get('task') == self.model; });
+		this.options.note.get('taskLinks').remove(taskLink2rem);
 		this.options.note.save ({},{
 			success: function () {console.log('Object successfully unlinked');self.kill();},
 			error: function () {console.error('Impossible to unlink object');self.kill();}

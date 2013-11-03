@@ -22,6 +22,8 @@ module.exports = function(mas, securityProxy){
 		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 
+			tag.created_at  = req.body.created_at;
+			tag.updated_at  = req.body.updated_at;
 			tag.label      = req.body.label;
 			return tag.save(function(err) {
 				if (!err) {
@@ -36,8 +38,10 @@ module.exports = function(mas, securityProxy){
 	});
 	mas.post("/api/tags", mas.security.proxy("user"), function (req, res) {
 		var tag = new mas.Models.Tag ({
-			_creator  : req.session.user._id,
-			label     : req.body.label
+			_creator   : req.session.user._id,
+			created_at : req.body.created_at,
+			updated_at : req.body.updated_at,
+			label      : req.body.label
 		});
 		tag.save(function(err) {
 			if (!err) {
@@ -60,4 +64,4 @@ module.exports = function(mas, securityProxy){
 			});
 		});
 	});
-}
+};

@@ -74,7 +74,7 @@ mas.security = require('./app/src/routes/security.proxy.js');
 require('./app/src/routes/main.js')(mas);
 require('./app/src/routes/api.notes.js')(mas);
 require('./app/src/routes/api.tags.js')(mas);
-// require('./app/src/routes/api.tags.notes.js')(mas);
+require('./app/src/routes/api.tasks.js')(mas);
 
 //------------------------------------------
 // START SERVER

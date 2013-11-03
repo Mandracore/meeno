@@ -9,35 +9,56 @@ module.exports = function(mas, mongoose){
 		tag  : { type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }, // Linked document is Tag
 		note : { type: mongoose.Schema.Types.ObjectId, ref: 'Note' } // Linked document is Note
 	});
+	var msLinkNoteTask = new mongoose.Schema({
+		task : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, // Linked document is Task
+		note : { type: mongoose.Schema.Types.ObjectId, ref: 'Note' } // Linked document is Note
+	});
 
 	var msNote = new mongoose.Schema({
 		_creator   : String,
-		created_at : { type: Date, default: function () { return Date.now()} },
-		updated_at : { type: Date, default: function () { return Date.now()} },
+		created_at : { type: Date, default: function () { return Date.now(); } },
+		updated_at : { type: Date, default: function () { return Date.now(); } },
 		title      : String,
 		content    : String,
-		tagLinks   : [msLinkNoteTag]
+		tagLinks   : [msLinkNoteTag],
+		taskLinks  : [msLinkNoteTask]
 	});
 	var msUser = new mongoose.Schema({
-		email    : { type: String, required: true, unique: true },
-		password : { type: String, required: true },
-		role     : { type: String, default: "user" }
+		created_at : { type: Date, default: function () { return Date.now(); } },
+		updated_at : { type: Date, default: function () { return Date.now(); } },
+		email      : { type: String, required: true, unique: true },
+		password   : { type: String, required: true },
+		role       : { type: String, default: "user" }
 	});
 	var msTag = new mongoose.Schema({
-		_creator : String,
-		label    : { type: String, required: true, unique: true }
+		_creator   : String,
+		created_at : { type: Date, default: function () { return Date.now(); } },
+		updated_at : { type: Date, default: function () { return Date.now(); } },
+		label      : { type: String, required: true, unique: true }
+	});
+	var msTask = new mongoose.Schema({
+		_creator    : String,
+		created_at  : { type: Date, default: function () { return Date.now(); } },
+		updated_at  : { type: Date, default: function () { return Date.now(); } },
+		due_at      : { type: Date, default: function () { return Date.now(); } },
+		label       : { type: String, required: true, unique: true },
+		description : String
 	});
 
 	mas.Schemas = {
-		Note        : msNote,
-		Tag         : msTag,
-		LinkNoteTag : msLinkNoteTag,
-		User        : msUser,
+		Note         : msNote,
+		Tag          : msTag,
+		Task         : msTask,
+		LinkNoteTag  : msLinkNoteTag,
+		LinkNoteTask : msLinkNoteTask,
+		User         : msUser,
 	};
 	mas.Models = {
-		Note        : mongoose.model('Note', mas.Schemas.Note),
-		Tag         : mongoose.model('Tag', mas.Schemas.Tag),
-		LinkNoteTag : mongoose.model('LinkNoteTag', mas.Schemas.LinkNoteTag),
-		User        : mongoose.model('User', mas.Schemas.User),
+		Note         : mongoose.model('Note', mas.Schemas.Note),
+		Tag          : mongoose.model('Tag', mas.Schemas.Tag),
+		Task         : mongoose.model('Tag', mas.Schemas.Task),
+		LinkNoteTag  : mongoose.model('LinkNoteTag', mas.Schemas.LinkNoteTag),
+		LinkNoteTask : mongoose.model('LinkNoteTask', mas.Schemas.LinkNoteTask),
+		User         : mongoose.model('User', mas.Schemas.User),
 	};
-}
+};
