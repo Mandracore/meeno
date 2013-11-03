@@ -56,7 +56,7 @@ module.exports = function(mas, mongoose){
 	mas.Models = {
 		Note         : mongoose.model('Note', mas.Schemas.Note),
 		Tag          : mongoose.model('Tag', mas.Schemas.Tag),
-		Task         : mongoose.model('Tag', mas.Schemas.Task),
+		Task         : mongoose.model('Task', mas.Schemas.Task),
 		LinkNoteTag  : mongoose.model('LinkNoteTag', mas.Schemas.LinkNoteTag),
 		LinkNoteTask : mongoose.model('LinkNoteTask', mas.Schemas.LinkNoteTask),
 		User         : mongoose.model('User', mas.Schemas.User),

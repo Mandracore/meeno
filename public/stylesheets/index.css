@@ -64,13 +64,13 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .browse .filter ul li:before{margin-right:10px;font-size:.9em}
 .listobjects{display:none;height:89%;height:-moz-calc(100% - 4em);height:-webkit-calc(100% - 4em);height:calc(100% - 4em);}
 .listobjects.selected{display:block;overflow-y:scroll}
-.listobjects ul.notes,.listobjects ul.tags{list-style-type:none;margin:1em 0 0;padding:0;}
-.listobjects ul.notes li,.listobjects ul.tags li{margin:0;padding:.5em;}
-.listobjects ul.notes li:hover,.listobjects ul.tags li:hover{background-color:rgba(0,0,0,0.1)}
-.listobjects ul.notes li span.button,.listobjects ul.tags li span.button{opacity:0;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0);filter:alpha(opacity=0);text-shadow:1px 1px 1px #fff;margin:0 0 0 10px;font-size:.9em}
-.listobjects ul.notes li:hover span.button,.listobjects ul.tags li:hover span.button{opacity:.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);filter:alpha(opacity=50);}
-.listobjects ul.notes li:hover span.button:before,.listobjects ul.tags li:hover span.button:before{font-family:'modernpics';position:relative;font-size:1.3em;margin:0 5px 0}
-.listobjects ul.notes li:hover span.button:hover,.listobjects ul.tags li:hover span.button:hover{opacity:1;-ms-filter:none;filter:none;cursor:pointer}
+.listobjects ul.objects{list-style-type:none;margin:1em 0 0;padding:0;}
+.listobjects ul.objects li{margin:0;padding:.5em;}
+.listobjects ul.objects li:hover{background-color:rgba(0,0,0,0.1)}
+.listobjects ul.objects li span.button{opacity:0;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=0);filter:alpha(opacity=0);text-shadow:1px 1px 1px #fff;margin:0 0 0 10px;font-size:.9em}
+.listobjects ul.objects li:hover span.button{opacity:.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);filter:alpha(opacity=50);}
+.listobjects ul.objects li:hover span.button:before{font-family:'modernpics';position:relative;font-size:1.3em;margin:0 5px 0}
+.listobjects ul.objects li:hover span.button:hover{opacity:1;-ms-filter:none;filter:none;cursor:pointer}
 .listobjects .checkbox{margin:0 8px 0 0;display:none}
 .listobjects .actions-contextual-trigger{display:none;}
 .listobjects .actions-contextual-trigger button{display:none}
@@ -78,7 +78,7 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .listobjects .actions-contextual-selection .select-all,.listobjects .actions-contextual-selection .action{display:inline-block}
 .listobjects .actions-contextual-selection .unselect-all{display:none}
 .listobjects .actions-contextual .cancel{display:none}
-.listobjects ul.notes span.delete:before,.listobjects ul.tags span.delete:before{content:'I'}
+.listobjects ul.objects span.delete:before{content:'I'}
 .listobjects ul.notes li p{margin:0;}
 .listobjects ul.notes li p.date{font-size:.85em;opacity:.5;-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);filter:alpha(opacity=50)}
 .listobjects ul.notes span.tags span{color:#808080}

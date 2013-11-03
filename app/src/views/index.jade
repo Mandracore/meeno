@@ -143,26 +143,26 @@ block content
 						li.delete
 							span.action Delete notes
 							span.cancel Cancel
-					ul.notes
+					ul.objects.notes
 						li Note 1
 						li Note 2
 						li Note 3
 				div.listobjects.tasks.selected
 					div
 						input.search(type="text", autofocus, placeholder="search tasks")
-					ul.actions-contextual.hasSelected
-						li.delete Delete tasks
-					ul.tasks
-						li
-							h2
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
+					div.actions-contextual-selection
+						button.select-all Tout sélectionner
+						button.unselect-all Tout déselectionner
+					div.actions-contextual-trigger
+						button.delete Supprimer
+					ul.actions-contextual
+						li.delete
+							span.action Delete tasks
+							span.cancel Cancel
+					ul.objects.tasks
+						li Task 1
+						li Task 2
+						li Task 3
 				div.listobjects.tags
 					div
 						input.search(type="text", autofocus, placeholder="search tags")
@@ -175,11 +175,10 @@ block content
 						li.delete
 							span.action Delete tags
 							span.cancel Cancel
-					ul.tags
+					ul.objects.tags
 						li Tag 1
 						li Tag 2
 						li Tag 3
 		div#footer
 			p.current-action Saving...
 			p.sync-status Sync. Status : In Progress...
-

@@ -55,10 +55,27 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		// Activating sub-views of embedded objects like tags, notes,...
 		this.$(".object").each(function (index, object) {
 			var $object = $(object);
+			var subView = {};
+			var model = {};
 			if ($object.hasClass('tag')) {
-				var model = meenoAppCli.tags.get($object.attr('data-model-id'));
+				model = meenoAppCli.tags.get($object.attr('data-model-id'));
 				if (model) {
-					var subView  = new meenoAppCli.Classes.EditorBodyTagView({
+					subView  = new meenoAppCli.Classes.EditorBodyTagView({
+						model     : model,
+						el        : $object[0], // We bind the sub view to the element we just created
+						note      : self.model,
+						parent    : self,
+						parentDOM : self.$("section.edit-content")
+					});
+					self.children.push (subView);
+				} else {
+					$object.addClass('broken');
+				}
+			}
+			if ($object.hasClass('task')) {
+				model = meenoAppCli.tasks.get($object.attr('data-model-id'));
+				if (model) {
+					subView  = new meenoAppCli.Classes.EditorBodyTaskView({
 						model     : model,
 						el        : $object[0], // We bind the sub view to the element we just created
 						note      : self.model,
