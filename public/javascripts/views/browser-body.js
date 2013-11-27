@@ -10,7 +10,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	events: {
 		'click .filter li'                                  : 'toggleObject',
-		'keyup .search'                                     : 'search',
+		// 'keyup .search'                                     : 'search',
 		'click .actions-contextual .delete'                 : 'deleteToggle',
 		'click .actions-contextual-selection .select-all'   : 'selectAll',
 		'click .actions-contextual-selection .unselect-all' : 'unSelectAll',
@@ -141,6 +141,20 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
+
+	newTask: function () {
+		console.log('>>> Search note related to a task');
+		return false;
+	},
+	newTag: function () {
+		console.log('>>> Search note related to a tag');
+		return false;
+	},
+	newEntity: function () {
+		console.log('>>> Search note related to an entity');
+		return false;
+	},
+
 	search : function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
@@ -180,3 +194,5 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		}, this);
 	},
 });
+
+_.extend(meenoAppCli.Classes.BrowserBodyView.prototype, meenoAppCli.l18n.BrowserBodyView);

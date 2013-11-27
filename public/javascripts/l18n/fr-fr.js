@@ -12,3 +12,13 @@ meenoAppCli.l18n.EditorBodyView = {
 		'ctrl+alt+shift+t': 'newTask'
 	}
 };
+meenoAppCli.l18n.BrowserBodyView = {
+	keyboardEvents: {
+		// some issue with mousetrap on chrome
+		// '#': 'newTag',
+		// '@': 'newEntity',
+		'ctrl+alt+shift+h': 'newTag',
+		'ctrl+alt+shift+a': 'newEntity',
+		'ctrl+alt+shift+t': 'newTask'
+	}
+};

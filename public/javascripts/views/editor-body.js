@@ -91,7 +91,20 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		return this;
 	},
 
+	checkFocus: function () {
+		var $caretsNode = $(getCaretsNode());
+		if (
+			!($caretsNode.hasClass("edit-content")) && 
+			$caretsNode.parents("section.edit-content").length === 0) {
+			console.log('Editor not focused');
+			return false;
+		} else {
+			return true;
+		}
+	},
+
 	newTag: function () {
+		if (!this.checkFocus()) {return;}
 		console.log('>>> New tag');
 		var newTagView = new meenoAppCli.Classes.EditorBodyTagView({
 			note   : this.model,
@@ -113,6 +126,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	},
 
 	newTask: function () {
+		if (!this.checkFocus()) {return;}
 		console.log('>>> New task');
 		var newTaskView = new meenoAppCli.Classes.EditorBodyTaskView({
 			note   : this.model,
@@ -135,6 +149,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	},
 
 	newEntity: function () {
+		if (!this.checkFocus()) {return;}
 		console.log('>>> New person');
 		// Don't do anything for now
 		this.save();
