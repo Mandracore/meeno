@@ -19,17 +19,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	initialize: function() {
-		var self = this;
-		// Mousetrap.bind(['ctrl+alt+shift+h'], function() {
-		// 	console.log('command k or control k');
-		// 	self.searchTag();
-
-		// 	// return false to prevent default browser behavior
-		// 	// and stop event from bubbling
-		// 	return false;
-		// });
-
-
 		this.deleteInProgress = {
 			"notes" : false,
 			"tags"  : false,
@@ -52,6 +41,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:tag', function () {this.searchObject("tag");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.searchObject("task");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.searchObject("entity");});
 		this.render();
 	},
 
@@ -153,16 +145,21 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
 
-	searchTask: function () {
-		console.log('>>> Search note related to a task');
-		return false;
-	},
-	searchTag: function () {
-		console.log('>>> Search note related to a tag');
-		return false;
-	},
-	searchEntity: function () {
-		console.log('>>> Search note related to an entity');
+	searchObject: function (className) {
+		// Beware, this has to work for note searching, or task searching,...
+		if (!this.checkFocus()) {return;} // No action if no focus in the search box
+		console.log('>>> Search note related to '+className);
+		switch (className) {
+			case "tag":
+
+			break;
+			case "task":
+
+			break;
+			case "entity":
+
+			break;
+		}
 		return false;
 	},
 

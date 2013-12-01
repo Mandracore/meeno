@@ -22,6 +22,10 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	initialize: function() {
 		Backbone.View.prototype.initialize.apply(this, arguments);
 		this.children = [];
+
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:tag', function () {this.newObject("tag");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.newObject("task");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.newObject("entity");});
 	},
 
 	delegatedKill: function() {
@@ -103,56 +107,54 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		}
 	},
 
-	newTag: function () {
-		if (!this.checkFocus()) {return;}
-		console.log('>>> New tag');
-		var newTagView = new meenoAppCli.Classes.EditorBodyTagView({
-			note   : this.model,
-			parent : this
-		});
-		newTagView.undelegateEvents();
-		var newTagHtml = $("<div></div>").append(newTagView.render().el).html();
-		pasteHtmlAtCaret(
-			newTagHtml + // The tag itself with a trick to get its html back
-			"<span class='void'>&nbsp;</span>" // A place to put the caret
-		);
-		newTagView.$el = $("#" + newTagView.options.id); // Linking the DOM to the view
-		newTagView.delegateEvents(); // Binding all events
-		newTagView.options.parentDOM = this.$("section.edit-content");
-		newTagView.$(".body").focus(); // Focusing on input
-		this.children.push (newTagView);
-		this.save();
-		return false;
-	},
 
-	newTask: function () {
-		if (!this.checkFocus()) {return;}
-		console.log('>>> New task');
-		var newTaskView = new meenoAppCli.Classes.EditorBodyTaskView({
-			note   : this.model,
-			parent : this
-		});
-		console.log('>>> New task DONE');
-		newTaskView.undelegateEvents();
-		var newTaskHtml = $("<div></div>").append(newTaskView.render().el).html();
-		pasteHtmlAtCaret(
-			newTaskHtml + // The tag itself with a trick to get its html back
-			"<span class='void'>&nbsp;</span>" // A place to put the caret
-		);
-		newTaskView.$el = $("#" + newTaskView.options.id); // Linking the DOM to the view
-		newTaskView.delegateEvents(); // Binding all events
-		newTaskView.options.parentDOM = this.$("section.edit-content");
-		newTaskView.$(".body").focus(); // Focusing on input
-		this.children.push (newTaskView);
-		this.save();
-		return false;
-	},
+	newObject: function (className) {
+		if (!this.checkFocus()) {return;} // No action if no focus in the editor
+		console.log('>>> New '+className);
 
-	newEntity: function () {
-		if (!this.checkFocus()) {return;}
-		console.log('>>> New person');
-		// Don't do anything for now
-		this.save();
+		switch (className) {
+			case "tag":
+				var newTagView = new meenoAppCli.Classes.EditorBodyTagView({
+					note   : this.model,
+					parent : this
+				});
+				newTagView.undelegateEvents();
+				var newTagHtml = $("<div></div>").append(newTagView.render().el).html();
+				pasteHtmlAtCaret(
+					newTagHtml + // The tag itself with a trick to get its html back
+					"<span class='void'>&nbsp;</span>" // A place to put the caret
+				);
+				newTagView.$el = $("#" + newTagView.options.id); // Linking the DOM to the view
+				newTagView.delegateEvents(); // Binding all events
+				newTagView.options.parentDOM = this.$("section.edit-content");
+				newTagView.$(".body").focus(); // Focusing on input
+				this.children.push (newTagView);
+				this.save();
+			break;
+			case "task":
+				var newTaskView = new meenoAppCli.Classes.EditorBodyTaskView({
+					note   : this.model,
+					parent : this
+				});
+				console.log('>>> New task DONE');
+				newTaskView.undelegateEvents();
+				var newTaskHtml = $("<div></div>").append(newTaskView.render().el).html();
+				pasteHtmlAtCaret(
+					newTaskHtml + // The tag itself with a trick to get its html back
+					"<span class='void'>&nbsp;</span>" // A place to put the caret
+				);
+				newTaskView.$el = $("#" + newTaskView.options.id); // Linking the DOM to the view
+				newTaskView.delegateEvents(); // Binding all events
+				newTaskView.options.parentDOM = this.$("section.edit-content");
+				newTaskView.$(".body").focus(); // Focusing on input
+				this.children.push (newTaskView);
+				this.save();
+			break;
+			case "entity":
+				// Don't do anything for now
+				this.save();
+			break;
+		}
 		return false;
 	},
 

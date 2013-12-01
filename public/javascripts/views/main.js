@@ -25,18 +25,19 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.logging              = false;
 		this.registering          = false;
 		this.on('server:auth', this.toggleAuth, this );
-/*
-meenoAppCli.l18n.EditorBodyView = {
-	keyboardEvents: {
-		// some issue with mousetrap on chrome
-		// '#': 'newTag',
-		// '@': 'newEntity',
-		'ctrl+alt+shift+h': 'newTag',
-		'ctrl+alt+shift+a': 'newEntity',
-		'ctrl+alt+shift+t': 'newTask'
-	}
-};*/
 
+		Mousetrap.bind(['ctrl+alt+shift+h'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:tag');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['ctrl+alt+shift+a'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:entity');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['ctrl+alt+shift+t'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:task');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
 
 		this.fetchData();
 	},
