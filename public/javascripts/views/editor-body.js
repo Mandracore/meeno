@@ -188,4 +188,4 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	}
 });
 
-_.extend(meenoAppCli.Classes.EditorBodyView.prototype, meenoAppCli.l18n.EditorBodyView);
+//_.extend(meenoAppCli.Classes.EditorBodyView.prototype, meenoAppCli.l18n.EditorBodyView);

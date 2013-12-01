@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	// Fur future use
+	// For future use
 		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
 
 
@@ -36,7 +36,6 @@ block content
 	script(src="javascripts/collections/tags.js")
 	script(src="javascripts/collections/tasks.js")
 	script(src="javascripts/collections/link-note-tag.js")
-	script(src="javascripts/l18n/"+ locale + ".js")
 	script(src="javascripts/views/browser-tab.js")
 	script(src="javascripts/views/browser-body.js")
 	script(src="javascripts/views/browser-body-object.js")
@@ -52,6 +51,7 @@ block content
 	script(src="javascripts/views/editor-body-tag.js")
 	script(src="javascripts/views/editor-body-task.js")
 	script(src="javascripts/views/editor.js")
+	script(src="javascripts/l18n/"+ locale + ".js")
 	script(src="javascripts/views/main.js")
 	script(src="javascripts/appCli.js")
 	script(src="javascripts/routers/router.js")

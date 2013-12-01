@@ -75,3 +75,7 @@ Cas 1 : une action est déjà ouverte. L'objet re rendered va se désynchroniser
 Cas 2 : aucune action en cours. Rien à faire
 //////////////
 Mettre à jour les objets dans les notes s'ils sont modifiés par ailleurs (tags et tasks)
+
+29/11/2013
+Mettre en place un proxy d'évènements clavier centralisé qui trigger des events comme keyboard:task, keyboard:tag,... Ces évènements seront détectés par les vues elles mêmes (editor, browser,...) et déclencheront des actions en fonction du focus.
+Difficulté : pour simplifier je devrais activer le binding de toutes les actions dès le début même si les objets relatifs ne sont pas ouverts. Exemple : détecter le ctrl alt maj h même si aucun éditeur n'est ouvert.

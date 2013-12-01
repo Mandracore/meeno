@@ -1,6 +1,5 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
-meenoAppCli.Views = meenoAppCli.Views || {};
 
 // The Application
 // ---------------
@@ -26,6 +25,19 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.logging              = false;
 		this.registering          = false;
 		this.on('server:auth', this.toggleAuth, this );
+/*
+meenoAppCli.l18n.EditorBodyView = {
+	keyboardEvents: {
+		// some issue with mousetrap on chrome
+		// '#': 'newTag',
+		// '@': 'newEntity',
+		'ctrl+alt+shift+h': 'newTag',
+		'ctrl+alt+shift+a': 'newEntity',
+		'ctrl+alt+shift+t': 'newTask'
+	}
+};*/
+
+
 		this.fetchData();
 	},
 
@@ -159,5 +171,11 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: newNote });
 		newEditor.render();
 		newEditor.toggle();
-	}
+	},
+
+	searchTag: function () {
+		console.log('>>> Search note related to a tag DANS MAIN');
+		return false;
+	},
+
 });
