@@ -145,11 +145,35 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
 
-	searchObject: function (className) {
-		// Beware, this has to work for note searching, or task searching,...
-		if (!this.checkFocus()) {return;} // No action if no focus in the search box
-		console.log('>>> Search note related to '+className);
-		switch (className) {
+	searchObject: function (searchWhat) {
+		// Check focus before taking action
+		var focus = false;
+		$(".listobjects").find('input.search').each(function(idx,el) {
+			if ($(el).is(":focus")) {
+				focus = true;
+				var $listObjects = $(el).closest('.listobjects');
+				var searchWhere = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
+				console.log ('search '+searchWhere+' related to '+searchWhat);
+			}
+		});
+		if (!focus) { return; }
+
+		//autocomplete: function() {
+		console.log('autocomplete');
+		var strHint = (this.$(".body").val());
+		if (strHint.length > -1) {
+			var pattern = new RegExp(strHint,"i");
+			var proposals = meenoAppCli.tags.filter(function (tag) {
+				return pattern.test(tag.get('label'));
+			});
+			var datalistOptions = proposals.map(function (obj, key) {
+				return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>";
+			});
+			this.$(".datalist").html(datalistOptions);
+		}
+
+		// Do the searching
+		switch (searchWhat) {
 			case "tag":
 
 			break;
