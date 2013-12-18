@@ -19,6 +19,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	initialize: function() {
+		var self = this;
+
 		this.deleteInProgress = {
 			"notes" : false,
 			"tags"  : false,
@@ -45,6 +47,36 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.searchObject("task");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.searchObject("entity");});
 		this.render();
+		var availableTags = [
+			"ActionScript",
+			"AppleScript",
+			"Asp",
+			"BASIC",
+			"C",
+			"C++",
+			"Clojure",
+			"COBOL",
+			"ColdFusion",
+			"Erlang",
+			"Fortran",
+			"Groovy",
+			"Haskell",
+			"Java",
+			"JavaScript",
+			"Lisp",
+			"Perl",
+			"PHP",
+			"Python",
+			"Ruby",
+			"Scala",
+			"Scheme"
+		];
+		this.$(".autocomplete").autocomplete({
+			source: availableTags,
+			select: function( event, ui ) {
+				self.searchObjectSelect (ui);
+			}
+		});
 	},
 
 	// --------------------------------------------------------------------------------
@@ -185,6 +217,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			break;
 		}
 		return false;
+	},
+
+	searchObjectSelect : function (ui) {
+		console.log('An option has been selected');
 	},
 
 	search : function (event) {
