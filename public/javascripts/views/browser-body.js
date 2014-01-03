@@ -77,7 +77,17 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			source: function (request, response) {
 				// request.term : data typed in by the user ("new yor")
 				// response : native callback that must be called with the data to suggest to the user
-				response (availableTags);
+				// Les suggestions sont cherchées (pour l'instant) dans la collection de tags
+				response (
+					self.options.collections["tags"].search(request.term).map(function (model, key, list) {
+						return {
+							label: model.get("id"),
+							value: model.get("label")
+						};
+					});
+				);
+
+				// response (availableTags);
 				// It's important when providing a custom source callback to handle errors during the request
 				// When filtering data locally, you can make use of the built-in $.ui.autocomplete.escapeRegex function
 			},
