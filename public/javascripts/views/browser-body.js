@@ -47,33 +47,41 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.searchObject("task");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.searchObject("entity");});
 		this.render();
+
 		var availableTags = [
-			"ActionScript",
-			"AppleScript",
-			"Asp",
-			"BASIC",
-			"C",
-			"C++",
-			"Clojure",
-			"COBOL",
-			"ColdFusion",
-			"Erlang",
-			"Fortran",
-			"Groovy",
-			"Haskell",
-			"Java",
-			"JavaScript",
-			"Lisp",
-			"Perl",
-			"PHP",
-			"Python",
-			"Ruby",
-			"Scala",
-			"Scheme"
+			"ROM1ActionScript",
+			"ROM1AppleScript",
+			"ROM1Asp",
+			"ROM1BASIC",
+			"ROM1C",
+			"ROM1C++",
+			"ROM1Clojure",
+			"ROM1COBOL",
+			"ROM1ColdFusion",
+			"ROM1Erlang",
+			"ROM1Fortran",
+			"ROM1Groovy",
+			"ROM1Haskell",
+			"ROM1Java",
+			"ROM1JavaScript",
+			"ROM1Lisp",
+			"ROM1Perl",
+			"ROM1PHP",
+			"ROM1Python",
+			"ROM1Ruby",
+			"ROM1Scala",
+			"ROM1Scheme"
 		];
+
 		this.$(".autocomplete").autocomplete({
-			source: availableTags,
-			select: function( event, ui ) {
+			source: function (request, response) {
+				// request.term : data typed in by the user ("new yor")
+				// response : native callback that must be called with the data to suggest to the user
+				response (availableTags);
+				// It's important when providing a custom source callback to handle errors during the request
+				// When filtering data locally, you can make use of the built-in $.ui.autocomplete.escapeRegex function
+			},
+			select: function(event, ui) {
 				self.searchObjectSelect (ui);
 			}
 		});
