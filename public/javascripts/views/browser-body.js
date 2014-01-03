@@ -81,10 +81,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 				response (
 					self.options.collections["tags"].search(request.term).map(function (model, key, list) {
 						return {
-							label: model.get("id"),
-							value: model.get("label")
+							label: model.get("label"),
+							value: model.get("_id")
 						};
-					});
+					})
 				);
 
 				// response (availableTags);
@@ -92,7 +92,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 				// When filtering data locally, you can make use of the built-in $.ui.autocomplete.escapeRegex function
 			},
 			select: function(event, ui) {
+				var $input = $(event.target);
 				self.searchObjectSelect (ui);
+				// Saving input value into the global filter
+				this.filters["WHICHTYPE?"].addObject("OBJECTTYPE",$input.val());
+				// Modifying the UI
+				this.displayFilter("WHICHTYPE?");
+				$input.hide();
 			}
 		});
 	},
