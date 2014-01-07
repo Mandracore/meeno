@@ -123,10 +123,17 @@ describe("Browser", function() {
 	});
 
 	describe("when using search", function() {
+		// To be tested :
+		// Simple : Notes, Tags, Tasks
+		// Complex : Notes, Tasks
+
+		// For now, we test only notes
 		describe("when looking for objects related to other ones", function() {
-			it("should display an autocomplete input for tasks when hitting the task combo", function() {
+			it("should display an autocomplete input (set focus and change placeholder) for tasks when hitting the task combo", function() {
+
 			});
-			it("should display an autocomplete input for tags when hitting the tag combo", function() {
+			it("should display an autocomplete input (set focus and change placeholder) for tags when hitting the tag combo", function() {
+
 			});
 			it("should prevent from displaying various autocompletes at the same time", function() {
 			});

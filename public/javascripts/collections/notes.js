@@ -6,6 +6,7 @@ meenoAppCli.Classes.Notes = Backbone.Collection.extend({
 	url: '/api/notes',
 
 	search : function(lookFor){
+		lookFor = $.ui.autocomplete.escapeRegex(lookFor);
 		if(lookFor === "") return this;
 
 		var pattern = new RegExp(lookFor.string,"i");
