@@ -129,22 +129,27 @@ describe("Browser", function() {
 		// Complex : Notes, Tasks
 
 		// For now, we test only notes
-		describe("when looking for objects related to other ones", function() {
-			it("should display an autocomplete input (set focus and change placeholder) for tasks when hitting the task combo", function() {
+		describe("and filtering via related objects", function() {
+			it("should display an autocomplete input, set focus and the right placeholder when hitting an object combo", function() {
 				// Browser already focused
 				// Notes already focused
-				$("#tabs .tab.browse .listobjects.notes .searchwrapper input").focus();
-				meenoAppCli.dispatcher.trigger('keyboard:task');
-				expect($("#tabs .tab.browse .listobjects.notes .searchwrapper input").is(':focus')).toBe(true);
+				var $searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
+				$searchwrapper.find("input.search").focus(); // Focus into the note search input
+				// Testing with tasks
+				meenoAppCli.dispatcher.trigger('keyboard:task'); // Simulate a keyboard event (normally listened by mousetrap)
+				expect($searchwrapper.find("input.autocomplete").is(':focus')).toBe(true); // Autocomplete must have focus
+				expect($searchwrapper.find("input.autocomplete").attr('placeholder')).toBe("filter by related tasks"); // Placeholder should be correct
+				// Testing with tags
+				$searchwrapper.find("input.search").focus(); // Focus into the note search input
+				meenoAppCli.dispatcher.trigger('keyboard:tag'); // Simulate a keyboard event (normally listened by mousetrap)
+				expect($searchwrapper.find("input.autocomplete").is(':focus')).toBe(true); // Autocomplete must have focus
+				expect($searchwrapper.find("input.autocomplete").attr('placeholder')).toBe("filter by related tags"); // Placeholder should be correct
 			});
-			it("should display an autocomplete input (set focus and change placeholder) for tags when hitting the tag combo", function() {
-
-			});
-			it("should prevent from displaying various autocompletes at the same time", function() {
-			});
-			it("should hide the autocomplete input for tags when hitting the ESC key or when selecting an option", function() {
+			it("should hide the autocomplete input when hitting the ESC key or when selecting an option", function() {
+				expect(true).toBe(false);
 			});
 			it("should add a new object to the search filter when selecting an option", function() {
+				expect(true).toBe(false);
 				// Open the browser
 				// Test 1 : with notes
 				//		open the note object
