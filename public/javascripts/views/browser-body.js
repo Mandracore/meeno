@@ -32,9 +32,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tasks" : []
 		};
 		this.filters = {
-			"notes" : "",
-			"tags"  : "",
-			"tasks" : ""
+			"notes" : {text:"",objects:[]},
+			"tags"  : {text:"",objects:[]},
+			"tasks" : {text:"",objects:[]},
 		};
 
 		this.listenTo(this.options.collections.notes, 'add remove', function() {this.renderCollection("notes");});
@@ -43,9 +43,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
-		this.listenTo(meenoAppCli.dispatcher, 'keyboard:tag', function () {this.searchObject("tags");});
-		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.searchObject("tasks");});
-		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.searchObject("entities");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
 		this.render();
 	},
 
@@ -147,7 +147,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
 
-	searchObject: function (searchWhat) {
+	searchOpenAutocomplete: function (searchWhat) {
 		var self = this;
 		// Check focus before taking action
 		var focus = false;
@@ -179,30 +179,32 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 					})
 				);
 			},
+			focus: function( event, ui ) {
+				$(event.target).val(ui.item.label);
+				return false; // to cancel normal behaviour
+			},
 			select: function(event, ui) {
-				var $input = $(event.target);
-				self.searchObjectSelect (ui);
+				console.log('An option has been selected');
+				$(event.target).hide();
 				// Saving input value into the global filter
-				this.filters["WHICHTYPE?"].addObject("OBJECTTYPE",$input.val());
-				// Modifying the UI
-				this.displayFilter("WHICHTYPE?");
-				$input.hide();
+				self.filters[searchWhere].objects.push({
+					class: searchWhat,
+					id: ui.item.value
+				});
+				console.log(self.filters);
 			}
-		// Change the autocomplete's placeholder, display it and focus in
-		}).attr("placeholder","filter by related "+searchWhat).show().focus(); 
-	},
-
-	searchObjectSelect : function (ui) {
-		console.log('An option has been selected');
+		// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
+		}).attr("placeholder","filter by related "+searchWhat).val('').show().focus(); 
 	},
 
 	search : function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-		var sKey = $(event.target).val();
-		console.log('search='+sKey);
-		this.filters[collName] = sKey;
-		this.renderCollection(collName);
+		var newTextSearch = $(event.target).val();
+		if (newTextSearch != this.filters[collName].text) {// Re-renders only if a difference is detected between old and new value
+			this.filters[collName].text = newTextSearch;
+			this.renderCollection(collName);
+		}
 	},
 
 	// --------------------------------------------------------------------------------
@@ -226,8 +228,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.children[collName] = [];
 		// Third, filling the DOM again
 		var newView = {};
-		this.options.collections[collName].search(this.filters[collName]).each(function (item) {
-			if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: item }); }
+		this.options.collections[collName].search(this.filters[collName].text).each(function (item) { // for now we ignore complex searches
+					if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: item }); }
 			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: item }); }
 			if (collName == "tasks") { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: item }); }
 			this.children[collName].push (newView);
