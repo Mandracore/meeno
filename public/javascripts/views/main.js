@@ -38,6 +38,12 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 			meenoAppCli.dispatcher.trigger('keyboard:task');
 			// return false; // return false to prevent default browser behavior and stop event from bubbling
 		});
+		Mousetrap.bind(['escape'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:escape');
+		});
+		Mousetrap.bind(['backspace'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:backspace');
+		});
 
 		this.fetchData();
 	},

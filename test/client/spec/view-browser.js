@@ -130,25 +130,54 @@ describe("Browser", function() {
 
 		// For now, we test only notes
 		describe("and filtering via related objects", function() {
+			
+			// Browser already focused
+			// Notes already focused
 			it("should display an autocomplete input, set focus and the right placeholder when hitting an object combo", function() {
-				// Browser already focused
-				// Notes already focused
 				var $searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
-				$searchwrapper.find("input.search").focus(); // Focus into the note search input
-				// Testing with tasks
+				var $search = $searchwrapper.find("input.search");
+				var $autocomplete = $searchwrapper.find("input.autocomplete");
+
+				$search.focus(); // Focus into the note search input
+				// Testing notes+tasks
 				meenoAppCli.dispatcher.trigger('keyboard:task'); // Simulate a keyboard event (normally listened by mousetrap)
-				expect($searchwrapper.find("input.autocomplete").is(':focus')).toBe(true); // Autocomplete must have focus
-				expect($searchwrapper.find("input.autocomplete").attr('placeholder')).toBe("filter by related tasks"); // Placeholder should be correct
-				// Testing with tags
-				$searchwrapper.find("input.search").focus(); // Focus into the note search input
+				expect($autocomplete.is(':focus')).toBe(true); // Autocomplete must have focus
+				expect($autocomplete.attr('placeholder')).toBe("filter by related tasks"); // Placeholder should be correct
+				// Testing notes+tags
+				$search.focus(); // Focus into the note search input
 				meenoAppCli.dispatcher.trigger('keyboard:tag'); // Simulate a keyboard event (normally listened by mousetrap)
-				expect($searchwrapper.find("input.autocomplete").is(':focus')).toBe(true); // Autocomplete must have focus
-				expect($searchwrapper.find("input.autocomplete").attr('placeholder')).toBe("filter by related tags"); // Placeholder should be correct
+				expect($autocomplete.is(':focus')).toBe(true); // Autocomplete must have focus
+				expect($autocomplete.attr('placeholder')).toBe("filter by related tags"); // Placeholder should be correct
 			});
-			it("should hide the autocomplete input when hitting the ESC key or when selecting an option", function() {
-				expect(true).toBe(false);
+			it("should hide the autocomplete input when hitting the ESC key", function() {
+				var $searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
+				var $search = $searchwrapper.find("input.search");
+				var $autocomplete = $searchwrapper.find("input.autocomplete");
+
+				$search.focus(); // Focus into the note search input
+				meenoAppCli.dispatcher.trigger('keyboard:task'); // Display autocomplete
+				expect($autocomplete.is(':visible')).toBe(true); // Check Autocomplete is visible
+				expect($autocomplete.is(':focus')).toBe(true); // Check Autocomplete has focus
+				meenoAppCli.dispatcher.trigger('keyboard:escape'); // Simulate escape (without testing mousetrap)
+				expect($autocomplete.is(':visible')).toBe(false); // Check Autocomplete is now hidden
 			});
-			it("should add a new object to the search filter when selecting an option", function() {
+			it("should hide the autocomplete input when hitting the Backspace key if input is empty", function() {
+				var $searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
+				var $search = $searchwrapper.find("input.search");
+				var $autocomplete = $searchwrapper.find("input.autocomplete");
+
+				$search.focus(); // Focus into the note search input
+				meenoAppCli.dispatcher.trigger('keyboard:tag'); // Display autocomplete
+				expect($autocomplete.is(':visible')).toBe(true); // Check Autocomplete is visible
+				expect($autocomplete.is(':focus')).toBe(true); // Check Autocomplete has focus
+				$autocomplete.val('test'); // Fill input with some chars
+				meenoAppCli.dispatcher.trigger('keyboard:backspace'); // Simulate escape (without testing mousetrap)
+				expect($autocomplete.is(':visible')).toBe(true); // It should be still visible
+				$autocomplete.val(''); // Empty input
+				meenoAppCli.dispatcher.trigger('keyboard:backspace'); // Simulate escape (without testing mousetrap)
+				expect($autocomplete.is(':visible')).toBe(false); // This time it should be hidden
+			});
+			it("should hide the autocomplete input and add a new object to the search filter when selecting an option", function() {
 				expect(true).toBe(false);
 				// Open the browser
 				// Test 1 : with notes

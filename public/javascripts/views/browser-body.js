@@ -46,6 +46,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
+		this.listenTo(meenoAppCli.dispatcher, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 		this.render();
 	},
 
@@ -146,24 +148,34 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	// --------------------------------------------------------------------------------
 	// Search business objets among database
-
-	searchOpenAutocomplete: function (searchWhat) {
-		var self = this;
-		// Check focus before taking action
+	searchGetFocus: function (io) {
 		var focus = false;
-		var searchWhere = ""; // the kind of object we are looking for
-		// searchWhat : the kind of object that will be used to retrieve the ones we look for
 		var $listObjects = {};
-
-		$(".listobjects").find('input.search').each(function(idx,el) {
+		var inputClass = io ? "search" : "autocomplete";
+		this.$(".listobjects").find('input.'+inputClass).each(function(idx,el) {
 			if ($(el).is(":focus")) {
 				focus = true;
 				$listObjects = $(el).closest('.listobjects');
-				searchWhere = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
-				console.log ('search '+searchWhere+' related to '+searchWhat);
+				browserActiveView = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
+				// console.log ('search '+browserActiveView+' related to '+searchWhat);
 			}
 		});
-		if (!focus) { return; }
+		if (!focus) { return false; }
+		else {
+			return browserActiveView;
+		}
+	},
+
+	searchOpenAutocomplete: function (searchWhat) {
+		// searchWhat : the kind of object that will be used to retrieve the ones we look for
+		var self = this;
+		
+		// Check focus before taking action
+		var browserActiveView = this.searchGetFocus(true); // the kind of object we are looking for
+		if (browserActiveView === false) { return; }
+		var $listObjects = this.$(".listobjects."+browserActiveView);
+
+		console.log ('search '+browserActiveView+' related to '+searchWhat);
 
 		// Parameter the autocomplete to propose the right kind of objects
 		$listObjects.find(".autocomplete").autocomplete({
@@ -187,14 +199,26 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 				console.log('An option has been selected');
 				$(event.target).hide();
 				// Saving input value into the global filter
-				self.filters[searchWhere].objects.push({
+				self.filters[browserActiveView].objects.push({
 					class: searchWhat,
 					id: ui.item.value
 				});
 				console.log(self.filters);
 			}
 		// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
-		}).attr("placeholder","filter by related "+searchWhat).val('').show().focus(); 
+		}).attr("placeholder","filter by related "+searchWhat).val('').fadeIn().focus(); 
+	},
+
+	searchCloseAutocomplete: function (event) {console.log('close requested')
+		// Check focus before taking action
+		var browserActiveView = this.searchGetFocus(false); // the kind of object we are looking for
+		if (browserActiveView === false) { return; }
+		var $listObjects = this.$(".listobjects."+browserActiveView);
+		// Listening to "backspace" & "escape" events triggered by mousetrap
+		if ( event == "escape" || (event == "backspace" && $listObjects.find(".autocomplete").val() == '') ) {
+			$listObjects.find(".autocomplete").hide();
+			console.log('closed autocomplete');
+		}
 	},
 
 	search : function (event) {
