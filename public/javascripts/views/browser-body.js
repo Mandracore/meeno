@@ -203,7 +203,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 					class: searchWhat,
 					id: ui.item.value
 				});
-				console.log(self.filters);
+				$listObjects.find(".search").focus();
+				console.log(self.filters.notes.text);
+				console.log(self.filters.notes.objects.length);
 			}
 		// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
 		}).attr("placeholder","filter by related "+searchWhat).val('').fadeIn().focus(); 
@@ -217,7 +219,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		// Listening to "backspace" & "escape" events triggered by mousetrap
 		if ( event == "escape" || (event == "backspace" && $listObjects.find(".autocomplete").val() == '') ) {
 			$listObjects.find(".autocomplete").hide();
-			console.log('closed autocomplete');
+			$listObjects.find(".search").focus();
 		}
 	},
 

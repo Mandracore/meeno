@@ -130,43 +130,39 @@ describe("Browser", function() {
 
 		// For now, we test only notes
 		describe("and filtering via related objects", function() {
-			
-			// Browser already focused
-			// Notes already focused
-			it("should display an autocomplete input, set focus and the right placeholder when hitting an object combo", function() {
-				var $searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
-				var $search = $searchwrapper.find("input.search");
-				var $autocomplete = $searchwrapper.find("input.autocomplete");
 
+			beforeEach(function() {
+				// Browser already focused
+				// Notes already focused
+				$searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
+				$search = $searchwrapper.find("input.search");
+				$autocomplete = $searchwrapper.find("input.autocomplete");
 				$search.focus(); // Focus into the note search input
+			});
+			
+			it("should display an autocomplete input (+ hide the other one), set focus and the right placeholder when hitting task combo", function() {
 				// Testing notes+tasks
 				meenoAppCli.dispatcher.trigger('keyboard:task'); // Simulate a keyboard event (normally listened by mousetrap)
 				expect($autocomplete.is(':focus')).toBe(true); // Autocomplete must have focus
 				expect($autocomplete.attr('placeholder')).toBe("filter by related tasks"); // Placeholder should be correct
-				// Testing notes+tags
-				$search.focus(); // Focus into the note search input
+			});
+
+			it("should display an autocomplete input (+ hide the other one), set focus and the right placeholder when hitting tag combo", function() {
+				// Testing notes+tasks
 				meenoAppCli.dispatcher.trigger('keyboard:tag'); // Simulate a keyboard event (normally listened by mousetrap)
 				expect($autocomplete.is(':focus')).toBe(true); // Autocomplete must have focus
 				expect($autocomplete.attr('placeholder')).toBe("filter by related tags"); // Placeholder should be correct
 			});
-			it("should hide the autocomplete input when hitting the ESC key", function() {
-				var $searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
-				var $search = $searchwrapper.find("input.search");
-				var $autocomplete = $searchwrapper.find("input.autocomplete");
 
-				$search.focus(); // Focus into the note search input
+			it("should hide the autocomplete input (+ display the other one) when hitting the ESC key", function() {
 				meenoAppCli.dispatcher.trigger('keyboard:task'); // Display autocomplete
 				expect($autocomplete.is(':visible')).toBe(true); // Check Autocomplete is visible
 				expect($autocomplete.is(':focus')).toBe(true); // Check Autocomplete has focus
 				meenoAppCli.dispatcher.trigger('keyboard:escape'); // Simulate escape (without testing mousetrap)
 				expect($autocomplete.is(':visible')).toBe(false); // Check Autocomplete is now hidden
+				expect($search.is(':focus')).toBe(true); // Check Search has focus
 			});
-			it("should hide the autocomplete input when hitting the Backspace key if input is empty", function() {
-				var $searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
-				var $search = $searchwrapper.find("input.search");
-				var $autocomplete = $searchwrapper.find("input.autocomplete");
-
-				$search.focus(); // Focus into the note search input
+			it("should hide the autocomplete input (+ display the other one) when hitting the Backspace key if input is empty", function() {
 				meenoAppCli.dispatcher.trigger('keyboard:tag'); // Display autocomplete
 				expect($autocomplete.is(':visible')).toBe(true); // Check Autocomplete is visible
 				expect($autocomplete.is(':focus')).toBe(true); // Check Autocomplete has focus
@@ -176,9 +172,16 @@ describe("Browser", function() {
 				$autocomplete.val(''); // Empty input
 				meenoAppCli.dispatcher.trigger('keyboard:backspace'); // Simulate escape (without testing mousetrap)
 				expect($autocomplete.is(':visible')).toBe(false); // This time it should be hidden
+				expect($search.is(':focus')).toBe(true); // Check Search has focus
 			});
 			it("should hide the autocomplete input and add a new object to the search filter when selecting an option", function() {
 				expect(true).toBe(false);
+
+				// Saisir du texte
+				// Rajouter deux tags
+				// Rajouter une task
+				// Valider que le pattern de recherche est bien formé (class/id pour chaque objet)
+
 				// Open the browser
 				// Test 1 : with notes
 				//		open the note object
@@ -187,7 +190,7 @@ describe("Browser", function() {
 				//		fake type in a letter of an existing tag (see above)
 				//		save the value of the first option
 				// 		select the first option
-				//		validate it's been saved with id = objecttype+objectid
+				//		validate it's been saved with class/id
 				// Test 2 : with tasks
 
 				// Open the browser
