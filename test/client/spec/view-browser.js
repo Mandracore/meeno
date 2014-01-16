@@ -177,6 +177,8 @@ describe("Browser", function() {
 			it("should hide the autocomplete input and add a new object to the search filter when selecting an option", function() {
 				expect(true).toBe(false);
 
+				//this.browser.children.body
+
 				// Saisir du texte
 				// Rajouter deux tags
 				// Rajouter une task

@@ -16,6 +16,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		'click .actions-contextual-selection .unselect-all' : 'unSelectAll',
 		'click span.checkbox'                               : 'selection',
 		'click .actions-contextual-trigger button'          : 'actionTrigger',
+		'click .objectButtons span'                         : 'searchObjectButtonRemove',
 	},
 
 	initialize: function() {
@@ -198,14 +199,17 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			select: function(event, ui) {
 				console.log('An option has been selected');
 				$(event.target).hide();
+				$listObjects.find(".search").focus();
 				// Saving input value into the global filter
-				self.filters[browserActiveView].objects.push({
+				var objectRef = {
 					class: searchWhat,
 					id: ui.item.value
-				});
-				$listObjects.find(".search").focus();
-				console.log(self.filters.notes.text);
-				console.log(self.filters.notes.objects.length);
+				}
+				if (self.searchObjectFind(browserActiveView,objectRef) === true) { return; }
+				self.searchObjectAdd(browserActiveView,objectRef);
+				objectRef.label = ui.item.label;
+				console.log(objectRef.label)
+				self.searchObjectButtonAppend(browserActiveView, objectRef);
 			}
 		// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
 		}).attr("placeholder","filter by related "+searchWhat).val('').fadeIn().focus(); 
@@ -221,6 +225,44 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			$listObjects.find(".autocomplete").hide();
 			$listObjects.find(".search").focus();
 		}
+	},
+
+	searchObjectAdd: function (browserActiveView, objectRef) {
+		this.filters[browserActiveView].objects.push({
+			class: objectRef.class,
+			id: objectRef.id
+		});
+	},
+
+	searchObjectFind: function (browserActiveView, objectRef) {
+		var bFound = _.find(this.filters[browserActiveView].objects, function(item){
+			return (item.class == objectRef.class && item.id == objectRef.id);
+		});
+		if (bFound === undefined) {return false;}
+		else {return true;}
+	},
+
+	searchObjectRemove: function (browserActiveView, objectRef) {
+		this.filters[browserActiveView].objects = _.filter(this.filters[browserActiveView].objects, function(item){
+			return (item.class != objectRef.class && item.id != objectRef.id);
+		});
+	},
+
+	searchObjectButtonAppend: function (browserActiveView, object) {
+		var $objectButton = $("<span></span>").attr('data-class',object.class).attr('data-id',object.id).html(object.label);
+		this.$(".listobjects."+browserActiveView+" .objectButtons").append($objectButton);
+	},
+
+	searchObjectButtonRemove: function (event) {
+		var $objectButton = $(event.target);
+		var $listObjects = $objectButton.closest('.listobjects');
+		var browserActiveView = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
+		var objectRef = {
+			class: $objectButton.attr('data-class'),
+			id: $objectButton.attr('data-id')
+		};
+		$objectButton.remove();
+		this.searchObjectRemove(browserActiveView,objectRef);
 	},
 
 	search : function (event) {
