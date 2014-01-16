@@ -199,53 +199,5 @@ describe("Browser", function() {
 				// Open the note object (complex search only here )
 			});
 		});
-
-		it("should provide a well-formatted search obect", function() {
-			// The complex search pattern will be stored directly in the browser's view
-			/*
-			Use case pattern :
-				1. The user clicks in the search box (span>input)
-				2. If the user presses ctrl+maj+alt+t it will look for tags > dropdown list > enter to validate
-				3. If the user presses ctrl+maj+alt+h it will look for tasks > dropdown list > enter to validate
-				4. If the user just types text in, it will be a full text search
-
-			Testing pattern :
-				1. Focus on input
-				2. keypress text (x5 : "abcde")
-				3. keypress ctrl+maj+alt+t, keypress down, keypress enter (select first option)
-				4. keypress ctrl+maj+alt+h, keypress down, keypress enter (select first option)
-				5. keypress ctrl+maj+alt+h, keypress down x 2, keypress enter (select second option)
-				6. keypress ctrl+maj+alt+h, keypress down x 2, keypress enter (select second option)
-				7. Check that the complex search pattern is well formatted :
-					7.1. csp.text = "abcde"
-					7.2. csp.objects[0].externalKeyName = "tagLinks"
-					7.3. csp.objects[0].externalKeyValue = "ID1" // Voir comment retrouver le bon ID
-					7.4. csp.objects[1].externalKeyName = "taskLinks"
-					7.5. csp.objects[1].externalKeyValue = "ID1" // Voir comment retrouver le bon ID
-					7.6. csp.objects[2].externalKeyName = "taskLinks"
-					7.7. csp.objects[2].externalKeyValue = "ID1" // Voir comment retrouver le bon ID
-					7.8. csp.objects[3].externalKeyName = "taskLinks"
-					7.9. csp.objects[3].externalKeyValue = "ID1" // Voir comment retrouver le bon ID
-
-			Dataset requiredl
-				1. 1 tag
-				2. 2 tasks
-
-			Complex search object pattern :
-				{
-					text: "search",
-					objects: {
-						{
-							externalKeyName: "tagLinks",
-							externalKeyValue: "c9902be3"
-						}
-					}
-				}
-			*/
-			expect(false).toBe(true);
-		});
-		it("should return the right records", function() {
-			expect(false).toBe(true);
-		});
 	});
 });
