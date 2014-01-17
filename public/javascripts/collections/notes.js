@@ -10,13 +10,25 @@ meenoAppCli.Classes.Notes = Backbone.Collection.extend({
 		lookFor.text = $.ui.autocomplete.escapeRegex(lookFor.text);
 
 		var pattern = new RegExp(lookFor.text.string,"i");
-		return _(this.filter(function(data) {
+		return (this.filter(function(model) {
 			// Full text search
-			var bContainsText = (pattern.test(data.get("title")) || pattern.test(data.get("content")))
-			// Object links search
-			var bIsRelated = data.get(lookFor);
-			// boucle pour tester chaque objet
-			return bContainsText && bIsRelated;
+			if (false === (pattern.test(model.get("title")) || pattern.test(model.get("content")))) {
+				return false;
+			}
+			// Search by related objects
+			if (undefined === _.find(lookFor.objects, function(object) { // Returns undefined if nothing found
+				
+				// var searchedModel = meenoAppCli.[object.class].get(object.id);
+				// on passe les 2 autres collections par variable ?
+				var links         = (object.class == "tags" ? "tagLinks" : "taskLinks");
+				var linksAttr     = (object.class == "tags" ? "tag" : "task");
+				// Will find the first object that is not related to the current model
+				return (false === _.contains(model.get(links).pluck(linksAttr), searchedModel));
+			})) {
+				return true;
+			} else {
+				return false;
+			}
 		}));
 	}
 });
