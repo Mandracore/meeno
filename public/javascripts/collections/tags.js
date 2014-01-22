@@ -5,12 +5,12 @@ meenoAppCli.Classes.Tags = Backbone.Collection.extend({
 	model: meenoAppCli.Classes.Tag,
 	url: '/api/tags',
 
-	search : function(letters){
-		letters = $.ui.autocomplete.escapeRegex(letters);
-		if(letters === "") return this;
+	search : function(lookFor, collections){
+		if(lookFor.text === "") return this;
+		var letters = $.ui.autocomplete.escapeRegex(lookFor.text);
 		var pattern = new RegExp(letters,"i");
-		return _(this.filter(function(data) {
+		return this.filter(function(data) {
 			return (pattern.test(data.get("label")));
-		}));
+		});
 	}
 });

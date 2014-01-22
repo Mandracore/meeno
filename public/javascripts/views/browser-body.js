@@ -187,7 +187,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 					self.options.collections[searchWhat].search(request.term).map(function (model, key, list) {
 						return {
 							label: model.get("label"),
-							value: model.get("_id")
+							value: model.get("cid")
 						};
 					})
 				);
@@ -203,7 +203,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 				// Saving input value into the global filter
 				var objectRef = {
 					class: searchWhat,
-					id: ui.item.value
+					cid: ui.item.value
 				}
 				if (self.searchObjectFind(browserActiveView,objectRef) === true) { return; }
 				self.searchObjectAdd(browserActiveView,objectRef);
@@ -230,13 +230,14 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	searchObjectAdd: function (browserActiveView, objectRef) {
 		this.filters[browserActiveView].objects.push({
 			class: objectRef.class,
-			id: objectRef.id
+			cid: objectRef.cid
 		});
+		this.search();
 	},
 
 	searchObjectFind: function (browserActiveView, objectRef) {
 		var bFound = _.find(this.filters[browserActiveView].objects, function(item){
-			return (item.class == objectRef.class && item.id == objectRef.id);
+			return (item.class == objectRef.class && item.cid == objectRef.cid);
 		});
 		if (bFound === undefined) {return false;}
 		else {return true;}
@@ -244,12 +245,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	searchObjectRemove: function (browserActiveView, objectRef) {
 		this.filters[browserActiveView].objects = _.filter(this.filters[browserActiveView].objects, function(item){
-			return (item.class != objectRef.class && item.id != objectRef.id);
+			return (item.class != objectRef.class && item.cid != objectRef.cid);
 		});
+		this.search();
 	},
 
 	searchObjectButtonAppend: function (browserActiveView, object) {
-		var $objectButton = $("<span></span>").attr('data-class',object.class).attr('data-id',object.id).html(object.label);
+		var $objectButton = $("<span></span>").attr('data-class',object.class).attr('data-cid',object.cid).html(object.label);
 		this.$(".listobjects."+browserActiveView+" .objectButtons").append($objectButton);
 	},
 
@@ -259,13 +261,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var browserActiveView = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
 		var objectRef = {
 			class: $objectButton.attr('data-class'),
-			id: $objectButton.attr('data-id')
+			cid: $objectButton.attr('data-cid')
 		};
 		$objectButton.remove();
 		this.searchObjectRemove(browserActiveView,objectRef);
 	},
 
-	search : function (event) {
+	search: function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 		var newTextSearch = $(event.target).val();
@@ -284,8 +286,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	renderCollection : function (collName) {
-		console.log("renderCollection:"+collName);
-
+		//console.log("renderCollection:"+collName);
+		var self = this;
 		// First, emptying the DOM
 		var $list = this.$('.listobjects.'+collName+' .'+collName);
 		$list.html('');
@@ -295,12 +297,21 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		});
 		this.children[collName] = [];
 		// Third, filling the DOM again
+		var tmpCollections = {
+			notes : this.options.collections.notes,
+			tags  : this.options.collections.tags,
+			tasks : this.options.collections.tasks
+		};
 		var newView = {};
-		this.options.collections[collName].search(this.filters[collName].text).each(function (item) { // for now we ignore complex searches
-					if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: item }); }
-			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: item }); }
-			if (collName == "tasks") { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: item }); }
-			this.children[collName].push (newView);
+
+		// var aFilteredModels = this.options.collections[collName].search(this.filters[collName],tmpCollections);
+		// console.log(aFilteredModels);
+		// _.each(aFilteredModels, function (element, index, list) { // for now we ignore complex searches
+		this.options.collections[collName].search(this.filters[collName],tmpCollections).each(function (element) { // for now we ignore complex searches
+			if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: element }); }
+			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: element }); }
+			if (collName == "tasks") { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: element }); }
+			self.children[collName].push (newView);
 			$list.append(newView.render().el);
 		}, this);
 	},

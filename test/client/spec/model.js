@@ -89,8 +89,8 @@ describe("Note model", function() {
 			};
 
 			expect(this.notes.search(filter, collections).length).toEqual(2);
-			expect(this.notes.search(filter, collections)[0].get('title')).toBe("wanted 2");
-			expect(this.notes.search(filter, collections)[1].get('title')).toBe("wanted 3");
+			expect(this.notes.search(filter, collections).at(0).get('title')).toBe("wanted 2");
+			expect(this.notes.search(filter, collections).at(1).get('title')).toBe("wanted 3");
 		});
 	});
 });

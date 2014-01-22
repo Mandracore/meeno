@@ -6,10 +6,10 @@ meenoAppCli.Classes.Notes = Backbone.Collection.extend({
 	url: '/api/notes',
 
 	search : function (lookFor, collections) {
-		if(lookFor.text === "" && lookFor.objects == []) return this;
-		lookFor.text = $.ui.autocomplete.escapeRegex(lookFor.text);
+		if(lookFor.text === "" && lookFor.objects.length == 0) return this;
+		// lookFor.text = $.ui.autocomplete.escapeRegex(lookFor.text);
 		var pattern = new RegExp(lookFor.text,"i");
-		return (this.filter(function(model) {
+		return new meenoAppCli.Classes.Notes (this.filter(function(model) {
 			// Full text search
 			if (false === (pattern.test(model.get("title")) || pattern.test(model.get("content")))) {
 				return false;
