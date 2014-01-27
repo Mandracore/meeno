@@ -183,11 +183,15 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			source: function (request, response) {
 				// request.term : data typed in by the user ("new yor")
 				// response : native callback that must be called with the data to suggest to the user
+				var searchObject = {
+					text: request.term,
+					objects: []
+				};
 				response (
-					self.options.collections[searchWhat].search(request.term).map(function (model, key, list) {
+					self.options.collections[searchWhat].search(searchObject).map(function (model, key, list) {
 						return {
 							label: model.get("label"),
-							value: model.get("cid")
+							value: model.cid
 						};
 					})
 				);
@@ -208,11 +212,11 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 				if (self.searchObjectFind(browserActiveView,objectRef) === true) { return; }
 				self.searchObjectAdd(browserActiveView,objectRef);
 				objectRef.label = ui.item.label;
-				console.log(objectRef.label)
+				console.log("Selected option: "+objectRef.label);
 				self.searchObjectButtonAppend(browserActiveView, objectRef);
 			}
 		// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
-		}).attr("placeholder","filter by related "+searchWhat).val('').fadeIn().focus(); 
+		}).attr("placeholder","filter by related "+searchWhat).val('').show().focus(); 
 	},
 
 	searchCloseAutocomplete: function (event) {console.log('close requested')
@@ -232,7 +236,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			class: objectRef.class,
 			cid: objectRef.cid
 		});
-		this.search();
+		$(".listobjects."+browserActiveView+" .search").keyup(); // Trick to re-render collections
 	},
 
 	searchObjectFind: function (browserActiveView, objectRef) {
@@ -247,7 +251,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.filters[browserActiveView].objects = _.filter(this.filters[browserActiveView].objects, function(item){
 			return (item.class != objectRef.class && item.cid != objectRef.cid);
 		});
-		this.search();
+		$(".listobjects."+browserActiveView+" .search").keyup(); // Trick to re-render collections
 	},
 
 	searchObjectButtonAppend: function (browserActiveView, object) {
@@ -270,11 +274,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	search: function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-		var newTextSearch = $(event.target).val();
-		if (newTextSearch != this.filters[collName].text) {// Re-renders only if a difference is detected between old and new value
-			this.filters[collName].text = newTextSearch;
-			this.renderCollection(collName);
-		}
+		this.filters[collName].text = $(event.target).val();
+		this.renderCollection(collName);
 	},
 
 	// --------------------------------------------------------------------------------

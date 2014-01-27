@@ -129,16 +129,32 @@ describe("Browser", function() {
 		// Complex : Notes, Tasks
 
 		// For now, we test only notes
+		beforeEach(function() {
+			// Browser already focused
+			// Notes already focused
+			$searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
+			$search        = $searchwrapper.find("input.search");
+			$autocomplete  = $searchwrapper.find("input.autocomplete");
+			$search.focus(); // Focus into the note search input
+		});
+
+		it("should provide th display a button to save the filter if it is different from the existing ones", function() {
+			expect(true).toBe(false);
+		});
+		it("should save a filter model when clicking the dedicated button", function() {
+			expect(true).toBe(false);
+		});
+		it("should display a button to delete the filter one is active", function() {
+			expect(true).toBe(false);
+		});
+		it("should delete the selected filter when clicking the dedicated button and deactivate search", function() {
+			expect(true).toBe(false);
+		});
+		// describe("and using the custom filters", function() {
+		// });
+
 		describe("and filtering via related objects", function() {
 
-			beforeEach(function() {
-				// Browser already focused
-				// Notes already focused
-				$searchwrapper = $("#tabs .tab.browse .listobjects.notes .searchwrapper");
-				$search = $searchwrapper.find("input.search");
-				$autocomplete = $searchwrapper.find("input.autocomplete");
-				$search.focus(); // Focus into the note search input
-			});
 			
 			it("should display an autocomplete input (+ hide the other one), set focus and the right placeholder when hitting task combo", function() {
 				// Testing notes+tasks
