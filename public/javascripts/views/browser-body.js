@@ -147,8 +147,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.$el.find(".listobjects."+objectClass).addClass('selected');
 	},
 
-	// --------------------------------------------------------------------------------
+	//=================================================================================
 	// Search business objets among database
+	//=================================================================================
 	searchGetFocus: function (io) {
 		var focus = false;
 		var $listObjects = {};
@@ -279,7 +280,20 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	// --------------------------------------------------------------------------------
+	// Manage user's custom filters
+	searchFilterCompare: function (filter1, filter2) {
+		if(filter1.text != filter2.text) { return false; }
+		// Trying to find one criteria that is not in common. 
+		// _.find() should then be different from undefined and the test should return false (the filters are not equal)
+		return (undefined === _.find(filter1.objects, function(object) {
+			// Will find the first object not included in both filters
+			return (false === _.contains(filter2, object));
+		}));
+	},
+
+	//=================================================================================
 	// Render business objects' sub views 
+	//=================================================================================
 	render : function (event) {
 		this.renderCollection('notes');
 		this.renderCollection('tags');

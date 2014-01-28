@@ -138,23 +138,7 @@ describe("Browser", function() {
 			$search.focus(); // Focus into the note search input
 		});
 
-		it("should provide th display a button to save the filter if it is different from the existing ones", function() {
-			expect(true).toBe(false);
-		});
-		it("should save a filter model when clicking the dedicated button", function() {
-			expect(true).toBe(false);
-		});
-		it("should display a button to delete the filter one is active", function() {
-			expect(true).toBe(false);
-		});
-		it("should delete the selected filter when clicking the dedicated button and deactivate search", function() {
-			expect(true).toBe(false);
-		});
-		// describe("and using the custom filters", function() {
-		// });
-
 		describe("and filtering via related objects", function() {
-
 			
 			it("should display an autocomplete input (+ hide the other one), set focus and the right placeholder when hitting task combo", function() {
 				// Testing notes+tasks
@@ -190,29 +174,42 @@ describe("Browser", function() {
 				expect($autocomplete.is(':visible')).toBe(false); // This time it should be hidden
 				expect($search.is(':focus')).toBe(true); // Check Search has focus
 			});
-			it("should hide the autocomplete input and add a new object to the search filter when selecting an option", function() {
+		});
+
+		describe("and leveraging the custom filters management", function() {
+			it("should provide a functional filter comparator", function() {
+				var filter1 = {text: "wanted",objects:[
+					{class: 'tags', cid: 'TAG1'},
+					{class: 'tasks', cid: 'TASK1'},
+					{class: 'tasks', cid: 'TASK2'},
+				]};
+				var filter2 = {text: "wanted",objects:[
+					{class: 'tags', cid: 'TAG1'},
+					{class: 'tasks', cid: 'TASK2'},
+				]};
+				var filter3 = {text: "notwanted",objects:[
+					{class: 'tags', cid: 'TAG1'},
+					{class: 'tasks', cid: 'TASK1'},
+					{class: 'tasks', cid: 'TASK2'},
+				]};
+				var filter4 = {text: "wanted",objects:[
+					{class: 'tags', cid: 'TAG1'},
+					{class: 'tasks', cid: 'TASK1'},
+					{class: 'tasks', cid: 'TASK2'},
+				]};
+
+				expect(this.browser.children.body.searchFilterCompare(filter1, filter2)).toBe(false);
+				expect(this.browser.children.body.searchFilterCompare(filter1, filter3)).toBe(false);
+				expect(this.browser.children.body.searchFilterCompare(filter1, filter4)).toBe(true);
+			});
+			xit("should save a filter model when clicking the dedicated button", function() {
 				expect(true).toBe(false);
-
-				//this.browser.children.body
-
-				// Saisir du texte
-				// Rajouter deux tags
-				// Rajouter une task
-				// Valider que le pattern de recherche est bien formé (class/id pour chaque objet)
-
-				// Open the browser
-				// Test 1 : with notes
-				//		open the note object
-				//		focus on the search input
-				//		trigger a task combo
-				//		fake type in a letter of an existing tag (see above)
-				//		save the value of the first option
-				// 		select the first option
-				//		validate it's been saved with class/id
-				// Test 2 : with tasks
-
-				// Open the browser
-				// Open the note object (complex search only here )
+			});
+			xit("should display a button to delete the filter one is active", function() {
+				expect(true).toBe(false);
+			});
+			xit("should delete the selected filter when clicking the dedicated button and deactivate search", function() {
+				expect(true).toBe(false);
 			});
 		});
 	});
