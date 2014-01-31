@@ -99,6 +99,9 @@ describe("Note Filter model", function() {
 
 	beforeEach(function() {
 		this.noteFilter  = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter2 = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter3 = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter4 = new meenoAppCli.Classes.NoteFilter();
 		this.tag         = new meenoAppCli.Classes.Tag({label:"My test tag"});
 		this.tag2        = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
 		this.task        = new meenoAppCli.Classes.Task({label:"My test task"});
@@ -113,6 +116,17 @@ describe("Note Filter model", function() {
 	it("can be related to a task through a link", function() {
 		this.noteFilter.get('tasks').add(this.task);
 		expect(this.noteFilter.get('tasks').at(0).get('label')).toEqual("My test task");
+	});
+
+	it("can be compared to another note filter", function() {
+		this.noteFilter.get('tasks').add(this.task);
+		this.noteFilter.set('text','value to match');
+		this.noteFilter2.get('tasks').add(this.task2);
+		this.noteFilter3.get('tasks').add(this.task2);
+		this.noteFilter4.get('tasks').add(this.task2);
+		this.noteFilter4.get('tasks');
+		expect(this.noteFilter.isEqual(this.noteFilter2)).toBe(false);
+		expect(this.noteFilter.isEqual(this.noteFilter2)).toBe(true);
 	});
 });
 
