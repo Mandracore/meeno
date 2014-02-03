@@ -177,38 +177,20 @@ describe("Browser", function() {
 		});
 
 		describe("and leveraging the custom filters management", function() {
-			it("should provide a functional filter comparator", function() {
-				var filter1 = {text: "wanted",objects:[
-					{class: 'tags', cid: 'TAG1'},
-					{class: 'tasks', cid: 'TASK1'},
-					{class: 'tasks', cid: 'TASK2'},
-				]};
-				var filter2 = {text: "wanted",objects:[
-					{class: 'tags', cid: 'TAG1'},
-					{class: 'tasks', cid: 'TASK2'},
-				]};
-				var filter3 = {text: "notwanted",objects:[
-					{class: 'tags', cid: 'TAG1'},
-					{class: 'tasks', cid: 'TASK1'},
-					{class: 'tasks', cid: 'TASK2'},
-				]};
-				var filter4 = {text: "wanted",objects:[
-					{class: 'tags', cid: 'TAG1'},
-					{class: 'tasks', cid: 'TASK1'},
-					{class: 'tasks', cid: 'TASK2'},
-				]};
-
-				expect(this.browser.children.body.searchFilterCompare(filter1, filter2)).toBe(false);
-				expect(this.browser.children.body.searchFilterCompare(filter1, filter3)).toBe(false);
-				expect(this.browser.children.body.searchFilterCompare(filter1, filter4)).toBe(true);
+			it("should display a button to save the filter being set up (if it is different from the others saved)", function() {
+				$autocomplete.val('test');
+				$autocomplete.focus();
+				$autocomplete.keypress();
+				expect($searchwrapper.find(".filterEditor .action.save").is(':visible')).toBe(true);
+				// We don't check that it's different yet
+			});
+			xit("should display a button to delete the filter that is active", function() {
+				expect(true).toBe(false);
 			});
 			xit("should save a filter model when clicking the dedicated button", function() {
 				expect(true).toBe(false);
 			});
-			xit("should display a button to delete the filter one is active", function() {
-				expect(true).toBe(false);
-			});
-			xit("should delete the selected filter when clicking the dedicated button and deactivate search", function() {
+			xit("should delete the active filter when clicking the dedicated button and deactivate search", function() {
 				expect(true).toBe(false);
 			});
 		});

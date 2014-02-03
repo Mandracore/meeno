@@ -279,21 +279,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.renderCollection(collName);
 	},
 
-	// --------------------------------------------------------------------------------
-	// Manage user's custom filters
-	searchFilterCompare: function (filter1, filter2) {
-		if(filter1.text != filter2.text) { return false; }
-		// Trying to find one criteria that is not in common. 
-		// _.find() should then be different from undefined and the test should return false (the filters are not equal)
-		return (undefined === _.find(filter1.objects, function(filter1Object) {
-		// Will find the first filter1 object not included in filter2 objects
-			return (undefined === _.find(filter2.objects, function(filter2Object) {
-			// If _.find is equal to undefined, it means that filter1Object is not contained into filter2.objects
-				return (filter1Object.class == filter2Object.class && filter1Object.cid == filter2Object.cid);
-			}));
-		}));
-	},
-
 	//=================================================================================
 	// Render business objects' sub views 
 	//=================================================================================

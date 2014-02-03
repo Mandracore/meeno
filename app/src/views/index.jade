@@ -133,12 +133,15 @@ block content
 						li.tasks.icon-tasks Tasks
 						li.tags.icon-tags Tags
 				div.listobjects.notes.selected
-					div
-						div.searchwrapper
+					div.searchWrapper
+						div.superInput
 							span.objectButtons
 							span
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search notes")
+						div.filterEditor
+							span.action.delete(style="display:none") Delete active filter
+							span.action.save(style="display:none") Save current filter
 					div.actions-contextual-selection
 						button.select-all Tout sélectionner
 						button.unselect-all Tout déselectionner
@@ -153,12 +156,15 @@ block content
 						li Note 2
 						li Note 3
 				div.listobjects.tasks
-					div
-						div.searchwrapper
+					div.searchWrapper
+						div.superInput
 							span.objectButtons
 							span
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search tasks")
+						div.filterEditor
+							span.action.delete(style="display:none") Delete active filter
+							span.action.save(style="display:none") Save current filter
 					div.actions-contextual-selection
 						button.select-all Tout sélectionner
 						button.unselect-all Tout déselectionner
@@ -173,12 +179,15 @@ block content
 						li Task 2
 						li Task 3
 				div.listobjects.tags
-					div
-						div.searchwrapper
+					div.searchWrapper
+						div.superInput
 							span.objectButtons
 							span
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search tags")
+						div.filterEditor
+							span.action.delete(style="display:none") Delete active filter
+							span.action.save(style="display:none") Save current filter
 					div.actions-contextual-selection
 						button.select-all Tout sélectionner
 						button.unselect-all Tout déselectionner

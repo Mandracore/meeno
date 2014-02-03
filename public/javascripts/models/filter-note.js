@@ -21,9 +21,15 @@ meenoAppCli.Classes.NoteFilter = Backbone.RelationalModel.extend({
 
 		return (undefined === this.get('tags').find(function(tag) {
 			return (false === nf.get('tags').contains(tag));
-		})) || (undefined === this.get('tasks').find(function(task) {
+		})) && (undefined === this.get('tasks').find(function(task) {
 			return (false === nf.get('tasks').contains(task));
 		}));
+
+		// return (undefined === this.get('tags').find(function(tag) {
+		// 	return (false === nf.get('tags').contains(tag));
+		// })) || (undefined === this.get('tasks').find(function(task) {
+		// 	return (false === nf.get('tasks').contains(task));
+		// }));
 
 
 		// return (undefined === _.find(nf1.objects, function(nf1Object) {

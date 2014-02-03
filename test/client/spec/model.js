@@ -102,6 +102,9 @@ describe("Note Filter model", function() {
 		this.noteFilter2 = new meenoAppCli.Classes.NoteFilter();
 		this.noteFilter3 = new meenoAppCli.Classes.NoteFilter();
 		this.noteFilter4 = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter5 = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter6 = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter7 = new meenoAppCli.Classes.NoteFilter();
 		this.tag         = new meenoAppCli.Classes.Tag({label:"My test tag"});
 		this.tag2        = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
 		this.task        = new meenoAppCli.Classes.Task({label:"My test task"});
@@ -119,14 +122,22 @@ describe("Note Filter model", function() {
 	});
 
 	it("can be compared to another note filter", function() {
-		this.noteFilter.get('tasks').add(this.task);
-		this.noteFilter.set('text','value to match');
-		this.noteFilter2.get('tasks').add(this.task2);
+		this.noteFilter.get('tasks').add(this.task).add(this.tag);
+		this.noteFilter2.get('tasks').add(this.task);
 		this.noteFilter3.get('tasks').add(this.task2);
-		this.noteFilter4.get('tasks').add(this.task2);
-		this.noteFilter4.get('tasks');
+		this.noteFilter4.get('tasks').add(this.task).add(this.tag2);
+		this.noteFilter5.get('tasks').add(this.task).add(this.tag);
+		this.noteFilter.set('text','value to match');
+		this.noteFilter3.set('text','value to match');
+		this.noteFilter4.set('text','value to match');
+		this.noteFilter5.set('text','value to match');
+		this.noteFilter6.set('text','other value to match');
+		this.noteFilter7.set('text','other value to match');
 		expect(this.noteFilter.isEqual(this.noteFilter2)).toBe(false);
-		expect(this.noteFilter.isEqual(this.noteFilter2)).toBe(true);
+		expect(this.noteFilter.isEqual(this.noteFilter3)).toBe(false);
+		expect(this.noteFilter.isEqual(this.noteFilter4)).toBe(false);
+		expect(this.noteFilter.isEqual(this.noteFilter5)).toBe(true);
+		expect(this.noteFilter6.isEqual(this.noteFilter7)).toBe(true);
 	});
 });
 
