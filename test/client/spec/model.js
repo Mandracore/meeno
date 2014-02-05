@@ -1,16 +1,17 @@
 describe("Note model", function() {
 
 	beforeEach(function() {
-		this.note  = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
-		this.note2 = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
-		this.note3 = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
-		this.tag   = new meenoAppCli.Classes.Tag({label:"My test tag"});
-		this.tag2  = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
-		this.task  = new meenoAppCli.Classes.Task({label:"My test task"});
-		this.task2 = new meenoAppCli.Classes.Task({label:"My test task 2"});
-		this.notes = new meenoAppCli.Classes.Notes();
-		this.tags  = new meenoAppCli.Classes.Tags();
-		this.tasks = new meenoAppCli.Classes.Tasks();
+		this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
+		this.note2      = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
+		this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
+		this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
+		this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
+		this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
+		this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
+		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
+		this.notes      = new meenoAppCli.Classes.Notes();
+		this.tags       = new meenoAppCli.Classes.Tags();
+		this.tasks      = new meenoAppCli.Classes.Tasks();
 		this.notes.add(this.note);
 		this.notes.add(this.note2);
 		this.notes.add(this.note3);
@@ -58,16 +59,9 @@ describe("Note model", function() {
 		it("should return the expected models with text only", function() {
 			this.note.set("title","wanted 1");
 			this.note2.set("title","wanted 2");
-			this.note.get('tagLinks').add( { tag: this.tag } );
-			this.note2.get('tagLinks').add( { tag: this.tag } );
-			this.note2.get('taskLinks').add( { task: this.task } );
-			var filter = {text: "ted",objects:[]};
-			var collections = {
-				tags: this.tags,
-				tasks: this.tasks
-			};
+			this.noteFilter.set('text','ted');
 
-			expect(this.notes.search(filter, collections).length).toEqual(2);
+			expect(this.notes.search(this.noteFilter).length).toEqual(2);
 		});
 
 		it("should return the expected models with text and objects", function() {
@@ -79,18 +73,14 @@ describe("Note model", function() {
 			this.note2.get('taskLinks').add( { task: this.task } );
 			this.note3.get('tagLinks').add( { tag: this.tag } );
 			this.note3.get('taskLinks').add( { task: this.task } );
-			var filter = {text: "wanted",objects:[
-				{class: 'tags', cid: this.tag.cid},
-				{class: 'tasks', cid: this.task.cid},
-			]};
-			var collections = {
-				tags: this.tags,
-				tasks: this.tasks
-			};
 
-			expect(this.notes.search(filter, collections).length).toEqual(2);
-			expect(this.notes.search(filter, collections).at(0).get('title')).toBe("wanted 2");
-			expect(this.notes.search(filter, collections).at(1).get('title')).toBe("wanted 3");
+			this.noteFilter.set('text','wanted');
+			this.noteFilter.get('tags').add(this.tag);
+			this.noteFilter.get('tasks').add(this.task);
+
+			expect(this.notes.search(this.noteFilter).length).toEqual(2);
+			expect(this.notes.search(this.noteFilter).at(0).get('title')).toBe("wanted 2");
+			expect(this.notes.search(this.noteFilter).at(1).get('title')).toBe("wanted 3");
 		});
 	});
 });
@@ -122,7 +112,7 @@ describe("Note Filter model", function() {
 	});
 
 	it("can be compared to another note filter", function() {
-		this.noteFilter.get('tasks').add(this.task).add(this.tag);
+		this.noteFilter.get('tasks').add(this.task).add(this.tag); // THIS SHOULD HAVE TRIGGERED A BUG !
 		this.noteFilter2.get('tasks').add(this.task);
 		this.noteFilter3.get('tasks').add(this.task2);
 		this.noteFilter4.get('tasks').add(this.task).add(this.tag2);

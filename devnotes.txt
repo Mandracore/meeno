@@ -79,3 +79,9 @@ Mettre à jour les objets dans les notes s'ils sont modifiés par ailleurs (tags
 29/11/2013
 Mettre en place un proxy d'évènements clavier centralisé qui trigger des events comme keyboard:task, keyboard:tag,... Ces évènements seront détectés par les vues elles mêmes (editor, browser,...) et déclencheront des actions en fonction du focus.
 Difficulté : pour simplifier je devrais activer le binding de toutes les actions dès le début même si les objets relatifs ne sont pas ouverts. Exemple : détecter le ctrl alt maj h même si aucun éditeur n'est ouvert.
+
+04/02/2014
+le filtre unique qui sert au filtrage de la collection est un filtre qu'on peut sauvegarder et qui est constamment modifié par toutes les actions de saisie dans le superInput ou les activations via le filterEditor (il représente alors une copie d'une version sauvegardée)
+!!! je dois encore nettoyer la méthode .search dans les collections et refaire les specs.
+
+Fix line : it("can be compared to another note filter
