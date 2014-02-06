@@ -33,12 +33,14 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tasks" : []
 		};
 		this.filters = {
-			"notes" : new meenoAppCli.Classes.NoteFilter()
+			"notes" : new meenoAppCli.Classes.NoteFilter(),
+			"tasks" : new meenoAppCli.Classes.TaskFilter(),
+			"tags" : new meenoAppCli.Classes.TagFilter()
 		};
 
-		this.listenTo(this.options.collections.notes, 'add remove', function() {this.renderCollection("notes");});
-		this.listenTo(this.options.collections.tags, 'add remove', function() {this.renderCollection("tags");});
-		this.listenTo(this.options.collections.tasks, 'add remove', function() {this.renderCollection("tasks");});
+		this.listenTo(this.options.collections.notes, 'add remove change:title add:tagLinks', function() {this.renderCollection("notes");});
+		this.listenTo(this.options.collections.tags, 'add remove change:label', function() {this.renderCollection("tags");});
+		this.listenTo(this.options.collections.tasks, 'add remove change:label', function() {this.renderCollection("tasks");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});

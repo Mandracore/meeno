@@ -13,93 +13,87 @@ describe("Browser", function() {
 			'</div></div>'
 		);*/
 		// Preparing models
-		this.note = new meenoAppCli.Classes.Note();
-		this.notes = new meenoAppCli.Classes.Notes();
+		this.note        = new meenoAppCli.Classes.Note();
+		this.tag         = new meenoAppCli.Classes.Tag({label: "New test tag"});
+		this.task        = new meenoAppCli.Classes.Task();
+		this.notes       = new meenoAppCli.Classes.Notes();
+		this.tags        = new meenoAppCli.Classes.Tags();
+		this.tasks       = new meenoAppCli.Classes.Tasks();
+		this.noteFilters = new meenoAppCli.Classes.NoteFilters();
+		this.taskFilters = new meenoAppCli.Classes.TaskFilters();
+		this.tagFilters  = new meenoAppCli.Classes.TagFilters();
+		this.note.get('tagLinks').add( { tag: this.tag } );
 		this.notes.add([this.note]);
-		this.tag  = new meenoAppCli.Classes.Tag();
-		this.tags = new meenoAppCli.Classes.Tags();
-		this.tags.add([this.tag]);
-		this.task = new meenoAppCli.Classes.Task();
-		this.tasks = new meenoAppCli.Classes.Tasks();
-		this.tasks.add([this.task]);
+		this.tags.add(this.tag);
+		this.tasks.add(this.task);
+		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
+
 		// Initializing browser
 		this.browser = new meenoAppCli.Classes.BrowserView({ collections : {
-			notes : this.notes,
-			tags  : this.tags,
-			tasks : this.tasks,
+			notes       : this.notes,
+			tags        : this.tags,
+			tasks       : this.tasks,
+			noteFilters : this.noteFilters,
+			taskFilters : this.taskFilters,
+			tagFilters  : this.tagFilters,
 		}});
+	});
+
+	it("should kill existing views before re-rendering", function() {
+		var cid1 = this.browser.children.body.children.notes[0].cid;
+		this.browser.children.body.render();
+		var cid2 = this.browser.children.body.children.notes[0].cid;
+		expect(cid1).not.toEqual(cid2);
 	});
 
 	describe("when asked to display notes", function() {
 		it("should embed the related tags", function() {
-			this.linkNoteTag = new meenoAppCli.Classes.linkNoteTag({
-				note: this.note,
-				tag: this.tag,
-			});
-			// Browser should automatically redraw
-			expect(this.note.$el).toContain('span.related-tag');
-			expect(this.note.$('span.related-tag')).toContainText(this.tag.get('label'));
-		});
-	});
-
-	describe("when asked to filter objects", function() {
-
-		beforeEach(function() {
-		});
-
-		describe("if it's a note", function() {
-			it("should kill existing note views and empty DOM", function() {
-				expect(false).toBe(true);
-			});
-			it("should display only correct the right models", function() {
-				expect(false).toBe(true);
-			});
+			expect(this.browser.children.body.children.notes[0].$el).toContain('span.tags');
+			expect(this.browser.children.body.children.notes[0].$('span.tags span').eq(0)).toContainText("New test tag");
 		});
 	});
 
 	describe("when a collection is modified", function() {
 
 		describe("if it's a note", function() {
-			it("should relaunch notes rendering", function() {
+			it("should relaunch notes rendering if we updated 'title' attribute", function() {
 				spyOn(this.browser.children.body, 'renderCollection');
 				this.note.set({title:'test'});
 				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('notes');
 			});
-			it("but only if we updated 'title' attribute...", function() {
+			it("should relaunch notes rendering if we linked a tag to it", function() {
+				spyOn(this.browser.children.body, 'renderCollection');
+				this.note.get('tagLinks').add( { tag: this.tag } );
+				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('notes');
+			});
+			it("should NOT relaunch notes rendering if we updated 'content' attribute", function() {
 				spyOn(this.browser.children.body, 'renderCollection');
 				this.note.set({content:'test'});
 				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
 			});
-			it("...or linked a tag to it", function() {
-				spyOn(this.browser.children.body, 'renderCollection');
-				this.linkNoteTask = new meenoAppCli.Classes.linkNoteTask({
-					note: this.note,
-					tag: this.tag,
-				});
-				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
-			});
 		});
 		describe("if it's a tag", function() {
-			it("should relaunch tags rendering", function() {
+			it("should relaunch tags rendering if we updated 'label' attribute", function() {
 				spyOn(this.browser.children.body, 'renderCollection');
 				this.tag.set({label:'test'});
 				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('tags');
 			});
-			it("but only if we updated 'label' attribute", function() {
+			it("should NOT relaunch tags rendering if we updated 'color' attribute", function() {
 				spyOn(this.browser.children.body, 'renderCollection');
 				this.tag.set({color:'#aaaaaa'});
 				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
 			});
 		});
 		describe("if it's a task", function() {
-			it("should relaunch tasks rendering", function() {
+			it("should relaunch tasks rendering if we updated 'label' attribute", function() {
 				spyOn(this.browser.children.body, 'renderCollection');
-				this.task.set({description:'test'});
+				this.task.set({label:'update test'});
 				expect(this.browser.children.body.renderCollection).toHaveBeenCalledWith('tasks');
 			});
-			it("but only if we updated 'description' attribute", function() {
+			it("should NOT relaunch tasks rendering if other attributes are modified", function() {
 				spyOn(this.browser.children.body, 'renderCollection');
 				this.task.set({due:'2013-08-23 20:00:00'});
+				this.task.set({description:'update test'});
 				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
 			});
 		});
@@ -177,7 +171,7 @@ describe("Browser", function() {
 		});
 
 		describe("and leveraging the custom filters management", function() {
-			it("should display a button to save the filter being set up (if it is different from the others saved)", function() {
+			it("should display a button to save the filter being set up (if it is different from the others in the collection)", function() {
 				$autocomplete.val('test');
 				$autocomplete.focus();
 				$autocomplete.keypress();
