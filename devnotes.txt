@@ -85,3 +85,13 @@ le filtre unique qui sert au filtrage de la collection est un filtre qu'on peut 
 !!! je dois encore nettoyer la méthode .search dans les collections et refaire les specs.
 
 Fix line : it("can be compared to another note filter
+
+10/02/2014
+Poser un listener sur la collection de noteFilter. A chaque add(from collection)/delete(from collection), la liste des filters se met à jour. Un simple save/remove fait donc l'affaire. Besoin de création de vues embedded. bowser-body-filter-note, bowser-body-filter-task, bowser-body-filter-tag. Il faudra un render normal ainsi qu'un renderInSuperInput.
+Ces subviews pourraient écouter le modèle de filter stocké dans le browser-body. A chaque modification apportée, les subviews pourraient vérifier qu'elles ne sont pas actives et s'updater au besoin (:active)
+Question : comment les boutons pourraient-ils s'activer ou se désactiver ? 
+cas de figure (3) :
+1. xxxFilter vide => rien à afficher
+2. xxxFilter contient filter € collection de filters (DELETE)
+3. xxxFilter contient filter !€ collection de filters (SAVE)
+=> en surveillant le filter du browser-body (+ lancement à l'initialisation) : à chaque modif, on vérifie si le filtre active existe déjà (delete)

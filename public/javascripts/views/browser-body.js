@@ -38,9 +38,15 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tags" : new meenoAppCli.Classes.TagFilter()
 		};
 
-		this.listenTo(this.options.collections.notes, 'add remove change:title add:tagLinks', function() {this.renderCollection("notes");});
-		this.listenTo(this.options.collections.tags, 'add remove change:label', function() {this.renderCollection("tags");});
-		this.listenTo(this.options.collections.tasks, 'add remove change:label', function() {this.renderCollection("tasks");});
+		this.listenTo(this.options.collections.notes, 'add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+		this.listenTo(this.options.collections.tags, 'add remove change:label', function () {this.renderCollection("tags");});
+		this.listenTo(this.options.collections.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
+/*		this.listenTo(this.options.collections.noteFilters, 'add remove', function () {this.renderFilterCollection("noteFilters");});
+		this.listenTo(this.options.collections.taskFilters, 'add remove', function () {this.renderFilterCollection("taskFilters");});
+		this.listenTo(this.options.collections.tagFilters, 'add remove', function () {this.renderFilterCollection("tagFilters");});*/
+		this.listenTo(this.filters.notes, 'change', function () {this.refreshFilterControls("notes");});
+		this.listenTo(this.filters.tasks, 'change', function () {this.refreshFilterControls("tasks");});
+		this.listenTo(this.filters.tags, 'change', function () {this.refreshFilterControls("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
@@ -50,6 +56,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 		this.render();
+		this.refreshFilterControls("notes");
+		this.refreshFilterControls("tasks");
+		this.refreshFilterControls("tags");
 	},
 
 	// --------------------------------------------------------------------------------
@@ -252,6 +261,21 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 		this.filters[collName].set('text', $(event.target).val());
 		this.renderCollection(collName);
+	},
+
+	refreshFilterControls: function (collName) { //notes
+		// $superInput = this.$(".listobjects."+filterCollName+"");
+		console.log(collName);
+		console.log(this.filters[collName]);
+		var filterClass = collName == "notes" ? "noteFilters" : (collName == "tags" ? "tagFilters" : "taskFilters");
+		if (this.filters[collName].isEmpty()) {console.log ('Filter is empty')}
+		else { // There is a filter
+			if (this.options.collections[filterClass].contains(this.filters[collName])) {
+				console.log ('REMOVE');
+			} else {
+				console.log ('ADD');
+			}
+		}
 	},
 
 	//=================================================================================

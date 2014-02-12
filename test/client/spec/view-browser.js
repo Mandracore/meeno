@@ -178,7 +178,7 @@ describe("Browser", function() {
 				expect($searchwrapper.find(".filterEditor .action.save").is(':visible')).toBe(true);
 				// We don't check that it's different yet
 			});
-			xit("should display a button to delete the filter that is active", function() {
+			xit("should display a button to delete the active filter of the collection", function() {
 				expect(true).toBe(false);
 			});
 			xit("should save a filter model when clicking the dedicated button", function() {

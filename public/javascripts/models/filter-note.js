@@ -1,8 +1,7 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-meenoAppCli.Classes.NoteFilter = Backbone.RelationalModel.extend({
-	idAttribute: '_id',
+meenoAppCli.Classes.NoteFilter = meenoAppCli.Classes.ObjectFilter.extend({
 	relations: [{
 		type: 'HasMany',
 		key: 'tags',
@@ -22,12 +21,5 @@ meenoAppCli.Classes.NoteFilter = Backbone.RelationalModel.extend({
 		})) && (undefined === this.get('tasks').find(function(task) {
 			return (false === nf.get('tasks').contains(task));
 		}));
-	},
-	defaults: function() {
-		return {
-			text       : '',
-			created_at : new Date(),
-			updated_at : new Date()
-		};
 	}
 });

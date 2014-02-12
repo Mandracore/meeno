@@ -85,7 +85,8 @@ describe("Note model", function() {
 	});
 });
 
-describe("Note Filter model", function() {
+
+describe("Filter models", function() {
 
 	beforeEach(function() {
 		this.noteFilter  = new meenoAppCli.Classes.NoteFilter();
@@ -95,23 +96,29 @@ describe("Note Filter model", function() {
 		this.noteFilter5 = new meenoAppCli.Classes.NoteFilter();
 		this.noteFilter6 = new meenoAppCli.Classes.NoteFilter();
 		this.noteFilter7 = new meenoAppCli.Classes.NoteFilter();
+		this.taskFilter  = new meenoAppCli.Classes.TaskFilter();
+		this.taskFilter2 = new meenoAppCli.Classes.TaskFilter();
+		this.taskFilter3 = new meenoAppCli.Classes.TaskFilter();
+		this.tagFilter   = new meenoAppCli.Classes.TagFilter();
+		this.tagFilter2  = new meenoAppCli.Classes.TagFilter();
 		this.tag         = new meenoAppCli.Classes.Tag({label:"My test tag"});
 		this.tag2        = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
 		this.task        = new meenoAppCli.Classes.Task({label:"My test task"});
 		this.task2       = new meenoAppCli.Classes.Task({label:"My test task 2"});
 	});
 
-	it("can be related to a tag through a link", function() {
+	it("NoteFilter can be related to a tag and a task through a link", function() {
 		this.noteFilter.get('tags').add(this.tag2);
-		expect(this.noteFilter.get('tags').at(0).get('label')).toEqual("My test tag 2");
-	});
-
-	it("can be related to a task through a link", function() {
 		this.noteFilter.get('tasks').add(this.task);
 		expect(this.noteFilter.get('tasks').at(0).get('label')).toEqual("My test task");
+		expect(this.noteFilter.get('tags').at(0).get('label')).toEqual("My test tag 2");
+	});
+	it("TaskFilter can be related to a tag through a link", function() {
+		this.taskFilter.get('tags').add(this.tag2);
+		expect(this.taskFilter.get('tags').at(0).get('label')).toEqual("My test tag 2");
 	});
 
-	it("can be compared to another note filter", function() {
+	it("NoteFilter can be compared to another note filter", function() {
 		this.noteFilter.get('tasks').add(this.task).add(this.tag); // THIS SHOULD HAVE TRIGGERED A BUG !
 		this.noteFilter2.get('tasks').add(this.task);
 		this.noteFilter3.get('tasks').add(this.task2);
@@ -129,19 +136,30 @@ describe("Note Filter model", function() {
 		expect(this.noteFilter.isEqual(this.noteFilter5)).toBe(true);
 		expect(this.noteFilter6.isEqual(this.noteFilter7)).toBe(true);
 	});
-});
 
-describe("Task Filter model", function() {
-
-	beforeEach(function() {
-		this.TaskFilter  = new meenoAppCli.Classes.TaskFilter();
-		this.tag         = new meenoAppCli.Classes.Tag({label:"My test tag"});
-		this.tag2        = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
+	it("NoteFilter has isEmpty() method", function() {
+		this.noteFilter2.get('tasks').add(this.task);
+		this.noteFilter3.set('text','value to match');
+		this.noteFilter4.get('tasks').add(this.task);
+		this.noteFilter4.get('tags').add(this.tag);
+		expect(this.noteFilter.isEmpty()).toBe(true);
+		expect(this.noteFilter2.isEmpty()).toBe(false);
+		expect(this.noteFilter3.isEmpty()).toBe(false);
+		expect(this.noteFilter4.isEmpty()).toBe(false);
 	});
 
-	it("can be related to a tag through a link", function() {
-		this.TaskFilter.get('tags').add(this.tag2);
-		expect(this.TaskFilter.get('tags').at(0).get('label')).toEqual("My test tag 2");
+	it("TaskFilter has isEmpty() method", function() {
+		this.taskFilter2.get('tags').add(this.tag);
+		this.taskFilter3.set('text','value to match');
+		expect(this.taskFilter.isEmpty()).toBe(true);
+		expect(this.taskFilter2.isEmpty()).toBe(false);
+		expect(this.taskFilter3.isEmpty()).toBe(false);
+	});
+
+	it("TagFilter has isEmpty() method", function() {
+		this.tagFilter2.set('text','value to match');
+		expect(this.tagFilter.isEmpty()).toBe(true);
+		expect(this.tagFilter2.isEmpty()).toBe(false);
 	});
 });
 
