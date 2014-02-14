@@ -44,9 +44,12 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 /*		this.listenTo(this.options.collections.noteFilters, 'add remove', function () {this.renderFilterCollection("noteFilters");});
 		this.listenTo(this.options.collections.taskFilters, 'add remove', function () {this.renderFilterCollection("taskFilters");});
 		this.listenTo(this.options.collections.tagFilters, 'add remove', function () {this.renderFilterCollection("tagFilters");});*/
-		this.listenTo(this.filters.notes, 'change', function () {this.refreshFilterControls("notes");});
-		this.listenTo(this.filters.tasks, 'change', function () {this.refreshFilterControls("tasks");});
-		this.listenTo(this.filters.tags, 'change', function () {this.refreshFilterControls("tags");});
+		this.listenTo(this.filters.notes, 'add remove change add:tags add:tasks', function () {this.refreshFilterControls("notes");});
+		this.listenTo(this.filters.tasks, 'add remove change add:tags', function () {this.refreshFilterControls("tasks");});
+		this.listenTo(this.filters.tags, 'add remove change', function () {this.refreshFilterControls("tags");});
+		this.listenTo(this.options.collections.noteFilters, 'change add:tags add:tasks', function () {this.refreshFilterControls("notes");});
+		this.listenTo(this.options.collections.taskFilters, 'change add:tags', function () {this.refreshFilterControls("tasks");});
+		this.listenTo(this.options.collections.tagFilters, 'change', function () {this.refreshFilterControls("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
@@ -264,16 +267,18 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	refreshFilterControls: function (collName) { //notes
-		// $superInput = this.$(".listobjects."+filterCollName+"");
-		console.log(collName);
-		console.log(this.filters[collName]);
+		$listObjects = this.$(".listobjects."+collName+"");
 		var filterClass = collName == "notes" ? "noteFilters" : (collName == "tags" ? "tagFilters" : "taskFilters");
-		if (this.filters[collName].isEmpty()) {console.log ('Filter is empty')}
-		else { // There is a filter
+		
+		$listObjects.find('.filter-editor .action').hide(); // No action controls should be displayed
+
+		if (!this.filters[collName].isEmpty()) { // The user has set a filter set in the super-input
 			if (this.options.collections[filterClass].contains(this.filters[collName])) {
-				console.log ('REMOVE');
+				console.log("DELETE");
+				$listObjects.find('.filter-editor .action.delete').show(); // "Delete" button is displayed
 			} else {
-				console.log ('ADD');
+				console.log("SAVE")
+				$listObjects.find('.filter-editor .action.save').show(); // "Save" button is displayed
 			}
 		}
 	},

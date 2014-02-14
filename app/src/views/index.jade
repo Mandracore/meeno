@@ -140,13 +140,13 @@ block content
 						li.tasks.icon-tasks Tasks
 						li.tags.icon-tags Tags
 				div.listobjects.notes.selected
-					div.searchWrapper
-						div.superInput
+					div.search-wrapper
+						div.super-input
 							span.objectButtons
 							span
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search notes")
-						div.filterEditor
+						div.filter-editor
 							span.action.delete(style="display:none") Delete active filter
 							span.action.save(style="display:none") Save current filter
 					div.actions-contextual-selection
@@ -158,18 +158,16 @@ block content
 						li.delete
 							span.action Delete notes
 							span.cancel Cancel
+					// Hereafeter will be displayed the objects
 					ul.objects.notes
-						li Note 1
-						li Note 2
-						li Note 3
 				div.listobjects.tasks
-					div.searchWrapper
-						div.superInput
+					div.search-wrapper
+						div.super-input
 							span.objectButtons
 							span
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search tasks")
-						div.filterEditor
+						div.filter-editor
 							span.action.delete(style="display:none") Delete active filter
 							span.action.save(style="display:none") Save current filter
 					div.actions-contextual-selection
@@ -181,18 +179,16 @@ block content
 						li.delete
 							span.action Delete tasks
 							span.cancel Cancel
+					// Hereafeter will be displayed the objects
 					ul.objects.tasks
-						li Task 1
-						li Task 2
-						li Task 3
 				div.listobjects.tags
-					div.searchWrapper
-						div.superInput
+					div.search-wrapper
+						div.super-input
 							span.objectButtons
 							span
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search tags")
-						div.filterEditor
+						div.filter-editor
 							span.action.delete(style="display:none") Delete active filter
 							span.action.save(style="display:none") Save current filter
 					div.actions-contextual-selection
@@ -204,10 +200,8 @@ block content
 						li.delete
 							span.action Delete tags
 							span.cancel Cancel
+					// Hereafeter will be displayed the objects
 					ul.objects.tags
-						li Tag 1
-						li Tag 2
-						li Tag 3
 		div#footer
 			p.current-action Saving...
 			p.sync-status Sync. Status : In Progress...
