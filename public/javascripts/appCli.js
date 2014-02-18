@@ -17,12 +17,15 @@ $(function() { // This ensures the code will be executed when DOM is ready
 		if (this.model) {this.model.off( null, null, this );}
 		// Beware : this remove cannot event listeners referring to this view and set on other objects !
 	};
-	meenoAppCli.dispatcher = _.extend({}, Backbone.Events); // Init our app-wide listener
-	meenoAppCli.notes      = new meenoAppCli.Classes.Notes(); // Our global collection of notes
-	meenoAppCli.tags       = new meenoAppCli.Classes.Tags(); // Our global collection of tags
-	meenoAppCli.tasks      = new meenoAppCli.Classes.Tasks(); // Our global collection of tasks
-	meenoAppCli.mainView   = new meenoAppCli.Classes.MainView(); // Kick things off by creating the **main view**.
-	meenoAppCli.router     = new meenoAppCli.Classes.Router(); // Initiate Router
+	meenoAppCli.dispatcher  = _.extend({}, Backbone.Events); // Init our app-wide listener
+	meenoAppCli.notes       = new meenoAppCli.Classes.Notes(); // Our global collection of notes
+	meenoAppCli.tasks       = new meenoAppCli.Classes.Tasks(); // Our global collection of tasks
+	meenoAppCli.tags        = new meenoAppCli.Classes.Tags(); // Our global collection of tags
+	meenoAppCli.noteFilters = new meenoAppCli.Classes.NoteFilters(); // Our global collection of tasks
+	meenoAppCli.taskFilters = new meenoAppCli.Classes.TaskFilters(); // Our global collection of tasks
+	meenoAppCli.tagFilters  = new meenoAppCli.Classes.TagFilters(); // Our global collection of tasks
+	meenoAppCli.mainView    = new meenoAppCli.Classes.MainView(); // Kick things off by creating the **main view**.
+	meenoAppCli.router      = new meenoAppCli.Classes.Router(); // Initiate Router
 	meenoAppCli.counters = {
 		openedEditors: 0
 	};

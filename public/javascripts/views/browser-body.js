@@ -250,10 +250,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	searchObjectRemove: function (event) {
-		var $objectButton = $(event.target);
-		var $listObjects = $objectButton.closest('.listobjects');
+		var $objectButton     = $(event.target);
+		var $listObjects      = $objectButton.closest('.listobjects');
 		var browserActiveView = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
-		var object = self.options.collections[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
+		var object            = self.options.collections[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
 		$objectButton.remove(); // Cleaning up DOM
 		this.filters[browserActiveView].get($objectButton.attr('data-class')).remove(object); // Removing model from Filter
 		$(".listobjects."+browserActiveView+" .search").keyup(); // Trick to re-render collections
@@ -261,15 +261,16 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	search: function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
-		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-		this.filters[collName].set('text', $(event.target).val());
+		var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
+		var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+		this.filters[filterName].set('text', $(event.target).val());
 		this.renderCollection(collName);
 	},
 
 	refreshFilterControls: function (collName) { //note
 		var $listObjects = this.$(".listobjects."+collName+"s");
-		var filterColl = collName+"Filters";
-		var filterName = collName+"Filter";
+		var filterColl   = collName+"Filters";
+		var filterName   = collName+"Filter";
 		
 		$listObjects.find('.filter-editor .action').hide(); // No action controls should be displayed
 

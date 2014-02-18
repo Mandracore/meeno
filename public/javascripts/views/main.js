@@ -61,9 +61,9 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 									notes       : meenoAppCli.notes,
 									tags        : meenoAppCli.tags,
 									tasks       : meenoAppCli.tasks,
-									noteFilters : meenoAppCli.Classes.NoteFilters(),
-									taskFilters : meenoAppCli.Classes.TaskFilters(),
-									tagFilters  : meenoAppCli.Classes.TagFilters(),
+									noteFilters : meenoAppCli.noteFilters,
+									taskFilters : meenoAppCli.taskFilters,
+									tagFilters  : meenoAppCli.tagFilters,
 								}});
 							},
 							error: function (collection, xhr, options) {console.log('tasks fetching failed');}
