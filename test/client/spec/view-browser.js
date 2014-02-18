@@ -167,35 +167,38 @@ describe("Browser", function() {
 			it("should refresh the controls displayed everytime one of its filters is updated", function() {
 				spyOn(this.browser.children.body, 'refreshFilterControls');
 
-				this.browser.children.body.filters.notes.get('tags').add(this.tag); // Updating browser-body's noteFilter
-				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('notes');
-				this.browser.children.body.filters.tasks.get('tags').add(this.tag); // Updating browser-body's taskFilter
-				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tasks');
-				this.browser.children.body.filters.tags.set('text','new test value 2'); // Updating browser-body's tagFilter
-				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tags');
+				this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
+				this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');
+				this.browser.children.body.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tag');
 			});	
 			it("should display the right controls to save/delete filters", function() {
 
-
-				this.browser.children.body.filters.notes.get('tags').add(this.tag); // Updating browser-body's noteFilter
-				this.browser.children.body.filters.tasks.get('tags').add(this.tag); // Updating browser-body's taskFilter
-				this.browser.children.body.filters.tags.set('text','new test value 2'); // Updating browser-body's tagFilter
+				this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
+				this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
+				this.browser.children.body.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
 
 				expect($searchWrapperNotes.find(".filter-editor .action.save").is(':visible')).toBe(true);
 				expect($searchWrapperTasks.find(".filter-editor .action.save").is(':visible')).toBe(true);
 				expect($searchWrapperTags.find(".filter-editor .action.save").is(':visible')).toBe(true);
 
-				spyOn(this.browser.children.body, 'refreshFilterControls');
+				spyOn(this.browser.children.body, 'refreshFilterControls').andCallThrough();
 
-				this.browser.children.body.options.collections.noteFilters.add(this.browser.children.body.filters.notes);
+				this.browser.children.body.options.collections.noteFilters.add(this.browser.children.body.filters.noteFilter);
+				this.browser.children.body.options.collections.taskFilters.add(this.browser.children.body.filters.taskFilter);
+				this.browser.children.body.options.collections.tagFilters.add(this.browser.children.body.filters.tagFilter);
 
-				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('notes');
-
-				console.log(this.browser.children.body.options.collections.noteFilters.at(0));
-				console.log(this.browser.children.body.filters.notes);
-				console.log(this.browser.children.body.options.collections.noteFilters.contains(this.browser.children.body.filters.notes));
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tag');
 				expect($searchWrapperNotes.find(".filter-editor .action.save").is(':visible')).toBe(false);
 				expect($searchWrapperNotes.find(".filter-editor .action.delete").is(':visible')).toBe(true);
+				expect($searchWrapperTasks.find(".filter-editor .action.save").is(':visible')).toBe(false);
+				expect($searchWrapperTasks.find(".filter-editor .action.delete").is(':visible')).toBe(true);
+				expect($searchWrapperTags.find(".filter-editor .action.save").is(':visible')).toBe(false);
+				expect($searchWrapperTags.find(".filter-editor .action.delete").is(':visible')).toBe(true);
 
 				// We don't check that it's different yet
 			});
