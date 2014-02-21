@@ -179,30 +179,28 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		}
 	},
 
-	searchOpenAutocomplete: function (searchWhat) {
-		// searchWhat : the kind of object that will be used to retrieve the ones we look for
-		var self = this;
-		var objectClass = searchWhat.replace(/^(.)/, function($1){ return $1.toUpperCase( ); })
-									.replace(/(s)$/, function($1){ return ""; });
-		
+	searchOpenAutocomplete: function (autoColl) {
 		// Check focus before taking action
-		var browserActiveView = this.searchGetFocus(true); // the kind of object we are filtering now
-		if (browserActiveView === false) { return; }
-		var $listObjects = this.$(".listobjects."+browserActiveView);
+		var self = this;
+		var filteredColl = this.searchGetFocus(true); // the kind of object we are filtering now
+		if (filteredColl === false) { return; }
+		var $listObjects           = this.$(".listobjects."+filteredColl);
+		var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return ""; })+"Filter";
 
-		console.log ('search '+browserActiveView+' related to '+searchWhat);
+		// autoColl : the kind of object that will be used to retrieve the ones we look for
+		var autoCollFilterClass = autoColl.replace(/^(.)/, function($1){ return $1.toUpperCase( ); })
+									.replace(/(s)$/, function($1){ return ""; })+"Filter";
+
+		console.log ('search '+filteredColl+' related to '+autoColl);
 
 		// Parameter the autocomplete to propose the right kind of objects
 		$listObjects.find(".autocomplete").autocomplete({
 			source: function (request, response) {
 				// request.term : data typed in by the user ("new yor")
 				// response : native callback that must be called with the data to suggest to the user
-				var searchObject = {
-					text: request.term,
-					objects: []
-				};
+				var autoCollFilter = new meenoAppCli.Classes[autoCollFilterClass]({text: request.term});
 				response (
-					self.options.collections[searchWhat].search(searchObject).map(function (model, key, list) {
+					self.options.collections[autoColl].search(autoCollFilter).map(function (model, key, list) {
 						return {
 							label: model.get("label"),
 							value: model.cid
@@ -220,21 +218,23 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 				$listObjects.find(".search").focus();
 
 				// Saving input value into the global filter
-				var object = self.options.collections[searchWhat].get(ui.item.value) // ui.item.value == model.cid
-				console.log("Selected option: " + object.get('label'));
-				if (self.filters[browserActiveView].get(searchWhat).contains(object) === true) { return; }
-				// Adding the new object to the view's filter
-				self.filters[browserActiveView].get(searchWhat).add(object);
-				$(".listobjects."+browserActiveView+" .search").keyup(); // Trick to re-render collections
+				var autoSelModel = self.options.collections[autoColl].get(ui.item.value) // ui.item.value == model.cid
+				console.log("Selected option: " + autoSelModel.get('label'));
+				// Il y a bien un problème à la ligne suivante
+				// Puisqu'on cherche des tags dans un tagFilter
+				if (self.filters[filteredCollFilterName].get(autoColl).contains(autoSelModel) === true) { return; }
+				// Adding the new autoSelModel to the view's filter
+				self.filters[filteredCollFilterName].get(autoColl).add(autoSelModel);
+				$(".listobjects."+filteredColl+" .search").keyup(); // Trick to re-render collections
 				// Append new Object Button to the DOM
 				var $objectButton = $("<span></span>")
-					.attr('data-class', searchWhat)
-					.attr('data-cid', object.cid)
-					.html(object.get('label'));
-				this.$(".listobjects."+browserActiveView+" .objectButtons").append($objectButton);
+					.attr('data-class', autoColl)
+					.attr('data-cid', autoSelModel.cid)
+					.html(autoSelModel.get('label'));
+				self.$(".listobjects."+filteredColl+" .objectButtons").append($objectButton);
 			}
 		// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
-		}).attr("placeholder","filter by related "+searchWhat).val('').show().focus(); 
+		}).attr("placeholder","filter by related "+autoColl).val('').show().focus(); 
 	},
 
 	searchCloseAutocomplete: function (event) {console.log('close requested')
@@ -253,7 +253,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var $objectButton     = $(event.target);
 		var $listObjects      = $objectButton.closest('.listobjects');
 		var browserActiveView = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
-		var object            = self.options.collections[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
+		var object            = this.options.collections[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
 		$objectButton.remove(); // Cleaning up DOM
 		this.filters[browserActiveView].get($objectButton.attr('data-class')).remove(object); // Removing model from Filter
 		$(".listobjects."+browserActiveView+" .search").keyup(); // Trick to re-render collections
