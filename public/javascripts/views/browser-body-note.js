@@ -3,7 +3,7 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.BrowserBodyNoteView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
 
-	template : '#overview-note-template',
+	template : '#browser-body-note-template',
 
 	// Renders the note item to the current state of the model
 	render: function () {

@@ -88,6 +88,24 @@ describe("Browser", function() {
 				expect(this.browser.children.body.renderCollection).not.toHaveBeenCalled();
 			});
 		});
+		describe("if it's a noteFilter, taskFilter or tagFilter", function() {
+			beforeEach(function() {
+				this.taskFilter = new meenoAppCli.Classes.TaskFilter({text:"test"});				
+				this.tagFilter  = new meenoAppCli.Classes.TagFilter({text:"test"});
+				this.browser.children.body.options.collections.taskFilters.add(this.taskFilter);
+				this.browser.children.body.options.collections.tagFilters.add(this.tagFilter);
+			});
+			it("should relaunch filters rendering if the collection has been updated", function() {
+				spyOn(this.browser.children.body, 'renderFilterCollection');
+				this.browser.children.body.options.collections.noteFilters.add(this.noteFilter);
+				this.browser.children.body.options.collections.taskFilters.remove(this.taskFilter);
+				this.browser.children.body.options.collections.tagFilters.remove(this.tagFilter);
+				expect(this.browser.children.body.renderFilterCollection).toHaveBeenCalledWith('noteFilters');
+				expect(this.browser.children.body.renderFilterCollection).toHaveBeenCalledWith('taskFilters');
+				expect(this.browser.children.body.renderFilterCollection).toHaveBeenCalledWith('tagFilters');
+			});
+		});
+
 	});
 
 	describe("when asked to select all notes", function() {

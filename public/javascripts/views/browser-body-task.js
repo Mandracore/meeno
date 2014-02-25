@@ -3,7 +3,7 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
 
-	template : '#overview-task-template',
+	template : '#browser-body-task-template',
 
 	events: function(){
 		return _.extend({},meenoAppCli.Classes.BrowserBodyObjectView.prototype.events,{

@@ -3,7 +3,7 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
 
-	template : '#overview-tag-template',
+	template : '#browser-body-tag-template',
 
 	events: function(){
 		return _.extend({},meenoAppCli.Classes.BrowserBodyObjectView.prototype.events,{

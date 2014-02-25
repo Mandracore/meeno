@@ -9,14 +9,15 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// It's meant to be used for both Help and Browse tabs, which explains some functions won't be used in some cases
 
 	events: {
-		'click .filter li'                                  : 'toggleObject',
-		'keyup .search'                                     : 'search',
-		'click .actions-contextual .delete'                 : 'deleteToggle',
-		'click .actions-contextual-selection .select-all'   : 'selectAll',
-		'click .actions-contextual-selection .unselect-all' : 'unSelectAll',
-		'click span.checkbox'                               : 'selection',
-		'click .actions-contextual-trigger button'          : 'actionTrigger',
-		'click .objectButtons span'                         : 'searchObjectRemove',
+		'click .filter li'                                 : 'toggleObject',
+		'keyup .search'                                    : 'search',
+		'click .actions-contextual .delete'                : 'deleteToggle',
+		'click .actions-contextual-selection .select-all'  : 'selectAll',
+		'click .actions-contextual-selection .unselect-all': 'unSelectAll',
+		'click span.checkbox'                              : 'selection',
+		'click .actions-contextual-trigger button'         : 'actionTrigger',
+		'click .objectButtons span'                        : 'searchObjectRemove',
+		'click .filter-editor button.save'                 : 'filterSave',
 	},
 
 	initialize: function() {
@@ -30,20 +31,23 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.children = {
 			"notes" : [],
 			"tags"  : [],
-			"tasks" : []
+			"tasks" : [],
+			"noteFilters" : [],
+			"tagFilters" : [],
+			"taskFilters" : []
 		};
 		this.filters = {
-			"noteFilter" : new meenoAppCli.Classes.NoteFilter(),
-			"taskFilter" : new meenoAppCli.Classes.TaskFilter(),
+			"noteFilter": new meenoAppCli.Classes.NoteFilter(),
+			"taskFilter": new meenoAppCli.Classes.TaskFilter(),
 			"tagFilter" : new meenoAppCli.Classes.TagFilter()
 		};
 
 		this.listenTo(this.options.collections.notes, 'add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
 		this.listenTo(this.options.collections.tags, 'add remove change:label', function () {this.renderCollection("tags");});
 		this.listenTo(this.options.collections.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
-/*		this.listenTo(this.options.collections.noteFilters, 'add remove', function () {this.renderFilterCollection("noteFilters");});
+		this.listenTo(this.options.collections.noteFilters, 'add remove', function () {this.renderFilterCollection("noteFilters");});
 		this.listenTo(this.options.collections.taskFilters, 'add remove', function () {this.renderFilterCollection("taskFilters");});
-		this.listenTo(this.options.collections.tagFilters, 'add remove', function () {this.renderFilterCollection("tagFilters");});*/
+		this.listenTo(this.options.collections.tagFilters, 'add remove', function () {this.renderFilterCollection("tagFilters");});
 		this.listenTo(this.filters.noteFilter, 'add remove change add:tags add:tasks', function () {this.refreshFilterControls("note");});
 		this.listenTo(this.filters.taskFilter, 'add remove change add:tags', function () {this.refreshFilterControls("task");});
 		this.listenTo(this.filters.tagFilter, 'add remove change', function () {this.refreshFilterControls("tag");});
@@ -250,13 +254,15 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	searchObjectRemove: function (event) {
-		var $objectButton     = $(event.target);
-		var $listObjects      = $objectButton.closest('.listobjects');
-		var browserActiveView = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
-		var object            = this.options.collections[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
+		var $objectButton          = $(event.target);
+		var $listObjects           = $objectButton.closest('.listobjects');
+		var filteredColl           = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
+		var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return ""; })+"Filter";
+		var object                 = this.options.collections[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
 		$objectButton.remove(); // Cleaning up DOM
-		this.filters[browserActiveView].get($objectButton.attr('data-class')).remove(object); // Removing model from Filter
-		$(".listobjects."+browserActiveView+" .search").keyup(); // Trick to re-render collections
+		this.filters[filteredCollFilterName].get($objectButton.attr('data-class')).remove(object); // Removing model from Filter
+		$(".listobjects."+filteredColl+" .search").keyup(); // Trick to re-render collections
+		this.refreshFilterControls(filteredColl.replace(/(s)$/, function($1){ return ""; }));
 	},
 
 	search: function (event) {
@@ -268,31 +274,63 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	refreshFilterControls: function (collName) { //note
-		var $listObjects = this.$(".listobjects."+collName+"s");
-		var filterColl   = collName+"Filters";
-		var filterName   = collName+"Filter";
-		
+		var $listObjects    = this.$(".listobjects."+collName+"s");
+		var filtersCollName = collName+"Filters";
+		var filterName      = collName+"Filter";
+
 		$listObjects.find('.filter-editor .action').hide(); // No action controls should be displayed
 
 		if (!this.filters[filterName].isEmpty()) { // The user has set a filter set in the super-input
-			if (this.options.collections[filterColl].contains(this.filters[filterName]) === false) {
+			if (this.options.collections[filtersCollName].contains(this.filters[filterName]) === false) {
 				$listObjects.find('.filter-editor .action.save').show(); // "Save" button is displayed
 			} else {
 				$listObjects.find('.filter-editor .action.delete').show(); // "Delete" button is displayed
 			}
 		}
+
+		meenoAppCli.dispatcher.trigger("browser:"+filterName+":check-status"); // Force browser-body-filter views to check their status
 	},
+
+	filterSave: function (event) {
+		var $listObjects    = $(event.target).closest(".listobjects");
+		var filterName      = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
+		var filtersCollName = filterName + "s";
+		this.options.collections[filtersCollName].add(this.filters[filterName]);
+	},
+
+	renderFilterCollection: function (filtersCollName) {
+		console.log("render filter collection");
+		var self = this;
+		var filteredColl = filtersCollName.replace(/(Filter)$/, function($1){ return ""; }); // noteFilters => notes
+		// First, emptying the DOM
+		var $list = this.$('.listobjects.'+filteredColl+' .filter-editor ul');
+		$list.html('');
+
+		// Second, killing children views of right collection
+		_.each(this.children[filtersCollName], function (child, index) {
+			child.kill();
+		});
+		this.children[filtersCollName] = [];
+
+		// Third, filling the DOM again
+		this.options.collections[filtersCollName].each(function (element) {
+			var newView = new meenoAppCli.Classes.BrowserBodyFilterView({ model: element, parent: self });
+			self.children[filtersCollName].push (newView);
+			$list.append(newView.render().el);
+		}, this);
+	},
+
 
 	//=================================================================================
 	// Render business objects' sub views 
 	//=================================================================================
-	render : function (event) {
+	render: function (event) {
 		this.renderCollection('notes');
 		this.renderCollection('tags');
 		this.renderCollection('tasks');
 	},
 
-	renderCollection : function (collName) {
+	renderCollection: function (collName) {
 		//console.log("renderCollection:"+collName);
 		var self = this;
 		var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
@@ -305,11 +343,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		});
 		this.children[collName] = [];
 		// Third, filling the DOM again
-		var tmpCollections = {
-			notes : this.options.collections.notes,
-			tags  : this.options.collections.tags,
-			tasks : this.options.collections.tasks
-		};
 		var newView = {};
 
 		this.options.collections[collName].search(this.filters[filterName]).each(function (element) { // for now we ignore complex searches
