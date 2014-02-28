@@ -2,17 +2,18 @@ var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
-	// filterClass (e.g. "noteFilter") must be declared by passing options to the constructor
-	tagName: "li",
+	// filterName (e.g. "noteFilter") must be declared by passing options to the constructor
+	tagName  : "li",
+	className: "icon-filter",
 	template : '#browser-body-filter-template',
 
 	events: {
-		'click .filter li': 'activate',
+		'click': 'activate'
 	},
 
 	initialize: function() {
-		this.listenTo(meenoAppCli.dispatcher, 'browser:'+this.options.filterClass+':check-status', function () {this.checkStatus();});
-		this.listenTo(meenoAppCli.dispatcher, 'browser:'+this.options.filterClass+':deactivate', function () {this.deactivate();});
+		var boColl = this.options.filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
+		this.listenTo(meenoAppCli.dispatcher, "browser:filter:"+boColl+":activate", function () {this.checkStatus();});
 	},
 
 	// Renders the item to the current state of the model
@@ -25,20 +26,20 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 	},
 
 	checkStatus: function () {
-		if (this.options.parent.filters[filterClass] == this.model) {
-			this.activate():
+		if (this.options.parent.filters[this.options.filterName].isSimilar(this.model)) {
+			this.$el.addClass('active');
+		} else {
+			this.$el.removeClass('active');
 		}
 	},
 
-	deactivate: function () {
-		this.$el.removeClass('active');
-	},
-
 	activate: function() {
-		// Deactivate everybody
-		meenoAppCli.dispatcher.trigger("browser:"+filterClass+":deactivate");
-		// Activate only me
-		this.options.parent.filters[filterClass] = this.model;
-		this.$el.addClass('active');
+		var boColl = this.options.filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
+		this.options.parent.filters[this.options.filterName] = this.model.superClone();
+		// Next event will :
+		// 1. Ask browser-body-filter views to check their status
+		// 2. Ask browser-body view to re-render collections of business objects
+		// 3. Ask browser-body view to refresh filter controls
+		meenoAppCli.dispatcher.trigger("browser:filter:"+boColl+":activate");
 	}
 });

@@ -96,6 +96,8 @@ describe("Filter models", function() {
 		this.noteFilter5 = new meenoAppCli.Classes.NoteFilter();
 		this.noteFilter6 = new meenoAppCli.Classes.NoteFilter();
 		this.noteFilter7 = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter8 = new meenoAppCli.Classes.NoteFilter();
+		this.noteFilter9 = new meenoAppCli.Classes.NoteFilter();
 		this.taskFilter  = new meenoAppCli.Classes.TaskFilter();
 		this.taskFilter2 = new meenoAppCli.Classes.TaskFilter();
 		this.taskFilter3 = new meenoAppCli.Classes.TaskFilter();
@@ -119,22 +121,30 @@ describe("Filter models", function() {
 	});
 
 	it("NoteFilter can be compared to another note filter", function() {
-		this.noteFilter.get('tasks').add(this.task).add(this.tag); // THIS SHOULD HAVE TRIGGERED A BUG !
+		this.noteFilter.get('tasks').add(this.task);
+		this.noteFilter.get('tags').add(this.tag);
 		this.noteFilter2.get('tasks').add(this.task);
-		this.noteFilter3.get('tasks').add(this.task2);
-		this.noteFilter4.get('tasks').add(this.task).add(this.tag2);
-		this.noteFilter5.get('tasks').add(this.task).add(this.tag);
+		this.noteFilter2.get('tags').add(this.tag);
+		this.noteFilter3.get('tasks').add(this.task);
+		this.noteFilter4.get('tasks').add(this.task);
+		this.noteFilter4.get('tags').add(this.tag2);
+		this.noteFilter5.get('tasks').add(this.task);
+		this.noteFilter5.get('tags').add(this.tag);
 		this.noteFilter.set('text','value to match');
 		this.noteFilter3.set('text','value to match');
 		this.noteFilter4.set('text','value to match');
 		this.noteFilter5.set('text','value to match');
 		this.noteFilter6.set('text','other value to match');
 		this.noteFilter7.set('text','other value to match');
-		expect(this.noteFilter.isEqual(this.noteFilter2)).toBe(false);
-		expect(this.noteFilter.isEqual(this.noteFilter3)).toBe(false);
-		expect(this.noteFilter.isEqual(this.noteFilter4)).toBe(false);
-		expect(this.noteFilter.isEqual(this.noteFilter5)).toBe(true);
-		expect(this.noteFilter6.isEqual(this.noteFilter7)).toBe(true);
+		this.noteFilter8.set('text','other value to match');
+		this.noteFilter9.set('text','other value to match');
+		this.noteFilter8.get('tags').add(this.tag);
+		expect(this.noteFilter.isSimilar(this.noteFilter2)).toBe(false);
+		expect(this.noteFilter.isSimilar(this.noteFilter3)).toBe(false);
+		expect(this.noteFilter.isSimilar(this.noteFilter4)).toBe(false);
+		expect(this.noteFilter.isSimilar(this.noteFilter5)).toBe(true);
+		expect(this.noteFilter6.isSimilar(this.noteFilter7)).toBe(true);
+		expect(this.noteFilter9.isSimilar(this.noteFilter8)).toBe(false);
 	});
 
 	it("NoteFilter has isEmpty() method", function() {
@@ -160,6 +170,31 @@ describe("Filter models", function() {
 		this.tagFilter2.set('text','value to match');
 		expect(this.tagFilter.isEmpty()).toBe(true);
 		expect(this.tagFilter2.isEmpty()).toBe(false);
+	});
+
+	it("NoteFilter can be super-cloned with all its relations", function() {
+		this.noteFilter.get('tasks').add(this.task);
+		this.noteFilter.get('tags').add(this.tag);
+		this.noteFilter.get('tags').add(this.tag2);
+		this.superClone = this.noteFilter.superClone();
+		this.clone      = this.noteFilter.clone();
+
+		expect(this.superClone.cid).not.toEqual(this.noteFilter.cid);
+		expect(this.superClone.get('tags').pluck('label')).toEqual(this.noteFilter.get('tags').pluck('label'));
+		expect(this.superClone.get('tasks').pluck('label')).toEqual(this.noteFilter.get('tasks').pluck('label'));
+		expect(this.clone.get('tags').pluck('label')).not.toEqual(this.noteFilter.get('tags').pluck('label'));
+		expect(this.clone.get('tasks').pluck('label')).not.toEqual(this.noteFilter.get('tasks').pluck('label'));
+	});
+
+	it("TaskFilter can be super-cloned with all its relations", function() {
+		this.taskFilter.get('tags').add(this.tag);
+		this.taskFilter.get('tags').add(this.tag2);
+		this.superClone = this.taskFilter.superClone();
+		this.clone      = this.taskFilter.clone();
+
+		expect(this.superClone.cid).not.toEqual(this.taskFilter.cid);
+		expect(this.superClone.get('tags').pluck('label')).toEqual(this.taskFilter.get('tags').pluck('label'));
+		expect(this.clone.get('tags').pluck('label')).not.toEqual(this.taskFilter.get('tags').pluck('label'));
 	});
 });
 

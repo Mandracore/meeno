@@ -41,6 +41,7 @@ block content
 	script(src="javascripts/collections/tags.js")
 	script(src="javascripts/collections/tasks.js")
 	script(src="javascripts/collections/link-note-tag.js")
+	script(src="javascripts/collections/filters-object.js")
 	script(src="javascripts/collections/filters-note.js")
 	script(src="javascripts/collections/filters-task.js")
 	script(src="javascripts/collections/filters-tag.js")
@@ -50,6 +51,7 @@ block content
 	script(src="javascripts/views/browser-body-note.js")
 	script(src="javascripts/views/browser-body-tag.js")
 	script(src="javascripts/views/browser-body-task.js")
+	script(src="javascripts/views/browser-body-filter.js")
 	script(src="javascripts/views/browser.js")
 	script(src="javascripts/views/helper-tab.js")
 	script(src="javascripts/views/helper-body.js")
@@ -147,6 +149,7 @@ block content
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search notes")
 						div.filter-editor
+							ul
 							input(style="display:none", type="text", placeholder="type a name for this new filter")
 							button.action.delete(style="display:none") Delete active filter
 							button.action.save(style="display:none") Save current filter
@@ -170,6 +173,7 @@ block content
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search tasks")
 						div.filter-editor
+							ul
 							input(style="display:none", type="text", placeholder="type a name for this new filter")
 							button.action.delete(style="display:none") Delete active filter
 							button.action.save(style="display:none") Save current filter
@@ -193,6 +197,7 @@ block content
 								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 							input.mousetrap.search(type="text", autofocus, placeholder="search tags")
 						div.filter-editor
+							ul
 							input(style="display:none", type="text", placeholder="type a name for this new filter")
 							button.action.delete(style="display:none") Delete active filter
 							button.action.save(style="display:none") Save current filter

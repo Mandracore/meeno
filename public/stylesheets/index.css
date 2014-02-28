@@ -68,6 +68,8 @@ nav .object{max-width:7em;white-space:nowrap;overflow:hidden;-o-text-overflow:el
 .listobjects .objectButtons span{background:#d3d3d3;padding:2px 5px;margin:0 5px 0 0}
 .listobjects input.search{border:none}
 .listobjects input.autocomplete{border:1px dotted #808080;margin:0 5px}
+.listobjects .filter-editor li{display:inline-block;border:1px solid #808080;}
+.listobjects .filter-editor li.active{border:1px solid #f00}
 .listobjects ul.objects{list-style-type:none;margin:1em 0 0;padding:0;}
 .listobjects ul.objects li{margin:0;padding:.5em;}
 .listobjects ul.objects li:hover{background-color:rgba(0,0,0,0.1)}
