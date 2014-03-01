@@ -56,6 +56,8 @@ meenoAppCli.Classes.ObjectFilter = Backbone.RelationalModel.extend({
 				}));
 			}
 		}
+
+		return true;
 	},
 
 	superClone: function () {
@@ -69,6 +71,22 @@ meenoAppCli.Classes.ObjectFilter = Backbone.RelationalModel.extend({
 			}
 		}
 		return superClone;
+	},
+
+	makeItMatch: function (of) {
+		this.set("text", of.get("text"));
+
+		if (this.get('subClass') == "NoteFilter") { // NoteFilter
+			this.get('tags').remove(this.get('tags').models);
+			this.get('tags').add(of.get('tags').models);
+			this.get('tasks').add(of.get('tasks').models);
+			this.get('tasks').remove(this.get('tasks').models);
+		} else {
+			if (this.get('subClass') == "TaskFilter") { // TaskFilter
+				this.get('tags').remove(this.get('tags').models);
+				this.get('tags').add(of.get('tags').models);
+			}
+		}
 	},
 
 	defaults: function() {

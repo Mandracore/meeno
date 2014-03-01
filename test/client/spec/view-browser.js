@@ -8,6 +8,8 @@ describe("Browser", function() {
 		this.tag         = new meenoAppCli.Classes.Tag({label: "New test tag"});
 		this.task        = new meenoAppCli.Classes.Task();
 		this.noteFilter  = new meenoAppCli.Classes.NoteFilter();
+		this.taskFilter  = new meenoAppCli.Classes.TaskFilter();
+		this.tagFilter   = new meenoAppCli.Classes.TagFilter();
 		this.notes       = new meenoAppCli.Classes.Notes();
 		this.tags        = new meenoAppCli.Classes.Tags();
 		this.tasks       = new meenoAppCli.Classes.Tasks();
@@ -182,7 +184,7 @@ describe("Browser", function() {
 		});
 
 		describe("and leveraging the custom filters management", function() {
-			it("should refresh the controls displayed everytime one of its filters is updated", function() {
+			it("should refresh the controls displayed when one of its filters is updated", function() {
 				spyOn(this.browser.children.body, 'refreshFilterControls');
 
 				this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
@@ -192,7 +194,18 @@ describe("Browser", function() {
 				this.browser.children.body.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
 				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tag');
 			});	
-			it("should display the right controls to save/delete filters", function() {
+			it("should refresh the controls displayed when the collection of filters is updated", function() {
+				spyOn(this.browser.children.body, 'refreshFilterControls');
+
+				this.browser.children.body.options.collections.noteFilters.add(this.noteFilter);
+				this.browser.children.body.options.collections.taskFilters.add(this.taskFilter);
+				this.browser.children.body.options.collections.tagFilters.add(this.tagFilter);
+
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');
+				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tag');
+			});
+			it("should display the right controls", function() {
 
 				this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
 				this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
@@ -204,9 +217,9 @@ describe("Browser", function() {
 
 				spyOn(this.browser.children.body, 'refreshFilterControls').andCallThrough();
 
-				this.browser.children.body.options.collections.noteFilters.add(this.browser.children.body.filters.noteFilter);
-				this.browser.children.body.options.collections.taskFilters.add(this.browser.children.body.filters.taskFilter);
-				this.browser.children.body.options.collections.tagFilters.add(this.browser.children.body.filters.tagFilter);
+				this.browser.children.body.options.collections.noteFilters.add(this.browser.children.body.filters.noteFilter.superClone());
+				this.browser.children.body.options.collections.taskFilters.add(this.browser.children.body.filters.taskFilter.superClone());
+				this.browser.children.body.options.collections.tagFilters.add(this.browser.children.body.filters.tagFilter.superClone());
 
 				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
 				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');
@@ -215,16 +228,29 @@ describe("Browser", function() {
 				expect($searchWrapperNotes.find(".filter-editor .action.delete").is(':visible')).toBe(true);
 				expect($searchWrapperTasks.find(".filter-editor .action.save").is(':visible')).toBe(false);
 				expect($searchWrapperTasks.find(".filter-editor .action.delete").is(':visible')).toBe(true);
-				expect($searchWrapperTags.find(".filter-editor .action.save").is(':visible')).toBe(false);
-				expect($searchWrapperTags.find(".filter-editor .action.delete").is(':visible')).toBe(true);
+				expect($searchWrapperTags.find(".filter-editor .action.save").is(':visible')).toBe(false); //
+				expect($searchWrapperTags.find(".filter-editor .action.delete").is(':visible')).toBe(true); //
+			});
+			it("should ensure browser-body-filter views react when one of its filters is updated", function() {
+				//1. Add filters to collections in order to force creation of browser-body-filter views
+				this.browser.children.body.options.collections.noteFilters.add(this.noteFilter);
+				this.browser.children.body.options.collections.taskFilters.add(this.taskFilter);
+				this.browser.children.body.options.collections.tagFilters.add(this.tagFilter);				
 
-				// We don't check that it's different yet
-			});
-			xit("should display a button to delete the active filter of the collection", function() {
-				expect(true).toBe(false);
-			});
-			xit("should save a filter model when clicking the dedicated button", function() {
-				expect(true).toBe(false);
+				// 2. We spy on browser-body-filter views
+				spyOn(this.browser.children.body.children.noteFilters[0], 'checkStatus');
+				spyOn(this.browser.children.body.children.taskFilters[0], 'checkStatus');
+				spyOn(this.browser.children.body.children.tagFilters[0], 'checkStatus');
+
+				// 3. We update browser-body's filters
+				this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
+				this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
+				this.browser.children.body.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
+
+				// 4. We check that the correct methods have been called
+				expect(this.browser.children.body.children.noteFilters[0].checkStatus).toHaveBeenCalled();
+				expect(this.browser.children.body.children.taskFilters[0].checkStatus).toHaveBeenCalled();
+				expect(this.browser.children.body.children.tagFilters[0].checkStatus).toHaveBeenCalled();
 			});
 			xit("should delete the active filter when clicking the dedicated button and deactivate search", function() {
 				expect(true).toBe(false);

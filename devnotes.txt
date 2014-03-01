@@ -95,3 +95,9 @@ cas de figure (3) :
 2. xxxFilter contient filter € collection de filters (DELETE)
 3. xxxFilter contient filter !€ collection de filters (SAVE)
 => en surveillant le filter du browser-body (+ lancement à l'initialisation) : à chaque modif, on vérifie si le filtre active existe déjà (delete)
+
+
+28/02/2014
+Chain of events / use cases :
+1. Rajout de filtres dans le superInput
+2. J'active un de mes filtres prédéfinis

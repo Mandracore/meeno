@@ -12,8 +12,8 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 	},
 
 	initialize: function() {
-		var boColl = this.options.filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
-		this.listenTo(meenoAppCli.dispatcher, "browser:filter:"+boColl+":activate", function () {this.checkStatus();});
+		this.active = false;
+		this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
 	},
 
 	// Renders the item to the current state of the model
@@ -28,18 +28,18 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 	checkStatus: function () {
 		if (this.options.parent.filters[this.options.filterName].isSimilar(this.model)) {
 			this.$el.addClass('active');
+			this.active = true;
 		} else {
 			this.$el.removeClass('active');
+			this.active = false;
 		}
 	},
 
 	activate: function() {
-		var boColl = this.options.filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
-		this.options.parent.filters[this.options.filterName] = this.model.superClone();
-		// Next event will :
-		// 1. Ask browser-body-filter views to check their status
-		// 2. Ask browser-body view to re-render collections of business objects
-		// 3. Ask browser-body view to refresh filter controls
-		meenoAppCli.dispatcher.trigger("browser:filter:"+boColl+":activate");
+		if (!this.active) {
+			console.log("activate");
+			this.options.parent.filters[this.options.filterName].makeItMatch(this.model);
+			this.options.parent.filters[this.options.filterName].trigger('change');
+		}
 	}
 });
