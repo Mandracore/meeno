@@ -14,6 +14,9 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 	initialize: function() {
 		this.active = false;
 		this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
+		this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
+		this.listenTo(meenoAppCli.dispatcher, "browser:filters:"+this.options.filterName+":remove-active", function () {this.removeIfActive();});
+
 	},
 
 	// Renders the item to the current state of the model
@@ -41,5 +44,13 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 			this.options.parent.filters[this.options.filterName].makeItMatch(this.model);
 			this.options.parent.filters[this.options.filterName].trigger('change');
 		}
-	}
+	},
+
+	removeIfActive: function() {
+		if (this.active) {
+			this.model.destroy();
+			this.kill();
+		}
+	},
+
 });

@@ -19,6 +19,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		'click .objectButtons span'                        : 'searchObjectRemove',
 		'click .filter-editor button.save'                 : 'filterSaveStep1',
 		'click .filter-editor button.saveConfirm'          : 'filterSaveStep2',
+		'click .filter-editor button.delete'               : 'filterDelete',
 	},
 
 	initialize: function() {
@@ -305,6 +306,12 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		$inputFilterLabel.hide().val('');
 		this.options.collections[filtersCollName].add(this.filters[filterName].superClone());
 		console.log('filter saved');
+	},
+
+	filterDelete: function (event) {
+		var $listObjects = $(event.target).closest(".listobjects");
+		var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
+		meenoAppCli.dispatcher.trigger("browser:filters:"+filterName+":remove-active");
 	},
 
 	renderFilterCollection: function (filtersCollName) {
