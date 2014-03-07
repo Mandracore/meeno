@@ -101,3 +101,8 @@ cas de figure (3) :
 Chain of events / use cases :
 1. Rajout de filtres dans le superInput
 2. J'active un de mes filtres prédéfinis
+
+02/03/2014
+Task model seems OK
+Need to implement new models for relating notes to tasks
+Need to implement new collections to store links

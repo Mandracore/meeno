@@ -239,9 +239,17 @@ nav
 	.filter-editor
 		li
 			display inline-block
-			border 1px solid grey
-			&.active
-				border 1px solid red
+			opacity 0.6
+			padding 0.3em
+			margin 0 0.5em 0 0
+			font-size 0.9em
+			&.active, &:hover
+				opacity 1
+			&:hover
+				cursor pointer
+			&:before
+				opacity 0.6
+				margin-right 0.5em
 	ul.objects
 		list-style-type none
 		margin 1em 0 0

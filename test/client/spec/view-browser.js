@@ -187,7 +187,7 @@ describe("Browser", function() {
 			it("should refresh the controls displayed when one of its filters is updated", function() {
 				spyOn(this.browser.children.body, 'refreshFilterControls');
 
-				this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
+				this.browser.children.body.filters.noteFilter.get('tags').add(this.note); // Updating browser-body's noteFilter
 				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
 				this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
 				expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');

@@ -45,7 +45,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		};
 
 		this.listenTo(this.options.collections.notes, 'add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
-		this.listenTo(this.options.collections.tags, 'add remove change:label', function () {this.renderCollection("tags");});
+		this.listenTo(this.options.collections.tags, 'add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
 		this.listenTo(this.options.collections.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
 		this.listenTo(this.options.collections.noteFilters, 'add remove', function () {this.renderFilterCollection("noteFilters");});
 		this.listenTo(this.options.collections.taskFilters, 'add remove', function () {this.renderFilterCollection("taskFilters");});
@@ -399,7 +399,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		// Third, filling the DOM again
 		var newView = {};
 
-		this.options.collections[collName].search(this.filters[filterName]).each(function (element) { // for now we ignore complex searches
+		var results = this.options.collections[collName].search(this.filters[filterName]);
+		console.log("// Search returned "+results.length+" item(s)");
+		console.log(results);
+		results.each(function (element) { // for now we ignore complex searches
 			if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: element }); }
 			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: element }); }
 			if (collName == "tasks") { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: element }); }

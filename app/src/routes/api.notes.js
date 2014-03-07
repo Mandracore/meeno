@@ -27,14 +27,20 @@ module.exports = function(mas, securityProxy){
 			note.title      = req.body.title;
 			note.content    = req.body.content;
 			note.tagLinks   = req.body.tagLinks;
+			note.taskLinks  = req.body.taskLinks;
+
+			console.log('==== NOTE / TAGLINKS ============');
 			console.log(note.tagLinks);
+			console.log('==== NOTE / TASKLINKS ===========');
+			console.log(note.taskLinks);
+
 			return note.save(function(err) {
 				if (!err) {
 					console.log("updated");
 					return res.send(note);
 				} else {
 					console.log(err);
-					return res.send(400,'Wrong parameters');
+					return res.send(400,"Impossible to save // "+err.err);
 				}
 			});
 		});
@@ -46,14 +52,22 @@ module.exports = function(mas, securityProxy){
 			updated_at: req.body.updated_at,
 			title     : req.body.title,
 			content   : req.body.content,
+			tagLinks  : req.body.tagLinks,
+			taskLinks : req.body.taskLinks,
 		});
+
+		console.log('==== NOTE / TAGLINKS ============');
+		console.log(req.body.tagLinks);
+		console.log('==== NOTE / TASKLINKS ===========');
+		console.log(req.body.taskLinks);
+
 		note.save(function(err) {
 			if (!err) {
 				console.log("created");
 				return res.send(note);
 			} else {
 				console.log(err);
-				return res.send(400,"Bad request");
+				return res.send(400,"Impossible to save // "+err.err);
 			}
 		});
 	});

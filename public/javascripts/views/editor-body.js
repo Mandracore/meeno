@@ -61,35 +61,21 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			var $object = $(object);
 			var subView = {};
 			var model = {};
-			if ($object.hasClass('tag')) {
-				model = meenoAppCli.tags.get($object.attr('data-model-id'));
-				if (model) {
-					subView  = new meenoAppCli.Classes.EditorBodyTagView({
-						model     : model,
-						el        : $object[0], // We bind the sub view to the element we just created
-						note      : self.model,
-						parent    : self,
-						parentDOM : self.$("section.edit-content")
-					});
-					self.children.push (subView);
-				} else {
-					$object.addClass('broken');
-				}
-			}
-			if ($object.hasClass('task')) {
-				model = meenoAppCli.tasks.get($object.attr('data-model-id'));
-				if (model) {
-					subView  = new meenoAppCli.Classes.EditorBodyTaskView({
-						model     : model,
-						el        : $object[0], // We bind the sub view to the element we just created
-						note      : self.model,
-						parent    : self,
-						parentDOM : self.$("section.edit-content")
-					});
-					self.children.push (subView);
-				} else {
-					$object.addClass('broken');
-				}
+			var modelClass = $object.hasClass('tag') ? "tag" : "task";
+
+			model = meenoAppCli[modelClass+"s"].get($object.attr('data-model-id'));
+			if (model) {
+				subView  = new meenoAppCli.Classes.EditorBodyObjectView({
+					model     : model,
+					modelClass: modelClass,
+					el        : $object[0], // We bind the sub view to the element we just created
+					note      : self.model,
+					parent    : self,
+					parentDOM : self.$("section.edit-content"),
+				});
+				self.children.push (subView);
+			} else {
+				$object.addClass('broken');
 			}
 		});
 		return this;
@@ -112,49 +98,25 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		if (!this.checkFocus()) {return;} // No action if no focus in the editor
 		console.log('>>> New '+className);
 
-		switch (className) {
-			case "tag":
-				var newTagView = new meenoAppCli.Classes.EditorBodyTagView({
-					note   : this.model,
-					parent : this
-				});
-				newTagView.undelegateEvents();
-				var newTagHtml = $("<div></div>").append(newTagView.render().el).html();
-				pasteHtmlAtCaret(
-					newTagHtml + // The tag itself with a trick to get its html back
-					"<span class='void'>&nbsp;</span>" // A place to put the caret
-				);
-				newTagView.$el = $("#" + newTagView.options.id); // Linking the DOM to the view
-				newTagView.delegateEvents(); // Binding all events
-				newTagView.options.parentDOM = this.$("section.edit-content");
-				newTagView.$(".body").focus(); // Focusing on input
-				this.children.push (newTagView);
-				this.save();
-			break;
-			case "task":
-				var newTaskView = new meenoAppCli.Classes.EditorBodyTaskView({
-					note   : this.model,
-					parent : this
-				});
-				console.log('>>> New task DONE');
-				newTaskView.undelegateEvents();
-				var newTaskHtml = $("<div></div>").append(newTaskView.render().el).html();
-				pasteHtmlAtCaret(
-					newTaskHtml + // The tag itself with a trick to get its html back
-					"<span class='void'>&nbsp;</span>" // A place to put the caret
-				);
-				newTaskView.$el = $("#" + newTaskView.options.id); // Linking the DOM to the view
-				newTaskView.delegateEvents(); // Binding all events
-				newTaskView.options.parentDOM = this.$("section.edit-content");
-				newTaskView.$(".body").focus(); // Focusing on input
-				this.children.push (newTaskView);
-				this.save();
-			break;
-			case "entity":
-				// Don't do anything for now
-				this.save();
-			break;
-		}
+		var newView = new meenoAppCli.Classes.EditorBodyObjectView({
+			note      : this.model,
+			parent    : this,
+			modelClass: className
+		});
+
+		newView.undelegateEvents();
+		var newHtml = $("<div></div>").append(newView.render().el).html();
+		pasteHtmlAtCaret(
+			newHtml + // The tag itself with a trick to get its html back
+			"<span class='void'>&nbsp;</span>" // A place to put the caret
+		);
+		newView.$el = $("#" + newView.options.id); // Linking the DOM to the view
+		newView.delegateEvents(); // Binding all events
+		newView.options.parentDOM = this.$("section.edit-content");
+		newView.$(".body").focus(); // Focusing on input
+		this.children.push (newView);
+		this.save();
+
 		return false;
 	},
 

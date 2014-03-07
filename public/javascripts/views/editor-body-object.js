@@ -1,11 +1,11 @@
 var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-meenoAppCli.Classes.EditorBodyTaskView = Backbone.View.extend({
-
+meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
+	// this.options.modelClass = 'tag' OR 'task'
 	tagName   :'span',
-	className :'object task icon-tasks',
-	template  :'#editor-body-task-template',
+	template  :'#editor-body-object-template',
+	className :'object',
 
 	// The DOM events specific to an item.
 	events: {
@@ -26,8 +26,6 @@ meenoAppCli.Classes.EditorBodyTaskView = Backbone.View.extend({
 			this.options.id = makeid();
 		}
 		this.listenTo(this.options.note, 'change:content', this.checkChanges);
-
-		console.log ('Init[emb_task]');
 	},
 
 	checkChanges: function () {
@@ -49,14 +47,16 @@ meenoAppCli.Classes.EditorBodyTaskView = Backbone.View.extend({
 	},
 
 	render: function() {
-		console.log ("R[emb-task]");
+		console.log ('R[emb-'+this.options.modelClass+']');
 		this.$el.attr('id', this.options.id);
 		this.$el.attr('contentEditable',false);
 		var templateData = {
-			id: this.options.id
+			id       : this.options.id,
 		};
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html( templateFn( templateData ) );
+		if (!this.$el.hasClass(this.options.modelClass)) { this.$el.addClass(this.options.modelClass); }
+		if (!this.$el.hasClass('icon-'+this.options.modelClass+'s')) { this.$el.addClass('icon-'+this.options.modelClass+'s'); }
 		return this;
 	},
 
@@ -65,8 +65,8 @@ meenoAppCli.Classes.EditorBodyTaskView = Backbone.View.extend({
 		var strHint = (this.$(".body").val());
 		if (strHint.length > -1) {
 			var pattern = new RegExp(strHint,"i");
-			var proposals = meenoAppCli.tasks.filter(function (task) {
-				return pattern.test(task.get('label'));
+			var proposals = meenoAppCli[this.options.modelClass+'s'].filter(function (model) {
+				return pattern.test(model.get('label'));
 			});
 			var datalistOptions = proposals.map(function (obj, key) {
 				return "<option class='trick' data-model-id='"+obj.get('_id')+"' value='"+obj.get('label')+"'>"+obj.get('label')+"</option>";
@@ -85,35 +85,34 @@ meenoAppCli.Classes.EditorBodyTaskView = Backbone.View.extend({
 		var self = this;
 		if (!this.options.isLocked) {
 			if (this.$('.body').val().length <= 2) {
-				console.log('##WARNING## task too short to lock'); // We save only tasks of more than 2 characters
+				console.log('##WARNING## '+this.options.modelClass+' too short to lock'); // We save only tasks/tags of more than 2 characters
 			} else {
 				console.log('______ Locking Object ______');
 
-				var selectedModel = meenoAppCli.tasks.find(function (task) {
-					return task.get('label') == self.$(".body").val();
+				var selectedModel = meenoAppCli[this.options.modelClass+'s'].find(function (model) {
+					return model.get('label') == self.$(".body").val();
 				});
 
 				if (!selectedModel) {
 				// If the model doesn't exist, we create it
-					console.log('--- Creating new task ---');
-					this.model = new meenoAppCli.Classes.Task({
+					console.log('--- Creating new '+this.options.modelClass+' ---');
+					this.model = new meenoAppCli.Classes[this.options.modelClass.replace(/^(.)/, function($1){ return $1.toUpperCase( ); })]({
 						label : this.$(".body").val()
 					});
-					meenoAppCli.tasks.add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+					meenoAppCli[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					// Now that the model is into a collection, the .save() method will work
 					this.model.save();
 				} else {
 				// The model already exists, so we retrieve it
-					if (_.contains(this.options.note.get('taskLinks').pluck('task'), selectedModel)) {
-						console.log('task already linked');
+					if (_.contains(selectedModel.get('noteLinks').pluck('note'), this.options.note)) {
+						console.log(this.options.modelClass+' already linked to this note');
 						return;
 					}
-					console.log('--- Linking to selected task ---');
 					this.model = selectedModel;
 				}
 
-				// Linking view's task model (created or retrieved) to the note
-				console.log('------ trying to link task');
+				// Linking view's model (created or retrieved) to the note
+				console.log('------ trying to link '+this.options.modelClass);
 				this.model.get('noteLinks').add( { note: this.options.note } );
 				this.model.save({},{ 
 					success: function () {
@@ -125,23 +124,20 @@ meenoAppCli.Classes.EditorBodyTaskView = Backbone.View.extend({
 						self.$el.attr("data-model-id",self.model.get("_id"));
 						self.isLocked = true;
 						moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
-						console.log('Task "'+self.model.get('label')+'" linked to current note');
+						console.log(this.options.modelClass+' "'+self.model.get('label')+'" linked to current note');
 						self.options.isLocked = true;
 					},
-					error  : function () {self.error("Impossible to save new task");}
+					error  : function () {self.error("Impossible to save new "+this.options.modelClass);}
 				});
 			}
 		}
 	},
 
-	link: function () {
-	},
-
 	unlink: function () {
 		var self = this;
-		var taskLink2rem = this.options.note.get('taskLinks').find(function(taskLink){return taskLink.get('task') == self.model; });
-		this.options.note.get('taskLinks').remove(taskLink2rem);
-		this.options.note.save ({},{
+		var link2remove = this.model.get('noteLinks').find(function(noteLink){return noteLink.get(self.options.modelClass) == self.model; });
+		this.model.get('noteLinks').remove(link2remove);
+		this.model.save ({},{
 			success: function () {console.log('Object successfully unlinked');self.kill();},
 			error: function () {console.error('Impossible to unlink object');self.kill();}
 		});

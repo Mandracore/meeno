@@ -27,33 +27,51 @@ module.exports = function(mas, securityProxy){
 			task.due_at      = req.body.due_at;
 			task.label       = req.body.label;
 			task.description = req.body.description;
+			task.parent      = req.body.parent;
+			task.noteLinks   = req.body.noteLinks;
+			task.tagLinks    = req.body.tagLinks;
+
+			console.log('==== TASK / NOTELINKS============');
+			console.log(task.noteLinks);
+			console.log('==== TASK / TAGLINKS============');
+			console.log(task.tagLinks);
+
 			return task.save(function(err) {
 				if (!err) {
 					console.log("updated");
+					return res.send(task);
 				} else {
 					console.log(err);
-					return res.send(400,"Bad request");
+					return res.send(400,"Impossible to save // "+err.err);
 				}
-				return res.send(task);
 			});
 		});
 	});
 	mas.post("/api/tasks", mas.security.proxy("user"), function (req, res) {
 		var task = new mas.Models.Task ({
-			_creator    : req.session.user._id,
-			created_at  : req.body.created_at,
-			updated_at  : req.body.updated_at,
-			due_at      : req.body.due_at,
-			label       : req.body.label,
-			description : req.body.description
+			_creator   : req.session.user._id,
+			created_at : req.body.created_at,
+			updated_at : req.body.updated_at,
+			due_at     : req.body.due_at,
+			label      : req.body.label,
+			description: req.body.description,
+			parent     : req.body.parent,
+			noteLinks  : req.body.noteLinks,
+			tagLinks   : req.body.tagLinks,
 		});
+
+		console.log('==== TASK / NOTELINKS============');
+		console.log(req.body.noteLinks);
+		console.log('==== TASK / TAGLINKS============');
+		console.log(req.body.tagLinks);
+
 		task.save(function(err) {
 			if (!err) {
 				console.log("created");
 				return res.send(task);
 			} else {
 				console.log(err);
-				return res.send(400,"Bad request");
+				return res.send(400,"Impossible to save // "+err.err);
 			}
 		});
 	});
