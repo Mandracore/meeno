@@ -101,7 +101,10 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 					});
 					meenoAppCli[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					// Now that the model is into a collection, the .save() method will work
-					this.model.save();
+					this.model.save({}, {
+						success: function () { console.log ("[OK] "+self.options.modelClass+" successfully created")},
+						error  : function () { self.error("### Impossible to link "+self.options.modelClass); }
+					});
 				} else {
 				// The model already exists, so we retrieve it
 					if (_.contains(selectedModel.get('noteLinks').pluck('note'), this.options.note)) {
@@ -124,10 +127,10 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 						self.$el.attr("data-model-id",self.model.get("_id"));
 						self.isLocked = true;
 						moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
-						console.log(this.options.modelClass+' "'+self.model.get('label')+'" linked to current note');
+						console.log("[OK] "+self.options.modelClass+' "'+self.model.get('label')+'" linked to current note');
 						self.options.isLocked = true;
 					},
-					error  : function () {self.error("Impossible to save new "+this.options.modelClass);}
+					error  : function () {self.error("### Impossible to link "+self.options.modelClass);}
 				});
 			}
 		}
