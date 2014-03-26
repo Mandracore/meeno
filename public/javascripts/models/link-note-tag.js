@@ -9,8 +9,8 @@ meenoAppCli.Classes.LinkNoteTag = Backbone.RelationalModel.extend({
 		key            : 'note',
 		relatedModel   : 'meenoAppCli.Classes.Note',
 		reverseRelation: {
-			key: 'tagLinks',
-			includeInJSON: false
+			key: 'tagLinks'
+			includeInJSON : false,
 		}
 	},
 	{
@@ -18,8 +18,8 @@ meenoAppCli.Classes.LinkNoteTag = Backbone.RelationalModel.extend({
 		key            : 'tag',
 		relatedModel   : 'meenoAppCli.Classes.Tag',
 		reverseRelation: {
-			key: 'noteLinks',
-			includeInJSON: false
+			key: 'noteLinks'
+			includeInJSON : false,
 		}
 	}],
 });

@@ -10,7 +10,7 @@
     "jade": "*",
     "stylus": "*",
     "nib": "*",
-    "mongoose": "*",
+    "mongoose": ">=3.6.*",
     "negotiator": "~0.2.6"
   }
 }

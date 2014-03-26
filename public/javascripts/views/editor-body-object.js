@@ -82,6 +82,7 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 
 	lock: function (event) {
 		console.log("locking");
+		var modelClassName = this.options.modelClass.replace(/^(.)/, function($1){ return $1.toUpperCase( ); });
 		var self = this;
 		if (!this.options.isLocked) {
 			if (this.$('.body').val().length <= 2) {
@@ -96,7 +97,7 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 				if (!selectedModel) {
 				// If the model doesn't exist, we create it
 					console.log('--- Creating new '+this.options.modelClass+' ---');
-					this.model = new meenoAppCli.Classes[this.options.modelClass.replace(/^(.)/, function($1){ return $1.toUpperCase( ); })]({
+					this.model = new meenoAppCli.Classes[modelClassName]({
 						label : this.$(".body").val()
 					});
 					meenoAppCli[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
@@ -116,8 +117,11 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 
 				// Linking view's model (created or retrieved) to the note
 				console.log('------ trying to link '+this.options.modelClass);
-				this.model.get('noteLinks').add( { note: this.options.note } );
-				this.model.save({},{ 
+				var link = new meenoAppCli.Classes.["linkNote"+modelClassName] ({});
+				link.set('note', this.options.note);
+				link.set(this.options.modelClass, this.model);
+				meenoAppCli["linkNote"+modelClassName].add(link);
+				link.save({},{ 
 					success: function () {
 						var $newSpan = $("<span>",{class:"body"}).html(self.model.get('label'));
 						self.$(".body").parent().remove();
@@ -139,8 +143,8 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 	unlink: function () {
 		var self = this;
 		var link2remove = this.model.get('noteLinks').find(function(noteLink){return noteLink.get(self.options.modelClass) == self.model; });
-		this.model.get('noteLinks').remove(link2remove);
-		this.model.save ({},{
+		//this.model.get('noteLinks').remove(link2remove);
+		link2remove.destroy({},{
 			success: function () {console.log('Object successfully unlinked');self.kill();},
 			error: function () {console.error('Impossible to unlink object');self.kill();}
 		});

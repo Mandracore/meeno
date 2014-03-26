@@ -106,3 +106,16 @@ Chain of events / use cases :
 Task model seems OK
 Need to implement new models for relating notes to tasks
 Need to implement new collections to store links
+
+
+20/03/2014
+On va tester deux méthodes :
+    console.log('------ trying to link '+this.options.modelClass);
+    this.model.get('noteLinks').add( { note: this.options.note } );
+    this.model.save({},{ 
+Soit on sauvegarde depuis l'objet (AS IS) soit on sauvegarder depuis la note.
+Dans tous les cas on ne touche pas à la modélisation relational dans les models
+On regarde ce qui est envoyé à mongodb et comment ça stocke les liens
+Valider qu'il n'y a pas de doublons.
+
+Question : est-ce que l'utilisation du Backend Mongoose oblige à sérialiser les relations dans chaque objet impliqué ? Si oui, on stocke 10x trop !

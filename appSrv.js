@@ -77,9 +77,9 @@ require('./app/src/routes/api.tags.js')(mas);
 require('./app/src/routes/api.tasks.js')(mas);
 
 //------------------------------------------
-// START SERVER
+// START HTTP SERVER
 //------------------------------------------
 
 http.createServer(mas).listen(mas.get('port'), function(){
-  console.log("Node.js / Express server listening on port " + mas.get('port') + " in " + mas.get('mode') + " mode");
+  console.log("Node.js / Express HTTP server listening on port " + mas.get('port') + " in " + mas.get('mode') + " mode");
 });
