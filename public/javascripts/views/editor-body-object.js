@@ -117,11 +117,17 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 
 				// Linking view's model (created or retrieved) to the note
 				console.log('------ trying to link '+this.options.modelClass);
-				var link = new meenoAppCli.Classes.["linkNote"+modelClassName] ({});
-				link.set('note', this.options.note);
-				link.set(this.options.modelClass, this.model);
-				meenoAppCli["linkNote"+modelClassName].add(link);
-				link.save({},{ 
+				
+				if (this.options.modelClass == "tag") {
+					this.options.note.get('tagLinks').add({tag : this.model});
+				} else {
+					this.options.note.get('taskLinks').add({task : this.model});
+				}
+				// var link = new meenoAppCli.Classes["linkNote"+modelClassName] ({});
+				// link.set('note', this.options.note);
+				// link.set(this.options.modelClass, this.model);
+				// meenoAppCli["linkNote"+modelClassName].add(link);
+				this.options.note.save({},{ 
 					success: function () {
 						var $newSpan = $("<span>",{class:"body"}).html(self.model.get('label'));
 						self.$(".body").parent().remove();

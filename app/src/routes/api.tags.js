@@ -25,13 +25,8 @@ module.exports = function(mas, securityProxy){
 			tag.created_at = req.body.created_at;
 			tag.updated_at = req.body.updated_at;
 			tag.label      = req.body.label;
-			tag.noteLinks  = req.body.noteLinks;
-			tag.taskLinks  = req.body.taskLinks;
 
-			console.log('==== TAG / NOTELINKS ============');
-			console.log(tag.noteLinks);
-			console.log('==== TAG / TASKLINKS ============');
-			console.log(tag.taskLinks);
+			console.log(tag);
 
 			return tag.save(function(err) {
 				if (!err) {
@@ -50,14 +45,9 @@ module.exports = function(mas, securityProxy){
 			created_at: req.body.created_at,
 			updated_at: req.body.updated_at,
 			label     : req.body.label,
-			noteLinks : req.body.noteLinks,
-			taskLinks : req.body.taskLinks,
 		});
 
-		console.log('==== TAG / NOTELINKS ============');
-		console.log(req.body.noteLinks);
-		console.log('==== TAG / TASKLINKS ============');
-		console.log(req.body.taskLinks);
+		console.log(req.body);
 
 		tag.save(function(err) {
 			if (!err) {

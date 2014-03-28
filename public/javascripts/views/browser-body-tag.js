@@ -16,7 +16,7 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 	// Renders the tag item to the current state of the model
 	render: function() {
 		this.collName = "tags";
-		console.log ("R[Browser-body-tag]");
+		//console.log ("R[Browser-body-tag]");
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (this.model.toJSON()));
 		meenoAppCli.dispatcher.trigger("browser:tags:reSyncSelectors");

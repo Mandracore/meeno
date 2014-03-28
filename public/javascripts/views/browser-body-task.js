@@ -16,7 +16,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 	// Renders the tag item to the current state of the model
 	render: function() {
 		this.collName = "tasks";
-		console.log ("R[Browser-body-task]");
+		//console.log ("R[Browser-body-task]");
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (this.model.toJSON()));
 		meenoAppCli.dispatcher.trigger("browser:tasks:reSyncSelectors");

@@ -119,3 +119,10 @@ On regarde ce qui est envoyé à mongodb et comment ça stocke les liens
 Valider qu'il n'y a pas de doublons.
 
 Question : est-ce que l'utilisation du Backend Mongoose oblige à sérialiser les relations dans chaque objet impliqué ? Si oui, on stocke 10x trop !
+
+26/03
+Résultat des tests server-side : mongoose permet de créer des liens et de rapatrier les jointures via populate()
+En revanche, les relations inverses ne sont pas recréées. Il faut donc soit maintenir des pointeurs de chaque côté de la relation, soit stocker la relation d'un seul côté, soit créer une table de relations qui stocke les pointeurs des deux côtés.
+Sachant que Backbone sait recréer les relations en les renseignant d'un seul côté, le prochain test devra démontrer qu'on peut stocker des subdocs de rels dans notes et interroger via notes.get('tags') et tags.get('notes').
+
+Première tentative : stockage/serialization des relations dans notes (tags & tasks) et tasks (parent)

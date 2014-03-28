@@ -4,18 +4,22 @@
 
 module.exports = function(mas, mongoose){
 
-	// This sub-document of msNote will be saved through it, no need for dedicated api
+	// This sub-document of msNote will be stored within its parent
 	var msLinkNoteTag = new mongoose.Schema({
-		note : { type: mongoose.Schema.Types.ObjectId, ref: 'Note' }, // Linked document is Note
-		tag  : { type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }, // Linked document is Tag
+		note : { type: mongoose.Schema.Types.ObjectId, ref: 'Note' },
+		tag  : { type: mongoose.Schema.Types.ObjectId, ref: 'Tag' },
 	});
+
+	// This sub-document of msNote will be stored within its parent
 	var msLinkNoteTask = new mongoose.Schema({
-		note : { type: mongoose.Schema.Types.ObjectId, ref: 'Note' }, // Linked document is Note
-		task : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, // Linked document is Task
+		note : { type: mongoose.Schema.Types.ObjectId, ref: 'Note' },
+		task : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' },
 	});
+
+	// This sub-document of msTask will be stored within its parent
 	var msLinkTaskTag = new mongoose.Schema({
-		task : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, // Linked document is Task
-		tag : { type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }, // Linked document is Tag
+		task : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' },
+		tag : { type: mongoose.Schema.Types.ObjectId, ref: 'Tag' },
 	});
 
 	var msNote = new mongoose.Schema({
@@ -38,9 +42,7 @@ module.exports = function(mas, mongoose){
 		_creator  : String,
 		created_at: { type: Date, default: function () { return Date.now(); } },
 		updated_at: { type: Date, default: function () { return Date.now(); } },
-		label     : { type: String, required: true, unique: true },
-		noteLinks : [msLinkNoteTag],
-		taskLinks : [msLinkTaskTag],
+		label     : { type: String, required: true, unique: true }
 	});
 	var msTask = new mongoose.Schema({
 		_creator   : String,
@@ -50,7 +52,6 @@ module.exports = function(mas, mongoose){
 		label      : { type: String, required: true, unique: true },
 		description: String,
 		parent     : { type: mongoose.Schema.Types.ObjectId, ref: 'children' }, // Linked document is Task
-		noteLinks  : [msLinkNoteTask],
 		tagLinks   : [msLinkTaskTag],
 	});
 

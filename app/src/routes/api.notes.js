@@ -29,10 +29,7 @@ module.exports = function(mas, securityProxy){
 			note.tagLinks   = req.body.tagLinks;
 			note.taskLinks  = req.body.taskLinks;
 
-			console.log('==== NOTE / TAGLINKS ============');
-			console.log(note.tagLinks);
-			console.log('==== NOTE / TASKLINKS ===========');
-			console.log(note.taskLinks);
+			console.log(note);
 
 			return note.save(function(err) {
 				if (!err) {
@@ -56,10 +53,7 @@ module.exports = function(mas, securityProxy){
 			taskLinks : req.body.taskLinks,
 		});
 
-		console.log('==== NOTE / TAGLINKS ============');
-		console.log(req.body.tagLinks);
-		console.log('==== NOTE / TASKLINKS ===========');
-		console.log(req.body.taskLinks);
+		console.log(req.body);
 
 		note.save(function(err) {
 			if (!err) {

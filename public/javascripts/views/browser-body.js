@@ -400,8 +400,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var newView = {};
 
 		var results = this.options.collections[collName].search(this.filters[filterName]);
-		console.log("// Search returned "+results.length+" item(s)");
-		console.log(results);
+		//console.log("// Search returned "+results.length+" item(s)");
+		//console.log(results);
 		results.each(function (element) { // for now we ignore complex searches
 			if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: element }); }
 			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: element }); }

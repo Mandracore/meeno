@@ -8,7 +8,7 @@ meenoAppCli.Classes.BrowserBodyNoteView = meenoAppCli.Classes.BrowserBodyObjectV
 	// Renders the note item to the current state of the model
 	render: function () {
 		this.collName = "notes";
-		console.log ("R[Browser-body-note]");
+		//console.log ("R[Browser-body-note]");
 		var json        = this.model.toJSON();
 		json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
 		json = {
