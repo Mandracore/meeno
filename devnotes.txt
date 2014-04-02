@@ -126,3 +126,6 @@ En revanche, les relations inverses ne sont pas recréées. Il faut donc soit ma
 Sachant que Backbone sait recréer les relations en les renseignant d'un seul côté, le prochain test devra démontrer qu'on peut stocker des subdocs de rels dans notes et interroger via notes.get('tags') et tags.get('notes').
 
 Première tentative : stockage/serialization des relations dans notes (tags & tasks) et tasks (parent)
+
+02/04
+Les problèmes ne proviennent pas des fichiers modèle
