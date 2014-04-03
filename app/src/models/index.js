@@ -51,7 +51,7 @@ module.exports = function(mas, mongoose){
 		due_at     : { type: Date, default: function () { return Date.now(); } },
 		label      : { type: String, required: true, unique: true },
 		description: String,
-		parent     : { type: mongoose.Schema.Types.ObjectId, ref: 'children' }, // Linked document is Task
+		parent     : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, // Linked document is Task
 		tagLinks   : [msLinkTaskTag],
 	});
 

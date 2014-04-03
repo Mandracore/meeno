@@ -129,3 +129,7 @@ Première tentative : stockage/serialization des relations dans notes (tags & ta
 
 02/04
 Les problèmes ne proviennent pas des fichiers modèle
+
+03/04/2014
+Le backend stocke les liens dans note et dans tasks (via des subdocuments), d'un seul côté des relations donc.
+Il est prêt pour recevoir des données plus complexes (task.parent, task.tags,...) du frontend.
