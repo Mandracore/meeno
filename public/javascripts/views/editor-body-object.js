@@ -103,7 +103,10 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 					meenoAppCli[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					// Now that the model is into a collection, the .save() method will work
 					this.model.save({}, {
-						success: function () { console.log ("[OK] "+self.options.modelClass+" successfully created")},
+						success: function () { 
+							console.log ("[OK] "+self.options.modelClass+" successfully created");
+							self.link();
+						},
 						error  : function () { self.error("### Impossible to link "+self.options.modelClass); }
 					});
 				} else {
@@ -113,37 +116,41 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 						return;
 					}
 					this.model = selectedModel;
+					this.link();
 				}
-
-				// Linking view's model (created or retrieved) to the note
-				console.log('------ trying to link '+this.options.modelClass);
-				
-				if (this.options.modelClass == "tag") {
-					this.options.note.get('tagLinks').add( { tag: this.model } );
-				} else {
-					this.options.note.get('taskLinks').add({ task : this.model });
-				}
-				// var link = new meenoAppCli.Classes["linkNote"+modelClassName] ({});
-				// link.set('note', this.options.note);
-				// link.set(this.options.modelClass, this.model);
-				// meenoAppCli["linkNote"+modelClassName].add(link);
-				this.options.note.save({},{ 
-					success: function () {
-						var $newSpan = $("<span>",{class:"body"}).html(self.model.get('label'));
-						self.$(".body").parent().remove();
-						self.$el.append($newSpan);
-						self.$el.removeClass("broken");
-						self.$el.addClass("locked");
-						self.$el.attr("data-model-id",self.model.get("_id"));
-						self.isLocked = true;
-						moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
-						console.log("[OK] "+self.options.modelClass+' "'+self.model.get('label')+'" linked to current note');
-						self.options.isLocked = true;
-					},
-					error  : function () {self.error("### Impossible to link "+self.options.modelClass);}
-				});
 			}
 		}
+	},
+
+	link: function () {
+		// Linking view's model (created or retrieved) to the note
+		var self = this;
+		console.log('------ trying to link '+this.options.modelClass);
+		
+		if (this.options.modelClass == "tag") {
+			this.options.note.get('tagLinks').add( { tag: this.model } );
+		} else {
+			this.options.note.get('taskLinks').add({ task : this.model });
+		}
+		// var link = new meenoAppCli.Classes["linkNote"+modelClassName] ({});
+		// link.set('note', this.options.note);
+		// link.set(this.options.modelClass, this.model);
+		// meenoAppCli["linkNote"+modelClassName].add(link);
+		this.options.note.save({},{ 
+			success: function () {
+				var $newSpan = $("<span>",{class:"body"}).html(self.model.get('label'));
+				self.$(".body").parent().remove();
+				self.$el.append($newSpan);
+				self.$el.removeClass("broken");
+				self.$el.addClass("locked");
+				self.$el.attr("data-model-id",self.model.get("_id"));
+				self.isLocked = true;
+				moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
+				console.log("[OK] "+self.options.modelClass+' "'+self.model.get('label')+'" linked to current note');
+				self.options.isLocked = true;
+			},
+			error  : function () {self.error("### Impossible to link "+self.options.modelClass);}
+		});
 	},
 
 	unlink: function () {
