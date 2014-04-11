@@ -113,7 +113,7 @@ On va tester deux méthodes :
     console.log('------ trying to link '+this.options.modelClass);
     this.model.get('noteLinks').add( { note: this.options.note } );
     this.model.save({},{ 
-Soit on sauvegarde depuis l'objet (AS IS) soit on sauvegarder depuis la note.
+Soit on sauvegarde depuis l'objet (AS IS) soit on sauvegarde depuis la note.
 Dans tous les cas on ne touche pas à la modélisation relational dans les models
 On regarde ce qui est envoyé à mongodb et comment ça stocke les liens
 Valider qu'il n'y a pas de doublons.
@@ -133,3 +133,11 @@ Les problèmes ne proviennent pas des fichiers modèle
 03/04/2014
 Le backend stocke les liens dans note et dans tasks (via des subdocuments), d'un seul côté des relations donc.
 Il est prêt pour recevoir des données plus complexes (task.parent, task.tags,...) du frontend.
+# Filters : reste à modifier le backend en créant les bons modèles et en modifiant l'API REST
+En premier on créé l'API backend (et on la rœéférence dans Backbone). Ensuite on regarde comment le frontend l'interroge et on adapte le model pour y coller.
+10/04/2014 api.filters.js mostly corrected, still requires to adapt the attributes to be saved.
+Attention le chargement asychrone des collections n'est pas terminé à l'initialisation de main.js
+
+11/04
+NoteFilters are fully working, with save on backend.
+Still need to make tagFilters and taskFilters work.

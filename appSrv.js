@@ -75,6 +75,7 @@ require('./app/src/routes/main.js')(mas);
 require('./app/src/routes/api.notes.js')(mas);
 require('./app/src/routes/api.tags.js')(mas);
 require('./app/src/routes/api.tasks.js')(mas);
+require('./app/src/routes/api.filters.js')(mas);
 
 //------------------------------------------
 // START HTTP SERVER

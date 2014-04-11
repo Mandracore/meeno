@@ -3,5 +3,5 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.NoteFilters = meenoAppCli.Classes.ObjectFilters.extend({
 	model: meenoAppCli.Classes.NoteFilter,
-	url: '/api/filters-note'
+	url: '/api/filters/note'
 });

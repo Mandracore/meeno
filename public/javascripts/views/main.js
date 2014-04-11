@@ -55,6 +55,9 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 					success: function (collection, xhr, options) {
 						meenoAppCli.tasks.fetch({
 							success: function (collection, xhr, options) {
+								meenoAppCli.noteFilters.fetch({});
+								meenoAppCli.taskFilters.fetch({});
+								meenoAppCli.tagFilters.fetch({});
 								// Initialize mandatory static tabs
 								meenoAppCli.helper  = new meenoAppCli.Classes.HelperView();
 								meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {

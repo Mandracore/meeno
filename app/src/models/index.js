@@ -42,17 +42,35 @@ module.exports = function(mas, mongoose){
 		_creator  : String,
 		created_at: { type: Date, default: function () { return Date.now(); } },
 		updated_at: { type: Date, default: function () { return Date.now(); } },
-		label     : { type: String, required: true, unique: true }
+		label     : { type: String, required: true}
 	});
 	var msTask = new mongoose.Schema({
 		_creator   : String,
 		created_at : { type: Date, default: function () { return Date.now(); } },
 		updated_at : { type: Date, default: function () { return Date.now(); } },
 		due_at     : { type: Date, default: function () { return Date.now(); } },
-		label      : { type: String, required: true, unique: true },
+		label      : { type: String, required: true},
 		description: String,
 		parent     : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, // Linked document is Task
 		tagLinks   : [msLinkTaskTag],
+	});
+	var msNoteFilter = new mongoose.Schema({
+		_creator : String,
+		label    : { type: String, required: true},
+		text     : { type: String },
+		tags      : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
+		tasks     : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }], // Linked document is Task
+	});
+	var msTaskFilter = new mongoose.Schema({
+		_creator : String,
+		label    : { type: String, required: true},
+		text     : { type: String },
+		tags      : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
+	});
+	var msTagFilter = new mongoose.Schema({
+		_creator : String,
+		label    : { type: String, required: true},
+		text     : { type: String },
 	});
 
 	mas.Schemas = {
@@ -62,6 +80,9 @@ module.exports = function(mas, mongoose){
 		LinkNoteTag  : msLinkNoteTag,
 		LinkNoteTask : msLinkNoteTask,
 		User         : msUser,
+		NoteFilter   : msNoteFilter,
+		TaskFilter   : msTaskFilter,
+		TagFilter    : msTagFilter,
 	};
 	mas.Models = {
 		Note         : mongoose.model('Note', mas.Schemas.Note),
@@ -70,5 +91,8 @@ module.exports = function(mas, mongoose){
 		LinkNoteTag  : mongoose.model('LinkNoteTag', mas.Schemas.LinkNoteTag),
 		LinkNoteTask : mongoose.model('LinkNoteTask', mas.Schemas.LinkNoteTask),
 		User         : mongoose.model('User', mas.Schemas.User),
+		NoteFilter   : mongoose.model('NoteFilter', mas.Schemas.NoteFilter),
+		TaskFilter   : mongoose.model('TaskFilter', mas.Schemas.TaskFilter),
+		TagFilter    : mongoose.model('TagFilter', mas.Schemas.TagFilter),
 	};
 };

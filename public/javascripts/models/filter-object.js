@@ -93,9 +93,7 @@ meenoAppCli.Classes.ObjectFilter = Backbone.RelationalModel.extend({
 		return {
 			subClass  : 'NoteFilter',
 			label     : 'New filter',
-			text      : '',
-			created_at: new Date(),
-			updated_at: new Date()
+			text      : ''
 		};
 	}
 });

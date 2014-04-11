@@ -3,5 +3,5 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.TagFilters = meenoAppCli.Classes.ObjectFilters.extend ({
 	model: meenoAppCli.Classes.TagFilter,
-	url: '/api/filters-tag'
+	url: '/api/filters/tag'
 });
