@@ -2,14 +2,17 @@ var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.Tags = Backbone.Collection.extend({
-	model: meenoAppCli.Classes.Tag, 
+	model: meenoAppCli.Classes.Tag,
 	url: '/api/tags',
 
-	search : function(letters){
-		if(letters == "") return this;
-		var pattern = new RegExp(letters,"gi");
-		return _(this.filter(function(data) {
-		  	return (pattern.test(data.get("label")));
+	search : function (filter) {
+		if(filter.get('text') === "") return this;
+		// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
+		var pattern = new RegExp(filter.get('text'),"i");
+
+		return new meenoAppCli.Classes.Tasks (this.filter(function(model) {
+			// Full text search
+			return (pattern.test(model.get("label")));
 		}));
 	}
 });

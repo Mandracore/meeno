@@ -6,15 +6,17 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 	relations: [{
 		type: 'HasMany',
 		key: 'noteLinks',
-		relatedModel: 'meenoAppCli.Classes.linkNoteTask',
+		relatedModel: 'meenoAppCli.Classes.LinkNoteTask',
 		reverseRelation: {
-			key: 'task'
+			key: 'task',
+			includeInJSON: '_id'
 		}
 	}],
 	defaults: function() {
 		return {
-			description : 'New Task',
-			due  : new Date(),
+			label       : 'New Task',
+			description : 'Describe here your task...',
+			due_at      : new Date(),
 			created_at  : new Date(),
 			updated_at  : new Date()
 		};

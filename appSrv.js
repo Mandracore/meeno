@@ -4,9 +4,9 @@
 
 // Beware namespace collision
 var application_root = __dirname;
-var express          = require("express");
 var http             = require("http");
 var path             = require("path");
+var express          = require("express");
 var mongoose         = require('mongoose');
 var stylus           = require('stylus');
 var nib              = require('nib');
@@ -74,12 +74,13 @@ mas.security = require('./app/src/routes/security.proxy.js');
 require('./app/src/routes/main.js')(mas);
 require('./app/src/routes/api.notes.js')(mas);
 require('./app/src/routes/api.tags.js')(mas);
-// require('./app/src/routes/api.tags.notes.js')(mas);
+require('./app/src/routes/api.tasks.js')(mas);
+require('./app/src/routes/api.filters.js')(mas);
 
 //------------------------------------------
-// START SERVER
+// START HTTP SERVER
 //------------------------------------------
 
 http.createServer(mas).listen(mas.get('port'), function(){
-  console.log("Node.js / Express server listening on port " + mas.get('port') + " in " + mas.get('mode') + " mode");
+  console.log("Node.js / Express HTTP server listening on port " + mas.get('port') + " in " + mas.get('mode') + " mode");
 });

@@ -4,6 +4,7 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 meenoAppCli.Classes.EditorView = Backbone.View.extend({
 
 	initialize: function() {
+		this.listenTo(this.model, 'remove', this.kill);
 		console.log('Editing note');
 		this.children = {
 			tab  : new meenoAppCli.Classes.EditorTabView({ model: this.model, parent: this }),

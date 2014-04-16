@@ -22,13 +22,18 @@ module.exports = function(mas, securityProxy){
 		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 
+			tag.created_at = req.body.created_at;
+			tag.updated_at = req.body.updated_at;
 			tag.label      = req.body.label;
+
+			console.log(tag);
+
 			return tag.save(function(err) {
 				if (!err) {
 					console.log("updated");
 				} else {
 					console.log(err);
-					return res.send(400,"Bad request");
+					return res.send(400,"Impossible to save // "+err.err);
 				}
 				return res.send(tag);
 			});
@@ -37,15 +42,20 @@ module.exports = function(mas, securityProxy){
 	mas.post("/api/tags", mas.security.proxy("user"), function (req, res) {
 		var tag = new mas.Models.Tag ({
 			_creator  : req.session.user._id,
-			label     : req.body.label
+			created_at: req.body.created_at,
+			updated_at: req.body.updated_at,
+			label     : req.body.label,
 		});
+
+		console.log(req.body);
+
 		tag.save(function(err) {
 			if (!err) {
 				console.log("created");
 				return res.send(tag);
 			} else {
 				console.log(err);
-				return res.send(400,"Bad request");
+				return res.send(400,"Impossible to save // "+err.err);
 			}
 		});
 	});
@@ -60,4 +70,4 @@ module.exports = function(mas, securityProxy){
 			});
 		});
 	});
-}
+};

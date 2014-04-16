@@ -1,8 +1,5 @@
-// js/views/main-meeno.js
-
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
-meenoAppCli.Views = meenoAppCli.Views || {};
 
 // The Application
 // ---------------
@@ -20,7 +17,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		'submit #login'               : 'login',
 		'submit #register'            : 'register',
 		'click #toregister'           : 'toggleLR',
-		'click #tologin'              : 'toggleLR',
+		'click #tologin'              : 'toggleLR'
 	},
 
 	initialize: function() {
@@ -28,25 +25,47 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.logging              = false;
 		this.registering          = false;
 		this.on('server:auth', this.toggleAuth, this );
+
+		Mousetrap.bind(['ctrl+alt+shift+h'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:tag');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['ctrl+alt+shift+a'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:entity');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['ctrl+alt+shift+t'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:task');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['escape'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:escape');
+		});
+		Mousetrap.bind(['backspace'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:backspace');
+		});
+
 		this.fetchData();
 	},
 
 	fetchData: function() {
-		meenoAppCli.notes.fetch({
+		meenoAppCli.tags.fetch({
 			success: function (collection, xhr, options) {
-				meenoAppCli.tags.fetch({
-					success: function (collection, xhr, options) {
-						// Initialize mandatory static tabs
-						meenoAppCli.helper  = new meenoAppCli.Classes.HelperView(); 
-						meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {
-							notes : meenoAppCli.notes,
-							tags  : meenoAppCli.tags,
-							tasks : meenoAppCli.tasks
-						}});
-					},
-					error: function (collection, xhr, options) {console.log('tag fetching failed')}
-				});
-
+				meenoAppCli.tasks.fetch({})
+				meenoAppCli.notes.fetch({})
+				meenoAppCli.noteFilters.fetch({});
+				meenoAppCli.taskFilters.fetch({});
+				meenoAppCli.tagFilters.fetch({});
+				// Initialize mandatory static tabs
+				meenoAppCli.helper  = new meenoAppCli.Classes.HelperView();
+				meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {
+					notes       : meenoAppCli.notes,
+					tags        : meenoAppCli.tags,
+					tasks       : meenoAppCli.tasks,
+					noteFilters : meenoAppCli.noteFilters,
+					taskFilters : meenoAppCli.taskFilters,
+					tagFilters  : meenoAppCli.tagFilters,
+				}});
 			},
 			error: function (collection, xhr, options) {
 				console.log ("Server response status : "+xhr.status);
@@ -155,6 +174,13 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	newNote: function() {
 		var newNote   = meenoAppCli.notes.create({silent:true});
 		var newEditor = new meenoAppCli.Classes.EditorView ({ model: newNote });
+		newEditor.render();
 		newEditor.toggle();
 	},
+
+	searchTag: function () {
+		console.log('>>> Search note related to a tag DANS MAIN');
+		return false;
+	},
+
 });

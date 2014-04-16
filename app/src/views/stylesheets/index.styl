@@ -135,7 +135,6 @@ header
 	left 0
 	z-index 2
 	li
-		display none
 		background-color #FFF
 		&.delete:before
 			content 'I'
@@ -224,7 +223,34 @@ nav
 	&.selected
 		display block
 		overflow-y scroll
-	ul.notes, ul.tags
+	.super-input
+			border 1px solid grey
+			padding 6px 5px
+			margin 0 10px 0 0
+		.objectButtons span
+			background lightgrey
+			padding 2px 5px
+			margin 0 5px 0 0
+		input.search
+			border none
+		input.autocomplete
+			border 1px dotted grey
+			margin 0 5px
+	.filter-editor
+		li
+			display inline-block
+			opacity 0.6
+			padding 0.3em
+			margin 0 0.5em 0 0
+			font-size 0.9em
+			&.active, &:hover
+				opacity 1
+			&:hover
+				cursor pointer
+			&:before
+				opacity 0.6
+				margin-right 0.5em
+	ul.objects
 		list-style-type none
 		margin 1em 0 0
 		padding 0
@@ -250,8 +276,25 @@ nav
 					cursor pointer
 	.checkbox
 		margin 0 8px 0 0
+		display none
+	
+	// Contextual actions
+	.actions-contextual-trigger
+		display none
+		button
+			display none
+	.actions-contextual-selection
+		display none
+		.select-all, .action
+			display inline-block
+		.unselect-all
+			display none
+	.actions-contextual
+		.cancel
+			display none
 
-	ul.notes, ul.tags
+
+	ul.objects
 		span.delete:before
 			content 'I'
 		/*span.edit:before
@@ -263,6 +306,8 @@ nav
 				&.date
 					font-size 0.85em
 					opacity 0.5
+		span.tags span
+			color grey
 
 .tab
 	.editable
@@ -280,7 +325,7 @@ nav
 	input
 		border 0
 		background-color transparent
-	.tag
+	.object
 		margin 5px
 		padding 0 5px
 		background-color lightgrey

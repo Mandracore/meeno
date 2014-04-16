@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	// Fur future use
+	// For future use
 		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
 
 
@@ -10,8 +10,10 @@ block content
 	include clientSideTemplates.html
 
 	// Client-side application's scripts
+	//- Libraries scripts
 	script(src="javascripts/lib/modernizr-2.6.2.min.js")
 	script(src="javascripts/lib/jquery-1.8.3.min.js")
+	script(src="javascripts/lib/jquery-ui-1.10.3.custom.min.js")
 	script(src="javascripts/lib/jquery.dateFormat-1.0.js")
 	script(src="javascripts/lib/underscore-min.js")
 	script(src="javascripts/lib/backbone.js")
@@ -19,30 +21,48 @@ block content
 	//- script(src="javascripts/lib/backbone.localStorage-min.js")
 	//- script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
 	//- script(src="javascripts/lib/jquery.at.caret.min.js")
+	script(src="javascripts/lib/mousetrap.min.js")
+	script(src="javascripts/lib/backbone.mousetrap.js")
 	script(src="javascripts/lib/jquery.caret.js")
 	script(src="javascripts/lib/caret.js")
 	script(src="javascripts/lib/tools.js")
+
+	//- Application specific scripts
 	script(src="javascripts/models/note.js")
 	script(src="javascripts/models/tag.js")
-	script(src="javascripts/models/tasks.js")
+	script(src="javascripts/models/task.js")
 	script(src="javascripts/models/link-note-tag.js")
 	script(src="javascripts/models/link-note-task.js")
+	script(src="javascripts/models/link-task-tag.js")
+	script(src="javascripts/models/filter-object.js")
+	script(src="javascripts/models/filter-note.js")
+	script(src="javascripts/models/filter-task.js")
+	script(src="javascripts/models/filter-tag.js")
 	script(src="javascripts/collections/notes.js")
 	script(src="javascripts/collections/tags.js")
 	script(src="javascripts/collections/tasks.js")
-	script(src="javascripts/views/list-note.js")
-	script(src="javascripts/views/list-tag.js")
-	script(src="javascripts/views/list-task.js")
+	script(src="javascripts/collections/filters-object.js")
+	script(src="javascripts/collections/filters-note.js")
+	script(src="javascripts/collections/filters-task.js")
+	script(src="javascripts/collections/filters-tag.js")
 	script(src="javascripts/views/browser-tab.js")
 	script(src="javascripts/views/browser-body.js")
+	script(src="javascripts/views/browser-body-object.js")
+	script(src="javascripts/views/browser-body-note.js")
+	script(src="javascripts/views/browser-body-tag.js")
+	script(src="javascripts/views/browser-body-task.js")
+	script(src="javascripts/views/browser-body-filter.js")
 	script(src="javascripts/views/browser.js")
 	script(src="javascripts/views/helper-tab.js")
 	script(src="javascripts/views/helper-body.js")
 	script(src="javascripts/views/helper.js")
 	script(src="javascripts/views/editor-tab.js")
 	script(src="javascripts/views/editor-body.js")
-	script(src="javascripts/views/editor-body-tag.js")
+	script(src="javascripts/views/editor-body-object.js")
+	//script(src="javascripts/views/editor-body-tag.js")
+	//script(src="javascripts/views/editor-body-task.js")
 	script(src="javascripts/views/editor.js")
+	script(src="javascripts/l18n/"+ locale + ".js")
 	script(src="javascripts/views/main.js")
 	script(src="javascripts/appCli.js")
 	script(src="javascripts/routers/router.js")
@@ -64,7 +84,7 @@ block content
 			p.button.login
 				input(id="do-login", type="submit", value="Login", data-init-value="Login")
 			p.switch
-				|Not a member yet ? 
+				|Not a member yet ?
 				button#toregister Join us
 		form#register(autocomplete="on", style="display:none")
 			h1 Sign up
@@ -82,9 +102,9 @@ block content
 				label(for="passwordSignupConfirm") Please confirm your password
 				input(id="passwordSignupConfirm", name="passwordSignupConfirm", required="required", type="password", placeholder="eg. X8df!90EO")
 			p.button.signin
-				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")		
+				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")
 			p.switch
-				|Already a member ? 
+				|Already a member ?
 				button#tologin Go log in
 
 	// Application skeleton
@@ -110,7 +130,7 @@ block content
 		div#tabs
 			div.tab.help
 				article
-					section 
+					section
 						h1 Comment démarrer
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
 					section
@@ -119,80 +139,81 @@ block content
 			div.tab.browse.selected
 				div.filter
 					ul
-						li.notes.icon-book Notes
-						li.tasks.selected.icon-tasks Tasks
+						li.notes.selected.icon-book Notes
+						li.tasks.icon-tasks Tasks
 						li.tags.icon-tags Tags
-				div.listobjects.notes
-					input.search.notes(type="text", autofocus, placeholder="search notes")
+				div.listobjects.notes.selected
+					div.search-wrapper
+						div.super-input
+							span.objectButtons
+							span
+								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
+							input.mousetrap.search(type="text", autofocus, placeholder="search notes")
+						div.filter-editor
+							ul
+							input(style="display:none", type="text", placeholder="type a name for this new filter")
+							button.action.delete(style="display:none") Delete active filter
+							button.action.save(style="display:none") Save current filter
+							button.action.saveConfirm(style="display:none") Save filter under this name
+					div.actions-contextual-selection
+						button.select-all Tout sélectionner
+						button.unselect-all Tout déselectionner
+					div.actions-contextual-trigger
+						button.delete Supprimer
 					ul.actions-contextual
-						li.select Select All
-						li.unselect Unselect All
-						li.clone Duplicate
-						li.delete Delete
-					ul.notes
-						li Note 1
-						li Note 2
-						li Note 3				
-				div.listobjects.tasks.selected
-					input.search.tasks(type="text", autofocus, placeholder="search tasks")
-					ul.actions-contextual.hasSelected
-						li.select Select All
-						li.unselect Unselect All
-						li.related Related Notes
-						li.delete Delete
-					ul.tasks
-						li
-							h2 
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
-						li
-							h2 
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
-						li
-							h2 
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
-						li
-							h2 
-								|titre
-								time(datetime="20121223") 23-12-2012
-								span.progress.thirdquart 
-									button.firstquart 25%
-									button.secondquart 50%
-									button.thirdquart 75%
-									button.lastquart 100%
-								span.risk.risky risky
+						li.delete
+							span.action Delete notes
+							span.cancel Cancel
+					// Hereafeter will be displayed the objects
+					ul.objects.notes
+				div.listobjects.tasks
+					div.search-wrapper
+						div.super-input
+							span.objectButtons
+							span
+								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
+							input.mousetrap.search(type="text", autofocus, placeholder="search tasks")
+						div.filter-editor
+							ul
+							input(style="display:none", type="text", placeholder="type a name for this new filter")
+							button.action.delete(style="display:none") Delete active filter
+							button.action.save(style="display:none") Save current filter
+							button.action.saveConfirm(style="display:none") Save filter under this name
+					div.actions-contextual-selection
+						button.select-all Tout sélectionner
+						button.unselect-all Tout déselectionner
+					div.actions-contextual-trigger
+						button.delete Supprimer
+					ul.actions-contextual
+						li.delete
+							span.action Delete tasks
+							span.cancel Cancel
+					// Hereafeter will be displayed the objects
+					ul.objects.tasks
 				div.listobjects.tags
-					input.search.tags(type="text", autofocus, placeholder="search tags")
+					div.search-wrapper
+						div.super-input
+							span.objectButtons
+							span
+								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
+							input.mousetrap.search(type="text", autofocus, placeholder="search tags")
+						div.filter-editor
+							ul
+							input(style="display:none", type="text", placeholder="type a name for this new filter")
+							button.action.delete(style="display:none") Delete active filter
+							button.action.save(style="display:none") Save current filter
+							button.action.saveConfirm(style="display:none") Save filter under this name
+					div.actions-contextual-selection
+						button.select-all Tout sélectionner
+						button.unselect-all Tout déselectionner
+					div.actions-contextual-trigger
+						button.delete Supprimer
 					ul.actions-contextual
-						li.select Select All
-						li.unselect Unselect All
-						li.delete Delete
-					ul.tags
-						li tag1
-						li tag2
-						li tag3
-						li tag4
+						li.delete
+							span.action Delete tags
+							span.cancel Cancel
+					// Hereafeter will be displayed the objects
+					ul.objects.tags
 		div#footer
 			p.current-action Saving...
 			p.sync-status Sync. Status : In Progress...
-
