@@ -9,6 +9,7 @@ meenoAppCli.Classes.Notes = Backbone.Collection.extend({
 		if(filter.get('text') === "" && filter.get('tags').length == 0 && filter.get('tasks').length == 0) return this;
 		// filter.text = $.ui.autocomplete.escapeRegex(filter.text);
 		var pattern = new RegExp(filter.get('text'),"i");
+
 		return new meenoAppCli.Classes.Notes (this.filter(function(model) {
 			// Full text search
 			if (false === (pattern.test(model.get("title")) || pattern.test(model.get("content")))) {
