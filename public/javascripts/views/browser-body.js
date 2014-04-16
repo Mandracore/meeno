@@ -44,9 +44,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tagFilter" : new meenoAppCli.Classes.TagFilter()
 		};
 
-		this.listenTo(this.options.collections.notes, 'add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
-		this.listenTo(this.options.collections.tags, 'add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
-		this.listenTo(this.options.collections.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
+		this.listenTo(this.options.collections.notes, 'reset add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+		this.listenTo(this.options.collections.tags, 'reset add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
+		this.listenTo(this.options.collections.tasks, 'reset add remove change:label', function () {this.renderCollection("tasks");});
 		this.listenTo(this.options.collections.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
 		this.listenTo(this.options.collections.taskFilters, 'reset add remove', function () {this.renderFilterCollection("taskFilters");});
 		this.listenTo(this.options.collections.tagFilters, 'reset add remove', function () {this.renderFilterCollection("tagFilters");});

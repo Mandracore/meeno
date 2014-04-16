@@ -49,31 +49,23 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	},
 
 	fetchData: function() {
-		meenoAppCli.notes.fetch({
+		meenoAppCli.tags.fetch({
 			success: function (collection, xhr, options) {
-				meenoAppCli.tags.fetch({
-					success: function (collection, xhr, options) {
-						meenoAppCli.tasks.fetch({
-							success: function (collection, xhr, options) {
-								meenoAppCli.noteFilters.fetch({});
-								meenoAppCli.taskFilters.fetch({});
-								meenoAppCli.tagFilters.fetch({});
-								// Initialize mandatory static tabs
-								meenoAppCli.helper  = new meenoAppCli.Classes.HelperView();
-								meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {
-									notes       : meenoAppCli.notes,
-									tags        : meenoAppCli.tags,
-									tasks       : meenoAppCli.tasks,
-									noteFilters : meenoAppCli.noteFilters,
-									taskFilters : meenoAppCli.taskFilters,
-									tagFilters  : meenoAppCli.tagFilters,
-								}});
-							},
-							error: function (collection, xhr, options) {console.log('tasks fetching failed');}
-						});
-					},
-					error: function (collection, xhr, options) {console.log('tags fetching failed');}
-				});
+				meenoAppCli.tasks.fetch({})
+				meenoAppCli.notes.fetch({})
+				meenoAppCli.noteFilters.fetch({});
+				meenoAppCli.taskFilters.fetch({});
+				meenoAppCli.tagFilters.fetch({});
+				// Initialize mandatory static tabs
+				meenoAppCli.helper  = new meenoAppCli.Classes.HelperView();
+				meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {
+					notes       : meenoAppCli.notes,
+					tags        : meenoAppCli.tags,
+					tasks       : meenoAppCli.tasks,
+					noteFilters : meenoAppCli.noteFilters,
+					taskFilters : meenoAppCli.taskFilters,
+					tagFilters  : meenoAppCli.tagFilters,
+				}});
 			},
 			error: function (collection, xhr, options) {
 				console.log ("Server response status : "+xhr.status);
