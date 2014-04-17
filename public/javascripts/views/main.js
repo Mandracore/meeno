@@ -1,54 +1,186 @@
-// javascripts/views/main.js
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-//==========================================
-// TOP-LEVEL CLIENT-SIDE VIEW
-//==========================================
+// The Application
+// ---------------
+
+// MainView is the master piece of UI
 meenoAppCli.Classes.MainView = Backbone.View.extend({
 
-	// This view is bind to the DOM element of id meenoApp
+	// Instead of generating a new DOM element, bind to the existing skeleton of
+	// the App already present in the HTML.
 	el: '#meenoApp',
 
-	// Define here events occuring to the DOM Element of the view or its children
 	events: {
-		'click #new'           : 'new', // Create new note
-		'keypress input#search': 'search' // Look for notes...
+		'click .actions-main .note'   : 'newNote', // Create new note and open it in a new tab
+		// 'click .actions-main .tag' : 'newTag', // Create a new tag in a popup window
+		'submit #login'               : 'login',
+		'submit #register'            : 'register',
+		'click #toregister'           : 'toggleLR',
+		'click #tologin'              : 'toggleLR'
 	},
 
-	// Defining what will be done when the view will be created
 	initialize: function() {
-		// Define here events occuring to the model which will be listened by this view
-		meenoAppCli.Notes.on( 'add destroy reset change', this.render, this );
-		// Fill up collection with models stored in localstorage, wich will fire event "reset" on the collection and thus "this.render"
-		meenoAppCli.Notes.fetch();
+		this.auth                 = false;
+		this.logging              = false;
+		this.registering          = false;
+		this.on('server:auth', this.toggleAuth, this );
+
+		Mousetrap.bind(['ctrl+alt+shift+h'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:tag');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['ctrl+alt+shift+a'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:entity');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['ctrl+alt+shift+t'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:task');
+			// return false; // return false to prevent default browser behavior and stop event from bubbling
+		});
+		Mousetrap.bind(['escape'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:escape');
+		});
+		Mousetrap.bind(['backspace'], function() {
+			meenoAppCli.dispatcher.trigger('keyboard:backspace');
+		});
+
+		this.fetchData();
 	},
 
-	// Triggers rendering of sub view NoteView
-	render: function() {
-		this.$('#notes-list').html(''); // First, emptying the list
-		meenoAppCli.Notes.each(function (note) { // Then, for each note in our collection...
-			var noteView = new meenoAppCli.Classes.NoteView({ model: note }); // ... we create a NoteView ...
-			$('#notes-list').append(noteView.render().el); // ... and we finally append its rendered DOM element to our container.
-		}, this);
-		return this;
+	fetchData: function() {
+		meenoAppCli.tags.fetch({
+			success: function (collection, xhr, options) {
+				meenoAppCli.tasks.fetch({})
+				meenoAppCli.notes.fetch({})
+				meenoAppCli.noteFilters.fetch({});
+				meenoAppCli.taskFilters.fetch({});
+				meenoAppCli.tagFilters.fetch({});
+				// Initialize mandatory static tabs
+				meenoAppCli.helper  = new meenoAppCli.Classes.HelperView();
+				meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {
+					notes       : meenoAppCli.notes,
+					tags        : meenoAppCli.tags,
+					tasks       : meenoAppCli.tasks,
+					noteFilters : meenoAppCli.noteFilters,
+					taskFilters : meenoAppCli.taskFilters,
+					tagFilters  : meenoAppCli.tagFilters,
+				}});
+			},
+			error: function (collection, xhr, options) {
+				console.log ("Server response status : "+xhr.status);
+				if (xhr.status == 401) {
+					console.log ("Unauthorized, displaying user authentification form");
+					meenoAppCli.mainView.trigger('server:auth');
+				}
+			}
+		});
 	},
 
-	new: function() {
-		var newNote           = meenoAppCli.Notes.create(); // Create a new note in the collection meenoAppCli.Notes
-		newNote.openInEditor  = true; // we mark the new model as already opened in editor to avoid opening multiple editors for the same model
-		var noteEditorTabView = new meenoAppCli.Classes.NoteEditorTabView({ model: newNote }); // Create a tab view of this new model 
-		var noteEditorView    = new meenoAppCli.Classes.NoteEditorView({ model: newNote }); // Create an editor view of this new model 
-		$('#editor-tabs-list').append(noteEditorTabView.render().el); // Append the tab to its container
-		$('#editor-list').append(noteEditorView.render().el); // Append the editor to its container
-		noteEditorTabView.toggle(); // Display the editor of the new note
+	toggleNav: function() {
+		console.dir(this);
 	},
 
-	// Search notes within the collection meenoAppCli.Notes
-	search: function() {
-		// Coming soon
-		console.log('search');
-	}
+	toggleAuth: function () {
+		this.auth = !this.auth;
+		if (this.auth) {
+			$("#meenoApp").children().each(function (index, obj) {
+				if($(obj).attr('id')!='form-wrapper'){
+					$(obj).hide();
+				} else {
+					$(obj).fadeIn();
+				}
+			});
+		} else {
+			$("#meenoApp").children().each(function (index, obj) {
+				if($(obj).attr('id')!='form-wrapper'){
+					$(obj).show();
+				} else {
+					$(obj).hide();
+				}
+			});
+		}
+	},
 
+	toggleLR: function () {
+		$("#login").toggle();
+		$("#register").toggle();
+	},
+
+	login: function () {
+		if (this.logging) { return false; } // To avoid submitting twice
+		this.logging = true;
+		$('#do-login').val("please wait...");
+		var self = this;
+		var formData = $('#login').serialize();
+
+		// Attempt login on server...
+		$.ajax({
+			type: 'POST',
+			url: "/login",
+			data: formData
+		})
+		.done(function(data, status, xhr) {
+			if (xhr.status != 200) {
+				$('#login').find(".errors").html(data);
+			} else {
+				$('#login').find(".errors").html("");
+				self.toggleAuth();
+				self.fetchData();
+			}
+		})
+		.fail(function() {
+			console.log("Connection to server failed");
+		})
+		.always(function() {
+			self.logging = false;
+			$('#do-login').val($('#do-login').attr("data-init-value"));
+		});
+		return false;
+	},
+
+	register: function () {
+		if (this.registering) { return false; } // To avoid submitting twice
+		this.registering = true;
+		$('#do-register').val("please wait...");
+		var self = this;
+		var formData = $('#register').serialize();
+
+		// Attempt registering on server...
+		$.ajax({
+			type: 'POST',
+			url: "/register",
+			data: formData
+		})
+		.done(function(data, status, xhr) {
+			if (xhr.status != 201) {
+				$('#register').find(".errors").html(data);
+			} else {
+				$('#register').find(".errors").html("");
+				self.toggleAuth();
+				self.fetchData();
+			}
+		})
+		.fail(function() {
+			console.log("Connection to server failed");
+		})
+		.always(function() {
+			self.registering = false;
+			$('#do-register').val($('#do-register').attr("data-init-value"));
+		});
+		return false;
+	},
+
+	newNote: function() {
+		var newNote   = meenoAppCli.notes.create({silent:true});
+		var newEditor = new meenoAppCli.Classes.EditorView ({ model: newNote });
+		newEditor.render();
+		newEditor.toggle();
+	},
+
+	searchTag: function () {
+		console.log('>>> Search note related to a tag DANS MAIN');
+		return false;
+	},
 
 });

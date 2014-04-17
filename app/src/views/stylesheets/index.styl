@@ -1,0 +1,360 @@
+@import 'nib'
+
+cText         = #434343
+cTextFaded    = lighten(#535353, 40%)
+cTextRev      = #dddddd
+cTextRevFaded = darken(#dddddd, 40%)
+cDarkGrey     = lighten(#000000, 30%)
+cLightGrey    = lighten(#000000, 90%)
+cBlueLine     = lighten(#5e939f, 40%)
+wApp          = 1200px
+wRightCol     = 850px
+wLeftCol      = wApp - wRightCol
+wLeftColPad   = 35px
+wRightColPad  = 50px
+zLiner        = 5
+pyLiner       = 80px
+pHeadersV     = 40px
+pWrappPadV    = pyLiner - pHeadersV
+hTabs         = 40px
+hControls     = 30px
+hFadeOut      = 100px
+
+global-reset()
+reset-html5()
+
+@font-face
+	font-family "modernpics"
+	src url("../font/modernpics.otf")
+
+html
+	width 100%
+	height 100%
+	overflow hidden
+	background-color #999
+
+@css{
+	html{
+		background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: -o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: -ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-image: linear-gradient(left, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(left, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.19) 50%);
+		background-size: 13px, 29px, 37px, 53px;
+	}
+}
+body
+	margin 0 auto
+	width 90%
+	height 100%
+	position relative
+	background none
+
+#main
+	height 100%
+	padding 1em 0 1em 15em
+	position relative
+
+header
+	clearfix()
+	color #FFF
+	font-size 1em
+	position relative
+	top 0
+	margin-top 1em
+	a
+		float left
+		display inline-block
+		position relative
+		color inherit
+		text-decoration none
+		&:before
+			fSize = 2.35
+			content attr(title)
+			position absolute
+			left (-15/fSize)em
+			width (15/fSize)em
+			top -.2em
+			font-size  fSize * 1em;
+			color rgba(255,255,255,.7)
+			text-align center
+	h1
+		padding .5em
+		margin 0
+		font-size 1em
+	ul
+		float right
+		list-style none
+		margin 0
+		padding 0
+		display inline-block
+		li
+			display inline-block
+			vertical-align middle
+			padding .5em
+			&.selected,&:hover,&:active
+				background-color #FFF
+				color black
+				cursor pointer
+	.organisation
+		color rgba(255,255,255,.5)
+		&:after
+			content "\00A0"
+
+.actions-main,.actions-contextual
+	width 15em
+	list-style none
+	margin 0
+	padding 0
+	li
+		padding .5em
+		margin-bottom .25em
+		cursor pointer
+		&:before
+			font-family 'modernpics'
+			position relative
+			font-size 1.5em
+			margin 0 5px 0
+
+.actions-main
+	height 100%
+	padding-top 5.5em
+	position absolute
+	z-index 1
+	li
+		margin-right 1em
+		background-color rgba(255,255,255,.5)
+		&:before
+			content "+"
+		&:hover,&:active
+			background-color #FFF
+
+.actions-contextual
+	position absolute
+	top 14em
+	left 0
+	z-index 2
+	li
+		background-color #FFF
+		&.delete:before
+			content 'I'
+		&.close:before
+			content 'X'
+		&.clone:before
+			content 'W'
+		&.related:before
+			content 'K'
+		&.unselect:before
+			content 'K'
+		&.select
+			display list-item
+			&:before
+				content '%'
+	&.hasSelected li
+		display list-item
+.tab.object.note .actions-contextual li
+	display list-item
+
+nav
+	background-color rgba(255,255,255,.35);
+	ul
+		list-style none
+		padding 0
+		margin 0
+		display inline-block
+		li
+			display inline-block
+			padding .5em
+			vertical-align middle
+			&.selected,&:hover,&:active
+				background-color #FFF
+				cursor pointer
+	.object
+		max-width: 7em;
+		overflow: ellipsis;
+
+#tabs
+	background-color #FFF
+	padding 1em
+	height 74%
+	height '-moz-calc(%s - %s)' % (100% 13em)
+	height '-webkit-calc(%s - %s)' % (100% 13em)
+	height 'calc(%s - %s)' % (100% 13em)
+
+.tab
+	display none
+	&.selected
+		display block
+		height 100%
+	&.help, &.object
+		overflow-y scroll
+
+.browse
+	.filter
+		input
+			width 100%
+		ul
+			list-style none
+			padding 0
+			margin 0
+			display block
+			border-top 1px cDarkGrey solid
+			li
+				border-top 3px transparent solid
+				color cDarkGrey
+				display inline-block
+				padding .5em
+				vertical-align middle
+				opacity .7
+				&.selected,&:hover,&:active
+					border-top-color cDarkGrey
+					opacity 1
+					cursor pointer
+				&:before
+					margin-right 10px
+					font-size .9em
+
+.listobjects
+	display none
+	height 89%
+	height '-moz-calc(%s - %s)' % (100% 4em)
+	height '-webkit-calc(%s - %s)' % (100% 4em)
+	height 'calc(%s - %s)' % (100% 4em)
+	&.selected
+		display block
+		overflow-y scroll
+	.super-input
+			border 1px solid grey
+			padding 6px 5px
+			margin 0 10px 0 0
+		.objectButtons span
+			background lightgrey
+			padding 2px 5px
+			margin 0 5px 0 0
+		input.search
+			border none
+		input.autocomplete
+			border 1px dotted grey
+			margin 0 5px
+	.filter-editor
+		li
+			display inline-block
+			opacity 0.6
+			padding 0.3em
+			margin 0 0.5em 0 0
+			font-size 0.9em
+			&.active, &:hover
+				opacity 1
+			&:hover
+				cursor pointer
+			&:before
+				opacity 0.6
+				margin-right 0.5em
+	ul.objects
+		list-style-type none
+		margin 1em 0 0
+		padding 0
+		li
+			margin 0
+			padding 0.5em
+			&:hover
+				background-color rgba(0,0,0,0.1)
+			span.button
+				opacity 0
+				text-shadow 1px 1px 1px white
+				margin 0 0 0 10px
+				font-size 0.9em
+			&:hover span.button
+				opacity 0.5
+				&:before
+					font-family 'modernpics'
+					position relative
+					font-size 1.3em
+					margin 0 5px 0
+				&:hover
+					opacity 1
+					cursor pointer
+	.checkbox
+		margin 0 8px 0 0
+		display none
+	
+	// Contextual actions
+	.actions-contextual-trigger
+		display none
+		button
+			display none
+	.actions-contextual-selection
+		display none
+		.select-all, .action
+			display inline-block
+		.unselect-all
+			display none
+	.actions-contextual
+		.cancel
+			display none
+
+
+	ul.objects
+		span.delete:before
+			content 'I'
+		/*span.edit:before
+			content 'e'*/
+	ul.notes
+		li
+			p
+				margin 0
+				&.date
+					font-size 0.85em
+					opacity 0.5
+		span.tags span
+			color grey
+
+.tab
+	.editable
+		opacity 0.7
+		&:hover, &:focus
+			opacity 1
+	h1
+		font-size: 2em
+	section.edit-content
+		margin 20px 0 0 0
+
+.edit-content
+	&:focus
+		border 0
+	input
+		border 0
+		background-color transparent
+	.object
+		margin 5px
+		padding 0 5px
+		background-color lightgrey
+		opacity 0.7
+		border 1px dashed grey
+		text-shadow white 0 1px 0
+		border-radius 5px
+		&:before
+			margin 0 5px 0 0
+			font-size .8em
+			color grey
+			text-shadow white 0 1px 0
+	.locked
+		border 1px solid grey
+		opacity 1
+	.broken
+		border 1px solid red
+		opacity 0.7
+
+#footer
+	background-color rgba(0,0,0,.35);
+	color #FFF
+	clearfix()
+	p
+		margin 0
+		padding 1em
+	.current-action
+		float left
+	.sync-status
+		float right
+		width 15em
+		background-color rgba(0,0,0,.35)

@@ -1,0 +1,300 @@
+@import 'nib'
+
+cText         = #434343
+cTextFaded    = lighten(#535353, 40%)
+cTextRev      = #dddddd
+cTextRevFaded = darken(#dddddd, 40%)
+cDarkGrey     = lighten(#000000, 30%)
+cLightGrey    = lighten(#000000, 90%)
+cBlueLine     = lighten(#5e939f, 40%)
+wApp          = 1200px
+wRightCol     = 850px
+wLeftCol      = wApp - wRightCol
+wLeftColPad   = 35px
+wRightColPad  = 50px
+zLiner        = 5
+pyLiner       = 80px
+pHeadersV     = 40px
+pWrappPadV    = pyLiner - pHeadersV
+hTabs         = 40px
+hControls     = 30px
+hFadeOut      = 100px
+
+@font-face
+	font-family "modernpics"
+	src url("../fonts/modernpics.otf")
+
+@font-face
+	font-family "fontawesome"
+	src url("../fonts/fontawesome.ttf")
+
+//==============================================================
+// Layout
+//==============================================================
+
+#header, #fixed, #backgrounds
+	position fixed
+	top 0
+	left 50%
+	margin-left -(wApp / 2)
+	padding 0
+	width wApp
+#header
+	z-index zLiner + 10
+	.app, .search, .editor
+		position absolute
+		z-index zLiner + 10
+		left wLeftCol
+		width wRightCol
+	.search, .editor
+		height 45px
+		overflow hidden
+		top pyLiner * 0.55 - (@height / 2)
+	.search
+		left 0
+		width wLeftCol
+
+#backgrounds
+	top 0
+	height 100%
+#fixed
+	z-index zLiner + 2
+#search-tabs-list-wrapper, #note-list-wrapper, #editor-tabs-list-wrapper, #editor-controls-list-wrapper
+	position absolute
+	top	0
+	margin 0
+	padding 0
+#search-tabs-list-wrapper, #editor-tabs-list-wrapper
+	top pyLiner
+	height hTabs
+#search-tabs-list-wrapper
+	left 0
+	width wLeftCol
+#note-list-wrapper
+	top	pyLiner + hTabs
+	left 0
+	width wLeftCol
+#editor-tabs-list-wrapper, #editor-controls-list-wrapper
+	left wLeftCol
+	width wRightCol
+#editor-controls-list-wrapper
+	top pyLiner + hTabs
+	height hControls
+
+// Scrollables
+#scrollables
+	position absolute
+	top	pyLiner + hTabs + hControls
+	left 50%
+	margin-left - (wApp / 2)
+#editor-content-list
+	position absolute
+	top	0
+	margin 0
+	padding 0
+	left wLeftCol
+	width wRightCol
+
+
+//==============================================================
+// Backgrounds
+//==============================================================
+
+body
+	background linear-gradient(top, cLightGrey 0px, cLightGrey pyLiner + 3px, darken(cLightGrey, 10%) pyLiner, cLightGrey pyLiner + hTabs)
+	background-attachment fixed
+
+#header-bg
+	position fixed
+	left 0
+	top	0
+	width 100%
+	height pyLiner + hTabs + hControls
+	background linear-gradient(top, cLightGrey 0px, cLightGrey pyLiner + 3px, darken(cLightGrey, 10%) pyLiner,  cLightGrey pyLiner + hTabs, rgba(cLightGrey,0) pyLiner + hTabs + hControls + hFadeOut)
+	background-attachment fixed
+	z-index 2
+
+#liner-bg
+	position fixed
+	height 1px
+	width 100%
+	background-color cBlueLine
+	top pyLiner
+	left 0
+	z-index zLiner
+#search-bg-top, #search-bg
+	position absolute
+	margin 0
+	width wLeftCol
+	background-color black
+	background-attachment fixed
+	opacity 0.6
+#search-bg
+	top pyLiner + hTabs + hControls
+	height 100%
+	z-index 0
+#search-bg-top
+	top 0
+	height	pyLiner + hTabs + hControls
+	z-index zLiner + 1
+
+//==============================================================
+// Text and others
+//==============================================================
+
+body
+	font-family Helvetica, Arial
+	font-size 0.9em
+	color cText
+
+// HEADER
+#header
+	.search
+		#search-wrapper
+			position relative
+			top -10px
+			padding 0 20px
+			margin 0
+			input
+				padding 0
+				margin 0
+				background transparent
+				font-size 1.5em
+				border 0
+				color cTextRev
+				&:hover
+					color cTextRev
+	.editor
+		.wrapper
+			padding 0 0 0 15px
+			button
+				padding 0
+				background transparent
+				font-size 1.5em
+				border 0
+				color cTextFaded
+				&:hover
+					cursor pointer
+					color cText
+#new
+	text-shadow 1px 1px 1px white
+	&:before
+		font-family 'modernpics'
+		content 'r'
+		position relative
+		top 3px
+		font-size 1.5em
+		margin 0 5px 0
+#search-wrapper
+	p
+		border-radius(8px)
+		background transparent
+		&:hover
+			background cDarkGrey
+		&:before
+			text-shadow 1px 1px 0 rgba(255, 255, 255, 0.2)
+			font-family 'modernpics'
+			content 's'
+			position relative
+			top 2px
+			font-size 2.2em
+			margin 0 5px 0
+			color rgba(0,0,0,0.5)
+	&:hover p:before
+		color rgba(0,0,0,0.7)
+
+// BODY
+ul#editor-tabs-list, ul#search-tabs-list
+	list-style-type none
+	margin 0
+	padding 0 30px
+	color cTextFaded
+	li
+		float left
+		margin 0
+		padding 10px 20px
+		letter-spacing .09em
+		&:hover
+			cursor pointer
+			border-top 4px solid cBlueLine
+			padding 6px 20px
+			color cText
+	.active
+			border-top 4px solid cBlueLine
+			padding 6px 20px
+			color cText
+ul#search-tabs-list
+	color cTextRevFaded
+	padding 0 20px
+	li
+		padding 10px 15px
+		&:hover
+			border-top 4px solid darken(cBlueLine, 40%)
+			padding 6px 15px
+			color cTextRev
+	.active
+		border-top 4px solid darken(cBlueLine, 40%)
+		padding 6px 15px
+		color cTextRev
+#note-list
+	padding 0 wLeftColPad
+
+#editor-controls-list
+	padding 0 50px
+	height hControls
+	.editor-controls
+		background-color rgba(0, 0, 0, 0.1)
+		border-radius(4px)
+		height 100%
+		text-align right
+		padding 0 5px 0
+		line-height .9em
+		&:hover
+			background-color rgba(0, 0, 0, 0.12)
+		span, button
+			margin 4px 0 0 5px
+		.del
+			float left
+		span
+			padding 5px 0 0
+
+#note-list
+	color cTextRev
+	font-size 0.9em
+	list-style-type none
+	li
+		padding 0 0 5px
+		&:hover
+			color cBlueLine
+			cursor pointer
+		p
+			margin 0
+		.date
+			color cTextRevFaded
+
+.editor-content
+	padding 15px wRightColPad
+	line-height 1.5em
+	.attributes
+		margin 0 0 20px 0
+		//border-left 30px solid rgba(cTextFaded, 0.3);
+		//padding 0 0 0 11px
+		color cTextFaded
+		line-height 1.3em
+		p
+			margin 0
+	.editable
+		color cText
+		&:hover
+			color darken(cText,80%)
+	h1
+		margin 30px 0 15px 0
+	h1,h2,h3
+		text-shadow 1px 1px 1px white
+
+#editor-permanent
+	div
+		padding 5px 30px 15px 30px
+		background-color rgba(0, 0, 0, 0.07)
+		box-shadow(0 0 20px rgba(0, 0, 0, 0.3))
+		border-radius(10px)

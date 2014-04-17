@@ -1,0 +1,39 @@
+<script type="text/template" id="browser-body-note-template" style="display: none;">
+	<span class="checkbox icon-check-empty"></span>
+	<span class="edit title attribute"><%= note.title %></span>
+	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag %>]</span><% }); %></span>
+</script>
+<script type="text/template" id="browser-body-tag-template" style="display: none;">
+	<span class="checkbox icon-check-empty"></span>
+	<span class="edit label attribute"><%= label %></span>
+</script>
+<script type="text/template" id="browser-body-task-template" style="display: none;">
+	<span class="checkbox icon-check-empty"></span>
+	<span class="edit label attribute"><%= label %></span>
+</script>
+<script type="text/template" id="browser-body-filter-template" style="display: none;"><%= label %></script>
+<script type="text/template" id="editor-tab-template" style="display: none;">
+	<%= title %>
+</script>
+<script type="text/template" id="editor-body-template" style="display: none;">
+	<ul class="actions-contextual">
+		<li class="clone">Duplicate</li>
+		<li class="delete">Delete</li>
+		<li class="close kill">Close</li>
+	</ul>
+	<article>
+		<section class="attributes">
+			<p><h1><span class="edit-title editable" contentEditable><%= title %></span></h1></p>
+			<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+		</section>
+		<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
+	</article>
+</script>
+<script type="text/template" id="editor-body-object-template" style="display: none;">
+	<label class='datalist-wrapper'>
+		<datalist id='datalist_<%= id %>' class='datalist'>
+		</datalist>
+		<input class='body mousetrap' type='text' name='datalist_<%= id %>' list='datalist_<%= id %>'>
+	</label>
+</script>

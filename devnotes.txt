@@ -1,0 +1,143 @@
+// Prochaine feat. à mettre en place :
+
+taglinks.each(function(taglink){console.log(taglink.get('tag').get('label'))})
+test6
+sssdqss33
+undefined
+
+La mise en relation des objets fonctionne, l'objet note est mis à jour mais je n'ai pas de collection tagLinks à sauvegarder.
+Les nouveaux objets taglinks sont bien créés mais ne sont pas sauvegardés. D'ailleurs la sauvegarde de la note ne déclenche pas la sauvegarde de ses taglinks. On a un set qui est fait, pas de save.
+Problème : je peux pas vraiment les ajouter à une collection puisque ces objets sont créés sans moi.
+Mais si je décide de les fetcher, je fais comment?
+
+Essayer de renseigner une url pour la sauvegarde du model (dans le model) tagLink
+Regarder si quand on sauvegarde la note on sauvegarde aussi le model
+
+SI tout ça ne donne rien, je peux réintégrer les tagLinks à l'intérieur des documents Note pour que ce soient les notes qui les portent. Reste à savoir comment gérer la relation HasOne dedans...
+
+
+Ca pourrait donner cela :
+
+$.forum.Thread = Backbone.RelationalModel.extend({
+    urlRoot: '/api/thread',
+    idAttribute: '_id',
+    relations: [{
+        type: Backbone.HasMany,
+        key: 'messages', // tagLinks
+        relatedModel: '$.forum.Message',
+        reverseRelation: {
+            key: 'thread',
+            includeInJSON: '_id',
+        },
+    }]
+});
+
+je peux juste tester cela
+
+19/09
+On envoie au serveur tous les taglinks serialisés quand on sauvegarde la note. Reste à bien l'interpréter côté serveur.
+
+30/09
+Développer la suppression des tags
+Développer les actions liées aux ranges
+Le seul moyen de bien détecter la disparition des objets c'est via le contentEsitable change
+
+Idée de génie :!!!
+A chaque Keypress, je vérifie que je peux retrouver tous les $el de mes vues dans le DOM. S'ils ont disparu, c'est que la vue doit être supprimée et le lien cassé !!!
+
+07/10
+Déplacer la boîte qui contient selectAll/unSelectAll pour qu'elle puisse être commune à toutes les actions (trop fasitidieux sinon). Binder ces boutons à des Evnts pour les toggler
+
+Règles : 
+- si tout est sélectionné => Déselectionner tout
+- si rien n'est sélectionné => Selectionner tout
+- si mélange => Selectionner tout + Déselectionner tout
+- je lance un évt : au toggle d'une action, à la sélection d'un objet
+
+
+10/10/13
+Si je sélectionne des object, puis que j'ouvre une note que je modifie de manière à ce qu'elle soit re rendered dans le browser, qd je retourne dans ce dernier il n'y a plus sa box de sélection.
+
+12/10/2013
+Pour déclencher évt sur les bons models, envoyer depuis brwser-body this.children.notes.deleteIfSelected()
+Changer les list-tag, list-note,...en browser-body-objects
+
+18/10/2013
+Comment faire si on a plusieurs actions possibles, on peut pas avoir tout le monde affiché en même temps... Comment gérer les conflits ? Pas de soucis pour selectall/unselectall mais pour le reste si. Voir également quoi faire qd un browser-body-object est rerendered, si une action est en cours, le toggle ne marchera plus.
+Cas 1 : tout est fermé, un simple toggle marche. Le toggle marchera toujours si tout est fermé.
+Cas 2 : un type est ouvert et on veut le fermer. Son toggle marche
+Cas 3 : on veut toggle qqch alors que qqch d'autre est ouvert. Il faut faire en premier le toggle de l'action ouverte puis celui de l'autre action
+
+
+25/10/2013
+Si un refresh de la liste des objets est délenché :
+Cas 1 : une action est déjà ouverte. L'objet re rendered va se désynchroniser des autres
+Cas 2 : aucune action en cours. Rien à faire
+//////////////
+Mettre à jour les objets dans les notes s'ils sont modifiés par ailleurs (tags et tasks)
+
+29/11/2013
+Mettre en place un proxy d'évènements clavier centralisé qui trigger des events comme keyboard:task, keyboard:tag,... Ces évènements seront détectés par les vues elles mêmes (editor, browser,...) et déclencheront des actions en fonction du focus.
+Difficulté : pour simplifier je devrais activer le binding de toutes les actions dès le début même si les objets relatifs ne sont pas ouverts. Exemple : détecter le ctrl alt maj h même si aucun éditeur n'est ouvert.
+
+04/02/2014
+le filtre unique qui sert au filtrage de la collection est un filtre qu'on peut sauvegarder et qui est constamment modifié par toutes les actions de saisie dans le superInput ou les activations via le filterEditor (il représente alors une copie d'une version sauvegardée)
+!!! je dois encore nettoyer la méthode .search dans les collections et refaire les specs.
+
+Fix line : it("can be compared to another note filter
+
+10/02/2014
+Poser un listener sur la collection de noteFilter. A chaque add(from collection)/delete(from collection), la liste des filters se met à jour. Un simple save/remove fait donc l'affaire. Besoin de création de vues embedded. bowser-body-filter-note, bowser-body-filter-task, bowser-body-filter-tag. Il faudra un render normal ainsi qu'un renderInSuperInput.
+Ces subviews pourraient écouter le modèle de filter stocké dans le browser-body. A chaque modification apportée, les subviews pourraient vérifier qu'elles ne sont pas actives et s'updater au besoin (:active)
+Question : comment les boutons pourraient-ils s'activer ou se désactiver ? 
+cas de figure (3) :
+1. xxxFilter vide => rien à afficher
+2. xxxFilter contient filter € collection de filters (DELETE)
+3. xxxFilter contient filter !€ collection de filters (SAVE)
+=> en surveillant le filter du browser-body (+ lancement à l'initialisation) : à chaque modif, on vérifie si le filtre active existe déjà (delete)
+
+
+28/02/2014
+Chain of events / use cases :
+1. Rajout de filtres dans le superInput
+2. J'active un de mes filtres prédéfinis
+
+02/03/2014
+Task model seems OK
+Need to implement new models for relating notes to tasks
+Need to implement new collections to store links
+
+
+20/03/2014
+On va tester deux méthodes :
+    console.log('------ trying to link '+this.options.modelClass);
+    this.model.get('noteLinks').add( { note: this.options.note } );
+    this.model.save({},{ 
+Soit on sauvegarde depuis l'objet (AS IS) soit on sauvegarde depuis la note.
+Dans tous les cas on ne touche pas à la modélisation relational dans les models
+On regarde ce qui est envoyé à mongodb et comment ça stocke les liens
+Valider qu'il n'y a pas de doublons.
+
+Question : est-ce que l'utilisation du Backend Mongoose oblige à sérialiser les relations dans chaque objet impliqué ? Si oui, on stocke 10x trop !
+
+26/03
+Résultat des tests server-side : mongoose permet de créer des liens et de rapatrier les jointures via populate()
+En revanche, les relations inverses ne sont pas recréées. Il faut donc soit maintenir des pointeurs de chaque côté de la relation, soit stocker la relation d'un seul côté, soit créer une table de relations qui stocke les pointeurs des deux côtés.
+Sachant que Backbone sait recréer les relations en les renseignant d'un seul côté, le prochain test devra démontrer qu'on peut stocker des subdocs de rels dans notes et interroger via notes.get('tags') et tags.get('notes').
+
+Première tentative : stockage/serialization des relations dans notes (tags & tasks) et tasks (parent)
+
+02/04
+Les problèmes ne proviennent pas des fichiers modèle
+
+03/04/2014
+Le backend stocke les liens dans note et dans tasks (via des subdocuments), d'un seul côté des relations donc.
+Il est prêt pour recevoir des données plus complexes (task.parent, task.tags,...) du frontend.
+# Filters : reste à modifier le backend en créant les bons modèles et en modifiant l'API REST
+En premier on créé l'API backend (et on la rœéférence dans Backbone). Ensuite on regarde comment le frontend l'interroge et on adapte le model pour y coller.
+10/04/2014 api.filters.js mostly corrected, still requires to adapt the attributes to be saved.
+Attention le chargement asychrone des collections n'est pas terminé à l'initialisation de main.js
+
+11/04
+NoteFilters are fully working, with save on backend.
+Still need to make tagFilters and taskFilters work.

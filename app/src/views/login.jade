@@ -1,0 +1,43 @@
+extends layout
+
+block content
+	div#form-wrapper
+		div#login
+			form(action="/login", method="post", autocomplete="on")
+				h1 Log in
+				p.email
+					label(for="email") Your email address
+					input(id="email", name="email", required="required", type="text", placeholder="myemail@mail.com", autofocus)
+				p.password
+					label(for="password") Your password
+					input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
+				p.keeplogin
+					input(id="keeplogin", name="keeplogin", type="checkbox", value="keeplogin")
+					label(for="keeplogin") Keep me logged in
+				p.button.login
+					input(type="submit", value="Login")
+				p.switch
+					|Not a member yet ? 
+					button#toregister Join us
+		div#register
+			form(action="/login", method="post", autocomplete="on")
+				h1 Sign up
+				p
+					input(name="register", type="hidden", value="register")
+				p.email
+					label(for="email-signup") Your email address
+					input(id="email-signup", name="email-signup", required="required", type="text", placeholder="myemail@mail.com")
+				p.email
+					label(for="email-signup-confirm") Please confirm your email address
+					input(id="email-signup-confirm", name="email-signup-confirm", required="required", type="text", placeholder="myemail@mail.com")
+				p.password
+					label(for="password-signup") Your password
+					input(id="password-signup", name="password-signup", required="required", type="password", placeholder="eg. X8df!90EO")
+				p.password
+					label(for="password-signup-confirm") Please confirm your password
+					input(id="password-signup-confirm", name="password-signup-confirm", required="required", type="password", placeholder="eg. X8df!90EO")
+				p.button.signin
+					input(type="submit", value="Sign up")		
+				p.switch
+					|Already a member ? 
+					button#tologinin Go log in

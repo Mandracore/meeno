@@ -1,14 +1,16 @@
 {
   "name": "meeno",
-  "version": "0.2.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node appSrv"
+    "start": "node app"
   },
   "dependencies": {
     "express": "3.0.3",
     "jade": "*",
     "stylus": "*",
-    "nib": "*"
+    "nib": "*",
+    "mongoose": ">=3.6.*",
+    "negotiator": "~0.2.6"
   }
 }

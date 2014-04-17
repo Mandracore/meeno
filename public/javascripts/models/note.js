@@ -1,15 +1,32 @@
-// javascripts/models/note.js
+var meenoAppCli = meenoAppCli || {};
+meenoAppCli.Classes = meenoAppCli.Classes || {};
 
-var meenoAppCli = meenoAppCli || {}; // To keep us safe from namespace collision
-meenoAppCli.Classes = meenoAppCli.Classes || {}; // To store our Classes
-
-// The model of a note
-meenoAppCli.Classes.Note = Backbone.Model.extend({
-	// The defaults : a note should always have a created_at property set to now,...
-	defaults: {
-		title     : 'Nouvelle note',
-		content   : 'Saisissez ici le contenu de votre note...',
-		created_at: new Date()
+meenoAppCli.Classes.Note = Backbone.RelationalModel.extend({
+	idAttribute: '_id',
+	relations: [{
+		type: 'HasMany',
+		key: 'tagLinks',
+		relatedModel: 'meenoAppCli.Classes.LinkNoteTag',
+		reverseRelation: {
+			key: 'note',
+			includeInJSON: '_id'
+		}
+	},
+	{
+		type: 'HasMany',
+		key: 'taskLinks',
+		relatedModel: 'meenoAppCli.Classes.LinkNoteTask',
+		reverseRelation: {
+			key: 'note',
+			includeInJSON: '_id',
+		}
+	}],
+	defaults: function() {
+		return {
+			title     : 'Nouvelle note',
+			content   : 'Saisissez ici le contenu de votre note...',
+			created_at: new Date(),
+			updated_at: new Date()
+		};
 	}
-
 });
