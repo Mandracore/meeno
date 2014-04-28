@@ -141,3 +141,41 @@ Attention le chargement asychrone des collections n'est pas terminé à l'initia
 11/04
 NoteFilters are fully working, with save on backend.
 Still need to make tagFilters and taskFilters work.
+
+24/04
+Objectif : mettre en place une hiérarchie pour les tasks. Le datamodel semble déjà OK au moins côté client. Next step : trouver un moyen de filtrer une collection de tasks, et de l'afficher sous forme de tree.
+
+### Besoin 1 : faire disparaître des tronçons de tasks qui ne m'intéressent pas
+### Besoin 2 : toujours afficher les parents (en grisé) des tasks qui sont filtrées avec succès pour pouvoir se repérer plus facilement
+### Besoin 3 : à la création d'une task ds une note, lui appliquer les mêmes tags de que la note par défaut.
+### Besoin 3bis : considérer qu'un fils a au moins les tags de son parent => TODO : modifier la fonction de filtrage des collections de tasks
+    ..step1: màj fonction filtrage de collection utilisant nvelle méthode getAllTags (niveau model)
+    ..step2: fonction d'affichage ul/li dans collection qui rajoute les parents à la sélection en les flaggant class = "secondary"
+### Besoin 4 : le filtrage de lacollection n'incluera pas les parents
+### Besoin 5 : les parents sont rajoutés uniquement au moment de l'affichage
+
+
+    task 1 / NCD
+        task 2 / NCD / Neolane
+            task 21 / NCD / Neolane / 6#
+    task 3 / Perso
+        task 4 / Passeport
+        task 5 / Passeport
+        task 6 / Voyage
+    task 7 / Perso
+
+    ==> filtre sur /Perso
+
+    task 3 / Perso
+        task 4 / Passeport
+        task 5 / Passeport
+        task 6 / Voyage
+    task 7 / Perso
+
+    ==> filtre sur /Perso /Passeport
+
+    task 3 / Perso
+        task 4 / Passeport
+        task 5 / Passeport
+
+Mettre à jour datamodel tasks pour y rajouter les tags !

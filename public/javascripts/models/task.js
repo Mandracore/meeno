@@ -12,6 +12,11 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 			includeInJSON: '_id'
 		}
 	}],
+	getAllTags: function () {
+		// 1. get the tags
+		// 2. get the tags of all ancestors
+		// 3. return it
+	}
 	defaults: function() {
 		return {
 			label       : 'New Task',

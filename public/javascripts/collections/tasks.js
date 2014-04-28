@@ -5,7 +5,7 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	model: meenoAppCli.Classes.Task,
 	url: '/api/tasks',
 
-	search : function (filter) {
+	search: function (filter) {
 		if(filter.get('text') === "") return this;
 		// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 		var pattern = new RegExp(filter.get('text'),"i");
@@ -24,5 +24,10 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 				return (false === _.contains(model.get('tagLinks').pluck('tag'), tag)); // Looking for the tag of the filter that is not related to current model
 			}));
 		}));
+	},
+
+	getTree: function () {
+		// 1. Build recursive tree ?
+		// 2. On each node, check the existence of a parent to draw it
 	}
 });

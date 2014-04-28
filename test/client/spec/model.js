@@ -282,6 +282,7 @@ describe("Collections of notes, tasks and tags", function() {
 		this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
 		this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
 		this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
+		this.tag3       = new meenoAppCli.Classes.Tag({label:"My test tag 3"});
 		this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
 		this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
 		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
@@ -330,6 +331,56 @@ describe("Collections of notes, tasks and tags", function() {
 		this.taskFilter.get('tags').add(this.tag);
 
 		expect(this.tasks.search(this.taskFilter).length).toEqual(0);
+
+	});
+
+	it("should provide a getTree method if it's a collection of tasks", function() {
+		// 1. Simulating a hierarchy
+		/*
+			task 0
+			    task 1 / Perso
+			        task 2 / Passeport
+			        task 3 / Passeport
+			        task 4 / Voyage
+		    task 5 / Perso
+		*/
+
+		this.task0 = new meenoAppCli.Classes.Task({label:"task 0"});
+		this.task1 = new meenoAppCli.Classes.Task({label:"task 1"});
+		this.task2 = new meenoAppCli.Classes.Task({label:"task 2"});
+		this.task3 = new meenoAppCli.Classes.Task({label:"task 3"});
+		this.task4 = new meenoAppCli.Classes.Task({label:"task 4"});
+		this.task5 = new meenoAppCli.Classes.Task({label:"task 5"});
+		
+		this.tag1 = new meenoAppCli.Classes.Tag({label:"Perso"});
+		this.tag2 = new meenoAppCli.Classes.Tag({label:"Passeport"});
+		this.tag3 = new meenoAppCli.Classes.Tag({label:"Voyage"});
+
+		this.task1.get('tagLinks').add( { tag: this.tag1 } );
+		this.task2.get('tagLinks').add( { tag: this.tag2 } );
+		this.task3.get('tagLinks').add( { tag: this.tag2 } );
+		this.task4.get('tagLinks').add( { tag: this.tag3 } );
+		this.task5.get('tagLinks').add( { tag: this.tag1 } );
+
+		this.task1.set('parent',this.task0);
+		this.task2.set('parent',this.task1);
+		this.task3.set('parent',this.task1);
+		this.task4.set('parent',this.task1);
+
+		// 2. Preparing a taskFilter
+		this.taskFilter.set('text','');
+		this.taskFilter.get('tags').add(this.tag1).add(this.tag2);
+
+		// 3. Checking the tree generated
+		/* Expected result:
+			task 0
+			    task 1 / Perso
+			        task 2 / Passeport
+			        task 3 / Passeport
+			        task 4 / Voyage
+		*/
+
+		expect(this.tasks.search(this.taskFilter).getTree).toEqual(false);
 
 	});
 });
