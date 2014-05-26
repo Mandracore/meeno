@@ -19,17 +19,17 @@ SI tout ça ne donne rien, je peux réintégrer les tagLinks à l'intérieur des
 Ca pourrait donner cela :
 
 $.forum.Thread = Backbone.RelationalModel.extend({
-    urlRoot: '/api/thread',
-    idAttribute: '_id',
-    relations: [{
-        type: Backbone.HasMany,
-        key: 'messages', // tagLinks
-        relatedModel: '$.forum.Message',
-        reverseRelation: {
-            key: 'thread',
-            includeInJSON: '_id',
-        },
-    }]
+	urlRoot: '/api/thread',
+	idAttribute: '_id',
+	relations: [{
+		type: Backbone.HasMany,
+		key: 'messages', // tagLinks
+		relatedModel: '$.forum.Message',
+		reverseRelation: {
+			key: 'thread',
+			includeInJSON: '_id',
+		},
+	}]
 });
 
 je peux juste tester cela
@@ -110,9 +110,9 @@ Need to implement new collections to store links
 
 20/03/2014
 On va tester deux méthodes :
-    console.log('------ trying to link '+this.options.modelClass);
-    this.model.get('noteLinks').add( { note: this.options.note } );
-    this.model.save({},{ 
+	console.log('------ trying to link '+this.options.modelClass);
+	this.model.get('noteLinks').add( { note: this.options.note } );
+	this.model.save({},{ 
 Soit on sauvegarde depuis l'objet (AS IS) soit on sauvegarde depuis la note.
 Dans tous les cas on ne touche pas à la modélisation relational dans les models
 On regarde ce qui est envoyé à mongodb et comment ça stocke les liens
@@ -149,33 +149,61 @@ Objectif : mettre en place une hiérarchie pour les tasks. Le datamodel semble d
 ### Besoin 2 : toujours afficher les parents (en grisé) des tasks qui sont filtrées avec succès pour pouvoir se repérer plus facilement
 ### Besoin 3 : à la création d'une task ds une note, lui appliquer les mêmes tags de que la note par défaut.
 ### Besoin 3bis : considérer qu'un fils a au moins les tags de son parent => TODO : modifier la fonction de filtrage des collections de tasks
-    ..step1: màj fonction filtrage de collection utilisant nvelle méthode getAllTags (niveau model)
-    ..step2: fonction d'affichage ul/li dans collection qui rajoute les parents à la sélection en les flaggant class = "secondary"
+	..step1: création méthode getAllTags (niveau model) pour récupérer tags des parents en plus
+	..step2: màj filtrage des collections pour rajouter aux tâches tous leurs parents jusqu'à la racine
+	..step3: comment daire en sorte que la vue d'un model filtré sache qu'elle apparaît jsute parceque c'est un parent ?
+	..stepX: fonction d'affichage ul/li dans collection qui rajoute les parents à la sélection en les flaggant class = "secondary"
 ### Besoin 4 : le filtrage de lacollection n'incluera pas les parents
 ### Besoin 5 : les parents sont rajoutés uniquement au moment de l'affichage
 
+	task 1 / NCD
+		task 2 / NCD / Neolane
+			task 21 / NCD / Neolane / 6#
+	task 3 / Perso
+		task 4 / Passeport
+		task 5 / Passeport
+		task 6 / Voyage
+	task 7 / Perso
 
-    task 1 / NCD
-        task 2 / NCD / Neolane
-            task 21 / NCD / Neolane / 6#
-    task 3 / Perso
-        task 4 / Passeport
-        task 5 / Passeport
-        task 6 / Voyage
-    task 7 / Perso
+	==> filtre sur /Perso
 
-    ==> filtre sur /Perso
+	task 3 / Perso
+		task 4 / Passeport
+		task 5 / Passeport
+		task 6 / Voyage
+	task 7 / Perso
 
-    task 3 / Perso
-        task 4 / Passeport
-        task 5 / Passeport
-        task 6 / Voyage
-    task 7 / Perso
+	==> filtre sur /Perso /Passeport
 
-    ==> filtre sur /Perso /Passeport
-
-    task 3 / Perso
-        task 4 / Passeport
-        task 5 / Passeport
+	task 3 / Perso
+		task 4 / Passeport
+		task 5 / Passeport
 
 Mettre à jour datamodel tasks pour y rajouter les tags !
+
+Question comment se passe le filtrage ?
+1. J'ajoute les tags des parents aux enfants
+2. Je filtre toute la collection selon mes critères
+3. Je rajoute les parents
+4. Je flagge les modèles parents non compliants
+5. Je transforme une collection de modèles flat (filtrage) en tree // Javascript tree builder ?
+==> ça prend un long moment...
+
+Comment je passe d'un truc flat à un tree ?
+
+
+
+drawTree (coll) {
+	if (model) { return drawTree ;}
+	else print(model);
+}
+
+
+	[0] task 1 / NCD
+		[0] task 2 / NCD / Neolane
+			[0] task 21 / NCD / Neolane / 6#
+	[1] task 3 / Perso
+		[0] task 4 / Passeport
+		[1] task 5 / Passeport
+		[2] task 6 / Voyage
+	[2] task 7 / Perso
