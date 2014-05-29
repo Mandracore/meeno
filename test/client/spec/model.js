@@ -1,167 +1,162 @@
-describe("Note model", function() {
+describe("Business Models", function() {
 
-	beforeEach(function() {
-		this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
-		this.note2      = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
-		this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
-		this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
-		this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
-		this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
-		this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
-		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
-		this.notes      = new meenoAppCli.Classes.Notes();
-		this.tags       = new meenoAppCli.Classes.Tags();
-		this.tasks      = new meenoAppCli.Classes.Tasks();
-		this.notes.add(this.note);
-		this.notes.add(this.note2);
-		this.notes.add(this.note3);
-		this.tags.add(this.tag);
-		this.tags.add(this.tag2);
-		this.tasks.add(this.task);
-		this.tasks.add(this.task2);
+	//=======================================================================================================
+	// DESCRIBE MODEL DEFAULTS
+	//=======================================================================================================
+
+	describe("Defaults", function() {
+
+		beforeEach(function() {
+			this.note = new meenoAppCli.Classes.Note();
+			this.tag  = new meenoAppCli.Classes.Tag();
+			this.task = new meenoAppCli.Classes.Task();
+		});
+
+		describe("Note", function() {
+
+			describe("when creating a new note", function() {
+				it("should have a default created_at attribute", function() {
+					expect((new Date()).getTime() - this.note.get('created_at').getTime()).toBeGreaterThan(-1);
+				});
+				it("should have a default updated_at attribute", function() {
+					expect((new Date()).getTime() - this.note.get('updated_at').getTime()).toBeGreaterThan(-1);
+				});
+				it("should have a default title attribute", function() {
+					expect(this.note.get('title')).toBe('Nouvelle note');
+				});
+				it("should have a default content attribute", function() {
+					expect(this.note.get('content')).toBe('Saisissez ici le contenu de votre note...');
+				});
+			});
+
+			describe("when modifying a note", function() {
+				it("should have updated updated_at attribute", function() {
+					var time0 = this.note.get('updated_at');
+					this.note.set('title','new title');
+					var time1 = this.note.get('updated_at');
+					expect(time1 - time0).toBeGreaterThan(0);
+				});
+			});
+		});
+
+		describe("Tag", function() {
+
+			describe("when creating a new tag", function() {
+				it("should have a default created_at attribute", function() {
+					expect((new Date()).getTime() - this.tag.get('created_at').getTime()).toBeGreaterThan(-1);
+				});
+				it("should have a default updated_at attribute", function() {
+					expect((new Date()).getTime() - this.tag.get('updated_at').getTime()).toBeGreaterThan(-1);
+				});
+				it("should have a default label attribute", function() {
+					expect(this.tag.get('label')).toBe('New Tag');
+				});
+			});
+
+			describe("when modifying a tag", function() {
+				it("should have updated updated_at attribute", function() {
+					var time0 = this.tag.get('updated_at');
+					// Modify object...
+					var time1 = this.tag.get('updated_at');
+					expect(time1 - time0).toBeGreaterThan(0);
+				});
+			});
+		});
+
+
+		describe("Task", function() {
+
+			describe("when creating a new task", function() {
+				it("should have a default created_at attribute", function() {
+					expect((new Date()).getTime() - this.task.get('created_at').getTime()).toBeGreaterThan(-1);
+				});
+				it("should have a default updated_at attribute", function() {
+					expect((new Date()).getTime() - this.task.get('updated_at').getTime()).toBeGreaterThan(-1);
+				});
+				it("should have a default description attribute", function() {
+					expect(this.task.get('description')).toBe('Description of your task...');
+				});
+				it("should have a default position attribute", function() {
+					expect(this.task.get('position')).toBe(0);
+				});
+			});
+
+			describe("when modifying a task", function() {
+				it("should have updated updated_at attribute", function() {
+					var time0 = this.task.get('updated_at');
+					// Modify object...
+					var time1 = this.task.get('updated_at');
+					expect(time1 - time0).toBeGreaterThan(0);
+				});
+			});
+		});
 	});
 
-	it("can be related to a tag through a link", function() {
-		this.note.get('tagLinks').add( { tag: this.tag } );
-		expect(this.note.get('tagLinks').pluck('tag')[0].get('label')).toEqual("My test tag");
-	});
+	//=======================================================================================================
+	// DESCRIBE MODEL RELATIONS
+	//=======================================================================================================
 
-	it("can be related to a task through a link", function() {
-		this.note.get('taskLinks').add( { task: this.task } );
-		expect(this.note.get('taskLinks').pluck('task')[0].get('label')).toEqual("My test task");
-	});
+	describe("Relations", function() {
 
-	describe("when creating a new note", function() {
-		it("should have a default created_at attribute", function() {
-			expect((new Date()).getTime() - this.note.get('created_at').getTime()).toBeGreaterThan(-1);
+		beforeEach(function() {
+			this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
+			this.note2      = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
+			this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
+			this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
+			this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
+			this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
+			this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
+			this.task3      = new meenoAppCli.Classes.Task({label:"My test task 3"});
+			this.noteFilter = new meenoAppCli.Classes.NoteFilter();
+			this.notes      = new meenoAppCli.Classes.Notes();
+			this.tags       = new meenoAppCli.Classes.Tags();
+			this.tasks      = new meenoAppCli.Classes.Tasks();
+			this.notes.add(this.note);
+			this.notes.add(this.note2);
+			this.notes.add(this.note3);
+			this.tags.add(this.tag);
+			this.tags.add(this.tag2);
+			this.tasks.add(this.task);
+			this.tasks.add(this.task2);
+			this.tasks.add(this.task3);
 		});
-		it("should have a default updated_at attribute", function() {
-			expect((new Date()).getTime() - this.note.get('updated_at').getTime()).toBeGreaterThan(-1);
-		});
-		it("should have a default title attribute", function() {
-			expect(this.note.get('title')).toBe('Nouvelle note');
-		});
-		it("should have a default content attribute", function() {
-			expect(this.note.get('content')).toBe('Saisissez ici le contenu de votre note...');
-		});
-	});
 
-	describe("when modifying a note", function() {
-		it("should have updated updated_at attribute", function() {
-			var time0 = this.note.get('updated_at');
-			this.note.set('title','new title');
-			var time1 = this.note.get('updated_at');
-			expect(time1 - time0).toBeGreaterThan(0);
+		it("Note can be related to a tag and a task", function() {
+			this.note.get('tagLinks').add( { tag: this.tag } );
+			expect(this.note.get('tagLinks').pluck('tag')[0].get('label')).toEqual("My test tag");
+
+			this.note.get('taskLinks').add( { task: this.task } );
+			expect(this.note.get('taskLinks').pluck('task')[0].get('label')).toEqual("My test task");
+		});
+		it("Tag can be related to a note and a task", function() {
+			this.tag.get('noteLinks').add( { note: this.note2 } );
+			expect(this.tag.get('noteLinks').pluck('note')[0].get('title')).toEqual("Nouvelle note bis");
+
+			this.tag.get('taskLinks').add( { task: this.task2 } );
+			expect(this.tag.get('taskLinks').pluck('task')[0].get('label')).toEqual("My test task 2");
+		});
+		it("Task can be related to a note and a tag", function() {
+			this.task.get('noteLinks').add( { note: this.note2 } );
+			expect(this.task.get('noteLinks').pluck('note')[0].get('title')).toEqual("Nouvelle note bis");
+
+			this.task.get('tagLinks').add( { tag: this.tag } );
+			expect(this.task.get('tagLinks').pluck('tag')[0].get('label')).toEqual("My test tag");
+
+			this.task2.set('parent', this.task);
+			this.task3.set('parent', this.task);
+			expect(this.task2.get('parent').get('label')).toEqual("My test task");
+			expect(this.task.get('children').at(0).get('label')).toEqual("My test task 2");
+			expect(this.task.get('children').at(1).get('label')).toEqual("My test task 3");
+		});
+		it("Task can have one parent and several children", function() {
+			this.task2.set('parent', this.task);
+			this.task3.set('parent', this.task);
+			expect(this.task2.get('parent').get('label')).toEqual("My test task");
+			expect(this.task.get('children').at(0).get('label')).toEqual("My test task 2");
+			expect(this.task.get('children').at(1).get('label')).toEqual("My test task 3");
 		});
 	});
 });
-
-
-describe("Tag model", function() {
-
-	beforeEach(function() {
-		this.tag = new meenoAppCli.Classes.Tag();
-	});
-
-	describe("when creating a new tag", function() {
-		it("should have a default created_at attribute", function() {
-			expect((new Date()).getTime() - this.tag.get('created_at').getTime()).toBeGreaterThan(-1);
-		});
-		it("should have a default updated_at attribute", function() {
-			expect((new Date()).getTime() - this.tag.get('updated_at').getTime()).toBeGreaterThan(-1);
-		});
-		it("should have a default label attribute", function() {
-			expect(this.tag.get('label')).toBe('New Tag');
-		});
-	});
-
-	describe("when modifying a tag", function() {
-		it("should have updated updated_at attribute", function() {
-			var time0 = this.tag.get('updated_at');
-			// Modify object...
-			var time1 = this.tag.get('updated_at');
-			expect(time1 - time0).toBeGreaterThan(0);
-		});
-	});
-});
-
-describe("Task model", function() {
-
-	beforeEach(function() {
-		this.task = new meenoAppCli.Classes.Task();
-	});
-
-	describe("when creating a new task", function() {
-		it("should have a default created_at attribute", function() {
-			expect((new Date()).getTime() - this.task.get('created_at').getTime()).toBeGreaterThan(-1);
-		});
-		it("should have a default updated_at attribute", function() {
-			expect((new Date()).getTime() - this.task.get('updated_at').getTime()).toBeGreaterThan(-1);
-		});
-		it("should have a default description attribute", function() {
-			expect(this.task.get('description')).toBe('New Task');
-		});
-	});
-
-	describe("when modifying a task", function() {
-		it("should have updated updated_at attribute", function() {
-			var time0 = this.task.get('updated_at');
-			// Modify object...
-			var time1 = this.task.get('updated_at');
-			expect(time1 - time0).toBeGreaterThan(0);
-		});
-	});
-});
-
-describe("Note, tags and tasks model", function() {
-
-	beforeEach(function() {
-		this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
-		this.note2      = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
-		this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
-		this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
-		this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
-		this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
-		this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
-		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
-		this.notes      = new meenoAppCli.Classes.Notes();
-		this.tags       = new meenoAppCli.Classes.Tags();
-		this.tasks      = new meenoAppCli.Classes.Tasks();
-		this.notes.add(this.note);
-		this.notes.add(this.note2);
-		this.notes.add(this.note3);
-		this.tags.add(this.tag);
-		this.tags.add(this.tag2);
-		this.tasks.add(this.task);
-		this.tasks.add(this.task2);
-	});
-
-	it("Note can be related to a tag and a task", function() {
-		this.note.get('tagLinks').add( { tag: this.tag } );
-		expect(this.note.get('tagLinks').pluck('tag')[0].get('label')).toEqual("My test tag");
-
-		this.note.get('taskLinks').add( { task: this.task } );
-		expect(this.note.get('taskLinks').pluck('task')[0].get('label')).toEqual("My test task");
-	});
-	it("Tag can be related to a note and a task", function() {
-		this.tag.get('noteLinks').add( { note: this.note2 } );
-		expect(this.tag.get('noteLinks').pluck('note')[0].get('title')).toEqual("Nouvelle note bis");
-
-		this.tag.get('taskLinks').add( { task: this.task2 } );
-		expect(this.tag.get('taskLinks').pluck('task')[0].get('label')).toEqual("My test task 2");
-	});
-	it("Task can be related to a note, a tag and a task", function() {
-		this.task.get('noteLinks').add( { note: this.note2 } );
-		expect(this.task.get('noteLinks').pluck('note')[0].get('title')).toEqual("Nouvelle note bis");
-
-		this.task.get('tagLinks').add( { tag: this.tag } );
-		expect(this.task.get('tagLinks').pluck('tag')[0].get('label')).toEqual("My test tag");
-
-		this.task.set('parent', this.task2);
-		expect(this.task.get('parent').get('label')).toEqual("My test task 2");
-	});
-});
-
 
 describe("Filter models", function() {
 
@@ -275,7 +270,8 @@ describe("Filter models", function() {
 	});
 });
 
-describe("Collections of notes, tasks and tags", function() {
+describe("Collections", function() {
+
 	beforeEach(function() {
 		this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
 		this.note2      = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
@@ -285,6 +281,7 @@ describe("Collections of notes, tasks and tags", function() {
 		this.tag3       = new meenoAppCli.Classes.Tag({label:"My test tag 3"});
 		this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
 		this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
+		this.task3      = new meenoAppCli.Classes.Task({label:"My test task 3"});
 		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
 		this.taskFilter = new meenoAppCli.Classes.TaskFilter();
 		this.tagFilter  = new meenoAppCli.Classes.TagFilter();
@@ -298,89 +295,113 @@ describe("Collections of notes, tasks and tags", function() {
 		this.tags.add(this.tag2);
 		this.tasks.add(this.task);
 		this.tasks.add(this.task2);
-	});
-	it("should provide a search function using objectFilters", function() {
-		// 1. Testing notes
-		this.note.set("title","wanted 1");
-		this.note2.set("title","wanted 2");
-		this.noteFilter.set('text','ted');
-
-		expect(this.notes.search(this.noteFilter).length).toEqual(2);
-
-		this.note.set("title","wanted 1");
-		this.note2.set("title","wanted 2");
-		this.note3.set("title","wanted 3");
-		this.note.get('tagLinks').add( { tag: this.tag } );
-		this.note2.get('tagLinks').add( { tag: this.tag } );
-		this.note2.get('taskLinks').add( { task: this.task } );
-		this.note3.get('tagLinks').add( { tag: this.tag } );
-		this.note3.get('taskLinks').add( { task: this.task } );
-		this.noteFilter.set('text','wanted');
-		this.noteFilter.get('tags').add(this.tag);
-		this.noteFilter.get('tasks').add(this.task);
-
-		expect(this.notes.search(this.noteFilter).length).toEqual(2);
-		expect(this.notes.search(this.noteFilter).at(0).get('title')).toBe("wanted 2");
-		expect(this.notes.search(this.noteFilter).at(1).get('title')).toBe("wanted 3");
-
-		// 2. Testing tasks
-		this.task.set("label","wanted 1");
-		this.task2.set("label","wanted 2");
-		this.task.get('tagLinks').add( { tag: this.tag } );
-		this.taskFilter.set('text','2');
-		this.taskFilter.get('tags').add(this.tag);
-
-		expect(this.tasks.search(this.taskFilter).length).toEqual(0);
-
+		this.tasks.add(this.task3);
 	});
 
-	it("should provide a getTree method if it's a collection of tasks", function() {
-		// 1. Simulating a hierarchy
-		/*
-			task 0
-			    task 1 / Perso
-			        task 2 / Passeport
-			        task 3 / Passeport
-			        task 4 / Voyage
-		    task 5 / Perso
-		*/
+	describe("Notes, tasks and tags", function() {
 
-		this.task0 = new meenoAppCli.Classes.Task({label:"task 0"});
-		this.task1 = new meenoAppCli.Classes.Task({label:"task 1"});
-		this.task2 = new meenoAppCli.Classes.Task({label:"task 2"});
-		this.task3 = new meenoAppCli.Classes.Task({label:"task 3"});
-		this.task4 = new meenoAppCli.Classes.Task({label:"task 4"});
-		this.task5 = new meenoAppCli.Classes.Task({label:"task 5"});
-		
-		this.tag1 = new meenoAppCli.Classes.Tag({label:"Perso"});
-		this.tag2 = new meenoAppCli.Classes.Tag({label:"Passeport"});
-		this.tag3 = new meenoAppCli.Classes.Tag({label:"Voyage"});
+		it("should provide a search function using objectFilters", function() {
+			// 1. Testing notes
+			this.note.set("title","wanted 1");
+			this.note2.set("title","wanted 2");
+			this.noteFilter.set('text','ted');
 
-		this.task1.get('tagLinks').add( { tag: this.tag1 } );
-		this.task2.get('tagLinks').add( { tag: this.tag2 } );
-		this.task3.get('tagLinks').add( { tag: this.tag2 } );
-		this.task4.get('tagLinks').add( { tag: this.tag3 } );
-		this.task5.get('tagLinks').add( { tag: this.tag1 } );
+			expect(this.notes.search(this.noteFilter).length).toEqual(2);
 
-		this.task1.set('parent',this.task0);
-		this.task2.set('parent',this.task1);
-		this.task3.set('parent',this.task1);
-		this.task4.set('parent',this.task1);
+			this.note.set("title","wanted 1");
+			this.note2.set("title","wanted 2");
+			this.note3.set("title","wanted 3");
+			this.note.get('tagLinks').add( { tag: this.tag } );
+			this.note2.get('tagLinks').add( { tag: this.tag } );
+			this.note2.get('taskLinks').add( { task: this.task } );
+			this.note3.get('tagLinks').add( { tag: this.tag } );
+			this.note3.get('taskLinks').add( { task: this.task } );
+			this.noteFilter.set('text','wanted');
+			this.noteFilter.get('tags').add(this.tag);
+			this.noteFilter.get('tasks').add(this.task);
 
-		// 2. Preparing a taskFilter
-		this.taskFilter.set('text','');
-		this.taskFilter.get('tags').add(this.tag1).add(this.tag2);
+			expect(this.notes.search(this.noteFilter).length).toEqual(2);
+			expect(this.notes.search(this.noteFilter).at(0).get('title')).toBe("wanted 2");
+			expect(this.notes.search(this.noteFilter).at(1).get('title')).toBe("wanted 3");
 
-		// 3. Checking the tree generated
-		/* Expected result:
-			task 0
-			    task 1 / Perso
-			        task 2 / Passeport
-			        task 3 / Passeport
-			        task 4 / Voyage
-		*/
+			// 2. Testing tasks
+			this.task.set("label","wanted 1");
+			this.task2.set("label","wanted 2");
+			this.task.get('tagLinks').add( { tag: this.tag } );
+			this.taskFilter.set('text','2');
+			this.taskFilter.get('tags').add(this.tag);
 
-		expect(this.tasks.search(this.taskFilter).getTree).toEqual(false);
-
+			expect(this.tasks.search(this.taskFilter).length).toEqual(0);
+		});
 	});
+
+	describe("Tasks Collections", function() {
+
+		it("should be SORTable by position", function() {
+			this.task.set('position',3);
+			this.task2.set('position',1);
+			this.task3.set('position',2);
+			this.tasks.sort();
+			expect(this.tasks.at(0).get('label')).toEqual('My test task 2');
+			expect(this.tasks.at(1).get('label')).toEqual('My test task 3');
+			expect(this.tasks.at(2).get('label')).toEqual('My test task');
+			this.task.set('position',1);
+			this.task2.set('position',2);
+			this.task3.set('position',3);
+			this.tasks.sort();
+			expect(this.tasks.at(0).get('label')).toEqual('My test task');
+			expect(this.tasks.at(1).get('label')).toEqual('My test task 2');
+			expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
+		});
+
+		it("should provide a getTree method", function() {
+			// 1. Simulating a hierarchy
+			/*
+				task 0
+				    task 1 / Perso
+				        task 2 / Passeport
+				        task 3 / Passeport
+				        task 4 / Voyage
+			    task 5 / Perso
+			*/
+
+			this.task0 = new meenoAppCli.Classes.Task({label:"task 0"});
+			this.task1 = new meenoAppCli.Classes.Task({label:"task 1"});
+			this.task2 = new meenoAppCli.Classes.Task({label:"task 2"});
+			this.task3 = new meenoAppCli.Classes.Task({label:"task 3"});
+			this.task4 = new meenoAppCli.Classes.Task({label:"task 4"});
+			this.task5 = new meenoAppCli.Classes.Task({label:"task 5"});
+
+			this.tag1 = new meenoAppCli.Classes.Tag({label:"Perso"});
+			this.tag2 = new meenoAppCli.Classes.Tag({label:"Passeport"});
+			this.tag3 = new meenoAppCli.Classes.Tag({label:"Voyage"});
+
+			this.task1.get('tagLinks').add( { tag: this.tag1 } );
+			this.task2.get('tagLinks').add( { tag: this.tag2 } );
+			this.task3.get('tagLinks').add( { tag: this.tag2 } );
+			this.task4.get('tagLinks').add( { tag: this.tag3 } );
+			this.task5.get('tagLinks').add( { tag: this.tag1 } );
+
+			this.task1.set('parent',this.task0);
+			this.task2.set('parent',this.task1);
+			this.task3.set('parent',this.task1);
+			this.task4.set('parent',this.task1);
+
+			// 2. Preparing a taskFilter
+			this.taskFilter.set('text','');
+			this.taskFilter.get('tags').add(this.tag1).add(this.tag2);
+
+			// 3. Checking the tree generated
+			/* Expected result:
+				task 0
+				    task 1 / Perso
+				        task 2 / Passeport
+				        task 3 / Passeport
+				        task 4 / Voyage
+			*/
+
+			expect(this.tasks.search(this.taskFilter).getTree).toEqual(false);
+		});
+	});
+
 });

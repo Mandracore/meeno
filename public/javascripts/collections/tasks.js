@@ -4,6 +4,7 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	model: meenoAppCli.Classes.Task,
 	url: '/api/tasks',
+	comparator: 'position',
 
 	search: function (filter) {
 		if(filter.get('text') === "") return this;
@@ -26,8 +27,29 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 		}));
 	},
 
+	getFirstSiblings: function () {
+		return this.find(function (model) {
+			return model.get('parent') === false; // those that do not have parent
+		});
+	},
+
 	getTree: function () {
-		// 1. Build recursive tree ?
-		// 2. On each node, check the existence of a parent to draw it
+		return this.getFirstSiblings().getTreeSlave();
+	},
+
+	getTreeSlave: function () {
+		var self = this;
+		this.sort(); // Should sort by position
+		var sHtml = "<ul>"; // Should contain the generated tree
+		this.each (function (model) {
+			if (model.getChildren() !== false ) {
+				sHtml += "<li>"+model.get('label')+"</li>";
+				sHtml += self.getTreeSlave (model.getChildren());
+			} else {
+				sHtml += "<li>"+model.get('label')+"</li>";
+			}
+		})
+		sHtml += "</ul>";
+		return sHtml;
 	}
 });

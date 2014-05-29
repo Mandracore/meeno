@@ -149,10 +149,6 @@ Objectif : mettre en place une hiérarchie pour les tasks. Le datamodel semble d
 ### Besoin 2 : toujours afficher les parents (en grisé) des tasks qui sont filtrées avec succès pour pouvoir se repérer plus facilement
 ### Besoin 3 : à la création d'une task ds une note, lui appliquer les mêmes tags de que la note par défaut.
 ### Besoin 3bis : considérer qu'un fils a au moins les tags de son parent => TODO : modifier la fonction de filtrage des collections de tasks
-	..step1: création méthode getAllTags (niveau model) pour récupérer tags des parents en plus
-	..step2: màj filtrage des collections pour rajouter aux tâches tous leurs parents jusqu'à la racine
-	..step3: comment daire en sorte que la vue d'un model filtré sache qu'elle apparaît jsute parceque c'est un parent ?
-	..stepX: fonction d'affichage ul/li dans collection qui rajoute les parents à la sélection en les flaggant class = "secondary"
 ### Besoin 4 : le filtrage de lacollection n'incluera pas les parents
 ### Besoin 5 : les parents sont rajoutés uniquement au moment de l'affichage
 
@@ -179,31 +175,42 @@ Objectif : mettre en place une hiérarchie pour les tasks. Le datamodel semble d
 		task 4 / Passeport
 		task 5 / Passeport
 
-Mettre à jour datamodel tasks pour y rajouter les tags !
-
 Question comment se passe le filtrage ?
-1. J'ajoute les tags des parents aux enfants
-2. Je filtre toute la collection selon mes critères
-3. Je rajoute les parents
-4. Je flagge les modèles parents non compliants
-5. Je transforme une collection de modèles flat (filtrage) en tree // Javascript tree builder ?
-==> ça prend un long moment...
-
-Comment je passe d'un truc flat à un tree ?
-
-
-
-drawTree (coll) {
-	if (model) { return drawTree ;}
-	else print(model);
-}
+1. Je filtre toute la collection selon mes critères (en considérant les enfants avec les tags de leurs parents aussi)
+    1.1. Dev task.getAllTags()
+    1.2. Dev tasks.completeWithParents()
+        1.2.1. Je rajoute à la sélection tous les ancêtres de la sélection 
+        1.2.2. Je flagge (class = "secondary") tous les nouveaux parents rajoutés puisqu'ils ne sont en fait pas compliants
+2. Je transforme coll flat en tree
+    2.1. Dev getChildren // DONE (natif, Unit testing OK)
+    2.2. Dev sort siblings // DONE (natif + param, Unit testing OK)
 
 
-	[0] task 1 / NCD
-		[0] task 2 / NCD / Neolane
-			[0] task 21 / NCD / Neolane / 6#
-	[1] task 3 / Perso
-		[0] task 4 / Passeport
-		[1] task 5 / Passeport
-		[2] task 6 / Voyage
-	[2] task 7 / Perso
+[0] task 1 / NCD
+	[0] task 2 / NCD / Neolane
+		[0] task 21 / NCD / Neolane / 6#
+[1] task 3 / Perso
+	[0] task 4 / Passeport
+	[1] task 5 / Passeport
+	[2] task 6 / Voyage
+[2] task 7 / Perso
+
+ID / Parent / Order
+    [1/0/0] task 1 / NCD
+    [4/1/0] task 2 / NCD / Neolane
+    [5/4/0] task 21 / NCD / Neolane / 6#
+    [2/0/1] task 3 / Perso
+    [6/2/0] task 4 / Passeport
+    [7/2/1] task 5 / Passeport
+    [8/2/2] task 6 / Voyage
+    [3/0/2] task 7 / Perso
+
+GetFirstSiblings
+    [1/0/0] task 1 / NCD
+    [3/0/2] task 7 / Perso
+    [2/0/1] task 3 / Perso
+
+SortSiblings
+    [1/0/0] task 1 / NCD
+    [2/0/1] task 3 / Perso
+    [3/0/2] task 7 / Perso

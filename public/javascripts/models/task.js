@@ -11,19 +11,40 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 			key: 'task',
 			includeInJSON: '_id'
 		}
-	}],
+	},{
+		type: 'HasMany',
+		key: 'tagLinks',
+		relatedModel: 'meenoAppCli.Classes.LinkTaskTag',
+		reverseRelation: {
+			key: 'task',
+			includeInJSON: '_id'
+		}
+	},{
+		type: 'HasOne',
+		key: 'parent',
+		relatedModel: 'meenoAppCli.Classes.Task',
+		reverseRelation: {
+			key: 'children',
+			includeInJSON: '_id'
+		}
+	}
+	],
+
 	getAllTags: function () {
 		// 1. get the tags
 		// 2. get the tags of all ancestors
 		// 3. return it
 	},
+
 	defaults: function() {
 		return {
-			label       : 'New Task',
-			description : 'Describe here your task...',
-			due_at      : new Date(),
-			created_at  : new Date(),
-			updated_at  : new Date()
+			label      : 'New Task',
+			description: 'Description of your task...',
+			parent     : false,
+			position   : 0,
+			due_at     : new Date(),
+			created_at : new Date(),
+			updated_at : new Date()
 		};
 	}
 });
