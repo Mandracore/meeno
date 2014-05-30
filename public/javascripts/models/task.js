@@ -3,37 +3,42 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 	idAttribute: "_id",
-	relations: [{
-		type: 'HasMany',
-		key: 'noteLinks',
-		relatedModel: 'meenoAppCli.Classes.LinkNoteTask',
+	relations  : [{
+		type           : 'HasMany',
+		key            : 'noteLinks',
+		relatedModel   : 'meenoAppCli.Classes.LinkNoteTask',
 		reverseRelation: {
-			key: 'task',
+			key          : 'task',
 			includeInJSON: '_id'
 		}
 	},{
-		type: 'HasMany',
-		key: 'tagLinks',
-		relatedModel: 'meenoAppCli.Classes.LinkTaskTag',
+		type           : 'HasMany',
+		key            : 'tagLinks',
+		relatedModel   : 'meenoAppCli.Classes.LinkTaskTag',
 		reverseRelation: {
-			key: 'task',
+			key          : 'task',
 			includeInJSON: '_id'
 		}
 	},{
-		type: 'HasOne',
-		key: 'parent',
-		relatedModel: 'meenoAppCli.Classes.Task',
+		type           : 'HasOne',
+		key            : 'parent',
+		relatedModel   : 'meenoAppCli.Classes.Task',
 		reverseRelation: {
-			key: 'children',
+			key          : 'children',
 			includeInJSON: '_id'
 		}
-	}
-	],
+	}],
 
-	getAllTags: function () {
-		// 1. get the tags
-		// 2. get the tags of all ancestors
-		// 3. return it
+	getAncestors: function () {
+		var ancestors = new meenoAppCli.Classes.Tasks();
+
+		if (this.get('parent')) {
+			ancestors.add(this.get('parent'));
+			this.get('parent').getAncestors().each(function (elder) {
+				ancestors.add(elder);
+			});
+		}
+		return ancestors;
 	},
 
 	defaults: function() {

@@ -38,7 +38,6 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	},
 
 	getTreeSlave: function () {
-		var self = this;
 		this.sort(); // Should sort by position
 		var sHtml = "<ul>"; // Should contain the generated tree
 		this.each (function (model) {

@@ -96,7 +96,7 @@ describe("Business Models", function() {
 	// DESCRIBE MODEL RELATIONS
 	//=======================================================================================================
 
-	describe("Relations", function() {
+	describe("Relations and methods", function() {
 
 		beforeEach(function() {
 			this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
@@ -154,6 +154,13 @@ describe("Business Models", function() {
 			expect(this.task2.get('parent').get('label')).toEqual("My test task");
 			expect(this.task.get('children').at(0).get('label')).toEqual("My test task 2");
 			expect(this.task.get('children').at(1).get('label')).toEqual("My test task 3");
+		});
+		it("Task should have a getAncestors() method", function() {
+			this.task2.set('parent', this.task);
+			this.task3.set('parent', this.task2);
+			expect(this.task3.getAncestors().length).toEqual(2);
+			expect(this.task3.getAncestors().at(1).get('label')).toEqual("My test task");
+			expect(this.task3.getAncestors().at(0).get('label')).toEqual("My test task 2");
 		});
 	});
 });

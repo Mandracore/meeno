@@ -148,7 +148,7 @@ Objectif : mettre en place une hiérarchie pour les tasks. Le datamodel semble d
 ### Besoin 1 : faire disparaître des tronçons de tasks qui ne m'intéressent pas
 ### Besoin 2 : toujours afficher les parents (en grisé) des tasks qui sont filtrées avec succès pour pouvoir se repérer plus facilement
 ### Besoin 3 : à la création d'une task ds une note, lui appliquer les mêmes tags de que la note par défaut.
-### Besoin 3bis : considérer qu'un fils a au moins les tags de son parent => TODO : modifier la fonction de filtrage des collections de tasks
+### Besoin 3bis : considérer qu'un fils a au moins les tags de son parent => TODO : modifier la fonction de filtrage des collections de tasks => trop compliqué, faire plus tard une fonction qui rajoute les tags du parent à l'enfant
 ### Besoin 4 : le filtrage de lacollection n'incluera pas les parents
 ### Besoin 5 : les parents sont rajoutés uniquement au moment de l'affichage
 
@@ -177,10 +177,9 @@ Objectif : mettre en place une hiérarchie pour les tasks. Le datamodel semble d
 
 Question comment se passe le filtrage ?
 1. Je filtre toute la collection selon mes critères (en considérant les enfants avec les tags de leurs parents aussi)
-    1.1. Dev task.getAllTags()
-    1.2. Dev tasks.completeWithParents()
-        1.2.1. Je rajoute à la sélection tous les ancêtres de la sélection 
-        1.2.2. Je flagge (class = "secondary") tous les nouveaux parents rajoutés puisqu'ils ne sont en fait pas compliants
+    1.1. Dev tasks.completeWithParents()
+        1.1.1. Je rajoute à la sélection tous les ancêtres de la sélection 
+        1.1.2. Je flagge (class = "secondary") tous les nouveaux parents rajoutés puisqu'ils ne sont en fait pas compliants
 2. Je transforme coll flat en tree
     2.1. Dev getChildren // DONE (natif, Unit testing OK)
     2.2. Dev sort siblings // DONE (natif + param, Unit testing OK)
