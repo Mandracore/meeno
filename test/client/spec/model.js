@@ -280,30 +280,40 @@ describe("Filter models", function() {
 describe("Collections", function() {
 
 	beforeEach(function() {
-		this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
-		this.note2      = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
-		this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
-		this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
-		this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
-		this.tag3       = new meenoAppCli.Classes.Tag({label:"My test tag 3"});
-		this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
-		this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
-		this.task3      = new meenoAppCli.Classes.Task({label:"My test task 3"});
-		this.task4      = new meenoAppCli.Classes.Task({label:"My test task 4"});
-		this.task5      = new meenoAppCli.Classes.Task({label:"My test task 5"});
-		this.task6      = new meenoAppCli.Classes.Task({label:"My test task 6"});
-		this.task7      = new meenoAppCli.Classes.Task({label:"My test task 7"});
-		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
-		this.taskFilter = new meenoAppCli.Classes.TaskFilter();
-		this.tagFilter  = new meenoAppCli.Classes.TagFilter();
-		this.notes      = new meenoAppCli.Classes.Notes();
-		this.tags       = new meenoAppCli.Classes.Tags();
-		this.tasks      = new meenoAppCli.Classes.Tasks();
+		this.note        = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
+		this.note2       = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
+		this.note3       = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
+		this.tag         = new meenoAppCli.Classes.Tag({label:"My test tag"});
+		this.tag2        = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
+		this.tag3        = new meenoAppCli.Classes.Tag({label:"My test tag 3"});
+		this.tag4        = new meenoAppCli.Classes.Tag({label:"My test tag 4"});
+		this.tag5        = new meenoAppCli.Classes.Tag({label:"My test tag 5"});
+		this.tag6        = new meenoAppCli.Classes.Tag({label:"My test tag 6"});
+		this.task        = new meenoAppCli.Classes.Task({label:"My test task"});
+		this.task2       = new meenoAppCli.Classes.Task({label:"My test task 2"});
+		this.task3       = new meenoAppCli.Classes.Task({label:"My test task 3"});
+		this.task4       = new meenoAppCli.Classes.Task({label:"My test task 4"});
+		this.task5       = new meenoAppCli.Classes.Task({label:"My test task 5"});
+		this.task6       = new meenoAppCli.Classes.Task({label:"My test task 6"});
+		this.task7       = new meenoAppCli.Classes.Task({label:"My test task 7"});
+		this.task8       = new meenoAppCli.Classes.Task({label:"My test task 8"});
+		this.noteFilter  = new meenoAppCli.Classes.NoteFilter();
+		this.taskFilter1 = new meenoAppCli.Classes.TaskFilter();
+		this.taskFilter2 = new meenoAppCli.Classes.TaskFilter();
+		this.taskFilter3 = new meenoAppCli.Classes.TaskFilter();
+		this.tagFilter   = new meenoAppCli.Classes.TagFilter();
+		this.notes       = new meenoAppCli.Classes.Notes();
+		this.tags        = new meenoAppCli.Classes.Tags();
+		this.tasks       = new meenoAppCli.Classes.Tasks();
 		this.notes.add(this.note);
 		this.notes.add(this.note2);
 		this.notes.add(this.note3);
 		this.tags.add(this.tag);
 		this.tags.add(this.tag2);
+		this.tags.add(this.tag3);
+		this.tags.add(this.tag4);
+		this.tags.add(this.tag5);
+		this.tags.add(this.tag6);
 		this.tasks.add(this.task);
 		this.tasks.add(this.task2);
 		this.tasks.add(this.task3);
@@ -311,8 +321,7 @@ describe("Collections", function() {
 
 	describe("Notes, tasks and tags", function() {
 
-		it("should provide a search function using objectFilters", function() {
-			// 1. Testing notes
+		it("notes should provide a search function using objectFilters", function() {
 			this.note.set("title","wanted 1");
 			this.note2.set("title","wanted 2");
 			this.noteFilter.set('text','ted');
@@ -334,44 +343,53 @@ describe("Collections", function() {
 			expect(this.notes.search(this.noteFilter).length).toEqual(2);
 			expect(this.notes.search(this.noteFilter).at(0).get('title')).toBe("wanted 2");
 			expect(this.notes.search(this.noteFilter).at(1).get('title')).toBe("wanted 3");
+		});
 
-			// 2. Testing tasks
-			// should also return ancestors
-
-			/* // OLD VERSION
-			this.task.set("label","wanted 1");
-			this.task2.set("label","wanted 2");
-			this.task.get('tagLinks').add( { tag: this.tag } );
-			this.taskFilter.get('tags').add(this.tag);
-			this.taskFilter.set('text','2');
-
-			expect(this.tasks.search(this.taskFilter).length).toEqual(0);*/
-			
+		it("tasks should provide a search function using objectFilters and returning ancestors", function() {
 			/* TEST HIERARCHY
 			[0] task 1 / NCD
-				[0] task 2 / NCD / Neolane
-					[0] task 3 / NCD / Neolane / 6#
+				[0] task 2 / Neolane
+					[0] task 3 / 6# <=== taskFilter1
 			[1] task 4 / Perso
-				[0] task 5 / Passeport
-				[1] task 6 / Passeport
-				[2] task 7 / Voyage
+				[0] task 5 / Passeport <=== taskFilter3
+				[1] task 6 / Passeport <=== taskFilter2 & taskFilter3
+				[2] task 7 / Voyage 
 			[2] task 8 / Perso */
 
 			this.task2.set('parent', this.task);
-			this.task3.set('parent', this.task);
-			this.task4.set('parent', this.task);
-			this.task5.set('parent', this.task);
-			this.task6.set('parent', this.task);
-			this.task7.set('parent', this.task);
+			this.task3.set('parent', this.task2);
+			this.task5.set('parent', this.task4);
+			this.task6.set('parent', this.task4);
+			this.task7.set('parent', this.task4);
 			this.task8.set('parent', this.task);
 
+			this.tag.set("label","NCD");
+			this.tag2.set("label","Neolane");
+			this.tag3.set("label","6#");
+			this.tag4.set("label","Perso");
+			this.tag5.set("label","Passeport");
+			this.tag6.set("label","Voyage");
+
 			this.task.get('tagLinks').add( { tag: this.tag } );
-			this.taskFilter.get('tags').add(this.tag);
+			this.task2.get('tagLinks').add( { tag: this.tag2 } );
+			this.task3.get('tagLinks').add( { tag: this.tag3 } );
+			this.task4.get('tagLinks').add( { tag: this.tag4 } );
+			this.task5.get('tagLinks').add( { tag: this.tag5 } );
+			this.task6.get('tagLinks').add( { tag: this.tag5 } );
+			this.task7.get('tagLinks').add( { tag: this.tag6 } );
+			this.task8.get('tagLinks').add( { tag: this.tag4 } );
 
-			expect(this.task2.get('parent').get('label')).toEqual("My test task");
-			expect(this.task.get('children').at(0).get('label')).toEqual("My test task 2");
-			expect(this.task.get('children').at(1).get('label')).toEqual("My test task 3");
+			this.taskFilter1.set('text','3'); // Should select only task 3 plus its two ancestors
+			this.taskFilter2.get('tags').add(this.tag4); // Should select only task 6 plus its ancestor (task 4)
+			this.taskFilter2.set('text','6');
+			this.taskFilter3.get('tags').add(this.tag5); // Should select task 5 & 6 plus their ancestor (task 4)
 
+			expect(this.tasks.search(this.taskFilter1).length).toEqual(3); // KO
+			expect(this.tasks.search(this.taskFilter2).length).toEqual(2); // KO
+			expect(this.tasks.search(this.taskFilter3).length).toEqual(3); // ???
+
+			// expect(this.notes.search(this.noteFilter).at(0).get('title')).toBe("wanted 2");
+			// expect(this.notes.search(this.noteFilter).at(1).get('title')).toBe("wanted 3");
 		});
 	});
 
