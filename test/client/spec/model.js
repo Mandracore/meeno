@@ -289,6 +289,10 @@ describe("Collections", function() {
 		this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
 		this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
 		this.task3      = new meenoAppCli.Classes.Task({label:"My test task 3"});
+		this.task4      = new meenoAppCli.Classes.Task({label:"My test task 4"});
+		this.task5      = new meenoAppCli.Classes.Task({label:"My test task 5"});
+		this.task6      = new meenoAppCli.Classes.Task({label:"My test task 6"});
+		this.task7      = new meenoAppCli.Classes.Task({label:"My test task 7"});
 		this.noteFilter = new meenoAppCli.Classes.NoteFilter();
 		this.taskFilter = new meenoAppCli.Classes.TaskFilter();
 		this.tagFilter  = new meenoAppCli.Classes.TagFilter();
@@ -332,13 +336,42 @@ describe("Collections", function() {
 			expect(this.notes.search(this.noteFilter).at(1).get('title')).toBe("wanted 3");
 
 			// 2. Testing tasks
+			// should also return ancestors
+
+			/* // OLD VERSION
 			this.task.set("label","wanted 1");
 			this.task2.set("label","wanted 2");
 			this.task.get('tagLinks').add( { tag: this.tag } );
+			this.taskFilter.get('tags').add(this.tag);
 			this.taskFilter.set('text','2');
+
+			expect(this.tasks.search(this.taskFilter).length).toEqual(0);*/
+			
+			/* TEST HIERARCHY
+			[0] task 1 / NCD
+				[0] task 2 / NCD / Neolane
+					[0] task 3 / NCD / Neolane / 6#
+			[1] task 4 / Perso
+				[0] task 5 / Passeport
+				[1] task 6 / Passeport
+				[2] task 7 / Voyage
+			[2] task 8 / Perso */
+
+			this.task2.set('parent', this.task);
+			this.task3.set('parent', this.task);
+			this.task4.set('parent', this.task);
+			this.task5.set('parent', this.task);
+			this.task6.set('parent', this.task);
+			this.task7.set('parent', this.task);
+			this.task8.set('parent', this.task);
+
+			this.task.get('tagLinks').add( { tag: this.tag } );
 			this.taskFilter.get('tags').add(this.tag);
 
-			expect(this.tasks.search(this.taskFilter).length).toEqual(0);
+			expect(this.task2.get('parent').get('label')).toEqual("My test task");
+			expect(this.task.get('children').at(0).get('label')).toEqual("My test task 2");
+			expect(this.task.get('children').at(1).get('label')).toEqual("My test task 3");
+
 		});
 	});
 
