@@ -27,6 +27,17 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 		}));
 	},
 
+	addAncestors: function () {
+		var coll = this;
+
+		this.each( function (model) {
+			model.getAncestors().each(function (elder) {
+				coll.add(elder);
+			})
+		});
+		return coll;
+	},
+
 	getFirstSiblings: function () {
 		return this.find(function (model) {
 			return model.get('parent') === false; // those that do not have parent
