@@ -11,7 +11,7 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 		// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 		var pattern = new RegExp(filter.get('text'),"i");
 
-		return new meenoAppCli.Classes.Tasks (this.filter(function(model) {
+		var result = new meenoAppCli.Classes.Tasks (this.filter(function(model) {
 			// Full text search
 			if (false === (pattern.test(model.get("label")))) {
 				return false;
@@ -22,9 +22,11 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 			// This finder will return the objects for which there is no link
 			// If it returns undefined, that means that the current model is a match for our search
 			return (undefined === filter.get('tags').find(function(tag) {
-				return (false === _.contains(model.get('tagLinks').pluck('tag'), tag)); // Looking for the tag of the filter that is not related to current model
+				return (false === _.contains(model.pluckAllTags(), tag)); // Looking for the tag of the filter that is not related to current model
 			}));
 		}));
+
+		return result.addAncestors();
 	},
 
 	addAncestors: function () {

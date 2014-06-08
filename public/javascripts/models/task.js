@@ -41,6 +41,16 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 		return ancestors;
 	},
 
+	pluckAllTags: function () {
+		// Will return an array of tags (those of this plus those of this' ancestors)
+		var tags = [];
+		this.getAncestors().each(function (elder) {
+			tags = tags.concat(elder.get('tagLinks').pluck('tag'));
+		})
+		tags = tags.concat(this.get('tagLinks').pluck('tag'));
+		return tags;
+	},
+
 	defaults: function() {
 		return {
 			label      : 'New Task',

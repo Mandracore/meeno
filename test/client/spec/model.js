@@ -104,6 +104,7 @@ describe("Business Models", function() {
 			this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
 			this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
 			this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
+			this.tag3       = new meenoAppCli.Classes.Tag({label:"My test tag 3"});
 			this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
 			this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
 			this.task3      = new meenoAppCli.Classes.Task({label:"My test task 3"});
@@ -161,6 +162,21 @@ describe("Business Models", function() {
 			expect(this.task3.getAncestors().length).toEqual(2);
 			expect(this.task3.getAncestors().at(1).get('label')).toEqual("My test task");
 			expect(this.task3.getAncestors().at(0).get('label')).toEqual("My test task 2");
+		});
+		it("Task should have a pluckAllTags() method", function() {
+			this.task2.set('parent', this.task);
+			this.task3.set('parent', this.task2);
+
+			this.task.get('tagLinks').add( { tag: this.tag } );
+			this.task2.get('tagLinks').add( { tag: this.tag2 } );
+			this.task3.get('tagLinks').add( { tag: this.tag3 } );
+
+			var allTask3Tags = this.task3.pluckAllTags();
+
+			expect(allTask3Tags.length).toEqual(3);
+			expect(_.contains(allTask3Tags, this.tag)).toBe(true);
+			expect(_.contains(allTask3Tags, this.tag2)).toBe(true);
+			expect(_.contains(allTask3Tags, this.tag3)).toBe(true);
 		});
 	});
 });
@@ -428,23 +444,25 @@ describe("Collections", function() {
 				this.taskFilter1.set('text','3'); // Should select only task 3 plus its two ancestors (task 1 & task 2)
 				this.taskFilter2.get('tags').add(this.tag4); // Should select only task 6 plus its ancestor (task 4)
 				this.taskFilter2.set('text','6');
-				this.taskFilter3.get('tags').add(this.tag5); // Should select task 5 & 6 plus their ancestor (task 4)
+				// this.taskFilter3.get('tags').add(this.tag); // Should select task 5 & 6 plus their ancestor (task 4)
 
 				var tf1res = this.tasks.search(this.taskFilter1);
 				var tf2res = this.tasks.search(this.taskFilter2);
-				var tf3res = this.tasks.search(this.taskFilter3);
-				expect(tf1res.length).toEqual(3); // KO
-				expect(tf1res.contains(this.task1)).toBe(true);
+				// var tf3res = this.tasks.search(this.taskFilter3);
+
+				// console.log(tf3res);
+
+				expect(tf1res.length).toEqual(3);
+				expect(tf1res.contains(this.task)).toBe(true);
 				expect(tf1res.contains(this.task2)).toBe(true);
-				expect(tf1res.contains(this.task3)).toBe(true);  // OK
-				/*
-				expect(tf2res.length).toEqual(2); // KO
+				expect(tf1res.contains(this.task3)).toBe(true);
+				expect(tf2res.length).toEqual(2);
 				expect(tf2res.contains(this.task4)).toBe(true);
-				expect(tf2res.contains(this.task6)).toBe(true);
-				expect(tf3res.length).toEqual(3); // ???
+				expect(tf2res.contains(this.task6)).toBe(true);/*
+				expect(tf3res.length).toEqual(3); //################# KO
 				expect(tf3res.contains(this.task4)).toBe(true);
 				expect(tf3res.contains(this.task5)).toBe(true);
-				expect(tf3res.contains(this.task6)).toBe(true); */
+				expect(tf3res.contains(this.task6)).toBe(true);*/
 			});
 
 
