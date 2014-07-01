@@ -46,7 +46,8 @@
     "grunt-appcache": "0.1.x",
     "grunt-contrib-htmlmin": "0.1.x",
     "grunt-bower-requirejs": "0.7.x",
-    "grunt-autoprefixer": "0.2.x"
+    "grunt-autoprefixer": "0.2.x",
+    "grunt-contrib-uglify": "0.2.x"
   },
   "repository": {
     "type": "git",
@@ -69,7 +70,6 @@
     "node": true,
     "passfail": false,
     "proto": true,
-    "quotmark": "double",
     "regexdash": false,
     "regexp": true,
     "shadow": false,
@@ -99,6 +99,8 @@
       "beforeAfter": true,
       "describe": true,
       "xdescribe": true
-    }
+    },
+    "reporter": "checkstyle",
+    "reporterOutput": "jshint-output.xml"
   }
 }

@@ -96,11 +96,11 @@ module.exports = function(grunt) {
 		appcache: {
 			// TODO : configuration
 			options: {
-				basePath: 'static'
+				basePath: 'public'
 			},
 			all: {
-				dest: 'static/manifest.appcache',
-				cache: 'static/**/*',
+				dest: 'public/manifest.appcache',
+				cache: 'public/**/*',
 				network: '*',
 				fallback: '/ /offline.html'
 			}
@@ -127,7 +127,7 @@ module.exports = function(grunt) {
 		},
 		jshint: {
 			// define the files to lint
-			files: ['gruntfile.js', 'src/**/*.js', '/public/javascripts/**/*.js', 'test/**/*.js'],
+			files: ['gruntfile.js', 'src/**/*.js', '/public/javascripts/**/*.js', 'test/client/spec/*.js'],
 			// configure JSHint (documented at http://www.jshint.com/docs/)
 			options: '<%= pkg.jshintConfig %>'
 		},

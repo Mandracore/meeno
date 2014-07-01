@@ -5,3 +5,7 @@ node_modules*
 app/config/private*
 app/logs*
 app/pids*
+.sublime-grunt.cache
+npm-debug.log
+jshint-output.xml
+jshint-output.xsl
