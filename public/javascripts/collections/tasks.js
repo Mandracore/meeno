@@ -23,14 +23,14 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 			// This finder will return the objects for which there is no link
 			// If it returns undefined, that means that the current model is a match for our search
 			return (undefined === filter.get('tags').find(function(tag) {
-				// return (false === _.contains(model.pluckAllTags(), tag)); // Looking for the tag of the filter that is not related to current model
-				return (false === _.contains(model.get('tagLinks').pluck('tag'), tag)); // Looking for the tag of the filter that is not related to current model
+				return (false === _.contains(model.pluckAllTags(), tag)); // Looking for the tag of the filter that is not related to current model
+				// return (false === _.contains(model.get('tagLinks').pluck('tag'), tag)); // Looking for the tag of the filter that is not related to current model
 
 			}));
 		}));
 
-		return result;
-		// return result.addAncestors();
+		// return result;
+		return result.addAncestors();
 	},
 
 	addAncestors: function () {

@@ -444,56 +444,38 @@ describe("Collections", function() {
 			});
 
 			it("tasks should provide a search function using objectFilters and returning ancestors", function() {
-				//=====================================================
-				// le filtrage par tags semble ne plus avoir d'effet
-				//=====================================================
-/*
 				// TF1 Should select only task 3 plus its two ancestors (task 1 & task 2)
-				this.taskFilter1.set('text','3');
+				// Testing appending of ancestors
+				this.taskFilter1.get('tags').add(this.tag3); // 6#
 				// TF2 Should select only task 4 plus its children (5,6,7), and task 8
-				this.taskFilter2.get('tags').add(this.tag5); // Passeport
-				this.taskFilter2.get('tags').add(this.tag6); // Voyage
-				this.taskFilter2.get('tags').add(this.tag); // NCD
-				this.taskFilter2.get('tags').add(this.tag2); // Neolane
-				// TF3 Should select only task 6 plus its parent task 4
+				// Testing tag inheritance from parents
+				this.taskFilter2.get('tags').add(this.tag4); // Perso
+				// TF3 Should select only task 6 plus its parent task 4 but not its brother task 5
+				// Testing mixed text/object taskFilter
 				this.taskFilter3.set('text','6');
 				this.taskFilter3.get('tags').add(this.tag4); // Perso
 				this.taskFilter3.get('tags').add(this.tag5); // Passeport
-				// TF4 Should select only task 4
-				this.taskFilter4.set('text','4');
-				this.taskFilter4.get('tags').add(this.tag4); // Perso
 
 				var tf1res = this.tasks.search(this.taskFilter1);
 				var tf2res = this.tasks.search(this.taskFilter2);
 				var tf3res = this.tasks.search(this.taskFilter3);
-				var tf4res = this.tasks.search(this.taskFilter4);
 
-				// console.log(this.task.getAncestors());
-				// console.log(this.task2.getAncestors());
-				// console.log(this.task3.getAncestors());
+				expect(tf1res.length).toEqual(3);
+				expect(tf1res.contains(this.task)).toBe(true);
+				expect(tf1res.contains(this.task2)).toBe(true);
+				expect(tf1res.contains(this.task3)).toBe(true);
 
-				// expect(tf1res.length).toEqual(3);
-				// expect(tf1res.contains(this.task)).toBe(true);
-				// expect(tf1res.contains(this.task2)).toBe(true);
-				// expect(tf1res.contains(this.task3)).toBe(true);
-				expect(tf2res.length).toEqual(0); // KO
-				// expect(tf2res.contains(this.task4)).toBe(true);
-				// expect(tf2res.contains(this.task6)).toBe(true);
-				// expect(tf3res.length).toEqual(2);
-				// expect(tf3res.contains(this.task4)).toBe(true);
-				// expect(tf3res.contains(this.task5)).toBe(true);
-				// expect(tf3res.contains(this.task6)).toBe(true);
-				// expect(tf4res.length).toEqual(1);
+				expect(tf2res.length).toEqual(5);
+				expect(tf2res.contains(this.task4)).toBe(true);
+				expect(tf2res.contains(this.task5)).toBe(true);
+				expect(tf2res.contains(this.task6)).toBe(true);
+				expect(tf2res.contains(this.task7)).toBe(true);
+				expect(tf2res.contains(this.task8)).toBe(true);
 
-				*/
-
-				var r2Task1 = new meenoAppCli.Classes.Task({label:"Run 2 task 1"});
-				var r2Tag1  = new meenoAppCli.Classes.Tag({label:"Run 2 My test tag 1"});
-				var r2Tasks  = new meenoAppCli.Classes.Tasks();
-				r2Tasks.add(r2Task1);
-				var r2tf = new meenoAppCli.Classes.TaskFilter();
-				r2tf.get('tags').add(r2Tag1);
-				expect(r2Tasks.search(r2tf).length).toEqual(0);
+				expect(tf3res.length).toEqual(2);
+				expect(tf3res.contains(this.task6)).toBe(true);
+				expect(tf3res.contains(this.task5)).toBe(false);
+				expect(tf3res.contains(this.task4)).toBe(true);
 			});
 
 
