@@ -76,8 +76,8 @@ describe("Business Models", function() {
 				it("should have a default description attribute", function() {
 					expect(this.task.get('description')).toBe('Description of your task...');
 				});
-				it("should have a default position attribute", function() {
-					expect(this.task.get('position')).toBe(0);
+				it("should have a default position attribute set to max siblings position +1", function() {
+					expect(this.task.get('position')).toBe(99); // just to make the test fail until code is written
 				});
 			});
 

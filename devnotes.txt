@@ -213,3 +213,12 @@ SortSiblings
     [1/0/0] task 1 / NCD
     [2/0/1] task 3 / Perso
     [3/0/2] task 7 / Perso
+
+
+11/07====================================
+Filtrage apparemment OK. Maintenant il faut faire donner un moyen de changer l'ordre et la parenté via le crud. De préférence via drag/drop.
+1. se renseigner sur le fonctionnement du module que j'ai d/l
+2. définir un plan d'action
+
+16/07
+Nested sortable plugin is clearer but one question remains : how can a view of task detect that its DOM node has been moved ? Which sortable event should we listen ?
