@@ -392,7 +392,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	renderCollection: function (collName) {
-		//console.log("renderCollection:"+collName);
 		var self = this;
 		var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
 		// First, emptying the DOM
@@ -409,7 +408,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var results = this.options.collections[collName].search(this.filters[filterName]);
 		//console.log("// Search returned "+results.length+" item(s)");
 		//console.log(results);
-		results.each(function (element) { // for now we ignore complex searches
+		results.each(function (element) {
 			if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: element }); }
 			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: element }); }
 			if (collName == "tasks") { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: element }); }
@@ -417,6 +416,31 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			$list.append(newView.render().el);
 		}, this);
 	},
-});
 
-//_.extend(meenoAppCli.Classes.BrowserBodyView.prototype, meenoAppCli.l18n.BrowserBodyView);
+
+	renderTasksSub: function (coll, hTree) {
+		// 1. Get the models that do not have parents in the collection (the elders)
+		var elders = coll.getElders();
+		coll.remove(elders); // to be implemented if doesn't work as expected
+
+		elders.each (function (model) {
+			if (model.get('parent') === false) { // The model doesn't have a parent (Root)
+				if (!hTree.find ("ol")) { hTree.append('ol'); }
+				hTree.find("ol").append(
+					'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
+				);
+			} else { // the model has a parent (that must have been appended before to hTree)
+				if (!hTree.find ("#task"+model.get('parent').get('_id')).find ("ol")) { hTree.find ("#task"+model.get('parent').get('_id')).append('ol'); }
+				hTree.find ("#task"+model.get('parent').get('_id')).find("ol").append(
+					'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
+				);
+			}
+		});
+
+		if (coll.length == 0) {
+			return hTree;
+		} else {
+			return renderTasksSub (coll, hTree);
+		}
+	},
+});

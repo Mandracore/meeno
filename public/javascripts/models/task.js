@@ -30,6 +30,7 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 	}],
 
 	getAncestors: function () {
+		// Returns all the parents of a given task
 		var ancestors = new meenoAppCli.Classes.Tasks();
 
 		if (this.get('parent')) {
@@ -42,7 +43,7 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 	},
 
 	pluckAllTags: function () {
-		// Will return an array of tags (those of this plus those of this' ancestors)
+		// Returns an array of tags: those of "this" plus those of "this"'s ancestors
 		var tags = [];
 		this.getAncestors().each(function (elder) {
 			tags = tags.concat(elder.get('tagLinks').pluck('tag'));

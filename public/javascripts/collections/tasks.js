@@ -6,6 +6,8 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	url: '/api/tasks',
 	comparator: 'position',
 
+	// Returns a collection of tasks filtered by "filter"
+	// Will keep the ancestors of the tasks responding to the criteria
 	search: function (filter) {
 		if(filter.get('text') === "" && filter.get('tags').length == 0) return this;
 		// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
@@ -24,8 +26,6 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 			// If it returns undefined, that means that the current model is a match for our search
 			return (undefined === filter.get('tags').find(function(tag) {
 				return (false === _.contains(model.pluckAllTags(), tag)); // Looking for the tag of the filter that is not related to current model
-				// return (false === _.contains(model.get('tagLinks').pluck('tag'), tag)); // Looking for the tag of the filter that is not related to current model
-
 			}));
 		}));
 
