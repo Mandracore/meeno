@@ -418,7 +418,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	/**
-	 * This recursive function allows to generate the DOM tree and the Backbone views necessary to display tasks. 
+	 * This recursive method allows to generate the DOM tree and the Backbone views necessary to display tasks. 
 	 * It is meant to build the tree level by level : on each call we create the highest DOM level, so that on next call we will be able to append the children within their parent.
 	 * @param  {meenoAppCli.Classes.Tasks} coll, the temporary collection that stores the remaining tasks to render
 	 * @param  {jQuery} hTree, the "work-in-progress" HTML tree that is being built up

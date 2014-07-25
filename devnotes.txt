@@ -271,5 +271,5 @@ Objectif :
 
 25/07====================================
 Le render des collections de task est fini, reste à le tester et à implémenter :
-- la màj du render de BrowserBodyTaskView
+- la màj du render de BrowserBodyTaskView // OK
 - la màj de la méthode renderCollection dans browser-body

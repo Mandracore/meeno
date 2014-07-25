@@ -13,7 +13,6 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 		});
 	},
 
-	// Renders the tag item to the current state of the model
 	render: function() {
 		this.collName = "tasks";
 		//console.log ("R[Browser-body-task]");

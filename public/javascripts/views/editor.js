@@ -5,7 +5,6 @@ meenoAppCli.Classes.EditorView = Backbone.View.extend({
 
 	initialize: function() {
 		this.listenTo(this.model, 'remove', this.kill);
-		console.log('Editing note');
 		this.children = {
 			tab  : new meenoAppCli.Classes.EditorTabView({ model: this.model, parent: this }),
 			body : new meenoAppCli.Classes.EditorBodyView({ model: this.model, parent: this })
@@ -29,7 +28,6 @@ meenoAppCli.Classes.EditorView = Backbone.View.extend({
 			$("#tabs").append(this.children.body.render().el);
 			return this;
 		} else {
-			console.log ('Please close an editor first.');
 			meenoAppCli.dispatcher.trigger('tab:toggle:browser');
 			this.kill();
 		}
