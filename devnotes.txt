@@ -231,7 +231,7 @@ Plan d'action:
 	- ne pas oublier de trouver un moyen de flagger les tasks sélectionnées VS non sélectionnées (parents)
 
 
-Objectif de créer :
+Objectif :
 
 [0] task 1 / NCD
 	[0] task 2 / NCD / Neolane
@@ -242,79 +242,7 @@ Objectif de créer :
 	[2] task 6 / Voyage
 [2] task 7 / Perso
 
-1. coll je prends cx qui n'ont pas de parent dans la coll / sort / draw (avec le bon id) / remove de la collection
-
-/// if no <ol>, insert it first
-
-[1] task 3 / Perso
-[2] task 7 / Perso
-[0] task 2 / NCD / Neolane
-[2] task 6 / Voyage
-[0] task 1 / NCD
-[0] task 21 / NCD / Neolane / 6#
-[1] task 5 / Passeport
-[0] task 4 / Passeport
-
-devient
-
-[0] task 2 / NCD / Neolane
-[2] task 6 / Voyage
-[0] task 21 / NCD / Neolane / 6#
-[1] task 5 / Passeport
-[0] task 4 / Passeport
-
-<ol>
-	<li><div>task 1 / NCD</div></li>
-	<li><div>task 3 / Perso</div></li>
-	<li><div>task 7 / Perso</div></li>
-</ol>
-
-2. je relance la même fn : si non vide, je prends ceux qui n'ont pas de parent dans la coll, sort / draw / remove / call fn (coll nettoyée) si non vide
-
-/// if no <ol> (jquery test), insert it first
-
-[0] task 2 / NCD / Neolane
-[2] task 6 / Voyage
-[0] task 21 / NCD / Neolane / 6#
-[1] task 5 / Passeport
-[0] task 4 / Passeport
-devient
-[0] task 2 / NCD / Neolane
-[2] task 6 / Voyage
-[1] task 5 / Passeport
-[0] task 4 / Passeport
-
-
-<li>
-	<div>task 1 / NCD</div>
-	<ol>
-		<li>
-			<div>task 2 / NCD / Neolane</div>
-			<ol>
-				<li><div>task 21 / NCD / Neolane / 6#</div></li>
-			</ol>
-		</li>
-	</ol>
-</li>
-<li>
-	<div>task 3 / Perso</div>
-	<ol>
-		<li><div>task 4 / Passeport</div></li>
-		<li><div>task 5 / Passeport</div></li>
-		<li><div>task 6 / Voyage</div></li>
-	</ol>
-</li>
-<li><div>task 7 / Perso</div></li>
-
-3. je relance
-
-
-
-
- 
-
-
-
+==> doit devenir : ==>
 
 <ol>
 	<li>
@@ -338,3 +266,10 @@ devient
 	</li>
 	<li><div>task 7 / Perso</div></li>
 </ol>
+
+
+
+25/07====================================
+Le render des collections de task est fini, reste à le tester et à implémenter :
+- la màj du render de BrowserBodyTaskView
+- la màj de la méthode renderCollection dans browser-body

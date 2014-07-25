@@ -417,24 +417,42 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		}, this);
 	},
 
-
+	/**
+	 * This recursive function allows to generate the DOM tree and the Backbone views necessary to display tasks. 
+	 * It is meant to build the tree level by level : on each call we create the highest DOM level, so that on next call we will be able to append the children within their parent.
+	 * @param  {meenoAppCli.Classes.Tasks} coll, the temporary collection that stores the remaining tasks to render
+	 * @param  {jQuery} hTree, the "work-in-progress" HTML tree that is being built up
+	 * @return {jQuery} it can return either the function (recursive call) or the final HTML tree
+	 */
 	renderTasksSub: function (coll, hTree) {
+		var self = this;
+
+		if (hTree == undefined) { // To initialize the HTML tree at the first call
+			hTree = $("<div></div>");
+		}
+
 		// 1. Get the models that do not have parents in the collection (the elders)
 		var elders = coll.getElders();
 		coll.remove(elders); // to be implemented if doesn't work as expected
 
 		elders.each (function (model) {
+			var view = new meenoAppCli.Classes.BrowserBodyTaskView({ model: model });
+
 			if (model.get('parent') === false) { // The model doesn't have a parent (Root)
 				if (!hTree.find ("ol")) { hTree.append('ol'); }
 				hTree.find("ol").append(
-					'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
+					view.render().el
+					//'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
 				);
 			} else { // the model has a parent (that must have been appended before to hTree)
 				if (!hTree.find ("#task"+model.get('parent').get('_id')).find ("ol")) { hTree.find ("#task"+model.get('parent').get('_id')).append('ol'); }
 				hTree.find ("#task"+model.get('parent').get('_id')).find("ol").append(
-					'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
+					view.render().el
+					//'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
 				);
 			}
+
+			self.children["tasks"].push (view); // To keep track of sub views created in browser-body
 		});
 
 		if (coll.length == 0) {
