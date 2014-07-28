@@ -143,35 +143,6 @@ describe("Business Models", function() {
 			this.task.get('tagLinks').add( { tag: this.tag } );
 			expect(this.task.get('tagLinks').pluck('tag')[0].get('label')).toEqual("My test tag");
 		});
-		it("Task can have one parent and several children", function() {
-			this.task2.set('parent', this.task);
-			this.task3.set('parent', this.task);
-			expect(this.task2.get('parent').get('label')).toEqual("My test task");
-			expect(this.task.get('children').at(0).get('label')).toEqual("My test task 2");
-			expect(this.task.get('children').at(1).get('label')).toEqual("My test task 3");
-		});
-		it("Task should have a getAncestors() method", function() {
-			this.task2.set('parent', this.task);
-			this.task3.set('parent', this.task2);
-			expect(this.task3.getAncestors().length).toEqual(2);
-			expect(this.task3.getAncestors().at(1).get('label')).toEqual("My test task");
-			expect(this.task3.getAncestors().at(0).get('label')).toEqual("My test task 2");
-		});
-		it("Task should have a pluckAllTags() method", function() {
-			this.task2.set('parent', this.task);
-			this.task3.set('parent', this.task2);
-
-			this.task.get('tagLinks').add( { tag: this.tag } );
-			this.task3.get('tagLinks').add( { tag: this.tag3 } );
-
-			var allTask3Tags = this.task3.pluckAllTags();
-
-			expect(allTask3Tags.length).toEqual(2);
-			expect(_.contains(allTask3Tags, this.tag)).toBe(true);
-			expect(_.contains(allTask3Tags, this.tag3)).toBe(true);
-			expect(this.task.pluckAllTags().length).toEqual(1);
-			expect(this.task2.pluckAllTags().length).toEqual(1);
-		});
 	});
 });
 
@@ -365,138 +336,91 @@ describe("Collections", function() {
 		});
 	});
 
-	describe("Tasks Collections", function() {
+	describe("Tasks", function() {
 
-		describe("position methods", function() {
+		beforeEach(function() {
+			/* TEST SCHEMA
+			[0] task 6 / Passeport
+			[1] task 1 / NCD
+			[2] task 3 / 6#
+			[3] task 8 / Perso
+			[4] task 2 / Neolane
+			[5] task 4 / Perso
+			[9] task 5 / Passeport
+			[15] task 7 / Voyage
+			*/
+			this.tasks.add(this.task4);
+			this.tasks.add(this.task5);
+			this.tasks.add(this.task6);
+			this.tasks.add(this.task7);
+			this.tasks.add(this.task8);
 
-			it("should be SORTable by position", function() {
-				this.task.set('position',3);
-				this.task2.set('position',1);
-				this.task3.set('position',2);
-				this.tasks.sort();
-				expect(this.tasks.at(0).get('label')).toEqual('My test task 2');
-				expect(this.tasks.at(1).get('label')).toEqual('My test task 3');
-				expect(this.tasks.at(2).get('label')).toEqual('My test task 1');
-				this.task.set('position',1);
-				this.task2.set('position',2);
-				this.task3.set('position',3);
-				this.tasks.sort();
-				expect(this.tasks.at(0).get('label')).toEqual('My test task 1');
-				expect(this.tasks.at(1).get('label')).toEqual('My test task 2');
-				expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
-			});
+			this.task.set('position', 1);
+			this.task2.set('position', 4);
+			this.task3.set('position', 2);
+			this.task4.set('position', 5);
+			this.task5.set('position', 9);
+			this.task6.set('position', 0);
+			this.task7.set('position', 15);
+			this.task8.set('position', 3);
+
+			this.tag.set("label","NCD");
+			this.tag2.set("label","Neolane");
+			this.tag3.set("label","6#");
+			this.tag4.set("label","Perso");
+			this.tag5.set("label","Passeport");
+			this.tag6.set("label","Voyage");
+
+			this.task.get('tagLinks').add( { tag: this.tag } ); // NCD
+			this.task2.get('tagLinks').add( { tag: this.tag2 } ); // Neolane
+			this.task3.get('tagLinks').add( { tag: this.tag3 } ); // 6#
+			this.task4.get('tagLinks').add( { tag: this.tag4 } ); // Perso
+			this.task5.get('tagLinks').add( { tag: this.tag4 } ); // Perso
+			this.task5.get('tagLinks').add( { tag: this.tag5 } ); // Passeport
+			this.task6.get('tagLinks').add( { tag: this.tag4 } ); // Perso
+			this.task6.get('tagLinks').add( { tag: this.tag5 } ); // Passeport
+			this.task7.get('tagLinks').add( { tag: this.tag6 } ); // Voyage
+			this.task8.get('tagLinks').add( { tag: this.tag4 } ); // Perso
 		});
 
-		describe("hierarchy methods", function() {
+		it("should be SORTable by position", function() {
+			this.tasks.sort();
+			expect(this.tasks.at(0).get('label')).toEqual('My test task 6');
+			expect(this.tasks.at(1).get('label')).toEqual('My test task 1');
+			expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
+			this.task.set('position',15);
+			this.task7.set('position',1);
+			this.tasks.sort();
+			expect(this.tasks.at(0).get('label')).toEqual('My test task 6');
+			expect(this.tasks.at(1).get('label')).toEqual('My test task 7');
+			expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
+		});
 
-			beforeEach(function() {
-				/* TEST HIERARCHY
-				[0] task 1 / NCD <=== 1
-					[0] task 2 / Neolane <=== 1
-						[0] task 3 / 6# <=== 1
-				[1] task 4 / Perso <=== 2 & 3 & 4
-					[0] task 5 / Passeport <=== 2
-					[1] task 6 / Passeport <=== 2 & 3
-					[2] task 7 / Voyage <=== 2
-				[2] task 8 / Perso <=== 2
-				*/
-				this.tasks.add(this.task4);
-				this.tasks.add(this.task5);
-				this.tasks.add(this.task6);
-				this.tasks.add(this.task7);
-				this.tasks.add(this.task8);
+		it("tasks should provide a search function using objectFilters and returning ancestors", function() {
+			// TF1 Should select only task 3
+			this.taskFilter1.get('tags').add(this.tag3); // 6#
+			// TF2 Should select only task 4 and task 8
+			this.taskFilter2.get('tags').add(this.tag4); // Perso
+			// TF3 Should select only task 6 (not its brother task 5)
+			this.taskFilter3.set('text','6');
+			this.taskFilter3.get('tags').add(this.tag4); // Perso
+			this.taskFilter3.get('tags').add(this.tag5); // Passeport
 
-				this.task2.set('parent', this.task);
-				this.task3.set('parent', this.task2);
-				this.task5.set('parent', this.task4);
-				this.task6.set('parent', this.task4);
-				this.task7.set('parent', this.task4);
-				// this.task8.set('parent', this.task);
+			var tf1res = this.tasks.search(this.taskFilter1);
+			var tf2res = this.tasks.search(this.taskFilter2);
+			var tf3res = this.tasks.search(this.taskFilter3);
 
-				this.tag.set("label","NCD");
-				this.tag2.set("label","Neolane");
-				this.tag3.set("label","6#");
-				this.tag4.set("label","Perso");
-				this.tag5.set("label","Passeport");
-				this.tag6.set("label","Voyage");
+			expect(tf1res.length).toEqual(1);
+			expect(tf1res.contains(this.task3)).toBe(true);
 
-				this.task.get('tagLinks').add( { tag: this.tag } ); // NCD
-				this.task2.get('tagLinks').add( { tag: this.tag2 } ); // Neolane
-				this.task3.get('tagLinks').add( { tag: this.tag3 } ); // 6#
-				this.task4.get('tagLinks').add( { tag: this.tag4 } ); // Perso
-				this.task5.get('tagLinks').add( { tag: this.tag5 } ); // Passeport
-				this.task6.get('tagLinks').add( { tag: this.tag5 } ); // Passeport
-				this.task7.get('tagLinks').add( { tag: this.tag6 } ); // Voyage
-				this.task8.get('tagLinks').add( { tag: this.tag4 } ); // Perso
-			});
+			expect(tf2res.length).toEqual(4);
+			expect(tf2res.contains(this.task4)).toBe(true);
+			expect(tf2res.contains(this.task5)).toBe(true);
+			expect(tf2res.contains(this.task6)).toBe(true);
+			expect(tf2res.contains(this.task8)).toBe(true);
 
-			it("tasks should provide a method to append the ancestors to a collection", function() {
-				this.tasks2 = new meenoAppCli.Classes.Tasks();
-				this.tasks2.add(this.task3);
-				this.tasks2.add(this.task6);
-				this.tasks2.add(this.task7);
-				this.tasks2Welders = this.tasks2.addAncestors();
-
-				expect(this.tasks2Welders.length).toEqual(6);
-				expect(this.tasks2Welders.contains(this.task)).toBe(true);
-				expect(this.tasks2Welders.contains(this.task2)).toBe(true);
-				expect(this.tasks2Welders.contains(this.task4)).toBe(true);
-			});
-
-			it("tasks should provide a search function using objectFilters and returning ancestors", function() {
-				// TF1 Should select only task 3 plus its two ancestors (task 1 & task 2)
-				// Testing appending of ancestors
-				this.taskFilter1.get('tags').add(this.tag3); // 6#
-				// TF2 Should select only task 4 plus its children (5,6,7), and task 8
-				// Testing tag inheritance from parents
-				this.taskFilter2.get('tags').add(this.tag4); // Perso
-				// TF3 Should select only task 6 plus its parent task 4 but not its brother task 5
-				// Testing mixed text/object taskFilter
-				this.taskFilter3.set('text','6');
-				this.taskFilter3.get('tags').add(this.tag4); // Perso
-				this.taskFilter3.get('tags').add(this.tag5); // Passeport
-
-				var tf1res = this.tasks.search(this.taskFilter1);
-				var tf2res = this.tasks.search(this.taskFilter2);
-				var tf3res = this.tasks.search(this.taskFilter3);
-
-				expect(tf1res.length).toEqual(3);
-				expect(tf1res.contains(this.task)).toBe(true);
-				expect(tf1res.contains(this.task2)).toBe(true);
-				expect(tf1res.contains(this.task3)).toBe(true);
-
-				expect(tf2res.length).toEqual(5);
-				expect(tf2res.contains(this.task4)).toBe(true);
-				expect(tf2res.contains(this.task5)).toBe(true);
-				expect(tf2res.contains(this.task6)).toBe(true);
-				expect(tf2res.contains(this.task7)).toBe(true);
-				expect(tf2res.contains(this.task8)).toBe(true);
-
-				expect(tf3res.length).toEqual(2);
-				expect(tf3res.contains(this.task6)).toBe(true);
-				expect(tf3res.contains(this.task5)).toBe(false);
-				expect(tf3res.contains(this.task4)).toBe(true);
-			});
-
-
-			it("should provide a getTree method", function() {
-
-				this.taskFilter.set('text','');
-				this.taskFilter.get('tags').add(this.tag1).add(this.tag2);
-
-				// 3. Checking the tree generated
-				/* Expected result:
-					task 0
-					    task 1 / Perso
-					        task 2 / Passeport
-					        task 3 / Passeport
-					        task 4 / Voyage
-				*/
-
-				expect(this.tasks.search(this.taskFilter).getTree).toEqual(false);
-			});
-
+			expect(tf3res.length).toEqual(1);
+			expect(tf3res.contains(this.task6)).toBe(true);
 		});
 	});
-
 });
