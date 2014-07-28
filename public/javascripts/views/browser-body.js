@@ -439,16 +439,20 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			var view = new meenoAppCli.Classes.BrowserBodyTaskView({ model: model });
 
 			if (model.get('parent') === false) { // The model doesn't have a parent (Root)
-				if (!hTree.find ("ol")) { hTree.append('ol'); }
+				if (!hTree.find ("ol")) {
+					hTree.append('ol');
+				}
+
 				hTree.find("ol").append(
 					view.render().el
-					//'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
 				);
 			} else { // the model has a parent (that must have been appended before to hTree)
-				if (!hTree.find ("#task"+model.get('parent').get('_id')).find ("ol")) { hTree.find ("#task"+model.get('parent').get('_id')).append('ol'); }
-				hTree.find ("#task"+model.get('parent').get('_id')).find("ol").append(
+				if (!hTree.find ("#task"+model.get('parent').cid).find ("ol")) {
+					hTree.find ("#task"+model.get('parent').cid).append('ol'); 
+				}
+
+				hTree.find ("#task"+model.get('parent').cid).find("ol").append(
 					view.render().el
-					//'<li id="task'+model.get('_id')+'"><div>'+model.get('label')+'</div></li>'
 				);
 			}
 
