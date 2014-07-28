@@ -29,6 +29,18 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 		}
 	}],
 
+	/**
+	 * This method overrides the original one so that the attribute cid is also included in the json output
+	 * This is necessary for decoupling testing from database : we need unique IDs in unit testing but we don't 
+	 * want to rely on a database layer
+	 * @return {json} all the attributes of the item put in a json object
+	 */
+	toJSON: function() {
+		var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
+		json.cid = this.cid;
+		return json;
+	},
+
 	getAncestors: function () {
 		// Returns all the parents of a given task
 		var ancestors = new meenoAppCli.Classes.Tasks();

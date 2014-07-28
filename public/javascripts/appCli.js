@@ -9,7 +9,7 @@ $(function() { // This ensures the code will be executed when DOM is ready
 			this.beforeKill();
 		}
 
-		console.log ("[Kill]");
+		//console.log ("[Kill]");
 		this.remove();
 		// unbind events that are set on this view
 		this.off();
