@@ -273,3 +273,16 @@ Objectif :
 Le render des collections de task est fini, reste à le tester et à implémenter :
 - la màj du render de BrowserBodyTaskView // OK
 - la màj de la méthode renderCollection dans browser-body
+
+
+28/07========================================
+Abandon du datamodel avec hiérarchie
+1. Mettre en place le jquey sortable dès maintenant
+2. capter les evts pour sauvegarder la position
+3. Mettre en place l'ajout de tags dans les tasks
+4. Mettre en place le sort automatique par tags :
+4.1. Sort par défaut : position uniquement
+4.2. Sort alternatif : classement par tags puis par position (regroupement par famille de tags)
+==> le système le plus simple dépendra de l'ordre dans lequel les tags ont été appended
+
+http://stackoverflow.com/questions/11510490/sort-backbone-collection-based-on-model-attributes

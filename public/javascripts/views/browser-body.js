@@ -38,6 +38,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tagFilters" : [],
 			"taskFilters" : []
 		};
+		// These filters are the one that actually filter the displayed collection
+		// The ones that are saved, deleted or deactivated 
 		this.filters = {
 			"noteFilter": new meenoAppCli.Classes.NoteFilter(),
 			"taskFilter": new meenoAppCli.Classes.TaskFilter(),
@@ -47,12 +49,14 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(this.options.collections.notes, 'reset add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
 		this.listenTo(this.options.collections.tags, 'reset add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
 		this.listenTo(this.options.collections.tasks, 'reset add remove change:label', function () {this.renderCollection("tasks");});
+
 		this.listenTo(this.options.collections.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
 		this.listenTo(this.options.collections.taskFilters, 'reset add remove', function () {this.renderFilterCollection("taskFilters");});
 		this.listenTo(this.options.collections.tagFilters, 'reset add remove', function () {this.renderFilterCollection("tagFilters");});
 		this.listenTo(this.options.collections.noteFilters, 'change add remove', function () {this.refreshFilterControls("note");});
 		this.listenTo(this.options.collections.taskFilters, 'change add remove', function () {this.refreshFilterControls("task");});
 		this.listenTo(this.options.collections.tagFilters, 'change add remove', function () {this.refreshFilterControls("tag");});
+
 		this.listenTo(this.filters.noteFilter, 'change add:tags remove:tags add:tasks remove:tasks', function () {
 			this.renderCollection("notes");
 			this.refreshFilterControls("note");
@@ -65,6 +69,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			this.renderCollection("tags");
 			this.refreshFilterControls("tag");
 			this.renderFilterInSuperInput("tagFilter");});
+
 		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
@@ -73,13 +78,15 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
+
+		this.listenTo($("ul.objects"), 'update', function (event, ui) { this.sortableUpdate (event, ui); });
+
 		this.render();
 		this.refreshFilterControls("note");
 		this.refreshFilterControls("task");
 		this.refreshFilterControls("tag");
-		// this.renderFilterCollection("noteFilters");
-		// this.renderFilterCollection("tagFilters");
-		// this.renderFilterCollection("taskFilters");
+
+
 	},
 
 	// --------------------------------------------------------------------------------
@@ -394,20 +401,24 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	renderCollection: function (collName) {
 		var self = this;
 		var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
+
 		// First, emptying the DOM
 		var $list = this.$('.listobjects.'+collName+' .'+collName);
+		if ($list.is(':ui-sortable')) {
+			$list.sortable( "destroy" );
+		}
 		$list.html('');
+
 		// Second, killing children views of right collection
 		_.each(this.children[collName], function (child, index) {
 			child.kill();
 		});
 		this.children[collName] = [];
+
 		// Third, filling the DOM again
 		var newView = {};
-
 		var results = this.options.collections[collName].search(this.filters[filterName]);
-		//console.log("// Search returned "+results.length+" item(s)");
-		//console.log(results);
+
 		results.each(function (element) {
 			if (collName == "notes") { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: element }); }
 			if (collName == "tags") { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: element }); }
@@ -415,54 +426,29 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			self.children[collName].push (newView);
 			$list.append(newView.render().el);
 		}, this);
+
+		$list.sortable();
 	},
 
 	/**
-	 * This recursive method allows to generate the DOM tree and the Backbone views necessary to display tasks. 
-	 * It is meant to build the tree level by level : on each call we create the highest DOM level, so that on next call we will be able to append the children within their parent.
-	 * @param  {meenoAppCli.Classes.Tasks} coll, the temporary collection that stores the remaining tasks to render
-	 * @param  {jQuery} hTree, the "work-in-progress" HTML tree that is being built up
-	 * @return {jQuery} it can return either the function (recursive call) or the final HTML tree
+	 * This methods aims at dispatching "update" events of the sortable items to the right views. Instead
+	 * of having the subviews directly listening to each update event, we do this centrally for the sake of performance
+	 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
+	 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
+	 * @return {void} nothing to return
 	 */
-	renderTasksSub: function (coll, hTree) {
+	sortableUpdate: function (event, ui) {
+		console.log(ui)
 		var self = this;
-
-		if (hTree == undefined) { // To initialize the HTML tree at the first call
-			hTree = $("<div></div>");
-		}
-
-		// 1. Get the models that do not have parents in the collection (the elders)
-		var elders = coll.getElders();
-		coll.remove(elders); // to be implemented if doesn't work as expected
-
-		elders.each (function (model) {
-			var view = new meenoAppCli.Classes.BrowserBodyTaskView({ model: model });
-
-			if (model.get('parent') === false) { // The model doesn't have a parent (Root)
-				if (!hTree.find ("ol")) {
-					hTree.append('ol');
-				}
-
-				hTree.find("ol").append(
-					view.render().el
-				);
-			} else { // the model has a parent (that must have been appended before to hTree)
-				if (!hTree.find ("#task"+model.get('parent').cid).find ("ol")) {
-					hTree.find ("#task"+model.get('parent').cid).append('ol'); 
-				}
-
-				hTree.find ("#task"+model.get('parent').cid).find("ol").append(
-					view.render().el
-				);
+		// 1. Which sortable has been triggered ?
+		var collName = ui.helper.hasClass("notes") ? "notes" : (ui.helper.hasClass("tasks") ? "tasks" : "tags");
+		
+		// 2. Find which view should update its model
+		self.children[collName].each (function (subView) {
+			if (subView.$el == ui.item) {
+				subView.updatePosition();
+				return false; // Will break the loop here
 			}
-
-			self.children["tasks"].push (view); // To keep track of sub views created in browser-body
 		});
-
-		if (coll.length == 0) {
-			return hTree;
-		} else {
-			return renderTasksSub (coll, hTree);
-		}
-	},
+	}
 });

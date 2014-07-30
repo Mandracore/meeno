@@ -48,4 +48,22 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 		this.remove();
 		console.log('task deleted')
 	},
+
+	/**
+	 * Uses the position of the view's DOM element to calculate the new position.
+	 * Avoids to modify the position of the other items.
+	 * @return {void} only updates its model and its DOM element
+	 */
+	updatePosition: function () {
+		if (!this.$el.prev().length) {
+			newPos = this.$el.next().attr("data-position") - 1;
+		} else if (!this.$el.next().length) {
+			newPos = this.$el.prev().attr("data-position") + 1;
+		} else {
+			newPos = ((this.$el.prev().attr("data-position") + this.$el.next().attr("data-position")) / 2 );
+		}
+
+		this.$el.attr("data-position", newPos);
+		this.model.set('position', newPos);
+	}
 });
