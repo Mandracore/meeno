@@ -14,10 +14,8 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 	},
 
 	render: function() {
-		//this.collName = "tasks";
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (this.model.toJSON()));
-		this.$el.attr("data-position",this.model.get('position'));
 		this.$el.attr("data-cid",this.model.cid);
 		meenoAppCli.dispatcher.trigger("browser:tasks:reSyncSelectors");
 		return this;
@@ -50,23 +48,4 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 		this.remove();
 		console.log('task deleted')
 	},
-
-	/**
-	 * Uses the position of the view's DOM element to calculate the new position.
-	 * Avoids to modify the position of the other items.
-	 * @return {void} only updates its model and its DOM element
-	 */
-	updatePosition: function () {
-		console.log('update SUB')
-		if (!this.$el.prev().length) {
-			newPos = (this.$el.next().attr("data-position"))-1;
-		} else if (!this.$el.next().length) {
-			newPos = (this.$el.prev().attr("data-position"))+1;
-		} else {
-			newPos = (((this.$el.prev().attr("data-position"))+(this.$el.next().attr("data-position")))/2);
-		}
-
-		this.$el.attr("data-position", newPos);
-		this.model.set('position', newPos);
-	}
 });

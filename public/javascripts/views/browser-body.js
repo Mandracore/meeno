@@ -438,22 +438,25 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	/**
-	 * This methods aims at dispatching "update" events of the sortable items to the right views. Instead
-	 * of having the subviews directly listening to each update event, we do this centrally for the sake of performance
+	 * This methods aims at saving the new positions of the objects
 	 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
 	 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 	 * @return {void} nothing to return
 	 */
 	sortableUpdate: function (event, ui) {
 		console.log("sortable update");
-		var self = this;
-		// Find which view should update its model
-		_.each (self.children["tasks"], function (subView) {
-			if (subView.$el.attr('data-cid') == ui.item.attr('data-cid')) {
-				subView.updatePosition();
-				this.options.collections.tasks.shiftDown(subView.model);
-				return false; // Will break the loop here
-			}
-		});
+
+		// 1. Find the model corresponding to the sorted DOM node
+		var sortedModel = this.options.collections.tasks.get(ui.item.attr('data-cid'));
+		// 2. Find out in which scenario we are
+		if (!ui.item.next()) { // The moved item is now the last one of the list (than can be filtered)
+			var prevModel = this.options.collections.tasks.get(ui.item.prev().attr('data-cid'));
+			sortedModel.set('position', prevModel.get('position')+1);
+		} else { // The moved item is somewhere in the list
+			var nextModel = this.options.collections.tasks.get(ui.item.next().attr('data-cid'));
+			sortedModel.set('position', nextModel.get('position'));
+		}
+		// 3. Shift all the following models
+		this.options.collections.tasks.shiftDown(sortedModel);
 	}
 });

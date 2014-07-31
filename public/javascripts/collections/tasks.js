@@ -36,7 +36,7 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	},
 
 	/**
-	 * When moving a task to a new position, shift the others down to make some room for it
+	 * When moving a task to a new position, shift the following ones down to make some room for it
 	 * @param  {meenoAppCli.Classes.Task} anchor the task that has moved, point of reference
 	 * @return {void}
 	 */
