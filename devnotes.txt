@@ -286,3 +286,8 @@ Abandon du datamodel avec hiérarchie
 ==> le système le plus simple dépendra de l'ordre dans lequel les tags ont été appended
 
 http://stackoverflow.com/questions/11510490/sort-backbone-collection-based-on-model-attributes
+
+01/08))===========================================
+Processus de permutation pour assurer que les ordre sont conservés meme si reorder pendant filtrage :
+1. L'objet déplacé prend la position du suivant dans le DOM (sauf si dernier, prend alors pos du prev +1 et rien d'autre ne bouge)
+2. Tous les >>>autres<<< objets de la collection possédant une position égale ou supérieure à l'objet déplacé prennent +1 à leur position

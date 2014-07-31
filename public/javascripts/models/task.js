@@ -45,9 +45,7 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 		return {
 			label      : 'New Task',
 			description: 'Description of your task...',
-			position   : function () {
-				//
-			},
+			position   : 0,
 			due_at     : new Date(),
 			created_at : new Date(),
 			updated_at : new Date()

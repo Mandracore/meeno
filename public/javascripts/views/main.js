@@ -68,7 +68,7 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 				}});
 			},
 			error: function (collection, xhr, options) {
-				console.log ("Server response status : "+xhr.status);
+				console.log ("Fetching tasks failed // Server response status : "+xhr.status);
 				if (xhr.status == 401) {
 					console.log ("Unauthorized, displaying user authentification form");
 					meenoAppCli.mainView.trigger('server:auth');

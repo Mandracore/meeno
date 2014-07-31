@@ -79,8 +79,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
 		this.listenTo(meenoAppCli.dispatcher, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 
-		this.listenTo($("ul.objects"), 'update', function (event, ui) { this.sortableUpdate (event, ui); });
-
+		// this.listenTo($("ul.objects"), 'sortupdate', function (event, ui) { this.sortableUpdate (event, ui); });
+		// this.listenTo($("ul.notes.objects"), 'sortupdate', function () { console.log ('SORT')});
+		//objects notes ui-sortable
 		this.render();
 		this.refreshFilterControls("note");
 		this.refreshFilterControls("task");
@@ -427,7 +428,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			$list.append(newView.render().el);
 		}, this);
 
-		$list.sortable();
+		if($list.hasClass('tasks')) {
+			$list.sortable({
+				update: function( event, ui ) {
+					return self.sortableUpdate(event, ui);
+				}
+			});
+		}
 	},
 
 	/**
@@ -438,15 +445,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	 * @return {void} nothing to return
 	 */
 	sortableUpdate: function (event, ui) {
-		console.log(ui)
+		console.log("sortable update");
 		var self = this;
-		// 1. Which sortable has been triggered ?
-		var collName = ui.helper.hasClass("notes") ? "notes" : (ui.helper.hasClass("tasks") ? "tasks" : "tags");
-		
-		// 2. Find which view should update its model
-		self.children[collName].each (function (subView) {
-			if (subView.$el == ui.item) {
+		// Find which view should update its model
+		_.each (self.children["tasks"], function (subView) {
+			if (subView.$el.attr('data-cid') == ui.item.attr('data-cid')) {
 				subView.updatePosition();
+				this.options.collections.tasks.shiftDown(subView.model);
 				return false; // Will break the loop here
 			}
 		});

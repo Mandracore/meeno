@@ -76,12 +76,9 @@ describe("Business Models", function() {
 				it("should have a default description attribute", function() {
 					expect(this.task.get('description')).toBe('Description of your task...');
 				});
-				it("should have a default position attribute set to min siblings position -1", function() {
+				// Impossible to test here (DB connexion required)
+				it("should have a default position attribute set to 0", function() {
 					expect(this.task.get('position')).toBe(0);
-					this.task2 = new meenoAppCli.Classes.Task();
-					this.task3 = new meenoAppCli.Classes.Task();
-					expect(this.task2.get('position')).toBe(-1);
-					expect(this.task3.get('position')).toBe(-2);
 				});
 			});
 
