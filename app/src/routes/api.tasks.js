@@ -27,7 +27,7 @@ module.exports = function(mas, securityProxy){
 			task.due_at      = req.body.due_at;
 			task.label       = req.body.label;
 			task.description = req.body.description;
-			task.parent      = req.body.parent;
+			task.position    = req.body.position;
 			task.noteLinks   = req.body.noteLinks;
 			task.tagLinks    = req.body.tagLinks;
 
@@ -52,7 +52,7 @@ module.exports = function(mas, securityProxy){
 			due_at     : req.body.due_at,
 			label      : req.body.label,
 			description: req.body.description,
-			parent     : req.body.parent,
+			position   : req.body.position,
 			noteLinks  : req.body.noteLinks,
 			tagLinks   : req.body.tagLinks,
 		});

@@ -100,6 +100,8 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 					this.model = new meenoAppCli.Classes[modelClassName]({
 						label : this.$(".body").val()
 					});
+
+					meenoAppCli[this.options.modelClass+'s'].shiftDown(this.model);
 					meenoAppCli[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					// Now that the model is into a collection, the .save() method will work
 					this.model.save({}, {

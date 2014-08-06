@@ -341,14 +341,14 @@ describe("Collections", function() {
 
 		beforeEach(function() {
 			/* TEST SCHEMA
-			[0] task 6 / Passeport
 			[1] task 1 / NCD
-			[2] task 3 / 6#
-			[3] task 8 / Perso
-			[4] task 2 / Neolane
-			[5] task 4 / Perso
-			[9] task 5 / Passeport
-			[15] task 7 / Voyage
+			[2] task 2 / Neolane
+			[3] task 3 / 6#
+			[4] task 4 / Perso
+			[5] task 5 / Perso / Passeport
+			[6] task 6 / Perso / Passeport
+			[7] task 7 / Voyage
+			[8] task 8 / Perso
 			*/
 			this.tasks.add(this.task4);
 			this.tasks.add(this.task5);
@@ -357,13 +357,13 @@ describe("Collections", function() {
 			this.tasks.add(this.task8);
 
 			this.task.set('position', 1);
-			this.task2.set('position', 4);
-			this.task3.set('position', 2);
-			this.task4.set('position', 5);
-			this.task5.set('position', 9);
-			this.task6.set('position', 0);
-			this.task7.set('position', 15);
-			this.task8.set('position', 3);
+			this.task2.set('position', 2);
+			this.task3.set('position', 3);
+			this.task4.set('position', 4);
+			this.task5.set('position', 5);
+			this.task6.set('position', 6);
+			this.task7.set('position', 7);
+			this.task8.set('position', 8);
 
 			this.tag.set("label","NCD");
 			this.tag2.set("label","Neolane");
@@ -386,18 +386,18 @@ describe("Collections", function() {
 
 		it("should be SORTable by position", function() {
 			this.tasks.sort();
-			expect(this.tasks.at(0).get('label')).toEqual('My test task 6');
-			expect(this.tasks.at(1).get('label')).toEqual('My test task 1');
+			expect(this.tasks.at(0).get('label')).toEqual('My test task 1');
+			expect(this.tasks.at(1).get('label')).toEqual('My test task 2');
 			expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
 			this.task.set('position',15);
 			this.task7.set('position',1);
 			this.tasks.sort();
-			expect(this.tasks.at(0).get('label')).toEqual('My test task 6');
-			expect(this.tasks.at(1).get('label')).toEqual('My test task 7');
+			expect(this.tasks.at(0).get('label')).toEqual('My test task 7');
+			expect(this.tasks.at(1).get('label')).toEqual('My test task 2');
 			expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
 		});
 
-		it("tasks should provide a search function using objectFilters and returning ancestors", function() {
+		it("should provide a search function using objectFilters", function() {
 			// TF1 Should select only task 3
 			this.taskFilter1.get('tags').add(this.tag3); // 6#
 			// TF2 Should select only task 4 and task 8
@@ -422,6 +422,24 @@ describe("Collections", function() {
 
 			expect(tf3res.length).toEqual(1);
 			expect(tf3res.contains(this.task6)).toBe(true);
+		});
+		it("should have a shift method updating the position attribute of the tasks that were moved downwards", function() {
+			/* New positions ==> test 1
+			[1] task 1 / NCD
+			[2] task 2 / Neolane
+			[3] task 3 / 6#
+			[4] task 4 / Perso
+			[8] task 8 / Perso // 8 => 5
+			[5] task 5 / Perso / Passeport // 5 => 6
+			[6] task 6 / Perso / Passeport // 6 => 7
+			[7] task 7 / Voyage // 7 => 8
+			*/
+			this.task8.set('position', 5);
+			this.tasks.shiftDown(this.task8);
+			expect(this.task4.get('position')).toEqual(4);		
+			expect(this.task5.get('position')).toEqual(6);		
+			expect(this.task6.get('position')).toEqual(7);		
+			expect(this.task7.get('position')).toEqual(8);		
 		});
 	});
 });

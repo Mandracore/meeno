@@ -51,7 +51,7 @@ module.exports = function(mas, mongoose){
 		due_at     : { type: Date, default: function () { return Date.now(); } },
 		label      : { type: String, required: true},
 		description: String,
-		parent     : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, // Linked document is Task
+		position   : Number,
 		tagLinks   : [msLinkTaskTag],
 	});
 	var msNoteFilter = new mongoose.Schema({
