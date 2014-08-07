@@ -449,13 +449,14 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		// 1. Find the model corresponding to the sorted DOM node
 		var sortedModel = this.options.collections.tasks.get(ui.item.attr('data-cid'));
 		// 2. Find out in which scenario we are
-		if (!ui.item.next()) { // The moved item is now the last one of the list (than could be filtered)
+		if (!ui.item.next().length) { // The moved item is now the last one of the list (than could be filtered)
 			var prevModel = this.options.collections.tasks.get(ui.item.prev().attr('data-cid'));
 			sortedModel.set('position', prevModel.get('position')+1);
 		} else { // The moved item is somewhere in the list
 			var nextModel = this.options.collections.tasks.get(ui.item.next().attr('data-cid'));
 			sortedModel.set('position', nextModel.get('position'));
 		}
+		sortedModel.save();
 		// 3. Shift all the following models
 		this.options.collections.tasks.shiftDown(sortedModel);
 	}

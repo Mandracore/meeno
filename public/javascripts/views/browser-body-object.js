@@ -13,7 +13,7 @@ meenoAppCli.Classes.BrowserBodyObjectView = Backbone.View.extend({
 	initialize: function() {
 		this.collName = undefined;
 		// this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
-		this.listenTo(this.model, 'change:title', this.render);
+		this.listenTo(this.model, 'change:title change:position', this.render);
 		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:delete', function () {this.deleteIfSelected("notes")});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:delete', function () {this.deleteIfSelected("tags")});
 		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:delete', function () {this.deleteIfSelected("taks")});
