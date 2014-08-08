@@ -9,8 +9,26 @@
 </script>
 <script type="text/template" id="browser-body-task-template" style="display: none;">
 	<span class="checkbox icon-check-empty"></span>
-	<span class="edit label attribute"><%= label %></span>
+	<span class="check label attribute"><%= label %></span>
 	<span>[<%= position %>]</span>
+	<span class="edit">Edit</span><span class="delete">Delete</span>
+	<div class="details" style="display: none;">
+		<p class="status wip" style="display: none;">Update in progress</p>
+		<p class="status done" style="display: none;">Update successful</p>
+		<form>
+			<fieldset>
+				<label for="label">Label</label>
+				<input type="text" name="label" value="<%= label %>"></br>
+				<label for="description">Description</label>
+				<input type="text" name="description" value="<%= description %>"></br>
+				<label for="tags">Tags</label>
+				<input type="text" name="tags" value="list of tags"></br>
+				<button type="button" class="update">Update</button>
+				<button type="button" class="reset">Undo changes</button>
+				<button type="button" class="close">Close</button>
+			</fieldset>
+		</form>
+	</div>
 </script>
 <script type="text/template" id="browser-body-filter-template" style="display: none;"><%= label %></script>
 <script type="text/template" id="editor-tab-template" style="display: none;">

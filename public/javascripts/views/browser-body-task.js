@@ -7,9 +7,11 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 
 	events: function(){
 		return _.extend({},meenoAppCli.Classes.BrowserBodyObjectView.prototype.events,{
-			'click .edit'    : 'edit',
-			'click .delete'  : 'delete',
-			'blur .label'    : 'save'
+			'click .edit'  : 'edit',
+			'click .delete': 'delete',
+			'click .close' : 'close',
+			'click .update': 'update',
+			'click .reset' : 'reset',
 		});
 	},
 
@@ -22,30 +24,30 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 	},
 
 	edit: function() {
-		console.log('edit');
-		this.$("span.label").attr('contenteditable','true').focus().select();
-		document.execCommand('selectAll',false,null);
+		this.$(".details").slideDown();
+		this.$( "input[name='label']" ).focus().select();
 	},
 
-	save: function() {
-		this.$("span.label").attr('contenteditable','false');
-		console.log('save');
+	update: function() {
 		this.model.set({
-			label  :this.$("span.label").html()
-		}).save({},{
-			success: function() {
-				console.log('save success');
-			},
-			error  : function() {
-				console.log('save error');
-			}
-		});
+			label : this.$("input[name='label']").val(),
+			description : this.$("input[name='description']").val(),
+		}).save();
+		this.close();
+	},
+
+	reset: function() {
+		this.$("input[name='label']").val(this.model.get('label'));
+		this.$("input[name='description']").val(this.model.get('description'));
 	},
 
 	delete: function() {
 		this.model.destroy();
-		meenoAppCli.Tags.remove(this.model);
 		this.remove();
-		console.log('task deleted')
+		console.log('task deleted');
 	},
+
+	close: function() {
+		this.$(".details").slideUp();
+	}
 });
