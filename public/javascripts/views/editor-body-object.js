@@ -40,6 +40,11 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 		else {console.log(this.cid+"'s DOM element still exists");}
 	},
 
+	/**
+	 * Filters the keyboard events to pass only ENTER and TAB to the lock() method
+	 * @param  {keyboard event} event The keyboard event
+	 * @return {void}
+	 */
 	keyProxy: function(event) {
 		if (event.keyCode == 13 || event.keyCode == 9) {
 			this.lock();
@@ -61,7 +66,6 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 	},
 
 	autocomplete: function() {
-		console.log('autocomplete');
 		var strHint = (this.$(".body").val());
 		if (strHint.length > -1) {
 			var pattern = new RegExp(strHint,"i");
@@ -80,6 +84,12 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 		this.$el.addClass("broken");
 	},
 
+	/**
+	 * Triggered once the user finishes typing in the new object.
+	 * Used as a proxy to either link the note to a new object, or to create a new object
+	 * @param  {keyboard event} event The keyboard event
+	 * @return {void}
+	 */
 	lock: function (event) {
 		console.log("locking");
 		var modelClassName = this.options.modelClass.replace(/^(.)/, function($1){ return $1.toUpperCase( ); });
@@ -101,7 +111,9 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 						label : this.$(".body").val()
 					});
 
-					meenoAppCli[this.options.modelClass+'s'].shiftDown(this.model);
+					if (this.options.modelClass == "task") {
+						meenoAppCli.tasks.shiftDown(this.model);
+					}
 					meenoAppCli[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					// Now that the model is into a collection, the .save() method will work
 					this.model.save({}, {

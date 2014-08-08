@@ -300,7 +300,12 @@ Voir comment je peux m'assure que shiftDown est appelée après la création d'u
 07/08====================================
 - mettre en place un CRUD super simple pour modifier les tasks
 	- titre, description, tags // manque la mise à jour des tags
+	- le rendu des tags est fait, reste à mettre à jour le formulaire
 - affecter par défaut les tags de la note où la tâche est créée
 - afficher dans le browser les tags rattachés aux tasks (comme pour les notes)
 - mettre en place les tests d'intégration
 - Voir pourquoi on ne peut plus créer de nouveaux tags dans les notes
+_____________________________________
+Rajout de tags :
+- un autocomplete un par un, qui permet de selectionner existant ou de créer nouveau
+- une liste à gauche qui se met à jour et qu'on peut supprimer d'un click

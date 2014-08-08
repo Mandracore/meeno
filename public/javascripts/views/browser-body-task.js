@@ -16,8 +16,13 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 	},
 
 	render: function() {
+		var json = {
+			task: this.model.toJSON(),
+			tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {return tag.get('label')})
+		};
+
 		var templateFn = _.template( $(this.template).html() );
-		this.$el.html (templateFn (this.model.toJSON()));
+		this.$el.html (templateFn (json));
 		this.$el.attr("data-cid",this.model.cid);
 		meenoAppCli.dispatcher.trigger("browser:tasks:reSyncSelectors");
 		return this;
