@@ -16,17 +16,17 @@
 	<div class="details" style="display: none;">
 		<p class="status wip" style="display: none;">Update in progress</p>
 		<p class="status done" style="display: none;">Update successful</p>
-		<form>
+		<form onsubmit="return false;">
 			<fieldset>
 				<label for="label">Label</label>
 				<input type="text" name="label" value="<%= task.label %>"/></br>
 				<label for="description">Description</label>
 				<input type="text" name="description" value="<%= task.description %>"/></br>
-				<label for="newtag">Tags</label>
+				<label for="newTag">Tags</label>
 				<span class="tagButtons">
 					<% _.each(tags, function(tag) { %><button><%= tag %></button><% }); %>
 				</span>
-				<input class="mousetrap autocomplete" type="text" name="newtag" placeholder="Find a tag or create a new one"/></br>
+				<input class="mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create a new one"/></br>
 				<button type="button" class="update">Update</button>
 				<button type="button" class="reset">Undo changes</button>
 				<button type="button" class="close">Close</button>

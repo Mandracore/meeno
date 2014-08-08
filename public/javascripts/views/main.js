@@ -44,6 +44,9 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		Mousetrap.bind(['backspace'], function() {
 			meenoAppCli.dispatcher.trigger('keyboard:backspace');
 		});
+		Mousetrap.bind('enter', function() {
+			meenoAppCli.dispatcher.trigger('keyboard:enter');
+		}, 'keydown');
 
 		this.fetchData();
 	},
