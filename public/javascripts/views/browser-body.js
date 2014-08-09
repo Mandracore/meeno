@@ -192,7 +192,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var focus = false;
 		var $listObjects = {};
 		var inputClass = io ? "search" : "autocomplete";
-		this.$(".listobjects").find('input.'+inputClass).each(function(idx,el) {
+		this.$(".search-wrapper").find('input.'+inputClass).each(function(idx,el) {
 			if ($(el).is(":focus")) {
 				focus = true;
 				$listObjects = $(el).closest('.listobjects');
@@ -217,10 +217,8 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var autoCollFilterClass = autoColl.replace(/^(.)/, function($1){ return $1.toUpperCase( ); })
 									.replace(/(s)$/, function($1){ return ""; })+"Filter";
 
-		console.log ('search '+filteredColl+' related to '+autoColl);
-
 		// Parameter the autocomplete to propose the right kind of objects
-		$listObjects.find(".autocomplete").autocomplete({
+		$listObjects.find(".search-wrapper .autocomplete").autocomplete({
 			source: function (request, response) {
 				// request.term : data typed in by the user ("new yor")
 				// response : native callback that must be called with the data to suggest to the user
@@ -239,13 +237,11 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 				return false; // to cancel normal behaviour
 			},
 			select: function(event, ui) {
-				console.log('An option has been selected');
 				$(event.target).hide();
 				$listObjects.find(".search").focus();
 
 				// Saving input value into the global filter
 				var autoSelModel = self.options.collections[autoColl].get(ui.item.value) // ui.item.value == model.cid
-				console.log("Selected option: " + autoSelModel.get('label'));
 				if (self.filters[filteredCollFilterName].get(autoColl).contains(autoSelModel) === true) { return; }
 				self.filters[filteredCollFilterName].get(autoColl).add(autoSelModel);
 			}
@@ -259,10 +255,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		if (browserActiveView === false) { return; }
 		var $listObjects = this.$(".listobjects."+browserActiveView);
 		// Listening to "backspace" & "escape" events triggered by mousetrap
-		if ( event == "escape" || (event == "backspace" && $listObjects.find(".autocomplete").val() == '') ) {
-			console.log("Closing autocomplete")
-			$listObjects.find(".autocomplete").hide();
-			$listObjects.find(".search").focus();
+		if ( event == "escape" || (event == "backspace" && $listObjects.find(".search-wrapper .autocomplete").val() == '') ) {
+			console.log("Closing autocomplete");
+			$listObjects.find(".search-wrapper .autocomplete").hide();
+			$listObjects.find(".search-wrapper .search").focus();
 		}
 	},
 
@@ -318,8 +314,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var cloneFilter = this.filters[filterName].superClone();
 		this.options.collections[filtersCollName].add(cloneFilter);
 		cloneFilter.save();
-		console.log(cloneFilter.toJSON());
-		console.log('filter saved');
 	},
 
 	filterDelete: function (event) {
@@ -329,7 +323,6 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	},
 
 	renderFilterCollection: function (filtersCollName) {
-		console.log("render filters");
 		var self         = this;
 		var filteredColl = filtersCollName.replace(/(Filters)$/, function($1){ return "s"; }); // noteFilters => notes
 		var filterName   = filtersCollName.replace(/(s)$/, function($1){ return ""; }); // noteFilters => noteFilter

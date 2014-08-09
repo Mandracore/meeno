@@ -7,11 +7,12 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 
 	events: function(){
 		return _.extend({},meenoAppCli.Classes.BrowserBodyObjectView.prototype.events,{
-			'click .edit'  : 'edit',
-			'click .delete': 'delete',
-			'click .close' : 'close',
-			'click .update': 'update',
-			'click .reset' : 'reset',
+			'click .edit'             : 'edit',
+			'click .delete'           : 'delete',
+			'click .close'            : 'close',
+			'click .update'           : 'update',
+			'click .reset'            : 'reset',
+			'click .tagButtons button': 'unlink',
 		});
 	},
 
@@ -25,7 +26,11 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 	render: function() {
 		var json = {
 			task: this.model.toJSON(),
-			tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {return tag.get('label')})
+			tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {
+				return {
+					cid : tag.cid,
+					'label' : tag.get('label'),
+			}}),
 		};
 
 		var templateFn = _.template( $(this.template).html() );
@@ -35,24 +40,50 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 		return this;
 	},
 
+	/**
+	 * Updates the view after the user modified the tags related to the task
+	 * @return {void}
+	 */
+	renderTagUpdate: function() {
+		this.render();
+		this.$(".details").show();
+		this.initAutocomplete();
+		this.$("input[name='newTag']").val("").focus();
+	},
+
+	/**
+	 * Triggered when the user hits ENTER
+	 * @return {[type]} [description]
+	 */
 	enter: function() {
-		// risque : lier deux fois
+		var self = this;
 		if (this.$("input[name='newTag']").is(":focus") && !this.options.hasSelectedTag) {
-			console.log('FUCK and it is in the input');
-			// tester si ça se déclencer au select de l'autocomplete
-			if (!this.options.hasSelectedTag) {
-				console.log('c\'est pour toi !');
+			if (this.options.hasSelectedTag) { // The Enter keypress has already been taken into account
+				this.options.hasSelectedTag = false; // We reinitialize
+				return;
+
+			} else { // The Enter keypress has not been taken into account yet
 				var tagFilter = new meenoAppCli.Classes.TagFilter({text: this.$("input[name='newTag']").val()});
 				var selection = meenoAppCli.tags.search(tagFilter);
-				if (!selection) {
-					// create a new tag
 
+				if (!selection.at(0)) {
+					// 1. create a new tag
+					var newTag = new meenoAppCli.Classes.Tag ({
+						label : self.$("input[name='newTag']").val(),
+					});
+					meenoAppCli.tags.add(newTag); // We add it to the collection so that we can save it
+					newTag.save({}, {
+						success: function () {
+					// 2. link the new tag
+							self.model.get('tagLinks').add( { tag: newTag } );
+							self.renderTagUpdate();
+						},
+					});
 				} else {
 					// link the existing tag
-					
+					self.model.get('tagLinks').add( { tag: selection.at(0) } );
+					self.renderTagUpdate();
 				}
-			} else {
-				this.options.hasSelectedTag = false; // to reinitialize after an autocomplete selection
 			}
 		}
 	},
@@ -61,28 +92,6 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 		this.$(".details").slideDown();
 		this.$("input[name='label']").focus().select();
 		this.initAutocomplete();
-	},
-
-	/**
-	 * Triggered when the user hits ENTER
-	 * @return {[type]} [description]
-	 */
-	addTag: function() {
-
-/*
-				var selectedModel = meenoAppCli[this.options.modelClass+'s'].find(function (model) {
-					return model.get('label') == self.$(".body").val();
-				});
-
-				if (!selectedModel) {
-				// If the model doesn't exist, we create it
-					console.log('--- Creating new '+this.options.modelClass+' ---');
-					this.model = new meenoAppCli.Classes[modelClassName]({
-						label : this.$(".body").val()
-					});
-*/
-
-
 	},
 
 	/**
@@ -112,13 +121,9 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 			},
 			select: function(event, ui) {
 				self.options.hasSelectedTag = true;
-				console.log ('autocomplete SELECT')
 				var selection = meenoAppCli.tags.get(ui.item.value) // ui.item.value == model.cid
 				self.model.get('tagLinks').add({ tag: selection });
-				self.render();
-				self.$(".details").show();
-				self.initAutocomplete();
-				self.$("input[name='newTag']").val("").focus();
+				self.renderTagUpdate();
 			}
 		});
 	},
@@ -129,6 +134,20 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 			description : this.$("input[name='description']").val(),
 		}).save();
 		this.close();
+	},
+
+	/**
+	 * Should unlink the clicked tag from the task
+	 * @return {void}
+	 */
+	unlink: function(event) {
+		var tag = meenoAppCli.tags.get($(event.target).attr('data-cid'));
+		var tagLink = this.model.get('tagLinks').find(
+			function (tagLink) {return tagLink.get("tag") == tag; }
+		);
+
+		this.model.get('tagLinks').remove(tagLink);
+		this.renderTagUpdate();
 	},
 
 	/**
