@@ -64,9 +64,9 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 
 			} else { // The Enter keypress has not been taken into account yet
 				var tagFilter = new meenoAppCli.Classes.TagFilter({text: this.$("input[name='newTag']").val()});
-				var selection = meenoAppCli.tags.search(tagFilter);
-
-				if (!selection.at(0)) {
+				var selection = meenoAppCli.tags.search(tagFilter).at(0);
+				// Lancer pas à pas à partir de ce point
+				if (!selection) {
 					// 1. create a new tag
 					var newTag = new meenoAppCli.Classes.Tag ({
 						label : self.$("input[name='newTag']").val(),
@@ -74,14 +74,22 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 					meenoAppCli.tags.add(newTag); // We add it to the collection so that we can save it
 					newTag.save({}, {
 						success: function () {
+							console.log('new tag created OK');
 					// 2. link the new tag
 							self.model.get('tagLinks').add( { tag: newTag } );
 							self.renderTagUpdate();
 						},
 					});
 				} else {
+					console.log("tag to be linked : "+selection.get('label'));
 					// link the existing tag
-					self.model.get('tagLinks').add( { tag: selection.at(0) } );
+					// self.model.get('tagLinks').add( { tag: selection.at(0) } );
+					self.model.get('tagLinks').add({ tag: selection });
+					// console.log
+/*
+				var selection = meenoAppCli.tags.get(ui.item.value) // ui.item.value == model.cid
+					self.model.get('tagLinks').add({ tag: selection });*/
+
 					self.renderTagUpdate();
 				}
 			}
@@ -119,7 +127,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 				self.$("input[name='newTag']").val(ui.item.label);
 				return false; // to cancel normal behaviour
 			},
-			select: function(event, ui) {
+			select: function(event, ui) {console.log('autocomplete SELECT triggered');
 				self.options.hasSelectedTag = true;
 				var selection = meenoAppCli.tags.get(ui.item.value) // ui.item.value == model.cid
 				self.model.get('tagLinks').add({ tag: selection });

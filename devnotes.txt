@@ -304,8 +304,16 @@ Voir comment je peux m'assure que shiftDown est appelée après la création d'u
 - affecter par défaut les tags de la note où la tâche est créée
 - afficher dans le browser les tags rattachés aux tasks (comme pour les notes)
 - mettre en place les tests d'intégration
-- Voir pourquoi on ne peut plus créer de nouveaux tags dans les notes
+- Voir pourquoi on ne peut plus créer de nouveaux tags dans les notes => réparé
 _____________________________________
 Rajout de tags :
 - un autocomplete un par un, qui permet de selectionner existant ou de créer nouveau
 - une liste à gauche qui se met à jour et qu'on peut supprimer d'un click
+
+09/08=======================================
+Corriger bug au rajout de nvx tags :
+- suppr tags OK
+- lien de tags existants OK
+- saisir un tag sans l'autocomplete casse des choses
+	- si existant ça remplace
+	- si nv ça créé bien un nv mais ça remplace aussi

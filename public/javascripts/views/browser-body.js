@@ -1,13 +1,25 @@
 var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * This class will be used to support the main view of the object browser.
+ * From here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.
+ * It controls the creation of several subviews, mainly :
+ * - meenoAppCli.Classes.BrowserBodyNoteView
+ * - meenoAppCli.Classes.BrowserBodyTaskView
+ * - meenoAppCli.Classes.BrowserBodyTagView
+ * - meenoAppCli.Classes.BrowserBodyFilterView
+ */
 meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
+	// Initialize the view
+	// =============================================================================
 	// That view will be binded to a pre-existing piece of DOM
 	// ("el" is passed directly to the class constructor : see http://backbonejs.org/#View-constructor)
 	// It also explains why we don't need a render function
 	// It's meant to be used for both Help and Browse tabs, which explains some functions won't be used in some cases
 
+	// ###Setup the view's DOM events
 	events: {
 		'click .filter li'                                 : 'toggleObject',
 		'keyup .search'                                    : 'searchText',
@@ -22,6 +34,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		'click .filter-editor button.delete'               : 'filterDelete',
 	},
 
+	// ###Setup the view
 	initialize: function() {
 		var self = this;
 
@@ -38,8 +51,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			"tagFilters" : [],
 			"taskFilters" : []
 		};
-		// These filters are the one that actually filter the displayed collection
-		// The ones that are saved, deleted or deactivated 
+
+		// this.filters stores the filters that actually filter the displayed collections
+		// they can be cloned for saving
 		this.filters = {
 			"noteFilter": new meenoAppCli.Classes.NoteFilter(),
 			"taskFilter": new meenoAppCli.Classes.TaskFilter(),
@@ -90,8 +104,39 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 	},
 
-	// --------------------------------------------------------------------------------
+	// Navigation in the browser
+	// =============================================================================
+	// To display the browser itself and then to choose which objects to display
+
+	// ###Toggle the browser
+	toggle: function() {
+		// First, deactivate the other tabs' content
+		$("#tabs").children().each(function(i,child){
+			$(child).removeClass("selected");
+		});
+		// Then activate this one
+		this.$el.addClass('selected');
+	},
+
+	// ###Toggle business objet type displayed by the browser
+	toggleObject : function (event) {
+		var objectClass = $(event.target).hasClass("notes") ? "notes" : ($(event.target).hasClass("tags") ? "tags" : "tasks");
+		// First, the command
+		this.$el.find(".filter ul").children().each(function(i,child){
+			$(child).removeClass("selected");
+		});
+		this.$el.find(".filter li."+objectClass).addClass('selected');
+		// Then, the contents
+		this.$el.children(".listobjects").each(function(i,child){
+			$(child).removeClass("selected");
+		});
+		this.$el.find(".listobjects."+objectClass).addClass('selected');
+	},
+
 	// Mass actions
+	// =============================================================================
+	// Series of methods that allow for selecting several objects and operating an 
+	// action on them (delete, tag, move,...)
 	reSyncSelectors: function(collName) {
 		if (this.deleteInProgress[collName]) {
 			this.$(".listobjects ."+collName+" span.checkbox").show(); // Display object selectors or hide them
@@ -158,36 +203,10 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		meenoAppCli.dispatcher.trigger("browser:"+collName+":"+action);
 	},
 
-	// --------------------------------------------------------------------------------
-	// Toggle the browser
-	toggle: function() {
-		// First, deactivate the other tabs' content
-		$("#tabs").children().each(function(i,child){
-			$(child).removeClass("selected");
-		});
-		// Then activate this one
-		this.$el.addClass('selected');
-	},
 
-	// --------------------------------------------------------------------------------
-	// Toggle business objet type displayed by the browser
-	toggleObject : function (event) {
-		var objectClass = $(event.target).hasClass("notes") ? "notes" : ($(event.target).hasClass("tags") ? "tags" : "tasks");
-		// First, the command
-		this.$el.find(".filter ul").children().each(function(i,child){
-			$(child).removeClass("selected");
-		});
-		this.$el.find(".filter li."+objectClass).addClass('selected');
-		// Then, the contents
-		this.$el.children(".listobjects").each(function(i,child){
-			$(child).removeClass("selected");
-		});
-		this.$el.find(".listobjects."+objectClass).addClass('selected');
-	},
-
-	//=================================================================================
-	// Search business objets among database
-	//=================================================================================
+	// Search business objets in database
+	// =============================================================================
+	// To display the browser itself and then to choose which objects to display
 	searchGetFocus: function (io) {
 		var focus = false;
 		var $listObjects = {};
