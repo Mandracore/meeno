@@ -1,6 +1,13 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * This class holds the view of the filter models that are used to filter the browser's search results.
+ * It's the same view for filters on notes, tags and tasks.
+ * 
+ * @class meenoAppCli.Classes.BrowserBodyFilterView
+ * @extends Backbone.View
+ */
 meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 	// filterName (e.g. "noteFilter") must be declared by passing options to the constructor
 	tagName  : "li",

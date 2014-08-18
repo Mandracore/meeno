@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>public/javascripts/views/browser-body.js - Meeno source code documentation</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="Meeno source code documentation"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyFilterView.html">meenoAppCli.Classes.BrowserBodyFilterView</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyObjectView.html">meenoAppCli.Classes.BrowserBodyObjectView</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: public/javascripts/views/browser-body.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+var meenoAppCli     = meenoAppCli || {};
+meenoAppCli.Classes = meenoAppCli.Classes || {};
+
+/**
+ * This class will be used to support the main view of the object browser.
+ * From here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.
+ * It controls the creation of several subviews, mainly :
+ * - meenoAppCli.Classes.BrowserBodyNoteView
+ * - meenoAppCli.Classes.BrowserBodyTaskView
+ * - meenoAppCli.Classes.BrowserBodyTagView
+ * - meenoAppCli.Classes.BrowserBodyFilterView
+ * 
+ * @class meenoAppCli.Classes.BrowserBodyView
+ */
+meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
+
+	// Initialize the view
+	// =============================================================================
+	// That view will be binded to a pre-existing piece of DOM
+	// (&quot;el&quot; is passed directly to the class constructor : see http://backbonejs.org/#View-constructor)
+	// It also explains why we don&#x27;t need a render function
+	// It&#x27;s meant to be used for both Help and Browse tabs, which explains some functions won&#x27;t be used in some cases
+
+	// ###Setup the view&#x27;s DOM events
+	events: {
+		&#x27;click .filter li&#x27;                                 : &#x27;toggleObject&#x27;,
+		&#x27;keyup .search&#x27;                                    : &#x27;searchText&#x27;,
+		&#x27;click .actions-contextual .delete&#x27;                : &#x27;deleteToggle&#x27;,
+		&#x27;click .actions-contextual-selection .select-all&#x27;  : &#x27;selectAll&#x27;,
+		&#x27;click .actions-contextual-selection .unselect-all&#x27;: &#x27;unSelectAll&#x27;,
+		&#x27;click span.checkbox&#x27;                              : &#x27;selection&#x27;,
+		&#x27;click .actions-contextual-trigger button&#x27;         : &#x27;actionTrigger&#x27;,
+		&#x27;click .objectButtons span&#x27;                        : &#x27;searchObjectRemove&#x27;,
+		&#x27;click .filter-editor button.save&#x27;                 : &#x27;filterSaveStep1&#x27;,
+		&#x27;click .filter-editor button.saveConfirm&#x27;          : &#x27;filterSaveStep2&#x27;,
+		&#x27;click .filter-editor button.delete&#x27;               : &#x27;filterDelete&#x27;,
+	},
+
+	// ###Setup the view
+	initialize: function() {
+		var self = this;
+
+		this.deleteInProgress = {
+			&quot;notes&quot; : false,
+			&quot;tags&quot;  : false,
+			&quot;tasks&quot; : false
+		};
+		this.children = {
+			&quot;notes&quot; : [],
+			&quot;tags&quot;  : [],
+			&quot;tasks&quot; : [],
+			&quot;noteFilters&quot; : [],
+			&quot;tagFilters&quot; : [],
+			&quot;taskFilters&quot; : []
+		};
+
+		// this.filters stores the filters that actually filter the displayed collections
+		// they can be cloned for saving
+		this.filters = {
+			&quot;noteFilter&quot;: new meenoAppCli.Classes.NoteFilter(),
+			&quot;taskFilter&quot;: new meenoAppCli.Classes.TaskFilter(),
+			&quot;tagFilter&quot; : new meenoAppCli.Classes.TagFilter()
+		};
+
+		this.listenTo(this.options.collections.notes, &#x27;reset add remove change:title add:tagLinks&#x27;, function () {this.renderCollection(&quot;notes&quot;);});
+		this.listenTo(this.options.collections.tags, &#x27;reset add remove change:label&#x27;, function () {this.renderCollection(&quot;tags&quot;); this.renderCollection(&quot;notes&quot;);});
+		this.listenTo(this.options.collections.tasks, &#x27;reset add remove change:label&#x27;, function () {this.renderCollection(&quot;tasks&quot;);});
+
+		this.listenTo(this.options.collections.noteFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;noteFilters&quot;);});
+		this.listenTo(this.options.collections.taskFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;taskFilters&quot;);});
+		this.listenTo(this.options.collections.tagFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;tagFilters&quot;);});
+		this.listenTo(this.options.collections.noteFilters, &#x27;change add remove&#x27;, function () {this.refreshFilterControls(&quot;note&quot;);});
+		this.listenTo(this.options.collections.taskFilters, &#x27;change add remove&#x27;, function () {this.refreshFilterControls(&quot;task&quot;);});
+		this.listenTo(this.options.collections.tagFilters, &#x27;change add remove&#x27;, function () {this.refreshFilterControls(&quot;tag&quot;);});
+
+		this.listenTo(this.filters.noteFilter, &#x27;change add:tags remove:tags add:tasks remove:tasks&#x27;, function () {
+			this.renderCollection(&quot;notes&quot;);
+			this.refreshFilterControls(&quot;note&quot;);
+			this.renderFilterInSuperInput(&quot;noteFilter&quot;); });
+		this.listenTo(this.filters.taskFilter, &#x27;change add:tags remove:tags&#x27;, function () {
+			this.renderCollection(&quot;tasks&quot;);
+			this.refreshFilterControls(&quot;task&quot;);
+			this.renderFilterInSuperInput(&quot;taskFilter&quot;);});
+		this.listenTo(this.filters.tagFilter, &#x27;change&#x27;, function () {
+			this.renderCollection(&quot;tags&quot;);
+			this.refreshFilterControls(&quot;tag&quot;);
+			this.renderFilterInSuperInput(&quot;tagFilter&quot;);});
+
+		this.listenTo(meenoAppCli.dispatcher, &#x27;browser:notes:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;notes&quot;);});
+		this.listenTo(meenoAppCli.dispatcher, &#x27;browser:tags:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tags&quot;);});
+		this.listenTo(meenoAppCli.dispatcher, &#x27;browser:taks:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tasks&quot;);});
+		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:tag&#x27;, function () {this.searchOpenAutocomplete(&quot;tags&quot;);});
+		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:task&#x27;, function () {this.searchOpenAutocomplete(&quot;tasks&quot;);});
+		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:entity&#x27;, function () {this.searchOpenAutocomplete(&quot;entities&quot;);});
+		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:escape&#x27;, function () {this.searchCloseAutocomplete(&quot;escape&quot;);});
+		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:backspace&#x27;, function () {this.searchCloseAutocomplete(&quot;backspace&quot;);});
+
+		// this.listenTo($(&quot;ul.objects&quot;), &#x27;sortupdate&#x27;, function (event, ui) { this.sortableUpdate (event, ui); });
+		// this.listenTo($(&quot;ul.notes.objects&quot;), &#x27;sortupdate&#x27;, function () { console.log (&#x27;SORT&#x27;)});
+		//objects notes ui-sortable
+		this.render();
+		this.refreshFilterControls(&quot;note&quot;);
+		this.refreshFilterControls(&quot;task&quot;);
+		this.refreshFilterControls(&quot;tag&quot;);
+
+
+	},
+
+	// Navigation in the browser
+	// =============================================================================
+	// To display the browser itself and then to choose which objects to display
+
+	// ###Toggle the browser
+	toggle: function() {
+		// First, deactivate the other tabs&#x27; content
+		$(&quot;#tabs&quot;).children().each(function(i,child){
+			$(child).removeClass(&quot;selected&quot;);
+		});
+		// Then activate this one
+		this.$el.addClass(&#x27;selected&#x27;);
+	},
+
+	// ###Toggle business objet type displayed by the browser
+	toggleObject : function (event) {
+		var objectClass = $(event.target).hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($(event.target).hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
+		// First, the command
+		this.$el.find(&quot;.filter ul&quot;).children().each(function(i,child){
+			$(child).removeClass(&quot;selected&quot;);
+		});
+		this.$el.find(&quot;.filter li.&quot;+objectClass).addClass(&#x27;selected&#x27;);
+		// Then, the contents
+		this.$el.children(&quot;.listobjects&quot;).each(function(i,child){
+			$(child).removeClass(&quot;selected&quot;);
+		});
+		this.$el.find(&quot;.listobjects.&quot;+objectClass).addClass(&#x27;selected&#x27;);
+	},
+
+	// Mass actions
+	// =============================================================================
+	// Series of methods that allow for selecting several objects and operating an 
+	// action on them (delete, tag, move,...)
+	reSyncSelectors: function(collName) {
+		if (this.deleteInProgress[collName]) {
+			this.$(&quot;.listobjects .&quot;+collName+&quot; span.checkbox&quot;).show(); // Display object selectors or hide them
+		}
+	},
+
+	selection : function (event) {
+		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+		var countUnselected = $listObjects.find(&quot;span.checkbox.icon-check-empty&quot;).length;
+		if (countUnselected === 0) { // &quot;Unselect all&quot; only
+			$listObjects.find(&quot;.actions-contextual-selection .select-all&quot;).hide();
+			$listObjects.find(&quot;.actions-contextual-selection .unselect-all&quot;).show();
+		} else {
+			var countSelected = $listObjects.find(&quot;span.checkbox.icon-check&quot;).length;
+			if (countSelected === 0) { // &quot;Select all&quot; only
+				$listObjects.find(&quot;.actions-contextual-selection .select-all&quot;).show();
+				$listObjects.find(&quot;.actions-contextual-selection .unselect-all&quot;).hide();
+			} else { // &quot;Select all&quot; and &quot;Unselect all&quot;
+				$listObjects.find(&quot;.actions-contextual-selection .select-all&quot;).show();
+				$listObjects.find(&quot;.actions-contextual-selection .unselect-all&quot;).show();
+			}
+		}
+	},
+
+	selectAll: function (event) {
+		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+		$listObjects.find(&quot;span.checkbox&quot;).each(function (idx, checkbox) {
+			$(checkbox).addClass(&quot;icon-check&quot;).removeClass(&quot;icon-check-empty&quot;);
+		});
+		this.selection(event);
+	},
+
+	unSelectAll: function (event) {
+		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+		$listObjects.find(&quot;span.checkbox&quot;).each(function (idx, checkbox) {
+			$(checkbox).addClass(&quot;icon-check-empty&quot;).removeClass(&quot;icon-check&quot;);
+		});
+		this.selection(event);
+	},
+
+	deleteToggle: function (event) {
+		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+		var collName = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
+		this.deleteInProgress[collName] = !this.deleteInProgress[collName];
+
+		$listObjects.find(&quot;span.checkbox&quot;).toggle(); // Display object selectors or hide them
+		$listObjects.find(&quot;.actions-contextual .action&quot;).toggle();
+		$listObjects.find(&quot;.actions-contextual .cancel&quot;).toggle();
+		$listObjects.find(&quot;.actions-contextual-trigger&quot;).toggle();
+		$listObjects.find(&quot;.actions-contextual-trigger .delete&quot;).toggle();
+		$listObjects.find(&quot;.actions-contextual-selection&quot;).toggle();
+
+		if ($listObjects.find(&quot;.actions-contextual-selection&quot;).is(&quot;:visible&quot;)) {
+			this.selection(event);
+		}
+	},
+
+	actionTrigger: function (event) {
+		// Which list objects are we working on ?
+		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+		var collName = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
+		// Which action do we want to trigger ?
+		var action = $(event.target).attr(&#x27;class&#x27;);
+		/**
+		* Event triggered on meenoAppCli.dispatcher after the user clicks on an action button
+		* (flagged in the DOM with the &#x60;.actions-contextual-trigger button&#x60; classes).
+		* It should be listened by subviews (for example instances of
+		* {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyTagView&quot;}}{{/crossLink}}) to let them
+		* relay the action to their respective model.
+		* 
+		* @event browser:[collection-name]:[action]
+		*/
+		meenoAppCli.dispatcher.trigger(&quot;browser:&quot;+collName+&quot;:&quot;+action);
+	},
+
+
+	// Search business objets in database
+	// =============================================================================
+	// To display the browser itself and then to choose which objects to display
+	searchGetFocus: function (io) {
+		var focus = false;
+		var $listObjects = {};
+		var inputClass = io ? &quot;search&quot; : &quot;autocomplete&quot;;
+		this.$(&quot;.search-wrapper&quot;).find(&#x27;input.&#x27;+inputClass).each(function(idx,el) {
+			if ($(el).is(&quot;:focus&quot;)) {
+				focus = true;
+				$listObjects = $(el).closest(&#x27;.listobjects&#x27;);
+				browserActiveView = $listObjects.hasClass(&#x27;notes&#x27;) ? &#x27;notes&#x27; : ($listObjects.hasClass(&#x27;tags&#x27;) ? &#x27;tags&#x27; : &#x27;tasks&#x27;);
+			}
+		});
+		if (!focus) { return false; }
+		else {
+			return browserActiveView;
+		}
+	},
+
+	searchOpenAutocomplete: function (autoColl) {
+		// Check focus before taking action
+		var self = this;
+		var filteredColl = this.searchGetFocus(true); // the kind of object we are filtering now
+		if (filteredColl === false) { return; }
+		var $listObjects           = this.$(&quot;.listobjects.&quot;+filteredColl);
+		var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return &quot;&quot;; })+&quot;Filter&quot;;
+
+		// autoColl : the kind of object that will be used to retrieve the ones we look for
+		var autoCollFilterClass = autoColl.replace(/^(.)/, function($1){ return $1.toUpperCase( ); })
+									.replace(/(s)$/, function($1){ return &quot;&quot;; })+&quot;Filter&quot;;
+
+		// Parameter the autocomplete to propose the right kind of objects
+		$listObjects.find(&quot;.search-wrapper .autocomplete&quot;).autocomplete({
+			source: function (request, response) {
+				// request.term : data typed in by the user (&quot;new yor&quot;)
+				// response : native callback that must be called with the data to suggest to the user
+				var autoCollFilter = new meenoAppCli.Classes[autoCollFilterClass]({text: request.term});
+				response (
+					self.options.collections[autoColl].search(autoCollFilter).map(function (model, key, list) {
+						return {
+							label: model.get(&quot;label&quot;),
+							value: model.cid
+						};
+					})
+				);
+			},
+			focus: function( event, ui ) {
+				$(event.target).val(ui.item.label);
+				return false; // to cancel normal behaviour
+			},
+			select: function(event, ui) {
+				$(event.target).hide();
+				$listObjects.find(&quot;.search&quot;).focus();
+
+				// Saving input value into the global filter
+				var autoSelModel = self.options.collections[autoColl].get(ui.item.value) // ui.item.value == model.cid
+				if (self.filters[filteredCollFilterName].get(autoColl).contains(autoSelModel) === true) { return; }
+				self.filters[filteredCollFilterName].get(autoColl).add(autoSelModel);
+			}
+		// Change the autocomplete&#x27;s placeholder, empty it (in case it was used before), display it and focus in
+		}).attr(&quot;placeholder&quot;,&quot;filter by related &quot;+autoColl).val(&#x27;&#x27;).show().focus(); 
+	},
+
+	searchCloseAutocomplete: function (event) {
+		// Check focus before taking action
+		var browserActiveView = this.searchGetFocus(false); // the kind of object we are looking for
+		if (browserActiveView === false) { return; }
+		var $listObjects = this.$(&quot;.listobjects.&quot;+browserActiveView);
+		// Listening to &quot;backspace&quot; &amp; &quot;escape&quot; events triggered by mousetrap
+		if ( event == &quot;escape&quot; || (event == &quot;backspace&quot; &amp;&amp; $listObjects.find(&quot;.search-wrapper .autocomplete&quot;).val() == &#x27;&#x27;) ) {
+			console.log(&quot;Closing autocomplete&quot;);
+			$listObjects.find(&quot;.search-wrapper .autocomplete&quot;).hide();
+			$listObjects.find(&quot;.search-wrapper .search&quot;).focus();
+		}
+	},
+
+	searchObjectRemove: function (event) {
+		var $objectButton          = $(event.target);
+		var $listObjects           = $objectButton.closest(&#x27;.listobjects&#x27;);
+		var filteredColl           = $listObjects.hasClass(&#x27;notes&#x27;) ? &#x27;notes&#x27; : ($listObjects.hasClass(&#x27;tags&#x27;) ? &#x27;tags&#x27; : &#x27;tasks&#x27;);
+		var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return &quot;&quot;; })+&quot;Filter&quot;;
+		var object                 = this.options.collections[$objectButton.attr(&#x27;data-class&#x27;)].get($objectButton.attr(&#x27;data-cid&#x27;))
+		this.filters[filteredCollFilterName].get($objectButton.attr(&#x27;data-class&#x27;)).remove(object); // Removing model from Filter
+	},
+
+	searchText: function (event) {
+		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+		var filterName   = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
+		var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
+		this.filters[filterName].set(&#x27;text&#x27;, $(event.target).val());
+		this.renderCollection(collName);
+		this.refreshFilterControls(collName.replace(/(s)$/, function($1){ return &quot;&quot;; }));
+	},
+
+	refreshFilterControls: function (collName) { //note
+		var $listObjects    = this.$(&quot;.listobjects.&quot;+collName+&quot;s&quot;);
+		var filtersCollName = collName+&quot;Filters&quot;;
+		var filterName      = collName+&quot;Filter&quot;;
+
+		$listObjects.find(&#x27;.filter-editor .action&#x27;).hide(); // No action controls should be displayed
+
+		if (!this.filters[filterName].isEmpty()) { // The user has set a filter set in the super-input
+			if (this.options.collections[filtersCollName].containsSimilar(this.filters[filterName]) === false) {
+				$listObjects.find(&#x27;.filter-editor .action.save&#x27;).show(); // &quot;Save&quot; button is displayed
+			} else {
+				$listObjects.find(&#x27;.filter-editor .action.delete&#x27;).show(); // &quot;Delete&quot; button is displayed
+			}
+		}
+	},
+
+	filterSaveStep1: function (event) {
+		var $listObjects    = $(event.target).closest(&quot;.listobjects&quot;);
+		$listObjects.find(&quot;.filter-editor input&quot;).show().focus();
+		$listObjects.find(&#x27;.filter-editor .action.saveConfirm&#x27;).show();
+		$listObjects.find(&#x27;.filter-editor .action.save&#x27;).hide();
+	},
+
+	filterSaveStep2: function (event) {
+		var $listObjects    = $(event.target).closest(&quot;.listobjects&quot;);
+		var filterName      = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
+		var filtersCollName = filterName + &quot;s&quot;;
+		var $inputFilterLabel = $listObjects.find(&quot;.filter-editor input&quot;);
+		this.filters[filterName].set(&#x27;label&#x27;, $inputFilterLabel.val());
+		$listObjects.find(&#x27;.filter-editor .action.saveConfirm&#x27;).hide();
+		$inputFilterLabel.hide().val(&#x27;&#x27;);
+		var cloneFilter = this.filters[filterName].superClone();
+		this.options.collections[filtersCollName].add(cloneFilter);
+		cloneFilter.save();
+	},
+
+	filterDelete: function (event) {
+		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+		var filterName   = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
+		/**
+		* Event triggered on meenoAppCli.dispatcher after the user decides to delete the saved tag
+		* that is currently active. This event is listened by the views of 
+		* the class {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyFilterView&quot;}}{{/crossLink}}. The
+		* one view related to a model with the right filter name will delete its model.
+		* @event browser:filters:[filter-name]:remove-active
+		*/
+		meenoAppCli.dispatcher.trigger(&quot;browser:filters:&quot;+filterName+&quot;:remove-active&quot;);
+	},
+
+	renderFilterCollection: function (filtersCollName) {
+		var self         = this;
+		var filteredColl = filtersCollName.replace(/(Filters)$/, function($1){ return &quot;s&quot;; }); // noteFilters =&gt; notes
+		var filterName   = filtersCollName.replace(/(s)$/, function($1){ return &quot;&quot;; }); // noteFilters =&gt; noteFilter
+
+		// First, emptying the DOM
+		var $list = this.$(&#x27;.listobjects.&#x27;+filteredColl+&#x27; .filter-editor ul&#x27;);
+		$list.html(&#x27;&#x27;);
+
+		// Second, killing children views of right collection
+		_.each(this.children[filtersCollName], function (child, index) {
+			child.kill();
+		});
+		this.children[filtersCollName] = [];
+
+		// Third, filling the DOM again
+		this.options.collections[filtersCollName].each(function (element) {
+			var newView = new meenoAppCli.Classes.BrowserBodyFilterView({ filterName: filterName, model: element, parent: self });
+			self.children[filtersCollName].push (newView);
+			$list.append(newView.render().el);
+		}, this);
+	},
+
+	renderFilterInSuperInput: function (filterName) {
+		var self         = this;
+		var filter       = this.filters[filterName];
+		var filteredColl = filterName.replace(/(Filter)$/, function($1){ return &quot;s&quot;; }); // noteFilter =&gt; notes
+
+		this.$(&quot;.listobjects.&quot;+filteredColl+&quot; .super-input .objectButtons span&quot;).remove();
+		this.$(&quot;.listobjects.&quot;+filteredColl+&quot; .super-input input.search&quot;).val(filter.get(&#x27;text&#x27;)).focus();
+
+		switch (filterName) {
+			case &#x27;noteFilter&#x27;:
+				filter.get(&#x27;tags&#x27;).each(function (tag) {
+					var $objectButton = $(&quot;&lt;span&gt;&lt;/span&gt;&quot;)
+						.attr(&#x27;data-class&#x27;, &quot;tags&quot;) //tags
+						.attr(&#x27;data-cid&#x27;, tag.cid)
+						.html(tag.get(&#x27;label&#x27;));
+					self.$(&quot;.listobjects.&quot;+filteredColl+&quot; .super-input .objectButtons&quot;).append($objectButton);
+				});
+				filter.get(&#x27;tasks&#x27;).each(function (task) {
+					var $objectButton = $(&quot;&lt;span&gt;&lt;/span&gt;&quot;)
+						.attr(&#x27;data-class&#x27;, &quot;tasks&quot;) //tasks
+						.attr(&#x27;data-cid&#x27;, task.cid)
+						.html(task.get(&#x27;label&#x27;));
+					self.$(&quot;.listobjects.&quot;+filteredColl+&quot; .super-input .objectButtons&quot;).append($objectButton);
+				});
+				break;
+			case &#x27;taskFilter&#x27;:
+				filter.get(&#x27;tags&#x27;).each(function (tag) {
+					var $objectButton = $(&quot;&lt;span&gt;&lt;/span&gt;&quot;)
+						.attr(&#x27;data-class&#x27;, &quot;tags&quot;) //tags
+						.attr(&#x27;data-cid&#x27;, tag.cid)
+						.html(tag.get(&#x27;label&#x27;));
+					self.$(&quot;.listobjects.&quot;+filteredColl+&quot; .super-input .objectButtons&quot;).append($objectButton);
+				});
+				break;
+		}
+	},
+
+
+	//=================================================================================
+	// Render business objects&#x27; sub views 
+	//=================================================================================
+	render: function (event) {
+		this.renderCollection(&#x27;notes&#x27;);
+		this.renderCollection(&#x27;tags&#x27;);
+		this.renderCollection(&#x27;tasks&#x27;);
+	},
+
+	renderCollection: function (collName) {
+		var self = this;
+		var filterName = collName == &quot;notes&quot; ? &quot;noteFilter&quot; : (collName == &quot;tasks&quot; ? &quot;taskFilter&quot; : &quot;tagFilter&quot;);
+
+		// First, emptying the DOM
+		var $list = this.$(&#x27;.listobjects.&#x27;+collName+&#x27; .&#x27;+collName);
+		if ($list.is(&#x27;:ui-sortable&#x27;)) {
+			$list.sortable( &quot;destroy&quot; );
+		}
+		$list.html(&#x27;&#x27;);
+
+		// Second, killing children views of right collection
+		_.each(this.children[collName], function (child, index) {
+			child.kill();
+		});
+		this.children[collName] = [];
+
+		// Third, filling the DOM again
+		var newView = {};
+		var results = this.options.collections[collName].search(this.filters[filterName]);
+
+		results.each(function (element) {
+			if (collName == &quot;notes&quot;) { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: element }); }
+			if (collName == &quot;tags&quot;) { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: element }); }
+			if (collName == &quot;tasks&quot;) { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: element }); }
+			self.children[collName].push (newView);
+			$list.append(newView.render().el);
+		}, this);
+
+		if($list.hasClass(&#x27;tasks&#x27;)) {
+			$list.sortable({
+				update: function( event, ui ) {
+					return self.sortableUpdate(event, ui);
+				}
+			});
+		}
+	},
+
+	/**
+	 * This methods aims at saving the new positions of the objects
+	 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
+	 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
+	 * @return {void} nothing to return
+	 */
+	sortableUpdate: function (event, ui) {
+		console.log(&quot;sortable update&quot;);
+
+		// 1. Find the model corresponding to the sorted DOM node
+		var sortedModel = this.options.collections.tasks.get(ui.item.attr(&#x27;data-cid&#x27;));
+		// 2. Find out in which scenario we are
+		if (!ui.item.next().length) { // The moved item is now the last one of the list (than could be filtered)
+			var prevModel = this.options.collections.tasks.get(ui.item.prev().attr(&#x27;data-cid&#x27;));
+			sortedModel.set(&#x27;position&#x27;, prevModel.get(&#x27;position&#x27;)+1);
+		} else { // The moved item is somewhere in the list
+			var nextModel = this.options.collections.tasks.get(ui.item.next().attr(&#x27;data-cid&#x27;));
+			sortedModel.set(&#x27;position&#x27;, nextModel.get(&#x27;position&#x27;));
+		}
+		sortedModel.save();
+		// 3. Shift all the following models
+		this.options.collections.tasks.shiftDown(sortedModel);
+	}
+});
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

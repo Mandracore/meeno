@@ -1,6 +1,12 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * A backbone view to display one tag in the browser
+ * 
+ * @class meenoAppCli.Classes.BrowserBodyTagView
+ * @extends meenoAppCli.Classes.BrowserBodyObjectView
+ */
 meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
 
 	template : '#browser-body-tag-template',
@@ -13,12 +19,15 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 		});
 	},
 
-	// Renders the tag item to the current state of the model
 	render: function() {
 		this.collName = "tags";
-		//console.log ("R[Browser-body-tag]");
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (this.model.toJSON()));
+
+		/**
+		 * Event triggered on meenoAppCli.dispatcher when this.render() method is called
+		 * @event browser:tags:reSyncSelectors
+		 */
 		meenoAppCli.dispatcher.trigger("browser:tags:reSyncSelectors");
 		return this;
 	},

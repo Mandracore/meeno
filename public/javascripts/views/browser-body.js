@@ -9,6 +9,8 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
  * - meenoAppCli.Classes.BrowserBodyTaskView
  * - meenoAppCli.Classes.BrowserBodyTagView
  * - meenoAppCli.Classes.BrowserBodyFilterView
+ * 
+ * @class meenoAppCli.Classes.BrowserBodyView
  */
 meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
@@ -200,6 +202,15 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 		// Which action do we want to trigger ?
 		var action = $(event.target).attr('class');
+		/**
+		* Event triggered on meenoAppCli.dispatcher after the user clicks on an action button
+		* (flagged in the DOM with the `.actions-contextual-trigger button` classes).
+		* It should be listened by subviews (for example instances of
+		* {{#crossLink "meenoAppCli.Classes.BrowserBodyTagView"}}{{/crossLink}}) to let them
+		* relay the action to their respective model.
+		* 
+		* @event browser:[collection-name]:[action]
+		*/
 		meenoAppCli.dispatcher.trigger("browser:"+collName+":"+action);
 	},
 
@@ -338,6 +349,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	filterDelete: function (event) {
 		var $listObjects = $(event.target).closest(".listobjects");
 		var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
+		/**
+		* Event triggered on meenoAppCli.dispatcher after the user decides to delete the saved tag
+		* that is currently active. This event is listened by the views of 
+		* the class {{#crossLink "meenoAppCli.Classes.BrowserBodyFilterView"}}{{/crossLink}}. The
+		* one view related to a model with the right filter name will delete its model.
+		* @event browser:filters:[filter-name]:remove-active
+		*/
 		meenoAppCli.dispatcher.trigger("browser:filters:"+filterName+":remove-active");
 	},
 

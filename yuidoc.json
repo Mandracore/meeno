@@ -1,0 +1,11 @@
+{
+	"name": "Meeno source code documentation",
+	"description": "A tutorial about YUIDoc, for Nettuts+",
+	"version": "0.1.0",
+	"url": "http://net.tutsplus.com",
+	"options": {
+		"linkNatives": "true",
+		"outdir": "./docs",
+		"paths": "./public/"
+	}
+}

@@ -1,6 +1,17 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * This class retains all core features for displaying objects views in the browser.
+ * Several classes will inherit from it, one per kind of business object :
+ * - meenoAppCli.Classes.BrowserBodyNoteView
+ * - meenoAppCli.Classes.BrowserBodyTaskView
+ * - meenoAppCli.Classes.BrowserBodyTagView
+ * - ...
+ * 
+ * @class meenoAppCli.Classes.BrowserBodyObjectView
+ * @extends Backbone.View
+ */
 meenoAppCli.Classes.BrowserBodyObjectView = Backbone.View.extend({
 	tagName  : 'li',
 

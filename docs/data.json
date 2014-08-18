@@ -1,0 +1,1212 @@
+{
+    "project": {
+        "name": "Meeno source code documentation",
+        "description": "A tutorial about YUIDoc, for Nettuts+",
+        "version": "0.1.0",
+        "url": "http://net.tutsplus.com"
+    },
+    "files": {
+        "public/javascripts/collections/tasks.js": {
+            "name": "public/javascripts/collections/tasks.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/lib/backbone-nested-v1.1.2.min.js": {
+            "name": "public/javascripts/lib/backbone-nested-v1.1.2.min.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/lib/backbone-relational.js": {
+            "name": "public/javascripts/lib/backbone-relational.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/lib/backbone.localStorage-min.js": {
+            "name": "public/javascripts/lib/backbone.localStorage-min.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/models/task.js": {
+            "name": "public/javascripts/models/task.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/browser-body-filter.js": {
+            "name": "public/javascripts/views/browser-body-filter.js",
+            "modules": {},
+            "classes": {
+                "meenoAppCli.Classes.BrowserBodyFilterView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/browser-body-object.js": {
+            "name": "public/javascripts/views/browser-body-object.js",
+            "modules": {},
+            "classes": {
+                "meenoAppCli.Classes.BrowserBodyObjectView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/browser-body-tag.js": {
+            "name": "public/javascripts/views/browser-body-tag.js",
+            "modules": {},
+            "classes": {
+                "meenoAppCli.Classes.BrowserBodyTagView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/browser-body-task.js": {
+            "name": "public/javascripts/views/browser-body-task.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/browser-body.js": {
+            "name": "public/javascripts/views/browser-body.js",
+            "modules": {},
+            "classes": {
+                "meenoAppCli.Classes.BrowserBodyView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/editor-body-object.js": {
+            "name": "public/javascripts/views/editor-body-object.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "meenoAppCli.Classes.BrowserBodyFilterView": {
+            "name": "meenoAppCli.Classes.BrowserBodyFilterView",
+            "shortname": "meenoAppCli.Classes.BrowserBodyFilterView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser-body-filter.js",
+            "line": 4,
+            "description": "This class holds the view of the filter models that are used to filter the browser's search results.\nIt's the same view for filters on notes, tags and tasks.",
+            "extends": "Backbone.View"
+        },
+        "meenoAppCli.Classes.BrowserBodyObjectView": {
+            "name": "meenoAppCli.Classes.BrowserBodyObjectView",
+            "shortname": "meenoAppCli.Classes.BrowserBodyObjectView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser-body-object.js",
+            "line": 4,
+            "description": "This class retains all core features for displaying objects views in the browser.\nSeveral classes will inherit from it, one per kind of business object :\n- meenoAppCli.Classes.BrowserBodyNoteView\n- meenoAppCli.Classes.BrowserBodyTaskView\n- meenoAppCli.Classes.BrowserBodyTagView\n- ...",
+            "extends": "Backbone.View"
+        },
+        "meenoAppCli.Classes.BrowserBodyTagView": {
+            "name": "meenoAppCli.Classes.BrowserBodyTagView",
+            "shortname": "meenoAppCli.Classes.BrowserBodyTagView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser-body-tag.js",
+            "line": 4,
+            "description": "A backbone view to display one tag in the browser",
+            "extends": "meenoAppCli.Classes.BrowserBodyObjectView"
+        },
+        "meenoAppCli.Classes.BrowserBodyView": {
+            "name": "meenoAppCli.Classes.BrowserBodyView",
+            "shortname": "meenoAppCli.Classes.BrowserBodyView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 4,
+            "description": "This class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, mainly :\n- meenoAppCli.Classes.BrowserBodyNoteView\n- meenoAppCli.Classes.BrowserBodyTaskView\n- meenoAppCli.Classes.BrowserBodyTagView\n- meenoAppCli.Classes.BrowserBodyFilterView"
+        }
+    },
+    "classitems": [
+        {
+            "file": "public/javascripts/collections/tasks.js",
+            "line": 9,
+            "description": "Allows to search through a collection of tasks with a complex filter based on full-text search (in label)\nand on tags related or not to the models",
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "the filter used to search the collection",
+                    "type": "meenoAppCli.Classes.TaskFilter"
+                }
+            ],
+            "return": {
+                "description": "a new filtered collection of tasks",
+                "type": "meenoAppCli.Classes.Tasks"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/collections/tasks.js",
+            "line": 38,
+            "description": "When moving a task to a new position, shift the following ones down to make some room for it\nAlso needs to be called when a new task is appended to a collection",
+            "params": [
+                {
+                    "name": "anchor",
+                    "description": "the task that has moved, point of reference",
+                    "type": "meenoAppCli.Classes.Task"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-nested-v1.1.2.min.js",
+            "line": 1,
+            "description": "Backbone-Nested 1.1.2 - An extension of Backbone.js that keeps track of nested attributes\n\nhttp://afeld.github.com/backbone-nested/\n\nCopyright (c) 2011-2012 Aidan Feldman\nMIT Licensed (LICENSE)",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 2,
+            "description": "Backbone-relational.js 0.7.0\n(c) 2011-2013 Paul Uithol\n\nBackbone-relational may be freely distributed under the MIT license; see the accompanying LICENSE.txt.\nFor details and documentation: https://github.com/PaulUithol/Backbone-relational.\nDepends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 13,
+            "description": "CommonJS shim",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 32,
+            "description": "Semaphore mixin; can be used as both binary and counting.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 69,
+            "description": "A BlockingQueue that accumulates items while blocked (via 'block'),\nand processes them when unblocked (via 'unblock').\nProcess can also be called manually (via 'process').",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 110,
+            "description": "Global event queue. Accumulates external events ('add:<key>', 'remove:<key>' and 'update:<key>')\nuntil the top-level object is fully initialized (see 'Backbone.RelationalModel').",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 116,
+            "description": "Backbone.Store keeps track of all created (and destruction of) Backbone.RelationalModel.\nHandles lookup for relations.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 131,
+            "description": "Add a set of subModelTypes to the store, that can be used to resolve the '_superModel'\nfor a model later in 'setupSuperModel'.",
+            "params": [
+                {
+                    "name": "subModelTypes",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                },
+                {
+                    "name": "superModelType",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 145,
+            "description": "Check if the given modelType is registered as another model's subModel. If so, add it to the super model's\n'_subModels', and set the modelType's '_superModel', '_subModelTypeName', and '_subModelTypeAttribute'.",
+            "params": [
+                {
+                    "name": "modelType",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 170,
+            "description": "Add a reverse relation. Is added to the 'relations' property on model's prototype, and to\nexisting instances of 'model' in the store as well.",
+            "params": [
+                {
+                    "name": "relation",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "model",
+                            "description": "",
+                            "type": "Backbone.RelationalModel"
+                        },
+                        {
+                            "name": "type",
+                            "description": "",
+                            "type": "String"
+                        },
+                        {
+                            "name": "key",
+                            "description": "",
+                            "type": "String"
+                        },
+                        {
+                            "name": "relatedModel",
+                            "description": "",
+                            "type": "String|Object"
+                        }
+                    ]
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 206,
+            "description": "Add a 'relation' to all existing instances of 'relation.model' in the store",
+            "params": [
+                {
+                    "name": "relation",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 221,
+            "description": "Find the Store's collection for a certain type of model.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                }
+            ],
+            "return": {
+                "description": "A collection if found (or applicable for 'model'), or null",
+                "type": "Backbone.Collection"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 247,
+            "description": "Find a type on the global object by name. Splits name on dots.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 288,
+            "description": "Find the attribute that is to be used as the `id` on a given object",
+            "params": [
+                {
+                    "name": "type",
+                    "description": ""
+                },
+                {
+                    "name": "item",
+                    "description": "",
+                    "type": "String|Number|Object|Backbone.RelationalModel"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String|Number"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 314,
+            "params": [
+                {
+                    "name": "type",
+                    "description": ""
+                },
+                {
+                    "name": "item",
+                    "description": "",
+                    "type": "String|Number|Object|Backbone.RelationalModel"
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 336,
+            "description": "Add a 'model' to it's appropriate collection. Retain the original contents of 'model.collection'.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 355,
+            "description": "Explicitly update a model's id in it's store collection",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 364,
+            "description": "Remove a 'model' from the store.",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 376,
+            "description": "The main Relation class, from which 'HasOne' and 'HasMany' inherit. Internally, 'relational:<key>' events\nare used to regulate addition and removal of models from relations.",
+            "params": [
+                {
+                    "name": "instance",
+                    "description": "",
+                    "type": "Backbone.RelationalModel"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "key",
+                            "description": "",
+                            "type": "String"
+                        },
+                        {
+                            "name": "relatedModel",
+                            "description": "",
+                            "type": "Backbone.RelationalModel.constructor"
+                        },
+                        {
+                            "name": "includeInJSON",
+                            "description": "Serialize the given attribute for related model(s)' in toJSON, or just their ids.",
+                            "type": "Boolean|String",
+                            "optional": true,
+                            "optdefault": "true"
+                        },
+                        {
+                            "name": "createModels",
+                            "description": "Create objects from the contents of keys if the object is not found in Backbone.store.",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "true"
+                        },
+                        {
+                            "name": "reverseRelation",
+                            "description": "Specify a bi-directional relation. If provided, Relation will reciprocate\n   the relation to the 'relatedModel'. Required and optional properties match 'options', except that it also needs\n   {Backbone.Relation|String} type ('HasOne' or 'HasMany').",
+                            "type": "Object",
+                            "optional": true
+                        }
+                    ]
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 494,
+            "description": "Check several pre-conditions.",
+            "return": {
+                "description": "True if pre-conditions are satisfied, false if they're not.",
+                "type": "Boolean"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 543,
+            "description": "Set the related model(s) for this relation",
+            "params": [
+                {
+                    "name": "related",
+                    "description": "",
+                    "type": "Backbone.Model|Backbone.Collection"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 556,
+            "description": "Determine if a relation (on a different RelationalModel) is the reverse\nrelation of the current one.",
+            "params": [
+                {
+                    "name": "relation",
+                    "description": "",
+                    "type": "Backbone.Relation"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 570,
+            "description": "Get the reverse relations (pointing back to 'this.key' on 'this.instance') for the currently related model(s).",
+            "params": [
+                {
+                    "name": "model",
+                    "description": "Get the reverse relations for a specific model.\n   If not specified, 'this.related' is used.",
+                    "type": "Backbone.RelationalModel",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Backbone.Relation[]"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 591,
+            "description": "Rename options.silent to options.silentChange, so events propagate properly.\n(for example in HasMany, from 'addRelated'->'handleAddition')",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 606,
+            "description": "Rename options.silentChange to options.silent, so events are silenced as intended in Backbone's\noriginal functions.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 669,
+            "description": "If the key is changed, notify old & new reverse relations and initialize the new relation",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 726,
+            "description": "If a new 'this.relatedModel' appears in the 'store', try to match it to the last set 'keyContents'",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 805,
+            "description": "Bind events and setup collectionKeys for a collection that is to be used as the backing store for a HasMany.\nIf no 'collection' is supplied, a new collection will be created of the specified 'collectionType' option.",
+            "params": [
+                {
+                    "name": "collection",
+                    "description": "",
+                    "type": "Backbone.Collection",
+                    "optional": true
+                }
+            ],
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 880,
+            "description": "If the key is changed, notify old & new reverse relations and initialize the new relation",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 953,
+            "description": "When a model is added to a 'HasMany', trigger 'add' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', must set 'this.instance' as their related).",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 978,
+            "description": "When a model is removed from a 'HasMany', trigger 'remove' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', which should be nullified)",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1027,
+            "description": "A type of Backbone.Model that also maintains relations to other models and collections.\nNew events when compared to the original:\n - 'add:<key>' (model, related collection, options)\n - 'remove:<key>' (model, related collection, options)\n - 'update:<key>' (model, related model or collection, options)",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1081,
+            "description": "Override 'trigger' to queue 'change' and 'change:*' events",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1098,
+            "description": "Initialize Relations present in this.relations; determine the type (HasOne/HasMany), then creates a new instance.\nInvoked in the first call so 'set' (which is made from the Backbone.Model constructor).",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1121,
+            "description": "When new values are set, notify this model's relations (also if options.silent is set).\n(Relation.setRelated locks this model before calling 'set' on it to prevent loops)",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1137,
+            "description": "Either add to the queue (if we're not initialized yet), or execute right away.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1144,
+            "description": "Process _queue",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1153,
+            "description": "Get a specific relation.",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The relation key to look for.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "An instance of 'Backbone.Relation', if a relation was found for 'key', or null.",
+                "type": "Backbone.Relation"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1166,
+            "description": "Get all of the created relations.",
+            "return": {
+                "description": "",
+                "type": "Backbone.Relation[]"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1174,
+            "description": "Retrieve related objects.",
+            "params": [
+                {
+                    "name": "key",
+                    "description": "The relation key to fetch models for.",
+                    "type": "String"
+                },
+                {
+                    "name": "options",
+                    "description": "Options for 'Backbone.Model.fetch' and 'Backbone.sync'.",
+                    "type": "Object",
+                    "optional": true
+                },
+                {
+                    "name": "update",
+                    "description": "Whether to force a fetch from the server (updating existing models).",
+                    "type": "Boolean",
+                    "optional": true,
+                    "optdefault": "false"
+                }
+            ],
+            "return": {
+                "description": "An array of request objects",
+                "type": "jQuery.when[]"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1317,
+            "description": "Override 'change', so the change will only execute after 'set' has finised (relations are updated),\nand 'previousAttributes' will be available when the event is fired.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1341,
+            "description": "Convert relations to JSON, omits them when required",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1442,
+            "description": "The related model might not be defined for two reasons\n 1. it never gets defined, e.g. a typo\n 2. it is related to itself\nIn neither of these cases do we need to pre-initialize reverse relations.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1462,
+            "description": "Create a 'Backbone.Model' instance based on 'attributes'.",
+            "params": [
+                {
+                    "name": "attributes",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Backbone.Model"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1522,
+            "description": "Find an instance of `this` type in 'Backbone.Relational.store'.\n- If `attributes` is a string or a number, `findOrCreate` will just query the `store` and return a model if found.\n- If `attributes` is an object, the model will be updated with `attributes` if found.\n  Otherwise, a new model is created with `attributes` (unless `options.create` is explicitly set to `false`).",
+            "params": [
+                {
+                    "name": "attributes",
+                    "description": "Either a model's id, or the attributes used to create or update a model.",
+                    "type": "Object|String|Number"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true,
+                    "props": [
+                        {
+                            "name": "create",
+                            "description": "",
+                            "type": "Boolean",
+                            "optional": true,
+                            "optdefault": "true"
+                        }
+                    ]
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Backbone.RelationalModel"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1553,
+            "description": "Override Backbone.Collection._prepareModel, so objects will be built using the correct type\nif the collection.model has subModels.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1587,
+            "description": "Override Backbone.Collection.add, so objects fetched from the server multiple times will\nupdate the existing Model. Also, trigger 'relational:add'.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1625,
+            "description": "Override 'Backbone.Collection.remove' to trigger 'relational:remove'.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1651,
+            "description": "Override 'Backbone.Collection.reset' to trigger 'relational:reset'.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1662,
+            "description": "Override 'Backbone.Collection.sort' to trigger 'relational:reset'.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone-relational.js",
+            "line": 1673,
+            "description": "Override 'Backbone.Collection.trigger' so 'add', 'remove' and 'reset' events are queued until relations\nare ready.",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/lib/backbone.localStorage-min.js",
+            "line": 1,
+            "description": "Backbone localStorage Adapter\nhttps://github.com/jeromegn/Backbone.localStorage\n/(function(){function n(){return((1+Math.random())*65536|0).toString(16).substring(1)}function r(){return n()+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+n()+n()}var e=this._,t=this.Backbone;t.LocalStorage=window.Store=function(e){this.name=e;var t=this.localStorage().getItem(this.name);this.records=t&&t.split(\",\")||[]},e.extend(t.LocalStorage.prototype,{save:function(){this.localStorage().setItem(this.name,this.records.join(\",\"))},create:function(e){return e.id||(e.id=r(),e.set(e.idAttribute,e.id)),this.localStorage().setItem(this.name+\"-\"+e.id,JSON.stringify(e)),this.records.push(e.id.toString()),this.save(),e.toJSON()},update:function(t){return this.localStorage().setItem(this.name+\"-\"+t.id,JSON.stringify(t)),e.include(this.records,t.id.toString())||this.records.push(t.id.toString()),this.save(),t.toJSON()},find:function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e.id))},findAll:function(){return e(this.records).chain().map(function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e))},this).compact().value()},destroy:function(t){return this.localStorage().removeItem(this.name+\"-\"+t.id),this.records=e.reject(this.records,function(e){return e==t.id.toString()}),this.save(),t},localStorage:function(){return localStorage}}),t.LocalStorage.sync=window.Store.sync=t.localSync=function(e,t,n,r){var i=t.localStorage||t.collection.localStorage;typeof n==\"function\"&&(n={success:n,error:r});var s,o=$.Deferred&&$.Deferred();switch(e){case\"read\":s=t.id!=undefined?i.find(t):i.findAll();break;case\"create\":s=i.create(t);break;case\"update\":s=i.update(t);break;case\"delete\":s=i.destroy(t)}return s?(n.success(s),o&&o.resolve()):(n.error(\"Record not found\"),o&&o.reject()),o&&o.promise()},t.ajaxSync=t.sync,t.getSyncMethod=function(e){return e.localStorage||e.collection&&e.collection.localStorage?t.LocalStorage.sync:t.ajaxSync},t.sync=function(e,n,r,i){return t.getSyncMethod(n).apply(this,[e,n,r,i])}})();",
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/models/task.js",
+            "line": 32,
+            "description": "This method overrides the original one so that the attribute cid is also included in the json output\nThis is necessary for decoupling testing from database : we need unique IDs in unit testing but we don't \nwant to rely on a database layer",
+            "return": {
+                "description": "all the attributes of the item put in a json object",
+                "type": "Json"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-tag.js",
+            "line": 27,
+            "description": "Event triggered on meenoAppCli.dispatcher when this.render() method is called",
+            "itemtype": "event",
+            "name": "browser:tags:reSyncSelectors",
+            "class": "meenoAppCli.Classes.BrowserBodyTagView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 43,
+            "description": "Updates the view after the user modified the tags related to the task",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 54,
+            "description": "Triggered when the user hits ENTER",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 105,
+            "description": "Should initialize the task's tag autocomplete input\nTo be called only when a task is being edited, and deleted when its form is closed",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 147,
+            "description": "Should unlink the clicked tag from the task",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 161,
+            "description": "Will reset the model to the value stored in DB and re-render the view accordingly",
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 205,
+            "description": "Event triggered on meenoAppCli.dispatcher after the user clicks on an action button\n(flagged in the DOM with the `.actions-contextual-trigger button` classes).\nIt should be listened by subviews (for example instances of\n{{#crossLink \"meenoAppCli.Classes.BrowserBodyTagView\"}}{{/crossLink}}) to let them\nrelay the action to their respective model.",
+            "itemtype": "event",
+            "name": "browser:[collection-name]:[action]",
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 352,
+            "description": "Event triggered on meenoAppCli.dispatcher after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"meenoAppCli.Classes.BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
+            "itemtype": "event",
+            "name": "browser:filters:[filter-name]:remove-active",
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 470,
+            "description": "This methods aims at saving the new positions of the objects",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery",
+                    "type": "JQuery event"
+                },
+                {
+                    "name": "ui",
+                    "description": "http://api.jqueryui.com/sortable/#event-update the ui object that is sortable",
+                    "type": "JQuery ui"
+                }
+            ],
+            "return": {
+                "description": "nothing to return",
+                "type": "Void"
+            },
+            "class": "meenoAppCli.Classes.BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/editor-body-object.js",
+            "line": 43,
+            "description": "Filters the keyboard events to pass only ENTER and TAB to the lock() method",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The keyboard event",
+                    "type": "Keyboard event"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": ""
+        },
+        {
+            "file": "public/javascripts/views/editor-body-object.js",
+            "line": 87,
+            "description": "Triggered once the user finishes typing in the new object.\nUsed as a proxy to either link the note to a new object, or to create a new object",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The keyboard event",
+                    "type": "Keyboard event"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Void"
+            },
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "Missing item type\nAllows to search through a collection of tasks with a complex filter based on full-text search (in label)\nand on tags related or not to the models",
+            "line": " public/javascripts/collections/tasks.js:9"
+        },
+        {
+            "message": "Missing item type\nWhen moving a task to a new position, shift the following ones down to make some room for it\nAlso needs to be called when a new task is appended to a collection",
+            "line": " public/javascripts/collections/tasks.js:38"
+        },
+        {
+            "message": "Missing item type\nBackbone-Nested 1.1.2 - An extension of Backbone.js that keeps track of nested attributes\n\nhttp://afeld.github.com/backbone-nested/\n\nCopyright (c) 2011-2012 Aidan Feldman\nMIT Licensed (LICENSE)",
+            "line": " public/javascripts/lib/backbone-nested-v1.1.2.min.js:1"
+        },
+        {
+            "message": "Missing item type\nBackbone-relational.js 0.7.0\n(c) 2011-2013 Paul Uithol\n\nBackbone-relational may be freely distributed under the MIT license; see the accompanying LICENSE.txt.\nFor details and documentation: https://github.com/PaulUithol/Backbone-relational.\nDepends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone.",
+            "line": " public/javascripts/lib/backbone-relational.js:2"
+        },
+        {
+            "message": "Missing item type\nCommonJS shim",
+            "line": " public/javascripts/lib/backbone-relational.js:13"
+        },
+        {
+            "message": "Missing item type\nSemaphore mixin; can be used as both binary and counting.",
+            "line": " public/javascripts/lib/backbone-relational.js:32"
+        },
+        {
+            "message": "Missing item type\nA BlockingQueue that accumulates items while blocked (via 'block'),\nand processes them when unblocked (via 'unblock').\nProcess can also be called manually (via 'process').",
+            "line": " public/javascripts/lib/backbone-relational.js:69"
+        },
+        {
+            "message": "Missing item type\nGlobal event queue. Accumulates external events ('add:<key>', 'remove:<key>' and 'update:<key>')\nuntil the top-level object is fully initialized (see 'Backbone.RelationalModel').",
+            "line": " public/javascripts/lib/backbone-relational.js:110"
+        },
+        {
+            "message": "Missing item type\nBackbone.Store keeps track of all created (and destruction of) Backbone.RelationalModel.\nHandles lookup for relations.",
+            "line": " public/javascripts/lib/backbone-relational.js:116"
+        },
+        {
+            "message": "Missing item type\nAdd a set of subModelTypes to the store, that can be used to resolve the '_superModel'\nfor a model later in 'setupSuperModel'.",
+            "line": " public/javascripts/lib/backbone-relational.js:131"
+        },
+        {
+            "message": "Missing item type\nCheck if the given modelType is registered as another model's subModel. If so, add it to the super model's\n'_subModels', and set the modelType's '_superModel', '_subModelTypeName', and '_subModelTypeAttribute'.",
+            "line": " public/javascripts/lib/backbone-relational.js:145"
+        },
+        {
+            "message": "Missing item type\nAdd a reverse relation. Is added to the 'relations' property on model's prototype, and to\nexisting instances of 'model' in the store as well.",
+            "line": " public/javascripts/lib/backbone-relational.js:170"
+        },
+        {
+            "message": "Missing item type\nAdd a 'relation' to all existing instances of 'relation.model' in the store",
+            "line": " public/javascripts/lib/backbone-relational.js:206"
+        },
+        {
+            "message": "Missing item type\nFind the Store's collection for a certain type of model.",
+            "line": " public/javascripts/lib/backbone-relational.js:221"
+        },
+        {
+            "message": "Missing item type\nFind a type on the global object by name. Splits name on dots.",
+            "line": " public/javascripts/lib/backbone-relational.js:247"
+        },
+        {
+            "message": "Missing item type\nFind the attribute that is to be used as the `id` on a given object",
+            "line": " public/javascripts/lib/backbone-relational.js:288"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/javascripts/lib/backbone-relational.js:314"
+        },
+        {
+            "message": "Missing item type\nAdd a 'model' to it's appropriate collection. Retain the original contents of 'model.collection'.",
+            "line": " public/javascripts/lib/backbone-relational.js:336"
+        },
+        {
+            "message": "Missing item type\nExplicitly update a model's id in it's store collection",
+            "line": " public/javascripts/lib/backbone-relational.js:355"
+        },
+        {
+            "message": "Missing item type\nRemove a 'model' from the store.",
+            "line": " public/javascripts/lib/backbone-relational.js:364"
+        },
+        {
+            "message": "Missing item type\nThe main Relation class, from which 'HasOne' and 'HasMany' inherit. Internally, 'relational:<key>' events\nare used to regulate addition and removal of models from relations.",
+            "line": " public/javascripts/lib/backbone-relational.js:376"
+        },
+        {
+            "message": "Missing item type\nCheck several pre-conditions.",
+            "line": " public/javascripts/lib/backbone-relational.js:494"
+        },
+        {
+            "message": "Missing item type\nSet the related model(s) for this relation",
+            "line": " public/javascripts/lib/backbone-relational.js:543"
+        },
+        {
+            "message": "Missing item type\nDetermine if a relation (on a different RelationalModel) is the reverse\nrelation of the current one.",
+            "line": " public/javascripts/lib/backbone-relational.js:556"
+        },
+        {
+            "message": "Missing item type\nGet the reverse relations (pointing back to 'this.key' on 'this.instance') for the currently related model(s).",
+            "line": " public/javascripts/lib/backbone-relational.js:570"
+        },
+        {
+            "message": "Missing item type\nRename options.silent to options.silentChange, so events propagate properly.\n(for example in HasMany, from 'addRelated'->'handleAddition')",
+            "line": " public/javascripts/lib/backbone-relational.js:591"
+        },
+        {
+            "message": "Missing item type\nRename options.silentChange to options.silent, so events are silenced as intended in Backbone's\noriginal functions.",
+            "line": " public/javascripts/lib/backbone-relational.js:606"
+        },
+        {
+            "message": "Missing item type\nIf the key is changed, notify old & new reverse relations and initialize the new relation",
+            "line": " public/javascripts/lib/backbone-relational.js:669"
+        },
+        {
+            "message": "Missing item type\nIf a new 'this.relatedModel' appears in the 'store', try to match it to the last set 'keyContents'",
+            "line": " public/javascripts/lib/backbone-relational.js:726"
+        },
+        {
+            "message": "Missing item type\nBind events and setup collectionKeys for a collection that is to be used as the backing store for a HasMany.\nIf no 'collection' is supplied, a new collection will be created of the specified 'collectionType' option.",
+            "line": " public/javascripts/lib/backbone-relational.js:805"
+        },
+        {
+            "message": "Missing item type\nIf the key is changed, notify old & new reverse relations and initialize the new relation",
+            "line": " public/javascripts/lib/backbone-relational.js:880"
+        },
+        {
+            "message": "Missing item type\nWhen a model is added to a 'HasMany', trigger 'add' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', must set 'this.instance' as their related).",
+            "line": " public/javascripts/lib/backbone-relational.js:953"
+        },
+        {
+            "message": "Missing item type\nWhen a model is removed from a 'HasMany', trigger 'remove' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', which should be nullified)",
+            "line": " public/javascripts/lib/backbone-relational.js:978"
+        },
+        {
+            "message": "Missing item type\nA type of Backbone.Model that also maintains relations to other models and collections.\nNew events when compared to the original:\n - 'add:<key>' (model, related collection, options)\n - 'remove:<key>' (model, related collection, options)\n - 'update:<key>' (model, related model or collection, options)",
+            "line": " public/javascripts/lib/backbone-relational.js:1027"
+        },
+        {
+            "message": "Missing item type\nOverride 'trigger' to queue 'change' and 'change:*' events",
+            "line": " public/javascripts/lib/backbone-relational.js:1081"
+        },
+        {
+            "message": "Missing item type\nInitialize Relations present in this.relations; determine the type (HasOne/HasMany), then creates a new instance.\nInvoked in the first call so 'set' (which is made from the Backbone.Model constructor).",
+            "line": " public/javascripts/lib/backbone-relational.js:1098"
+        },
+        {
+            "message": "Missing item type\nWhen new values are set, notify this model's relations (also if options.silent is set).\n(Relation.setRelated locks this model before calling 'set' on it to prevent loops)",
+            "line": " public/javascripts/lib/backbone-relational.js:1121"
+        },
+        {
+            "message": "Missing item type\nEither add to the queue (if we're not initialized yet), or execute right away.",
+            "line": " public/javascripts/lib/backbone-relational.js:1137"
+        },
+        {
+            "message": "Missing item type\nProcess _queue",
+            "line": " public/javascripts/lib/backbone-relational.js:1144"
+        },
+        {
+            "message": "Missing item type\nGet a specific relation.",
+            "line": " public/javascripts/lib/backbone-relational.js:1153"
+        },
+        {
+            "message": "Missing item type\nGet all of the created relations.",
+            "line": " public/javascripts/lib/backbone-relational.js:1166"
+        },
+        {
+            "message": "Missing item type\nRetrieve related objects.",
+            "line": " public/javascripts/lib/backbone-relational.js:1174"
+        },
+        {
+            "message": "Missing item type\nOverride 'change', so the change will only execute after 'set' has finised (relations are updated),\nand 'previousAttributes' will be available when the event is fired.",
+            "line": " public/javascripts/lib/backbone-relational.js:1317"
+        },
+        {
+            "message": "Missing item type\nConvert relations to JSON, omits them when required",
+            "line": " public/javascripts/lib/backbone-relational.js:1341"
+        },
+        {
+            "message": "Missing item type\nThe related model might not be defined for two reasons\n 1. it never gets defined, e.g. a typo\n 2. it is related to itself\nIn neither of these cases do we need to pre-initialize reverse relations.",
+            "line": " public/javascripts/lib/backbone-relational.js:1442"
+        },
+        {
+            "message": "Missing item type\nCreate a 'Backbone.Model' instance based on 'attributes'.",
+            "line": " public/javascripts/lib/backbone-relational.js:1462"
+        },
+        {
+            "message": "Missing item type\nFind an instance of `this` type in 'Backbone.Relational.store'.\n- If `attributes` is a string or a number, `findOrCreate` will just query the `store` and return a model if found.\n- If `attributes` is an object, the model will be updated with `attributes` if found.\n  Otherwise, a new model is created with `attributes` (unless `options.create` is explicitly set to `false`).",
+            "line": " public/javascripts/lib/backbone-relational.js:1522"
+        },
+        {
+            "message": "Missing item type\nOverride Backbone.Collection._prepareModel, so objects will be built using the correct type\nif the collection.model has subModels.",
+            "line": " public/javascripts/lib/backbone-relational.js:1553"
+        },
+        {
+            "message": "Missing item type\nOverride Backbone.Collection.add, so objects fetched from the server multiple times will\nupdate the existing Model. Also, trigger 'relational:add'.",
+            "line": " public/javascripts/lib/backbone-relational.js:1587"
+        },
+        {
+            "message": "Missing item type\nOverride 'Backbone.Collection.remove' to trigger 'relational:remove'.",
+            "line": " public/javascripts/lib/backbone-relational.js:1625"
+        },
+        {
+            "message": "Missing item type\nOverride 'Backbone.Collection.reset' to trigger 'relational:reset'.",
+            "line": " public/javascripts/lib/backbone-relational.js:1651"
+        },
+        {
+            "message": "Missing item type\nOverride 'Backbone.Collection.sort' to trigger 'relational:reset'.",
+            "line": " public/javascripts/lib/backbone-relational.js:1662"
+        },
+        {
+            "message": "Missing item type\nOverride 'Backbone.Collection.trigger' so 'add', 'remove' and 'reset' events are queued until relations\nare ready.",
+            "line": " public/javascripts/lib/backbone-relational.js:1673"
+        },
+        {
+            "message": "Missing item type\nBackbone localStorage Adapter\nhttps://github.com/jeromegn/Backbone.localStorage\n/(function(){function n(){return((1+Math.random())*65536|0).toString(16).substring(1)}function r(){return n()+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+n()+n()}var e=this._,t=this.Backbone;t.LocalStorage=window.Store=function(e){this.name=e;var t=this.localStorage().getItem(this.name);this.records=t&&t.split(\",\")||[]},e.extend(t.LocalStorage.prototype,{save:function(){this.localStorage().setItem(this.name,this.records.join(\",\"))},create:function(e){return e.id||(e.id=r(),e.set(e.idAttribute,e.id)),this.localStorage().setItem(this.name+\"-\"+e.id,JSON.stringify(e)),this.records.push(e.id.toString()),this.save(),e.toJSON()},update:function(t){return this.localStorage().setItem(this.name+\"-\"+t.id,JSON.stringify(t)),e.include(this.records,t.id.toString())||this.records.push(t.id.toString()),this.save(),t.toJSON()},find:function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e.id))},findAll:function(){return e(this.records).chain().map(function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e))},this).compact().value()},destroy:function(t){return this.localStorage().removeItem(this.name+\"-\"+t.id),this.records=e.reject(this.records,function(e){return e==t.id.toString()}),this.save(),t},localStorage:function(){return localStorage}}),t.LocalStorage.sync=window.Store.sync=t.localSync=function(e,t,n,r){var i=t.localStorage||t.collection.localStorage;typeof n==\"function\"&&(n={success:n,error:r});var s,o=$.Deferred&&$.Deferred();switch(e){case\"read\":s=t.id!=undefined?i.find(t):i.findAll();break;case\"create\":s=i.create(t);break;case\"update\":s=i.update(t);break;case\"delete\":s=i.destroy(t)}return s?(n.success(s),o&&o.resolve()):(n.error(\"Record not found\"),o&&o.reject()),o&&o.promise()},t.ajaxSync=t.sync,t.getSyncMethod=function(e){return e.localStorage||e.collection&&e.collection.localStorage?t.LocalStorage.sync:t.ajaxSync},t.sync=function(e,n,r,i){return t.getSyncMethod(n).apply(this,[e,n,r,i])}})();",
+            "line": " public/javascripts/lib/backbone.localStorage-min.js:1"
+        },
+        {
+            "message": "Missing item type\nThis method overrides the original one so that the attribute cid is also included in the json output\nThis is necessary for decoupling testing from database : we need unique IDs in unit testing but we don't \nwant to rely on a database layer",
+            "line": " public/javascripts/models/task.js:32"
+        },
+        {
+            "message": "Missing item type\nUpdates the view after the user modified the tags related to the task",
+            "line": " public/javascripts/views/browser-body-task.js:43"
+        },
+        {
+            "message": "Missing item type\nTriggered when the user hits ENTER",
+            "line": " public/javascripts/views/browser-body-task.js:54"
+        },
+        {
+            "message": "Missing item type\nShould initialize the task's tag autocomplete input\nTo be called only when a task is being edited, and deleted when its form is closed",
+            "line": " public/javascripts/views/browser-body-task.js:105"
+        },
+        {
+            "message": "Missing item type\nShould unlink the clicked tag from the task",
+            "line": " public/javascripts/views/browser-body-task.js:147"
+        },
+        {
+            "message": "Missing item type\nWill reset the model to the value stored in DB and re-render the view accordingly",
+            "line": " public/javascripts/views/browser-body-task.js:161"
+        },
+        {
+            "message": "Missing item type\nThis methods aims at saving the new positions of the objects",
+            "line": " public/javascripts/views/browser-body.js:470"
+        },
+        {
+            "message": "Missing item type\nFilters the keyboard events to pass only ENTER and TAB to the lock() method",
+            "line": " public/javascripts/views/editor-body-object.js:43"
+        },
+        {
+            "message": "Missing item type\nTriggered once the user finishes typing in the new object.\nUsed as a proxy to either link the note to a new object, or to create a new object",
+            "line": " public/javascripts/views/editor-body-object.js:87"
+        }
+    ]
+}
