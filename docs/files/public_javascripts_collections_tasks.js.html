@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.0</em>
+            <em>API Docs for: 0.2.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -48,6 +48,26 @@
                 <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
             
                 <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.NoteFilter.html">meenoAppCli.Classes.NoteFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.NoteFilters.html">meenoAppCli.Classes.NoteFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.ObjectFilter.html">meenoAppCli.Classes.ObjectFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.ObjectFilters.html">meenoAppCli.Classes.ObjectFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TagFilter.html">meenoAppCli.Classes.TagFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TagFilters.html">meenoAppCli.Classes.TagFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.Task.html">meenoAppCli.Classes.Task</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TaskFilter.html">meenoAppCli.Classes.TaskFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TaskFilters.html">meenoAppCli.Classes.TaskFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.Tasks.html">meenoAppCli.Classes.Tasks</a></li>
             
             </ul>
 
@@ -95,6 +115,11 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * Holds collection of tasks
+ * 
+ * @class meenoAppCli.Classes.Tasks
+ */
 meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	model: meenoAppCli.Classes.Task,
 	url: &#x27;/api/tasks&#x27;,
@@ -103,8 +128,11 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	/**
 	 * Allows to search through a collection of tasks with a complex filter based on full-text search (in label)
 	 * and on tags related or not to the models
+	 * 
+	 * @method search
 	 * @param  {meenoAppCli.Classes.TaskFilter} filter the filter used to search the collection
 	 * @return {meenoAppCli.Classes.Tasks} a new filtered collection of tasks
+	 * @chainable
 	 */
 	search: function (filter) {
 		if(filter.get(&#x27;text&#x27;) === &quot;&quot; &amp;&amp; filter.get(&#x27;tags&#x27;).length == 0) return this;
@@ -130,10 +158,11 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	},
 
 	/**
-	 * When moving a task to a new position, shift the following ones down to make some room for it
-	 * Also needs to be called when a new task is appended to a collection
-	 * @param  {meenoAppCli.Classes.Task} anchor the task that has moved, point of reference
-	 * @return {void}
+	 * When moving a task to a new position, shift the following ones down to make some room for it.
+	 * Also needs to be called when a new task is appended to a collection.
+	 * 
+	 * @method shiftDown
+	 * @param  {meenoAppCli.Classes.Task} anchor the task that was moved, point of reference 
 	 */
 	shiftDown: function (anchor) {
 		this.each (function (model) {

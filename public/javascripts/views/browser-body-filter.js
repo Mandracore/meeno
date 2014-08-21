@@ -3,13 +3,16 @@ meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 /**
  * This class holds the view of the filter models that are used to filter the browser's search results.
- * It's the same view for filters on notes, tags and tasks.
+ * This view can accept models of classes {{#crossLink "meenoAppCli.Classes.NoteFilter"}}{{/crossLink}},
+ * {{#crossLink "meenoAppCli.Classes.TaskFilter"}}{{/crossLink}} and {{#crossLink "meenoAppCli.Classes.TagFilter"}}{{/crossLink}}.
  * 
  * @class meenoAppCli.Classes.BrowserBodyFilterView
  * @extends Backbone.View
+ * @constructor
+ * @param {Object} options Holds all the options of the view.
+ * @param {Object} options.filterName Must be passed to initialize the view's model name.
  */
 meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
-	// filterName (e.g. "noteFilter") must be declared by passing options to the constructor
 	tagName  : "li",
 	className: "icon-filter",
 	template : '#browser-body-filter-template',
@@ -26,7 +29,12 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 
 	},
 
-	// Renders the item to the current state of the model
+	/**
+	 * Renders one filter : generates the HTML and appends it to the DOM element of the view
+	 *
+	 * @method render
+	 * @chainable
+	 */
 	render: function() {
 		console.log ("R[Browser-body-filter]");
 		var templateFn = _.template( $(this.template).html() );
@@ -35,6 +43,13 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 		return this;
 	},
 
+	/**
+	 * Called every time the filters of the {{#crossLink "meenoAppCli.Classes.BrowserBodyView"}}browser{{/crossLink}} 
+	 * are updated. Checks if its model is similar to the one in use in the browser and 
+	 * highlights it if it's true.
+	 *
+	 * @method checkStatus
+	 */
 	checkStatus: function () {
 		if (this.options.parent.filters[this.options.filterName].isSimilar(this.model)) {
 			this.$el.addClass('active');
@@ -45,6 +60,13 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 		}
 	},
 
+	/**
+	 * Called when the user clicks on the view.
+	 * Updates the right {{#crossLink "meenoAppCli.Classes.BrowserBodyView"}}browser{{/crossLink}}'s 
+	 * filter to clone the view's model properties and highlights it.
+	 *
+	 * @method activate
+	 */
 	activate: function() {
 		if (!this.active) {
 			console.log("activate");
@@ -53,6 +75,13 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 		}
 	},
 
+	/**
+	 * Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by
+	 * the {{#crossLink "meenoAppCli.Classes.BrowserBodyView"}}browser{{/crossLink}}.
+	 * Will destroy both the view and its model.
+	 *
+	 * @method removeIfActive
+	 */
 	removeIfActive: function() {
 		if (this.active) {
 			this.model.destroy();

@@ -1,6 +1,10 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * @class meenoAppCli.Classes.ObjectFilter
+ * @extends Backbone.RelationalModel
+ */
 meenoAppCli.Classes.ObjectFilter = Backbone.RelationalModel.extend({
 	idAttribute: '_id',
 

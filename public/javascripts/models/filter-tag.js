@@ -1,6 +1,10 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * @class meenoAppCli.Classes.TagFilter
+ * @extends meenoAppCli.Classes.ObjectFilter
+ */
 meenoAppCli.Classes.TagFilter = meenoAppCli.Classes.ObjectFilter.extend({
 	defaults: function() {
 		return {

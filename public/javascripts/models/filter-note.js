@@ -1,6 +1,10 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * @class meenoAppCli.Classes.NoteFilter
+ * @extends meenoAppCli.Classes.ObjectFilter
+ */
 meenoAppCli.Classes.NoteFilter = meenoAppCli.Classes.ObjectFilter.extend({
 	relations: [{
 		type: 'HasMany',

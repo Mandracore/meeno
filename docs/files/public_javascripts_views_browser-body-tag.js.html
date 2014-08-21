@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.0</em>
+            <em>API Docs for: 0.2.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -48,6 +48,26 @@
                 <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
             
                 <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.NoteFilter.html">meenoAppCli.Classes.NoteFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.NoteFilters.html">meenoAppCli.Classes.NoteFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.ObjectFilter.html">meenoAppCli.Classes.ObjectFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.ObjectFilters.html">meenoAppCli.Classes.ObjectFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TagFilter.html">meenoAppCli.Classes.TagFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TagFilters.html">meenoAppCli.Classes.TagFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.Task.html">meenoAppCli.Classes.Task</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TaskFilter.html">meenoAppCli.Classes.TaskFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TaskFilters.html">meenoAppCli.Classes.TaskFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.Tasks.html">meenoAppCli.Classes.Tasks</a></li>
             
             </ul>
 
@@ -113,25 +133,41 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 		});
 	},
 
+	/**
+	 * Renders one tag : generates the HTML and appends it to the DOM element of the view
+	 *
+	 * @method render
+	 * @chainable
+	 */
 	render: function() {
 		this.collName = &quot;tags&quot;;
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (this.model.toJSON()));
 
 		/**
-		 * Event triggered on meenoAppCli.dispatcher when this.render() method is called
+		 * Event triggered on &#x60;meenoAppCli.dispatcher&#x60; when this.render() method is called
 		 * @event browser:tags:reSyncSelectors
 		 */
 		meenoAppCli.dispatcher.trigger(&quot;browser:tags:reSyncSelectors&quot;);
 		return this;
 	},
 
+	/**
+	 * Displays an input to edit the tag label
+	 *
+	 * @method edit
+	 */
 	edit: function() {
 		console.log(&#x27;edit&#x27;);
 		this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;true&#x27;).focus().select();
 		document.execCommand(&#x27;selectAll&#x27;,false,null);
 	},
 
+	/**
+	 * Sets the view&#x27;s model label to the input (&#x60;span.label&#x60;) value and saves the model
+	 *
+	 * @method save
+	 */
 	save: function() {
 		this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;false&#x27;);
 		console.log(&#x27;save&#x27;);
@@ -147,11 +183,15 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 		});
 	},
 
+	/**
+	 * Will destroy the view&#x27;s model and the view itself when the user clics on &#x60;.delete&#x60; class DOM element
+	 *
+	 * @method delete
+	 */
 	delete: function() {
 		this.model.destroy();
 		meenoAppCli.Tags.remove(this.model);
 		this.remove();
-		console.log(&#x27;tag deleted&#x27;)
 	},
 });
     </pre>

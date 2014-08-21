@@ -17,6 +17,7 @@ describe("Browser", function() {
 		this.taskFilters = new meenoAppCli.Classes.TaskFilters();
 		this.tagFilters  = new meenoAppCli.Classes.TagFilters();
 		this.note.get('tagLinks').add( { tag: this.tag } );
+		this.task.get('tagLinks').add( { tag: this.tag } );
 		this.notes.add([this.note]);
 		this.tags.add(this.tag);
 		this.tasks.add(this.task);
@@ -39,10 +40,18 @@ describe("Browser", function() {
 		expect(cid1).not.toEqual(cid2);
 	});
 
-	describe("when asked to display notes", function() {
-		it("should embed the related tags", function() {
-			expect(this.browser.children.body.children.notes[0].$el).toContain('span.tags');
-			expect(this.browser.children.body.children.notes[0].$('span.tags span').eq(0)).toContainText("New test tag");
+	describe("when asked to display", function() {
+		describe("notes", function() {
+			it("should embed the related tags", function() {
+				expect(this.browser.children.body.children.notes[0].$el).toContain('span.tags');
+				expect(this.browser.children.body.children.notes[0].$('span.tags span').eq(0)).toContainText("New test tag");
+			});
+		});
+		describe("tasks", function() {
+			it("should embed the related tags", function() {
+				expect(this.browser.children.body.children.tasks[0].$el).toContain('span.tags');
+				expect(this.browser.children.body.children.tasks[0].$('span.tags span').eq(0)).toContainText("New test tag");
+			});
 		});
 	});
 

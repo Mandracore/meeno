@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>public/javascripts/models/task.js - Meeno source code documentation</title>
+    <title>public/javascripts/models/filter-object.js - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -108,7 +108,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: public/javascripts/models/task.js</h1>
+                        <h1 class="file-heading">File: public/javascripts/models/filter-object.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -116,52 +116,102 @@ var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 /**
- * Holds the task model
- * 
- * @class meenoAppCli.Classes.Task
+ * @class meenoAppCli.Classes.ObjectFilter
+ * @extends Backbone.RelationalModel
  */
-meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
-	idAttribute: &quot;_id&quot;,
-	relations  : [{
-		type           : &#x27;HasMany&#x27;,
-		key            : &#x27;noteLinks&#x27;,
-		relatedModel   : &#x27;meenoAppCli.Classes.LinkNoteTask&#x27;,
-		reverseRelation: {
-			key          : &#x27;task&#x27;,
-			includeInJSON: &#x27;_id&#x27;
-		}
-	},{
-		type           : &#x27;HasMany&#x27;,
-		key            : &#x27;tagLinks&#x27;,
-		relatedModel   : &#x27;meenoAppCli.Classes.LinkTaskTag&#x27;,
-		reverseRelation: {
-			key          : &#x27;task&#x27;,
-			includeInJSON: &#x27;_id&#x27;
-		}
-	}],
+meenoAppCli.Classes.ObjectFilter = Backbone.RelationalModel.extend({
+	idAttribute: &#x27;_id&#x27;,
 
-	/**
-	 * This method overrides the one provided by Backbone so that the attribute cid is also included in the json output
-	 * This is necessary for decoupling testing from database : we need unique IDs in unit testing but we don&#x27;t 
-	 * want to rely on a database layer
-	 * 
-	 * @method toJSON
-	 * @return {json} all the attributes of the item put in a json object
-	 */
-	toJSON: function() {
-		var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
-		json.cid = this.cid;
-		return json;
+	isEmpty: function () {
+		if (this.get(&#x27;subClass&#x27;) == &quot;NoteFilter&quot;) { // NoteFilter
+			if (this.get(&#x27;text&#x27;) !== &#x27;&#x27; || this.get(&#x27;tasks&#x27;).length !== 0 || this.get(&#x27;tags&#x27;).length !== 0) { return false; }
+		} else {
+			if (this.get(&#x27;subClass&#x27;) == &quot;TagFilter&quot;) { // TagFilter
+				if (this.get(&#x27;text&#x27;) !== &#x27;&#x27;) { return false; }
+			} else { // TaskFilter
+				if (this.get(&#x27;text&#x27;) !== &#x27;&#x27; || this.get(&#x27;tags&#x27;).length !== 0) { return false; }
+			}
+		}
+		return true;
+	},
+
+	isSimilar: function (of) {
+		if(this.get(&quot;text&quot;) != of.get(&quot;text&quot;)) { return false; }
+		
+		if (this.get(&#x27;subClass&#x27;) == &quot;NoteFilter&quot;) { // NoteFilter
+			var tagsLargest   = this;
+			var tagsShortest  = of;
+			var tasksLargest  = this;
+			var tasksShortest = of;
+			if (this.get(&#x27;tags&#x27;).length &lt; of.get(&#x27;tags&#x27;).length) {
+				var tagsLargest  = of;
+				var tagsShortest = this;
+			}
+			if (this.get(&#x27;tasks&#x27;).length &lt; of.get(&#x27;tasks&#x27;).length) {
+				var tasksLargest  = of;
+				var tasksShortest = this;
+			}
+
+			// Trying to find one criteria that is not in common. 
+			// _.find() should then be different from undefined and the test should return false (the filters are not equal)
+			return (undefined === tagsLargest.get(&#x27;tags&#x27;).find(function(tag) {
+				return (false === tagsShortest.get(&#x27;tags&#x27;).contains(tag));
+			})) &amp;&amp; (undefined === tasksLargest.get(&#x27;tasks&#x27;).find(function(task) {
+				return (false === tasksShortest.get(&#x27;tasks&#x27;).contains(task));
+			}));
+		} else {
+			if (this.get(&#x27;subClass&#x27;) == &quot;TaskFilter&quot;) { // TaskFilter
+				var tagsLargest  = this;
+				var tagsShortest = of;
+				if (this.get(&#x27;tags&#x27;).length &lt; of.get(&#x27;tags&#x27;).length) {
+					var tagsLargest  = of;
+					var tagsShortest = this;
+				}
+				// Trying to find one criteria that is not in common. 
+				// _.find() should then be different from undefined and the test should return false (the filters are not equal)
+				return (undefined === tagsLargest.get(&#x27;tags&#x27;).find(function(tag) {
+					return (false === tagsShortest.get(&#x27;tags&#x27;).contains(tag));
+				}));
+			}
+		}
+
+		return true;
+	},
+
+	superClone: function () {
+		var superClone = this.clone();
+		if (this.get(&#x27;subClass&#x27;) == &quot;NoteFilter&quot;) { // NoteFilter
+			superClone.get(&#x27;tags&#x27;).add(this.get(&#x27;tags&#x27;).models);
+			superClone.get(&#x27;tasks&#x27;).add(this.get(&#x27;tasks&#x27;).models);
+		} else {
+			if (this.get(&#x27;subClass&#x27;) == &quot;TaskFilter&quot;) { // TaskFilter
+				superClone.get(&#x27;tags&#x27;).add(this.get(&#x27;tags&#x27;).models);
+			}
+		}
+		return superClone;
+	},
+
+	makeItMatch: function (of) {
+		this.set(&quot;text&quot;, of.get(&quot;text&quot;));
+
+		if (this.get(&#x27;subClass&#x27;) == &quot;NoteFilter&quot;) { // NoteFilter
+			this.get(&#x27;tags&#x27;).remove(this.get(&#x27;tags&#x27;).models);
+			this.get(&#x27;tags&#x27;).add(of.get(&#x27;tags&#x27;).models);
+			this.get(&#x27;tasks&#x27;).add(of.get(&#x27;tasks&#x27;).models);
+			this.get(&#x27;tasks&#x27;).remove(this.get(&#x27;tasks&#x27;).models);
+		} else {
+			if (this.get(&#x27;subClass&#x27;) == &quot;TaskFilter&quot;) { // TaskFilter
+				this.get(&#x27;tags&#x27;).remove(this.get(&#x27;tags&#x27;).models);
+				this.get(&#x27;tags&#x27;).add(of.get(&#x27;tags&#x27;).models);
+			}
+		}
 	},
 
 	defaults: function() {
 		return {
-			label      : &#x27;New Task&#x27;,
-			description: &#x27;Description of your task...&#x27;,
-			position   : 0,
-			due_at     : new Date(),
-			created_at : new Date(),
-			updated_at : new Date()
+			subClass  : &#x27;NoteFilter&#x27;,
+			label     : &#x27;New filter&#x27;,
+			text      : &#x27;&#x27;
 		};
 	}
 });

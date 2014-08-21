@@ -1,6 +1,11 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * Holds the task model
+ * 
+ * @class meenoAppCli.Classes.Task
+ */
 meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 	idAttribute: "_id",
 	relations  : [{
@@ -19,21 +24,15 @@ meenoAppCli.Classes.Task = Backbone.RelationalModel.extend({
 			key          : 'task',
 			includeInJSON: '_id'
 		}
-	}/*,{
-		type           : 'HasOne',
-		key            : 'parent',
-		relatedModel   : 'meenoAppCli.Classes.Task',
-		reverseRelation: {
-			key          : 'children',
-			includeInJSON: '_id'
-		}
-	}*/],
+	}],
 
 	/**
-	 * This method overrides the original one so that the attribute cid is also included in the json output
+	 * This method overrides the one provided by Backbone so that the attribute cid is also included in the json output
 	 * This is necessary for decoupling testing from database : we need unique IDs in unit testing but we don't 
 	 * want to rely on a database layer
-	 * @return {json} all the attributes of the item put in a json object
+	 * 
+	 * @method toJSON
+	 * @return {json} all the attributes of the model put in a json object
 	 */
 	toJSON: function() {
 		var json = Backbone.Model.prototype.toJSON.apply(this, arguments);

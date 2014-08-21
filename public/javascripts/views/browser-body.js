@@ -2,15 +2,22 @@ var meenoAppCli     = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
 /**
+ * te Q;O LIWETH
  * This class will be used to support the main view of the object browser.
  * From here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.
- * It controls the creation of several subviews, mainly :
- * - meenoAppCli.Classes.BrowserBodyNoteView
- * - meenoAppCli.Classes.BrowserBodyTaskView
- * - meenoAppCli.Classes.BrowserBodyTagView
- * - meenoAppCli.Classes.BrowserBodyFilterView
+ * It controls the creation of several subviews, like {{#crossLink "meenoAppCli.Classes.BrowserBodyTagView"}}{{/crossLink}},
+ * {{#crossLink "meenoAppCli.Classes.BrowserBodyFilterView"}}{{/crossLink}},...
  * 
  * @class meenoAppCli.Classes.BrowserBodyView
+ * @constructor
+ * @param {Object} options Holds all the options of the view
+ * @param {Object} options.collections Holds the 6 collections of objects to be used by the browser
+ * @param {meenoAppCli.Classes.Notes} options.collections.notes
+ * @param {meenoAppCli.Classes.Tags} options.collections.tags
+ * @param {meenoAppCli.Classes.Tasks} options.collections.tasks
+ * @param {meenoAppCli.Classes.NoteFilters} options.collections.noteFilters
+ * @param {meenoAppCli.Classes.TaskFilters} options.collections.taskFilters
+ * @param {meenoAppCli.Classes.TagFilters} options.collections.tagFilters
  */
 meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
@@ -110,7 +117,11 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 	// =============================================================================
 	// To display the browser itself and then to choose which objects to display
 
-	// ###Toggle the browser
+	/**
+	 * Makes the browser visible
+	 *
+	 * @method toggle
+	 */
 	toggle: function() {
 		// First, deactivate the other tabs' content
 		$("#tabs").children().each(function(i,child){
@@ -120,7 +131,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		this.$el.addClass('selected');
 	},
 
-	// ###Toggle business objet type displayed by the browser
+	/**
+	 * Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks
+	 * on the right button (class `.filter li`).
+	 *
+	 * @method toggleObject
+	 * @param {event} event Backbone event
+	 */
 	toggleObject : function (event) {
 		var objectClass = $(event.target).hasClass("notes") ? "notes" : ($(event.target).hasClass("tags") ? "tags" : "tasks");
 		// First, the command

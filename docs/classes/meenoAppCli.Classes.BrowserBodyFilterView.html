@@ -19,7 +19,7 @@
             
         </div>
         <div class="yui3-u-1-4 version">
-            <em>API Docs for: 0.1.0</em>
+            <em>API Docs for: 0.2.5</em>
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -48,6 +48,26 @@
                 <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
             
                 <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.NoteFilter.html">meenoAppCli.Classes.NoteFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.NoteFilters.html">meenoAppCli.Classes.NoteFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.ObjectFilter.html">meenoAppCli.Classes.ObjectFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.ObjectFilters.html">meenoAppCli.Classes.ObjectFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TagFilter.html">meenoAppCli.Classes.TagFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TagFilters.html">meenoAppCli.Classes.TagFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.Task.html">meenoAppCli.Classes.Task</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TaskFilter.html">meenoAppCli.Classes.TaskFilter</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.TaskFilters.html">meenoAppCli.Classes.TaskFilters</a></li>
+            
+                <li><a href="../classes/meenoAppCli.Classes.Tasks.html">meenoAppCli.Classes.Tasks</a></li>
             
             </ul>
 
@@ -113,16 +133,128 @@
 
 <div class="box intro">
     <p>This class holds the view of the filter models that are used to filter the browser&#39;s search results.
-It&#39;s the same view for filters on notes, tags and tasks.</p>
+This view can accept models of classes <a href="../classes/meenoAppCli.Classes.NoteFilter.html" class="crosslink">meenoAppCli.Classes.NoteFilter</a>,
+<a href="../classes/meenoAppCli.Classes.TaskFilter.html" class="crosslink">meenoAppCli.Classes.TaskFilter</a> and <a href="../classes/meenoAppCli.Classes.TagFilter.html" class="crosslink">meenoAppCli.Classes.TagFilter</a>.</p>
 
 </div>
 
+
+    <div class="constructor">
+        <h2>Constructor</h2>
+        <div id="method_meenoAppCli.Classes.BrowserBodyFilterView" class="method item">
+    <h3 class="name"><code>meenoAppCli.Classes.BrowserBodyFilterView</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>options</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-filter.js.html#l4"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-filter.js:4</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">options</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>Holds all the options of the view.</p>
+
+                    </div>
+
+                    
+                        <ul class="params-list">
+                            
+                            <li class="param">
+                                
+                                    <code class="param-name">filterName</code>
+                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
+                                
+
+                                <div class="param-description">
+                                    <p>Must be passed to initialize the view&#39;s model name.</p>
+
+                                </div>
+
+                                
+                            </li>
+                            
+                        </ul>
+                    
+                </li>
+            
+            </ul>
+        </div>
+    
+
+    
+
+    
+</div>
+
+    </div>
 
 
 <div id="classdocs" class="tabview">
     <ul class="api-class-tabs">
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
+        
+            <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
         
         
         
@@ -134,6 +266,42 @@ It&#39;s the same view for filters on notes, tags and tasks.</p>
             <h2 class="off-left">Item Index</h2>
 
             
+                <div class="index-section methods">
+                    <h3>Methods</h3>
+
+                    <ul class="index-list methods extends">
+                        
+                            <li class="index-item method">
+                                <a href="#method_activate">activate</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_checkStatus">checkStatus</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_removeIfActive">removeIfActive</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_render">render</a>
+
+                                
+                                
+                            </li>
+                        
+                    </ul>
+                </div>
+            
 
             
 
@@ -142,6 +310,240 @@ It&#39;s the same view for filters on notes, tags and tasks.</p>
             
         </div>
 
+        
+            <div id="methods" class="api-class-tabpanel">
+                <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_activate" class="method item">
+    <h3 class="name"><code>activate</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-filter.js.html#l63"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-filter.js:63</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Called when the user clicks on the view.
+Updates the right <a href="../classes/meenoAppCli.Classes.BrowserBodyView.html" class="crosslink">browser</a>&#39;s 
+filter to clone the view&#39;s model properties and highlights it.</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_checkStatus" class="method item">
+    <h3 class="name"><code>checkStatus</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-filter.js.html#l46"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-filter.js:46</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Called every time the filters of the <a href="../classes/meenoAppCli.Classes.BrowserBodyView.html" class="crosslink">browser</a> 
+are updated. Checks if its model is similar to the one in use in the browser and 
+highlights it if it&#39;s true.</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_removeIfActive" class="method item">
+    <h3 class="name"><code>removeIfActive</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-filter.js.html#l78"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-filter.js:78</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Listens to the event <code>browser:filters:[this.options.filterName]:remove-active</code> triggered by
+the <a href="../classes/meenoAppCli.Classes.BrowserBodyView.html" class="crosslink">browser</a>.
+Will destroy both the view and its model.</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_render" class="method item">
+    <h3 class="name"><code>render</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <span class="flag chainable">chainable</span>
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-filter.js.html#l32"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-filter.js:32</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Renders one filter : generates the HTML and appends it to the DOM element of the view</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+            </div>
         
 
         

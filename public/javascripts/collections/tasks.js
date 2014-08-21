@@ -1,6 +1,11 @@
 var meenoAppCli = meenoAppCli || {};
 meenoAppCli.Classes = meenoAppCli.Classes || {};
 
+/**
+ * Holds collection of tasks
+ * 
+ * @class meenoAppCli.Classes.Tasks
+ */
 meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	model: meenoAppCli.Classes.Task,
 	url: '/api/tasks',
@@ -9,8 +14,11 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	/**
 	 * Allows to search through a collection of tasks with a complex filter based on full-text search (in label)
 	 * and on tags related or not to the models
+	 * 
+	 * @method search
 	 * @param  {meenoAppCli.Classes.TaskFilter} filter the filter used to search the collection
 	 * @return {meenoAppCli.Classes.Tasks} a new filtered collection of tasks
+	 * @chainable
 	 */
 	search: function (filter) {
 		if(filter.get('text') === "" && filter.get('tags').length == 0) return this;
@@ -36,10 +44,11 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	},
 
 	/**
-	 * When moving a task to a new position, shift the following ones down to make some room for it
-	 * Also needs to be called when a new task is appended to a collection
-	 * @param  {meenoAppCli.Classes.Task} anchor the task that has moved, point of reference
-	 * @return {void}
+	 * When moving a task to a new position, shift the following ones down to make some room for it.
+	 * Also needs to be called when a new task is appended to a collection.
+	 * 
+	 * @method shiftDown
+	 * @param  {meenoAppCli.Classes.Task} anchor the task that was moved, point of reference 
 	 */
 	shiftDown: function (anchor) {
 		this.each (function (model) {
