@@ -41,33 +41,33 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyFilterView.html">meenoAppCli.Classes.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyObjectView.html">meenoAppCli.Classes.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilter.html">meenoAppCli.Classes.NoteFilter</a></li>
+                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilters.html">meenoAppCli.Classes.NoteFilters</a></li>
+                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilter.html">meenoAppCli.Classes.ObjectFilter</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilters.html">meenoAppCli.Classes.ObjectFilters</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilter.html">meenoAppCli.Classes.TagFilter</a></li>
+                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilters.html">meenoAppCli.Classes.TagFilters</a></li>
+                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Task.html">meenoAppCli.Classes.Task</a></li>
+                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilter.html">meenoAppCli.Classes.TaskFilter</a></li>
+                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilters.html">meenoAppCli.Classes.TaskFilters</a></li>
+                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Tasks.html">meenoAppCli.Classes.Tasks</a></li>
+                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
             
             </ul>
 
@@ -112,21 +112,21 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
  * A backbone view to display one tag in the browser
  * 
- * @class meenoAppCli.Classes.BrowserBodyTagView
- * @extends meenoAppCli.Classes.BrowserBodyObjectView
+ * @class mee.cla.BrowserBodyTagView
+ * @extends mee.cla.BrowserBodyObjectView
  */
-meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
+mee.cla.BrowserBodyTagView = mee.cla.BrowserBodyObjectView.extend({
 
 	template : &#x27;#browser-body-tag-template&#x27;,
 
 	events: function(){
-		return _.extend({},meenoAppCli.Classes.BrowserBodyObjectView.prototype.events,{
+		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
 			&#x27;click .edit&#x27;    : &#x27;edit&#x27;,
 			&#x27;click .delete&#x27;  : &#x27;delete&#x27;,
 			&#x27;blur .label&#x27;    : &#x27;save&#x27;
@@ -145,10 +145,10 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 		this.$el.html (templateFn (this.model.toJSON()));
 
 		/**
-		 * Event triggered on &#x60;meenoAppCli.dispatcher&#x60; when this.render() method is called
+		 * Event triggered on &#x60;mee.dispatcher&#x60; when this.render() method is called
 		 * @event browser:tags:reSyncSelectors
 		 */
-		meenoAppCli.dispatcher.trigger(&quot;browser:tags:reSyncSelectors&quot;);
+		mee.dispatcher.trigger(&quot;browser:tags:reSyncSelectors&quot;);
 		return this;
 	},
 
@@ -190,7 +190,7 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 	 */
 	delete: function() {
 		this.model.destroy();
-		meenoAppCli.Tags.remove(this.model);
+		mee.Tags.remove(this.model);
 		this.remove();
 	},
 });

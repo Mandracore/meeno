@@ -1,13 +1,13 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
  * Holds collection of tasks
  * 
- * @class meenoAppCli.Classes.Tasks
+ * @class mee.cla.Tasks
  */
-meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
-	model: meenoAppCli.Classes.Task,
+mee.cla.Tasks = Backbone.Collection.extend({
+	model: mee.cla.Task,
 	url: '/api/tasks',
 	comparator: 'position',
 
@@ -16,8 +16,8 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	 * and on tags related or not to the models
 	 * 
 	 * @method search
-	 * @param  {meenoAppCli.Classes.TaskFilter} filter the filter used to search the collection
-	 * @return {meenoAppCli.Classes.Tasks} a new filtered collection of tasks
+	 * @param  {mee.cla.TaskFilter} filter the filter used to search the collection
+	 * @return {mee.cla.Tasks} a new filtered collection of tasks
 	 * @chainable
 	 */
 	search: function (filter) {
@@ -25,7 +25,7 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 		// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 		var pattern = new RegExp(filter.get('text'),"i");
 
-		return new meenoAppCli.Classes.Tasks (this.filter(function(model) {
+		return new mee.cla.Tasks (this.filter(function(model) {
 			// Full text search
 			if (false === (pattern.test(model.get("label")))) {
 				return false;
@@ -48,7 +48,7 @@ meenoAppCli.Classes.Tasks = Backbone.Collection.extend({
 	 * Also needs to be called when a new task is appended to a collection.
 	 * 
 	 * @method shiftDown
-	 * @param  {meenoAppCli.Classes.Task} anchor the task that was moved, point of reference 
+	 * @param  {mee.cla.Task} anchor the task that was moved, point of reference 
 	 */
 	shiftDown: function (anchor) {
 		this.each (function (model) {

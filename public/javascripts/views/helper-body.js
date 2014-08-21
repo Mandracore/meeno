@@ -1,7 +1,7 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.HelperBodyView = Backbone.View.extend ({
+mee.cla.HelperBodyView = Backbone.View.extend ({
 
 	events: {},
 	initialize: function() {},

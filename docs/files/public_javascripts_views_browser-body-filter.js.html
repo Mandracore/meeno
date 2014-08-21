@@ -41,33 +41,33 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyFilterView.html">meenoAppCli.Classes.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyObjectView.html">meenoAppCli.Classes.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilter.html">meenoAppCli.Classes.NoteFilter</a></li>
+                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilters.html">meenoAppCli.Classes.NoteFilters</a></li>
+                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilter.html">meenoAppCli.Classes.ObjectFilter</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilters.html">meenoAppCli.Classes.ObjectFilters</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilter.html">meenoAppCli.Classes.TagFilter</a></li>
+                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilters.html">meenoAppCli.Classes.TagFilters</a></li>
+                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Task.html">meenoAppCli.Classes.Task</a></li>
+                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilter.html">meenoAppCli.Classes.TaskFilter</a></li>
+                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilters.html">meenoAppCli.Classes.TaskFilters</a></li>
+                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Tasks.html">meenoAppCli.Classes.Tasks</a></li>
+                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
             
             </ul>
 
@@ -112,21 +112,21 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
  * This class holds the view of the filter models that are used to filter the browser&#x27;s search results.
- * This view can accept models of classes {{#crossLink &quot;meenoAppCli.Classes.NoteFilter&quot;}}{{/crossLink}},
- * {{#crossLink &quot;meenoAppCli.Classes.TaskFilter&quot;}}{{/crossLink}} and {{#crossLink &quot;meenoAppCli.Classes.TagFilter&quot;}}{{/crossLink}}.
+ * This view can accept models of classes {{#crossLink &quot;mee.cla.NoteFilter&quot;}}{{/crossLink}},
+ * {{#crossLink &quot;mee.cla.TaskFilter&quot;}}{{/crossLink}} and {{#crossLink &quot;mee.cla.TagFilter&quot;}}{{/crossLink}}.
  * 
- * @class meenoAppCli.Classes.BrowserBodyFilterView
+ * @class mee.cla.BrowserBodyFilterView
  * @extends Backbone.View
  * @constructor
  * @param {Object} options Holds all the options of the view.
  * @param {Object} options.filterName Must be passed to initialize the view&#x27;s model name.
  */
-meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
+mee.cla.BrowserBodyFilterView = Backbone.View.extend({
 	tagName  : &quot;li&quot;,
 	className: &quot;icon-filter&quot;,
 	template : &#x27;#browser-body-filter-template&#x27;,
@@ -139,7 +139,7 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 		this.active = false;
 		this.listenTo(this.options.parent.filters[this.options.filterName], &#x27;change add:tags remove:tags add:tasks remove:tasks&#x27;, function () {this.checkStatus()});
 		this.listenTo(this.options.parent.filters[this.options.filterName], &#x27;change add:tags remove:tags add:tasks remove:tasks&#x27;, function () {this.checkStatus()});
-		this.listenTo(meenoAppCli.dispatcher, &quot;browser:filters:&quot;+this.options.filterName+&quot;:remove-active&quot;, function () {this.removeIfActive();});
+		this.listenTo(mee.dispatcher, &quot;browser:filters:&quot;+this.options.filterName+&quot;:remove-active&quot;, function () {this.removeIfActive();});
 
 	},
 
@@ -158,7 +158,7 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 	},
 
 	/**
-	 * Called every time the filters of the {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyView&quot;}}browser{{/crossLink}} 
+	 * Called every time the filters of the {{#crossLink &quot;mee.cla.BrowserBodyView&quot;}}browser{{/crossLink}} 
 	 * are updated. Checks if its model is similar to the one in use in the browser and 
 	 * highlights it if it&#x27;s true.
 	 *
@@ -176,7 +176,7 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 
 	/**
 	 * Called when the user clicks on the view.
-	 * Updates the right {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyView&quot;}}browser{{/crossLink}}&#x27;s 
+	 * Updates the right {{#crossLink &quot;mee.cla.BrowserBodyView&quot;}}browser{{/crossLink}}&#x27;s 
 	 * filter to clone the view&#x27;s model properties and highlights it.
 	 *
 	 * @method activate
@@ -191,7 +191,7 @@ meenoAppCli.Classes.BrowserBodyFilterView = Backbone.View.extend({
 
 	/**
 	 * Listens to the event &#x60;browser:filters:[this.options.filterName]:remove-active&#x60; triggered by
-	 * the {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyView&quot;}}browser{{/crossLink}}.
+	 * the {{#crossLink &quot;mee.cla.BrowserBodyView&quot;}}browser{{/crossLink}}.
 	 * Will destroy both the view and its model.
 	 *
 	 * @method removeIfActive

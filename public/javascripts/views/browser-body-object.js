@@ -1,18 +1,18 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
  * This class retains all core features for displaying objects views in the browser.
  * Several classes will inherit from it, one per kind of business object :
- * - meenoAppCli.Classes.BrowserBodyNoteView
- * - meenoAppCli.Classes.BrowserBodyTaskView
- * - meenoAppCli.Classes.BrowserBodyTagView
+ * - mee.cla.BrowserBodyNoteView
+ * - mee.cla.BrowserBodyTaskView
+ * - mee.cla.BrowserBodyTagView
  * - ...
  * 
- * @class meenoAppCli.Classes.BrowserBodyObjectView
+ * @class mee.cla.BrowserBodyObjectView
  * @extends Backbone.View
  */
-meenoAppCli.Classes.BrowserBodyObjectView = Backbone.View.extend({
+mee.cla.BrowserBodyObjectView = Backbone.View.extend({
 	tagName  : 'li',
 
 	// The DOM events specific to an item.
@@ -25,9 +25,9 @@ meenoAppCli.Classes.BrowserBodyObjectView = Backbone.View.extend({
 		this.collName = undefined;
 		// this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
 		this.listenTo(this.model, 'change:title change:position', this.render);
-		this.listenTo(meenoAppCli.dispatcher, 'browser:notes:delete', function () {this.deleteIfSelected("notes")});
-		this.listenTo(meenoAppCli.dispatcher, 'browser:tags:delete', function () {this.deleteIfSelected("tags")});
-		this.listenTo(meenoAppCli.dispatcher, 'browser:taks:delete', function () {this.deleteIfSelected("taks")});
+		this.listenTo(mee.dispatcher, 'browser:notes:delete', function () {this.deleteIfSelected("notes")});
+		this.listenTo(mee.dispatcher, 'browser:tags:delete', function () {this.deleteIfSelected("tags")});
+		this.listenTo(mee.dispatcher, 'browser:taks:delete', function () {this.deleteIfSelected("taks")});
 	},
 
 	deleteIfSelected: function(collName) {

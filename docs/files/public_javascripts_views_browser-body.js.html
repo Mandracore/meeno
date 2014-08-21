@@ -41,33 +41,33 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyFilterView.html">meenoAppCli.Classes.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyObjectView.html">meenoAppCli.Classes.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilter.html">meenoAppCli.Classes.NoteFilter</a></li>
+                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilters.html">meenoAppCli.Classes.NoteFilters</a></li>
+                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilter.html">meenoAppCli.Classes.ObjectFilter</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilters.html">meenoAppCli.Classes.ObjectFilters</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilter.html">meenoAppCli.Classes.TagFilter</a></li>
+                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilters.html">meenoAppCli.Classes.TagFilters</a></li>
+                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Task.html">meenoAppCli.Classes.Task</a></li>
+                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilter.html">meenoAppCli.Classes.TaskFilter</a></li>
+                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilters.html">meenoAppCli.Classes.TaskFilters</a></li>
+                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Tasks.html">meenoAppCli.Classes.Tasks</a></li>
+                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
             
             </ul>
 
@@ -112,28 +112,28 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
 /**
  * te Q;O LIWETH
  * This class will be used to support the main view of the object browser.
  * From here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.
- * It controls the creation of several subviews, like {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyTagView&quot;}}{{/crossLink}},
- * {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyFilterView&quot;}}{{/crossLink}},...
+ * It controls the creation of several subviews, like {{#crossLink &quot;mee.cla.BrowserBodyTagView&quot;}}{{/crossLink}},
+ * {{#crossLink &quot;mee.cla.BrowserBodyFilterView&quot;}}{{/crossLink}},...
  * 
- * @class meenoAppCli.Classes.BrowserBodyView
+ * @class mee.cla.BrowserBodyView
  * @constructor
  * @param {Object} options Holds all the options of the view
  * @param {Object} options.collections Holds the 6 collections of objects to be used by the browser
- * @param {meenoAppCli.Classes.Notes} options.collections.notes
- * @param {meenoAppCli.Classes.Tags} options.collections.tags
- * @param {meenoAppCli.Classes.Tasks} options.collections.tasks
- * @param {meenoAppCli.Classes.NoteFilters} options.collections.noteFilters
- * @param {meenoAppCli.Classes.TaskFilters} options.collections.taskFilters
- * @param {meenoAppCli.Classes.TagFilters} options.collections.tagFilters
+ * @param {mee.cla.Notes} options.collections.notes
+ * @param {mee.cla.Tags} options.collections.tags
+ * @param {mee.cla.Tasks} options.collections.tasks
+ * @param {mee.cla.NoteFilters} options.collections.noteFilters
+ * @param {mee.cla.TaskFilters} options.collections.taskFilters
+ * @param {mee.cla.TagFilters} options.collections.tagFilters
  */
-meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
+mee.cla.BrowserBodyView = Backbone.View.extend ({
 
 	// Initialize the view
 	// =============================================================================
@@ -178,9 +178,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		// this.filters stores the filters that actually filter the displayed collections
 		// they can be cloned for saving
 		this.filters = {
-			&quot;noteFilter&quot;: new meenoAppCli.Classes.NoteFilter(),
-			&quot;taskFilter&quot;: new meenoAppCli.Classes.TaskFilter(),
-			&quot;tagFilter&quot; : new meenoAppCli.Classes.TagFilter()
+			&quot;noteFilter&quot;: new mee.cla.NoteFilter(),
+			&quot;taskFilter&quot;: new mee.cla.TaskFilter(),
+			&quot;tagFilter&quot; : new mee.cla.TagFilter()
 		};
 
 		this.listenTo(this.options.collections.notes, &#x27;reset add remove change:title add:tagLinks&#x27;, function () {this.renderCollection(&quot;notes&quot;);});
@@ -207,14 +207,14 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			this.refreshFilterControls(&quot;tag&quot;);
 			this.renderFilterInSuperInput(&quot;tagFilter&quot;);});
 
-		this.listenTo(meenoAppCli.dispatcher, &#x27;browser:notes:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;notes&quot;);});
-		this.listenTo(meenoAppCli.dispatcher, &#x27;browser:tags:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tags&quot;);});
-		this.listenTo(meenoAppCli.dispatcher, &#x27;browser:taks:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tasks&quot;);});
-		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:tag&#x27;, function () {this.searchOpenAutocomplete(&quot;tags&quot;);});
-		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:task&#x27;, function () {this.searchOpenAutocomplete(&quot;tasks&quot;);});
-		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:entity&#x27;, function () {this.searchOpenAutocomplete(&quot;entities&quot;);});
-		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:escape&#x27;, function () {this.searchCloseAutocomplete(&quot;escape&quot;);});
-		this.listenTo(meenoAppCli.dispatcher, &#x27;keyboard:backspace&#x27;, function () {this.searchCloseAutocomplete(&quot;backspace&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;browser:notes:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;notes&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;browser:tags:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tags&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;browser:taks:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tasks&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;keyboard:tag&#x27;, function () {this.searchOpenAutocomplete(&quot;tags&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;keyboard:task&#x27;, function () {this.searchOpenAutocomplete(&quot;tasks&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;keyboard:entity&#x27;, function () {this.searchOpenAutocomplete(&quot;entities&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;keyboard:escape&#x27;, function () {this.searchCloseAutocomplete(&quot;escape&quot;);});
+		this.listenTo(mee.dispatcher, &#x27;keyboard:backspace&#x27;, function () {this.searchCloseAutocomplete(&quot;backspace&quot;);});
 
 		// this.listenTo($(&quot;ul.objects&quot;), &#x27;sortupdate&#x27;, function (event, ui) { this.sortableUpdate (event, ui); });
 		// this.listenTo($(&quot;ul.notes.objects&quot;), &#x27;sortupdate&#x27;, function () { console.log (&#x27;SORT&#x27;)});
@@ -334,15 +334,15 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		// Which action do we want to trigger ?
 		var action = $(event.target).attr(&#x27;class&#x27;);
 		/**
-		* Event triggered on meenoAppCli.dispatcher after the user clicks on an action button
+		* Event triggered on mee.dispatcher after the user clicks on an action button
 		* (flagged in the DOM with the &#x60;.actions-contextual-trigger button&#x60; classes).
 		* It should be listened by subviews (for example instances of
-		* {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyTagView&quot;}}{{/crossLink}}) to let them
+		* {{#crossLink &quot;mee.cla.BrowserBodyTagView&quot;}}{{/crossLink}}) to let them
 		* relay the action to their respective model.
 		* 
 		* @event browser:[collection-name]:[action]
 		*/
-		meenoAppCli.dispatcher.trigger(&quot;browser:&quot;+collName+&quot;:&quot;+action);
+		mee.dispatcher.trigger(&quot;browser:&quot;+collName+&quot;:&quot;+action);
 	},
 
 
@@ -383,7 +383,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 			source: function (request, response) {
 				// request.term : data typed in by the user (&quot;new yor&quot;)
 				// response : native callback that must be called with the data to suggest to the user
-				var autoCollFilter = new meenoAppCli.Classes[autoCollFilterClass]({text: request.term});
+				var autoCollFilter = new mee.cla[autoCollFilterClass]({text: request.term});
 				response (
 					self.options.collections[autoColl].search(autoCollFilter).map(function (model, key, list) {
 						return {
@@ -481,13 +481,13 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
 		var filterName   = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
 		/**
-		* Event triggered on meenoAppCli.dispatcher after the user decides to delete the saved tag
+		* Event triggered on mee.dispatcher after the user decides to delete the saved tag
 		* that is currently active. This event is listened by the views of 
-		* the class {{#crossLink &quot;meenoAppCli.Classes.BrowserBodyFilterView&quot;}}{{/crossLink}}. The
+		* the class {{#crossLink &quot;mee.cla.BrowserBodyFilterView&quot;}}{{/crossLink}}. The
 		* one view related to a model with the right filter name will delete its model.
 		* @event browser:filters:[filter-name]:remove-active
 		*/
-		meenoAppCli.dispatcher.trigger(&quot;browser:filters:&quot;+filterName+&quot;:remove-active&quot;);
+		mee.dispatcher.trigger(&quot;browser:filters:&quot;+filterName+&quot;:remove-active&quot;);
 	},
 
 	renderFilterCollection: function (filtersCollName) {
@@ -507,7 +507,7 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 
 		// Third, filling the DOM again
 		this.options.collections[filtersCollName].each(function (element) {
-			var newView = new meenoAppCli.Classes.BrowserBodyFilterView({ filterName: filterName, model: element, parent: self });
+			var newView = new mee.cla.BrowserBodyFilterView({ filterName: filterName, model: element, parent: self });
 			self.children[filtersCollName].push (newView);
 			$list.append(newView.render().el);
 		}, this);
@@ -582,9 +582,9 @@ meenoAppCli.Classes.BrowserBodyView = Backbone.View.extend ({
 		var results = this.options.collections[collName].search(this.filters[filterName]);
 
 		results.each(function (element) {
-			if (collName == &quot;notes&quot;) { newView = new meenoAppCli.Classes.BrowserBodyNoteView({ model: element }); }
-			if (collName == &quot;tags&quot;) { newView = new meenoAppCli.Classes.BrowserBodyTagView({ model: element }); }
-			if (collName == &quot;tasks&quot;) { newView = new meenoAppCli.Classes.BrowserBodyTaskView({ model: element }); }
+			if (collName == &quot;notes&quot;) { newView = new mee.cla.BrowserBodyNoteView({ model: element }); }
+			if (collName == &quot;tags&quot;) { newView = new mee.cla.BrowserBodyTagView({ model: element }); }
+			if (collName == &quot;tasks&quot;) { newView = new mee.cla.BrowserBodyTaskView({ model: element }); }
 			self.children[collName].push (newView);
 			$list.append(newView.render().el);
 		}, this);

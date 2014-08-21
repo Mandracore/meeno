@@ -1,11 +1,11 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
- * @class meenoAppCli.Classes.TagFilters
- * @extends meenoAppCli.Classes.ObjectFilters
+ * @class mee.cla.TagFilters
+ * @extends mee.cla.ObjectFilters
  */
-meenoAppCli.Classes.TagFilters = meenoAppCli.Classes.ObjectFilters.extend ({
-	model: meenoAppCli.Classes.TagFilter,
+mee.cla.TagFilters = mee.cla.ObjectFilters.extend ({
+	model: mee.cla.TagFilter,
 	url: '/api/filters/tag'
 });

@@ -1,7 +1,7 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
+mee.cla.EditorBodyObjectView = Backbone.View.extend({
 	// this.options.modelClass = 'tag' OR 'task'
 	tagName   :'span',
 	template  :'#editor-body-object-template',
@@ -69,7 +69,7 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 		var strHint = (this.$(".body").val());
 		if (strHint.length > -1) {
 			var pattern = new RegExp(strHint,"i");
-			var proposals = meenoAppCli[this.options.modelClass+'s'].filter(function (model) {
+			var proposals = mee[this.options.modelClass+'s'].filter(function (model) {
 				return pattern.test(model.get('label'));
 			});
 			var datalistOptions = proposals.map(function (obj, key) {
@@ -100,21 +100,21 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 			} else {
 				console.log('______ Locking Object ______');
 
-				var selectedModel = meenoAppCli[this.options.modelClass+'s'].find(function (model) {
+				var selectedModel = mee[this.options.modelClass+'s'].find(function (model) {
 					return model.get('label') == self.$(".body").val();
 				});
 
 				if (!selectedModel) {
 				// If the model doesn't exist, we create it
 					console.log('--- Creating new '+this.options.modelClass+' ---');
-					this.model = new meenoAppCli.Classes[modelClassName]({
+					this.model = new mee.cla[modelClassName]({
 						label : this.$(".body").val()
 					});
 
 					if (this.options.modelClass == "task") {
-						meenoAppCli.tasks.shiftDown(this.model);
+						mee.tasks.shiftDown(this.model);
 					}
-					meenoAppCli[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+					mee[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					// Now that the model is into a collection, the .save() method will work
 					this.model.save({}, {
 						success: function () { 
@@ -146,10 +146,10 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 		} else {
 			this.options.note.get('taskLinks').add({ task : this.model });
 		}
-		// var link = new meenoAppCli.Classes["linkNote"+modelClassName] ({});
+		// var link = new mee.cla["linkNote"+modelClassName] ({});
 		// link.set('note', this.options.note);
 		// link.set(this.options.modelClass, this.model);
-		// meenoAppCli["linkNote"+modelClassName].add(link);
+		// mee["linkNote"+modelClassName].add(link);
 		this.options.note.save({},{ 
 			success: function () {
 				var $newSpan = $("<span>",{class:"body"}).html(self.model.get('label'));

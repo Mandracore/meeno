@@ -1,12 +1,12 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
+mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 
 	template : '#browser-body-task-template',
 
 	events: function(){
-		return _.extend({},meenoAppCli.Classes.BrowserBodyObjectView.prototype.events,{
+		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
 			'click .edit'             : 'edit',
 			'click .delete'           : 'delete',
 			'click .close'            : 'close',
@@ -18,7 +18,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 
 	initialize: function() {
 		this.options.hasSelectedTag = false;
-		this.listenTo(meenoAppCli.dispatcher, 'keyboard:enter',
+		this.listenTo(mee.dispatcher, 'keyboard:enter',
 			function () { this.enter(); }
 		);
 	},
@@ -36,7 +36,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (json));
 		this.$el.attr("data-cid",this.model.cid);
-		meenoAppCli.dispatcher.trigger("browser:tasks:reSyncSelectors");
+		mee.dispatcher.trigger("browser:tasks:reSyncSelectors");
 		return this;
 	},
 
@@ -63,15 +63,15 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 				return;
 
 			} else { // The Enter keypress has not been taken into account yet
-				var tagFilter = new meenoAppCli.Classes.TagFilter({text: this.$("input[name='newTag']").val()});
-				var selection = meenoAppCli.tags.search(tagFilter).at(0);
+				var tagFilter = new mee.cla.TagFilter({text: this.$("input[name='newTag']").val()});
+				var selection = mee.tags.search(tagFilter).at(0);
 				// Lancer pas à pas à partir de ce point
 				if (!selection) {
 					// 1. create a new tag
-					var newTag = new meenoAppCli.Classes.Tag ({
+					var newTag = new mee.cla.Tag ({
 						label : self.$("input[name='newTag']").val(),
 					});
-					meenoAppCli.tags.add(newTag); // We add it to the collection so that we can save it
+					mee.tags.add(newTag); // We add it to the collection so that we can save it
 					newTag.save({}, {
 						success: function () {
 							console.log('new tag created OK');
@@ -87,7 +87,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 					self.model.get('tagLinks').add({ tag: selection });
 					// console.log
 /*
-				var selection = meenoAppCli.tags.get(ui.item.value) // ui.item.value == model.cid
+				var selection = mee.tags.get(ui.item.value) // ui.item.value == model.cid
 					self.model.get('tagLinks').add({ tag: selection });*/
 
 					self.renderTagUpdate();
@@ -113,9 +113,9 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 			source: function (request, response) {
 				// request.term : data typed in by the user ("new yor")
 				// response : native callback that must be called with the data to suggest to the user
-				var tagFilter = new meenoAppCli.Classes.TagFilter({text: request.term});
+				var tagFilter = new mee.cla.TagFilter({text: request.term});
 				response (
-					meenoAppCli.tags.search(tagFilter).map(function (model, key, list) {
+					mee.tags.search(tagFilter).map(function (model, key, list) {
 						return {
 							label: model.get("label"),
 							value: model.cid
@@ -129,7 +129,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 			},
 			select: function(event, ui) {console.log('autocomplete SELECT triggered');
 				self.options.hasSelectedTag = true;
-				var selection = meenoAppCli.tags.get(ui.item.value) // ui.item.value == model.cid
+				var selection = mee.tags.get(ui.item.value) // ui.item.value == model.cid
 				self.model.get('tagLinks').add({ tag: selection });
 				self.renderTagUpdate();
 			}
@@ -149,7 +149,7 @@ meenoAppCli.Classes.BrowserBodyTaskView = meenoAppCli.Classes.BrowserBodyObjectV
 	 * @return {void}
 	 */
 	unlink: function(event) {
-		var tag = meenoAppCli.tags.get($(event.target).attr('data-cid'));
+		var tag = mee.tags.get($(event.target).attr('data-cid'));
 		var tagLink = this.model.get('tagLinks').find(
 			function (tagLink) {return tagLink.get("tag") == tag; }
 		);

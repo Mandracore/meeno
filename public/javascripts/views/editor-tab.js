@@ -1,7 +1,7 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.EditorTabView = Backbone.View.extend({
+mee.cla.EditorTabView = Backbone.View.extend({
 
 	tagName   : 'li', // The View will generate itself within a <tagName> element (its top-level element)...
 	className : 'object note', // ... and will apply itself those classes : <tagName class="className1 className2[...]"

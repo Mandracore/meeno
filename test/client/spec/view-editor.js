@@ -3,8 +3,8 @@ describe("Editor", function() {
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
 		appendSetFixtures(sandbox());
-		this.note = new meenoAppCli.Classes.Note();
-		this.editor  = new meenoAppCli.Classes.EditorView ({ model: this.note });
+		this.note = new mee.cla.Note();
+		this.editor  = new mee.cla.EditorView ({ model: this.note });
 		$("#sandbox").append(this.editor.render().$el);
 	});
 
@@ -133,7 +133,7 @@ describe("Embedded tag view", function() {
 	beforeEach(function() {
 		loadFixtures('clientSideTemplates.html');
 		appendSetFixtures(sandbox());
-		this.view = new meenoAppCli.Classes.TagRefView();
+		this.view = new mee.cla.TagRefView();
 	});
 
 	// Describing what should be always true about that view, whatever its status is

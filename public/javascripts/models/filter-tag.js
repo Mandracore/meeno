@@ -1,11 +1,11 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
- * @class meenoAppCli.Classes.TagFilter
- * @extends meenoAppCli.Classes.ObjectFilter
+ * @class mee.cla.TagFilter
+ * @extends mee.cla.ObjectFilter
  */
-meenoAppCli.Classes.TagFilter = meenoAppCli.Classes.ObjectFilter.extend({
+mee.cla.TagFilter = mee.cla.ObjectFilter.extend({
 	defaults: function() {
 		return {
 			subClass  : 'TagFilter',

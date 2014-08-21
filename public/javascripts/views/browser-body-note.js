@@ -1,7 +1,7 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.BrowserBodyNoteView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
+mee.cla.BrowserBodyNoteView = mee.cla.BrowserBodyObjectView.extend({
 
 	template : '#browser-body-note-template',
 
@@ -15,12 +15,12 @@ meenoAppCli.Classes.BrowserBodyNoteView = meenoAppCli.Classes.BrowserBodyObjectV
 
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (json));
-		meenoAppCli.dispatcher.trigger("browser:notes:reSyncSelectors");
+		mee.dispatcher.trigger("browser:notes:reSyncSelectors");
 		return this;
 	},
 
 	edit: function() {
-		var newEditor = new meenoAppCli.Classes.EditorView ({ model: this.model });
+		var newEditor = new mee.cla.EditorView ({ model: this.model });
 		newEditor.render();
 		newEditor.toggle();
 	}

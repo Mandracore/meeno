@@ -1,8 +1,8 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.l18n = meenoAppCli.l18n || {};
+var mee     = mee || {};
+mee.l18n = mee.l18n || {};
 
 // shortcuts for people speaking French in France
-meenoAppCli.l18n.EditorBodyView = {
+mee.l18n.EditorBodyView = {
 	keyboardEvents: {
 		// some issue with mousetrap on chrome
 		// '#': 'newTag',
@@ -12,7 +12,7 @@ meenoAppCli.l18n.EditorBodyView = {
 		'ctrl+alt+shift+t': 'newTask'
 	}
 };
-meenoAppCli.l18n.BrowserBodyView = {
+mee.l18n.BrowserBodyView = {
 	keyboardEvents: {
 		// some issue with mousetrap on chrome
 		// '#': 'newTag',

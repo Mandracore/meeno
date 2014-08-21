@@ -1,13 +1,13 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.BrowserView = Backbone.View.extend({
+mee.cla.BrowserView = Backbone.View.extend({
 
 	initialize: function() {
-		meenoAppCli.dispatcher.on('tab:toggle:browser', this.toggle, this);
+		mee.dispatcher.on('tab:toggle:browser', this.toggle, this);
 		this.children = {
-			tab  : new meenoAppCli.Classes.BrowserTabView({ el: $("#nav .browse"), parent: this }),
-			body : new meenoAppCli.Classes.BrowserBodyView({ el: $("#tabs .browse"), parent: this, collections: this.options.collections })
+			tab  : new mee.cla.BrowserTabView({ el: $("#nav .browse"), parent: this }),
+			body : new mee.cla.BrowserBodyView({ el: $("#tabs .browse"), parent: this, collections: this.options.collections })
 		};
 	},
 

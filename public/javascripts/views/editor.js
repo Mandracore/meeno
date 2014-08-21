@@ -1,34 +1,34 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.EditorView = Backbone.View.extend({
+mee.cla.EditorView = Backbone.View.extend({
 
 	initialize: function() {
 		this.listenTo(this.model, 'remove', this.kill);
 		this.children = {
-			tab  : new meenoAppCli.Classes.EditorTabView({ model: this.model, parent: this }),
-			body : new meenoAppCli.Classes.EditorBodyView({ model: this.model, parent: this })
+			tab  : new mee.cla.EditorTabView({ model: this.model, parent: this }),
+			body : new mee.cla.EditorBodyView({ model: this.model, parent: this })
 		};
 	},
 
 	beforeKill: function() {
 		console.log('Killing editor');
-		meenoAppCli.dispatcher.trigger('tab:toggle:browser');
+		mee.dispatcher.trigger('tab:toggle:browser');
 		this.children.tab.kill();
 		this.children.body.kill();
-		meenoAppCli.counters.openedEditors--;
+		mee.counters.openedEditors--;
 		this.model.isInEditor = false;
 	},
 
 	render: function() {
-		if (meenoAppCli.counters.openedEditors < 6 && !this.model.isInEditor) {
-			meenoAppCli.counters.openedEditors++;
+		if (mee.counters.openedEditors < 6 && !this.model.isInEditor) {
+			mee.counters.openedEditors++;
 			this.model.isInEditor = true;
 			$("#nav").append(this.children.tab.render().el);
 			$("#tabs").append(this.children.body.render().el);
 			return this;
 		} else {
-			meenoAppCli.dispatcher.trigger('tab:toggle:browser');
+			mee.dispatcher.trigger('tab:toggle:browser');
 			this.kill();
 		}
 	},

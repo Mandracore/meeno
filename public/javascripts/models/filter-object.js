@@ -1,11 +1,11 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
- * @class meenoAppCli.Classes.ObjectFilter
+ * @class mee.cla.ObjectFilter
  * @extends Backbone.RelationalModel
  */
-meenoAppCli.Classes.ObjectFilter = Backbone.RelationalModel.extend({
+mee.cla.ObjectFilter = Backbone.RelationalModel.extend({
 	idAttribute: '_id',
 
 	isEmpty: function () {

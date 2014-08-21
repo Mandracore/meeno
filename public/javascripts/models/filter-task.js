@@ -1,15 +1,15 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
- * @class meenoAppCli.Classes.TaskFilter
- * @extends meenoAppCli.Classes.ObjectFilter
+ * @class mee.cla.TaskFilter
+ * @extends mee.cla.ObjectFilter
  */
-meenoAppCli.Classes.TaskFilter = meenoAppCli.Classes.ObjectFilter.extend({
+mee.cla.TaskFilter = mee.cla.ObjectFilter.extend({
 	relations: [{
 		type: 'HasMany',
 		key: 'tags',
-		relatedModel: 'meenoAppCli.Classes.Tag'
+		relatedModel: 'mee.cla.Tag'
 	}],
 	defaults: function() {
 		return {

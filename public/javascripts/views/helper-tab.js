@@ -1,7 +1,7 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.HelperTabView = Backbone.View.extend({
+mee.cla.HelperTabView = Backbone.View.extend({
 
 	// That view will always be binded to pre-existing pieces of DOM ("el" is passed directly to the class constructor)
 	// It explains why we don't need a render function

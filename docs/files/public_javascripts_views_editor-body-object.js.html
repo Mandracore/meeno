@@ -41,33 +41,33 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyFilterView.html">meenoAppCli.Classes.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyObjectView.html">meenoAppCli.Classes.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyTagView.html">meenoAppCli.Classes.BrowserBodyTagView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.BrowserBodyView.html">meenoAppCli.Classes.BrowserBodyView</a></li>
+                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilter.html">meenoAppCli.Classes.NoteFilter</a></li>
+                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.NoteFilters.html">meenoAppCli.Classes.NoteFilters</a></li>
+                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilter.html">meenoAppCli.Classes.ObjectFilter</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.ObjectFilters.html">meenoAppCli.Classes.ObjectFilters</a></li>
+                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilter.html">meenoAppCli.Classes.TagFilter</a></li>
+                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TagFilters.html">meenoAppCli.Classes.TagFilters</a></li>
+                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Task.html">meenoAppCli.Classes.Task</a></li>
+                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilter.html">meenoAppCli.Classes.TaskFilter</a></li>
+                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.TaskFilters.html">meenoAppCli.Classes.TaskFilters</a></li>
+                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
             
-                <li><a href="../classes/meenoAppCli.Classes.Tasks.html">meenoAppCli.Classes.Tasks</a></li>
+                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
             
             </ul>
 
@@ -112,10 +112,10 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
+mee.cla.EditorBodyObjectView = Backbone.View.extend({
 	// this.options.modelClass = &#x27;tag&#x27; OR &#x27;task&#x27;
 	tagName   :&#x27;span&#x27;,
 	template  :&#x27;#editor-body-object-template&#x27;,
@@ -183,7 +183,7 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 		var strHint = (this.$(&quot;.body&quot;).val());
 		if (strHint.length &gt; -1) {
 			var pattern = new RegExp(strHint,&quot;i&quot;);
-			var proposals = meenoAppCli[this.options.modelClass+&#x27;s&#x27;].filter(function (model) {
+			var proposals = mee[this.options.modelClass+&#x27;s&#x27;].filter(function (model) {
 				return pattern.test(model.get(&#x27;label&#x27;));
 			});
 			var datalistOptions = proposals.map(function (obj, key) {
@@ -214,21 +214,21 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 			} else {
 				console.log(&#x27;______ Locking Object ______&#x27;);
 
-				var selectedModel = meenoAppCli[this.options.modelClass+&#x27;s&#x27;].find(function (model) {
+				var selectedModel = mee[this.options.modelClass+&#x27;s&#x27;].find(function (model) {
 					return model.get(&#x27;label&#x27;) == self.$(&quot;.body&quot;).val();
 				});
 
 				if (!selectedModel) {
 				// If the model doesn&#x27;t exist, we create it
 					console.log(&#x27;--- Creating new &#x27;+this.options.modelClass+&#x27; ---&#x27;);
-					this.model = new meenoAppCli.Classes[modelClassName]({
+					this.model = new mee.cla[modelClassName]({
 						label : this.$(&quot;.body&quot;).val()
 					});
 
 					if (this.options.modelClass == &quot;task&quot;) {
-						meenoAppCli.tasks.shiftDown(this.model);
+						mee.tasks.shiftDown(this.model);
 					}
-					meenoAppCli[this.options.modelClass+&#x27;s&#x27;].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+					mee[this.options.modelClass+&#x27;s&#x27;].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
 					// Now that the model is into a collection, the .save() method will work
 					this.model.save({}, {
 						success: function () { 
@@ -260,10 +260,10 @@ meenoAppCli.Classes.EditorBodyObjectView = Backbone.View.extend({
 		} else {
 			this.options.note.get(&#x27;taskLinks&#x27;).add({ task : this.model });
 		}
-		// var link = new meenoAppCli.Classes[&quot;linkNote&quot;+modelClassName] ({});
+		// var link = new mee.cla[&quot;linkNote&quot;+modelClassName] ({});
 		// link.set(&#x27;note&#x27;, this.options.note);
 		// link.set(this.options.modelClass, this.model);
-		// meenoAppCli[&quot;linkNote&quot;+modelClassName].add(link);
+		// mee[&quot;linkNote&quot;+modelClassName].add(link);
 		this.options.note.save({},{ 
 			success: function () {
 				var $newSpan = $(&quot;&lt;span&gt;&quot;,{class:&quot;body&quot;}).html(self.model.get(&#x27;label&#x27;));

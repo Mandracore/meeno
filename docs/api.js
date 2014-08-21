@@ -1,20 +1,20 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
-        "meenoAppCli.Classes.BrowserBodyFilterView",
-        "meenoAppCli.Classes.BrowserBodyObjectView",
-        "meenoAppCli.Classes.BrowserBodyTagView",
-        "meenoAppCli.Classes.BrowserBodyView",
-        "meenoAppCli.Classes.NoteFilter",
-        "meenoAppCli.Classes.NoteFilters",
-        "meenoAppCli.Classes.ObjectFilter",
-        "meenoAppCli.Classes.ObjectFilters",
-        "meenoAppCli.Classes.TagFilter",
-        "meenoAppCli.Classes.TagFilters",
-        "meenoAppCli.Classes.Task",
-        "meenoAppCli.Classes.TaskFilter",
-        "meenoAppCli.Classes.TaskFilters",
-        "meenoAppCli.Classes.Tasks"
+        "mee.cla.BrowserBodyFilterView",
+        "mee.cla.BrowserBodyObjectView",
+        "mee.cla.BrowserBodyTagView",
+        "mee.cla.BrowserBodyView",
+        "mee.cla.NoteFilter",
+        "mee.cla.NoteFilters",
+        "mee.cla.ObjectFilter",
+        "mee.cla.ObjectFilters",
+        "mee.cla.TagFilter",
+        "mee.cla.TagFilters",
+        "mee.cla.Task",
+        "mee.cla.TaskFilter",
+        "mee.cla.TaskFilters",
+        "mee.cla.Tasks"
     ],
     "modules": [],
     "allModules": []

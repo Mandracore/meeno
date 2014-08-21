@@ -1,7 +1,7 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 // A link object between 'Note' and 'Task'
-meenoAppCli.Classes.LinkNoteTask = Backbone.RelationalModel.extend({
+mee.cla.LinkNoteTask = Backbone.RelationalModel.extend({
 	idAttribute: "_id"
 });

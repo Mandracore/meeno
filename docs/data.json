@@ -9,7 +9,7 @@
             "name": "public/javascripts/collections/filters-note.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.NoteFilters": 1
+                "mee.cla.NoteFilters": 1
             },
             "fors": {},
             "namespaces": {}
@@ -18,7 +18,7 @@
             "name": "public/javascripts/collections/filters-object.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.ObjectFilters": 1
+                "mee.cla.ObjectFilters": 1
             },
             "fors": {},
             "namespaces": {}
@@ -27,7 +27,7 @@
             "name": "public/javascripts/collections/filters-tag.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.TagFilters": 1
+                "mee.cla.TagFilters": 1
             },
             "fors": {},
             "namespaces": {}
@@ -36,7 +36,7 @@
             "name": "public/javascripts/collections/filters-task.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.TaskFilters": 1
+                "mee.cla.TaskFilters": 1
             },
             "fors": {},
             "namespaces": {}
@@ -45,7 +45,7 @@
             "name": "public/javascripts/collections/tasks.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.Tasks": 1
+                "mee.cla.Tasks": 1
             },
             "fors": {},
             "namespaces": {}
@@ -75,7 +75,7 @@
             "name": "public/javascripts/models/filter-note.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.NoteFilter": 1
+                "mee.cla.NoteFilter": 1
             },
             "fors": {},
             "namespaces": {}
@@ -84,7 +84,7 @@
             "name": "public/javascripts/models/filter-object.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.ObjectFilter": 1
+                "mee.cla.ObjectFilter": 1
             },
             "fors": {},
             "namespaces": {}
@@ -93,7 +93,7 @@
             "name": "public/javascripts/models/filter-tag.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.TagFilter": 1
+                "mee.cla.TagFilter": 1
             },
             "fors": {},
             "namespaces": {}
@@ -102,7 +102,7 @@
             "name": "public/javascripts/models/filter-task.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.TaskFilter": 1
+                "mee.cla.TaskFilter": 1
             },
             "fors": {},
             "namespaces": {}
@@ -111,7 +111,7 @@
             "name": "public/javascripts/models/task.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.Task": 1
+                "mee.cla.Task": 1
             },
             "fors": {},
             "namespaces": {}
@@ -120,7 +120,7 @@
             "name": "public/javascripts/views/browser-body-filter.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.BrowserBodyFilterView": 1
+                "mee.cla.BrowserBodyFilterView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -129,7 +129,7 @@
             "name": "public/javascripts/views/browser-body-object.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.BrowserBodyObjectView": 1
+                "mee.cla.BrowserBodyObjectView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -138,7 +138,7 @@
             "name": "public/javascripts/views/browser-body-tag.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.BrowserBodyTagView": 1
+                "mee.cla.BrowserBodyTagView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -154,7 +154,7 @@
             "name": "public/javascripts/views/browser-body.js",
             "modules": {},
             "classes": {
-                "meenoAppCli.Classes.BrowserBodyView": 1
+                "mee.cla.BrowserBodyView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -169,9 +169,9 @@
     },
     "modules": {},
     "classes": {
-        "meenoAppCli.Classes.NoteFilters": {
-            "name": "meenoAppCli.Classes.NoteFilters",
-            "shortname": "meenoAppCli.Classes.NoteFilters",
+        "mee.cla.NoteFilters": {
+            "name": "mee.cla.NoteFilters",
+            "shortname": "mee.cla.NoteFilters",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -179,11 +179,11 @@
             "extension_for": [],
             "file": "public/javascripts/collections/filters-note.js",
             "line": 4,
-            "extends": "meenoAppCli.Classes.ObjectFilters"
+            "extends": "mee.cla.ObjectFilters"
         },
-        "meenoAppCli.Classes.ObjectFilters": {
-            "name": "meenoAppCli.Classes.ObjectFilters",
-            "shortname": "meenoAppCli.Classes.ObjectFilters",
+        "mee.cla.ObjectFilters": {
+            "name": "mee.cla.ObjectFilters",
+            "shortname": "mee.cla.ObjectFilters",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -193,9 +193,9 @@
             "line": 4,
             "extends": "Backbone.Collection"
         },
-        "meenoAppCli.Classes.TagFilters": {
-            "name": "meenoAppCli.Classes.TagFilters",
-            "shortname": "meenoAppCli.Classes.TagFilters",
+        "mee.cla.TagFilters": {
+            "name": "mee.cla.TagFilters",
+            "shortname": "mee.cla.TagFilters",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -203,11 +203,11 @@
             "extension_for": [],
             "file": "public/javascripts/collections/filters-tag.js",
             "line": 4,
-            "extends": "meenoAppCli.Classes.ObjectFilters"
+            "extends": "mee.cla.ObjectFilters"
         },
-        "meenoAppCli.Classes.TaskFilters": {
-            "name": "meenoAppCli.Classes.TaskFilters",
-            "shortname": "meenoAppCli.Classes.TaskFilters",
+        "mee.cla.TaskFilters": {
+            "name": "mee.cla.TaskFilters",
+            "shortname": "mee.cla.TaskFilters",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -215,11 +215,11 @@
             "extension_for": [],
             "file": "public/javascripts/collections/filters-task.js",
             "line": 4,
-            "extends": "meenoAppCli.Classes.ObjectFilters"
+            "extends": "mee.cla.ObjectFilters"
         },
-        "meenoAppCli.Classes.Tasks": {
-            "name": "meenoAppCli.Classes.Tasks",
-            "shortname": "meenoAppCli.Classes.Tasks",
+        "mee.cla.Tasks": {
+            "name": "mee.cla.Tasks",
+            "shortname": "mee.cla.Tasks",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -229,9 +229,9 @@
             "line": 4,
             "description": "Holds collection of tasks"
         },
-        "meenoAppCli.Classes.NoteFilter": {
-            "name": "meenoAppCli.Classes.NoteFilter",
-            "shortname": "meenoAppCli.Classes.NoteFilter",
+        "mee.cla.NoteFilter": {
+            "name": "mee.cla.NoteFilter",
+            "shortname": "mee.cla.NoteFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -239,11 +239,11 @@
             "extension_for": [],
             "file": "public/javascripts/models/filter-note.js",
             "line": 4,
-            "extends": "meenoAppCli.Classes.ObjectFilter"
+            "extends": "mee.cla.ObjectFilter"
         },
-        "meenoAppCli.Classes.ObjectFilter": {
-            "name": "meenoAppCli.Classes.ObjectFilter",
-            "shortname": "meenoAppCli.Classes.ObjectFilter",
+        "mee.cla.ObjectFilter": {
+            "name": "mee.cla.ObjectFilter",
+            "shortname": "mee.cla.ObjectFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -253,9 +253,9 @@
             "line": 4,
             "extends": "Backbone.RelationalModel"
         },
-        "meenoAppCli.Classes.TagFilter": {
-            "name": "meenoAppCli.Classes.TagFilter",
-            "shortname": "meenoAppCli.Classes.TagFilter",
+        "mee.cla.TagFilter": {
+            "name": "mee.cla.TagFilter",
+            "shortname": "mee.cla.TagFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -263,11 +263,11 @@
             "extension_for": [],
             "file": "public/javascripts/models/filter-tag.js",
             "line": 4,
-            "extends": "meenoAppCli.Classes.ObjectFilter"
+            "extends": "mee.cla.ObjectFilter"
         },
-        "meenoAppCli.Classes.TaskFilter": {
-            "name": "meenoAppCli.Classes.TaskFilter",
-            "shortname": "meenoAppCli.Classes.TaskFilter",
+        "mee.cla.TaskFilter": {
+            "name": "mee.cla.TaskFilter",
+            "shortname": "mee.cla.TaskFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -275,11 +275,11 @@
             "extension_for": [],
             "file": "public/javascripts/models/filter-task.js",
             "line": 4,
-            "extends": "meenoAppCli.Classes.ObjectFilter"
+            "extends": "mee.cla.ObjectFilter"
         },
-        "meenoAppCli.Classes.Task": {
-            "name": "meenoAppCli.Classes.Task",
-            "shortname": "meenoAppCli.Classes.Task",
+        "mee.cla.Task": {
+            "name": "mee.cla.Task",
+            "shortname": "mee.cla.Task",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -289,9 +289,9 @@
             "line": 4,
             "description": "Holds the task model"
         },
-        "meenoAppCli.Classes.BrowserBodyFilterView": {
-            "name": "meenoAppCli.Classes.BrowserBodyFilterView",
-            "shortname": "meenoAppCli.Classes.BrowserBodyFilterView",
+        "mee.cla.BrowserBodyFilterView": {
+            "name": "mee.cla.BrowserBodyFilterView",
+            "shortname": "mee.cla.BrowserBodyFilterView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -299,7 +299,7 @@
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-filter.js",
             "line": 4,
-            "description": "This class holds the view of the filter models that are used to filter the browser's search results.\nThis view can accept models of classes {{#crossLink \"meenoAppCli.Classes.NoteFilter\"}}{{/crossLink}},\n{{#crossLink \"meenoAppCli.Classes.TaskFilter\"}}{{/crossLink}} and {{#crossLink \"meenoAppCli.Classes.TagFilter\"}}{{/crossLink}}.",
+            "description": "This class holds the view of the filter models that are used to filter the browser's search results.\nThis view can accept models of classes {{#crossLink \"mee.cla.NoteFilter\"}}{{/crossLink}},\n{{#crossLink \"mee.cla.TaskFilter\"}}{{/crossLink}} and {{#crossLink \"mee.cla.TagFilter\"}}{{/crossLink}}.",
             "extends": "Backbone.View",
             "is_constructor": 1,
             "params": [
@@ -317,9 +317,9 @@
                 }
             ]
         },
-        "meenoAppCli.Classes.BrowserBodyObjectView": {
-            "name": "meenoAppCli.Classes.BrowserBodyObjectView",
-            "shortname": "meenoAppCli.Classes.BrowserBodyObjectView",
+        "mee.cla.BrowserBodyObjectView": {
+            "name": "mee.cla.BrowserBodyObjectView",
+            "shortname": "mee.cla.BrowserBodyObjectView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -327,12 +327,12 @@
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-object.js",
             "line": 4,
-            "description": "This class retains all core features for displaying objects views in the browser.\nSeveral classes will inherit from it, one per kind of business object :\n- meenoAppCli.Classes.BrowserBodyNoteView\n- meenoAppCli.Classes.BrowserBodyTaskView\n- meenoAppCli.Classes.BrowserBodyTagView\n- ...",
+            "description": "This class retains all core features for displaying objects views in the browser.\nSeveral classes will inherit from it, one per kind of business object :\n- mee.cla.BrowserBodyNoteView\n- mee.cla.BrowserBodyTaskView\n- mee.cla.BrowserBodyTagView\n- ...",
             "extends": "Backbone.View"
         },
-        "meenoAppCli.Classes.BrowserBodyTagView": {
-            "name": "meenoAppCli.Classes.BrowserBodyTagView",
-            "shortname": "meenoAppCli.Classes.BrowserBodyTagView",
+        "mee.cla.BrowserBodyTagView": {
+            "name": "mee.cla.BrowserBodyTagView",
+            "shortname": "mee.cla.BrowserBodyTagView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -341,11 +341,11 @@
             "file": "public/javascripts/views/browser-body-tag.js",
             "line": 4,
             "description": "A backbone view to display one tag in the browser",
-            "extends": "meenoAppCli.Classes.BrowserBodyObjectView"
+            "extends": "mee.cla.BrowserBodyObjectView"
         },
-        "meenoAppCli.Classes.BrowserBodyView": {
-            "name": "meenoAppCli.Classes.BrowserBodyView",
-            "shortname": "meenoAppCli.Classes.BrowserBodyView",
+        "mee.cla.BrowserBodyView": {
+            "name": "mee.cla.BrowserBodyView",
+            "shortname": "mee.cla.BrowserBodyView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
@@ -353,7 +353,7 @@
             "extension_for": [],
             "file": "public/javascripts/views/browser-body.js",
             "line": 4,
-            "description": "te Q;O LIWETH\nThis class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"meenoAppCli.Classes.BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"meenoAppCli.Classes.BrowserBodyFilterView\"}}{{/crossLink}},...",
+            "description": "te Q;O LIWETH\nThis class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"mee.cla.BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"mee.cla.BrowserBodyFilterView\"}}{{/crossLink}},...",
             "is_constructor": 1,
             "params": [
                 {
@@ -369,32 +369,32 @@
                                 {
                                     "name": "notes",
                                     "description": "",
-                                    "type": "meenoAppCli.Classes.Notes"
+                                    "type": "mee.cla.Notes"
                                 },
                                 {
                                     "name": "tags",
                                     "description": "",
-                                    "type": "meenoAppCli.Classes.Tags"
+                                    "type": "mee.cla.Tags"
                                 },
                                 {
                                     "name": "tasks",
                                     "description": "",
-                                    "type": "meenoAppCli.Classes.Tasks"
+                                    "type": "mee.cla.Tasks"
                                 },
                                 {
                                     "name": "noteFilters",
                                     "description": "",
-                                    "type": "meenoAppCli.Classes.NoteFilters"
+                                    "type": "mee.cla.NoteFilters"
                                 },
                                 {
                                     "name": "taskFilters",
                                     "description": "",
-                                    "type": "meenoAppCli.Classes.TaskFilters"
+                                    "type": "mee.cla.TaskFilters"
                                 },
                                 {
                                     "name": "tagFilters",
                                     "description": "",
-                                    "type": "meenoAppCli.Classes.TagFilters"
+                                    "type": "mee.cla.TagFilters"
                                 }
                             ]
                         }
@@ -414,15 +414,15 @@
                 {
                     "name": "filter",
                     "description": "the filter used to search the collection",
-                    "type": "meenoAppCli.Classes.TaskFilter"
+                    "type": "mee.cla.TaskFilter"
                 }
             ],
             "return": {
                 "description": "a new filtered collection of tasks",
-                "type": "meenoAppCli.Classes.Tasks"
+                "type": "mee.cla.Tasks"
             },
             "chainable": 1,
-            "class": "meenoAppCli.Classes.Tasks"
+            "class": "mee.cla.Tasks"
         },
         {
             "file": "public/javascripts/collections/tasks.js",
@@ -434,52 +434,52 @@
                 {
                     "name": "anchor",
                     "description": "the task that was moved, point of reference",
-                    "type": "meenoAppCli.Classes.Task"
+                    "type": "mee.cla.Task"
                 }
             ],
-            "class": "meenoAppCli.Classes.Tasks"
+            "class": "mee.cla.Tasks"
         },
         {
             "file": "public/javascripts/lib/backbone-nested-v1.1.2.min.js",
             "line": 1,
             "description": "Backbone-Nested 1.1.2 - An extension of Backbone.js that keeps track of nested attributes\n\nhttp://afeld.github.com/backbone-nested/\n\nCopyright (c) 2011-2012 Aidan Feldman\nMIT Licensed (LICENSE)",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 2,
             "description": "Backbone-relational.js 0.7.0\n(c) 2011-2013 Paul Uithol\n\nBackbone-relational may be freely distributed under the MIT license; see the accompanying LICENSE.txt.\nFor details and documentation: https://github.com/PaulUithol/Backbone-relational.\nDepends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 13,
             "description": "CommonJS shim",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 32,
             "description": "Semaphore mixin; can be used as both binary and counting.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 69,
             "description": "A BlockingQueue that accumulates items while blocked (via 'block'),\nand processes them when unblocked (via 'unblock').\nProcess can also be called manually (via 'process').",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 110,
             "description": "Global event queue. Accumulates external events ('add:<key>', 'remove:<key>' and 'update:<key>')\nuntil the top-level object is fully initialized (see 'Backbone.RelationalModel').",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 116,
             "description": "Backbone.Store keeps track of all created (and destruction of) Backbone.RelationalModel.\nHandles lookup for relations.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -497,7 +497,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -510,7 +510,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -545,7 +545,7 @@
                     ]
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -558,7 +558,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -575,7 +575,7 @@
                 "description": "A collection if found (or applicable for 'model'), or null",
                 "type": "Backbone.Collection"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -592,7 +592,7 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -613,7 +613,7 @@
                 "description": "",
                 "type": "String|Number"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -629,7 +629,7 @@
                     "type": "String|Number|Object|Backbone.RelationalModel"
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -642,7 +642,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -655,7 +655,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -668,7 +668,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -718,7 +718,7 @@
                     ]
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -728,7 +728,7 @@
                 "description": "True if pre-conditions are satisfied, false if they're not.",
                 "type": "Boolean"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -747,7 +747,7 @@
                     "optional": true
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -764,7 +764,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -782,7 +782,7 @@
                 "description": "",
                 "type": "Backbone.Relation[]"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -800,7 +800,7 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -818,19 +818,19 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 669,
             "description": "If the key is changed, notify old & new reverse relations and initialize the new relation",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 726,
             "description": "If a new 'this.relatedModel' appears in the 'store', try to match it to the last set 'keyContents'",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -844,61 +844,61 @@
                     "optional": true
                 }
             ],
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 880,
             "description": "If the key is changed, notify old & new reverse relations and initialize the new relation",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 953,
             "description": "When a model is added to a 'HasMany', trigger 'add' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', must set 'this.instance' as their related).",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 978,
             "description": "When a model is removed from a 'HasMany', trigger 'remove' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', which should be nullified)",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1027,
             "description": "A type of Backbone.Model that also maintains relations to other models and collections.\nNew events when compared to the original:\n - 'add:<key>' (model, related collection, options)\n - 'remove:<key>' (model, related collection, options)\n - 'update:<key>' (model, related model or collection, options)",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1081,
             "description": "Override 'trigger' to queue 'change' and 'change:*' events",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1098,
             "description": "Initialize Relations present in this.relations; determine the type (HasOne/HasMany), then creates a new instance.\nInvoked in the first call so 'set' (which is made from the Backbone.Model constructor).",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1121,
             "description": "When new values are set, notify this model's relations (also if options.silent is set).\n(Relation.setRelated locks this model before calling 'set' on it to prevent loops)",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1137,
             "description": "Either add to the queue (if we're not initialized yet), or execute right away.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1144,
             "description": "Process _queue",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -915,7 +915,7 @@
                 "description": "An instance of 'Backbone.Relation', if a relation was found for 'key', or null.",
                 "type": "Backbone.Relation"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -925,7 +925,7 @@
                 "description": "",
                 "type": "Backbone.Relation[]"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -955,25 +955,25 @@
                 "description": "An array of request objects",
                 "type": "jQuery.when[]"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1317,
             "description": "Override 'change', so the change will only execute after 'set' has finised (relations are updated),\nand 'previousAttributes' will be available when the event is fired.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1341,
             "description": "Convert relations to JSON, omits them when required",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1442,
             "description": "The related model might not be defined for two reasons\n 1. it never gets defined, e.g. a typo\n 2. it is related to itself\nIn neither of these cases do we need to pre-initialize reverse relations.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -996,7 +996,7 @@
                 "description": "",
                 "type": "Backbone.Model"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -1028,49 +1028,49 @@
                 "description": "",
                 "type": "Backbone.RelationalModel"
             },
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1553,
             "description": "Override Backbone.Collection._prepareModel, so objects will be built using the correct type\nif the collection.model has subModels.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1587,
             "description": "Override Backbone.Collection.add, so objects fetched from the server multiple times will\nupdate the existing Model. Also, trigger 'relational:add'.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1625,
             "description": "Override 'Backbone.Collection.remove' to trigger 'relational:remove'.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1651,
             "description": "Override 'Backbone.Collection.reset' to trigger 'relational:reset'.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1662,
             "description": "Override 'Backbone.Collection.sort' to trigger 'relational:reset'.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1673,
             "description": "Override 'Backbone.Collection.trigger' so 'add', 'remove' and 'reset' events are queued until relations\nare ready.",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/lib/backbone.localStorage-min.js",
             "line": 1,
             "description": "Backbone localStorage Adapter\nhttps://github.com/jeromegn/Backbone.localStorage\n/(function(){function n(){return((1+Math.random())*65536|0).toString(16).substring(1)}function r(){return n()+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+n()+n()}var e=this._,t=this.Backbone;t.LocalStorage=window.Store=function(e){this.name=e;var t=this.localStorage().getItem(this.name);this.records=t&&t.split(\",\")||[]},e.extend(t.LocalStorage.prototype,{save:function(){this.localStorage().setItem(this.name,this.records.join(\",\"))},create:function(e){return e.id||(e.id=r(),e.set(e.idAttribute,e.id)),this.localStorage().setItem(this.name+\"-\"+e.id,JSON.stringify(e)),this.records.push(e.id.toString()),this.save(),e.toJSON()},update:function(t){return this.localStorage().setItem(this.name+\"-\"+t.id,JSON.stringify(t)),e.include(this.records,t.id.toString())||this.records.push(t.id.toString()),this.save(),t.toJSON()},find:function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e.id))},findAll:function(){return e(this.records).chain().map(function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e))},this).compact().value()},destroy:function(t){return this.localStorage().removeItem(this.name+\"-\"+t.id),this.records=e.reject(this.records,function(e){return e==t.id.toString()}),this.save(),t},localStorage:function(){return localStorage}}),t.LocalStorage.sync=window.Store.sync=t.localSync=function(e,t,n,r){var i=t.localStorage||t.collection.localStorage;typeof n==\"function\"&&(n={success:n,error:r});var s,o=$.Deferred&&$.Deferred();switch(e){case\"read\":s=t.id!=undefined?i.find(t):i.findAll();break;case\"create\":s=i.create(t);break;case\"update\":s=i.update(t);break;case\"delete\":s=i.destroy(t)}return s?(n.success(s),o&&o.resolve()):(n.error(\"Record not found\"),o&&o.reject()),o&&o.promise()},t.ajaxSync=t.sync,t.getSyncMethod=function(e){return e.localStorage||e.collection&&e.collection.localStorage?t.LocalStorage.sync:t.ajaxSync},t.sync=function(e,n,r,i){return t.getSyncMethod(n).apply(this,[e,n,r,i])}})();",
-            "class": "meenoAppCli.Classes.NoteFilter"
+            "class": "mee.cla.NoteFilter"
         },
         {
             "file": "public/javascripts/models/task.js",
@@ -1079,10 +1079,10 @@
             "itemtype": "method",
             "name": "toJSON",
             "return": {
-                "description": "all the attributes of the item put in a json object",
+                "description": "all the attributes of the model put in a json object",
                 "type": "Json"
             },
-            "class": "meenoAppCli.Classes.Task"
+            "class": "mee.cla.Task"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
@@ -1091,31 +1091,31 @@
             "itemtype": "method",
             "name": "render",
             "chainable": 1,
-            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+            "class": "mee.cla.BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
             "line": 46,
-            "description": "Called every time the filters of the {{#crossLink \"meenoAppCli.Classes.BrowserBodyView\"}}browser{{/crossLink}} \nare updated. Checks if its model is similar to the one in use in the browser and \nhighlights it if it's true.",
+            "description": "Called every time the filters of the {{#crossLink \"mee.cla.BrowserBodyView\"}}browser{{/crossLink}} \nare updated. Checks if its model is similar to the one in use in the browser and \nhighlights it if it's true.",
             "itemtype": "method",
             "name": "checkStatus",
-            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+            "class": "mee.cla.BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
             "line": 63,
-            "description": "Called when the user clicks on the view.\nUpdates the right {{#crossLink \"meenoAppCli.Classes.BrowserBodyView\"}}browser{{/crossLink}}'s \nfilter to clone the view's model properties and highlights it.",
+            "description": "Called when the user clicks on the view.\nUpdates the right {{#crossLink \"mee.cla.BrowserBodyView\"}}browser{{/crossLink}}'s \nfilter to clone the view's model properties and highlights it.",
             "itemtype": "method",
             "name": "activate",
-            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+            "class": "mee.cla.BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
             "line": 78,
-            "description": "Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by\nthe {{#crossLink \"meenoAppCli.Classes.BrowserBodyView\"}}browser{{/crossLink}}.\nWill destroy both the view and its model.",
+            "description": "Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by\nthe {{#crossLink \"mee.cla.BrowserBodyView\"}}browser{{/crossLink}}.\nWill destroy both the view and its model.",
             "itemtype": "method",
             "name": "removeIfActive",
-            "class": "meenoAppCli.Classes.BrowserBodyFilterView"
+            "class": "mee.cla.BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
@@ -1124,15 +1124,15 @@
             "itemtype": "method",
             "name": "render",
             "chainable": 1,
-            "class": "meenoAppCli.Classes.BrowserBodyTagView"
+            "class": "mee.cla.BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
             "line": 33,
-            "description": "Event triggered on `meenoAppCli.dispatcher` when this.render() method is called",
+            "description": "Event triggered on `mee.dispatcher` when this.render() method is called",
             "itemtype": "event",
             "name": "browser:tags:reSyncSelectors",
-            "class": "meenoAppCli.Classes.BrowserBodyTagView"
+            "class": "mee.cla.BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
@@ -1140,7 +1140,7 @@
             "description": "Displays an input to edit the tag label",
             "itemtype": "method",
             "name": "edit",
-            "class": "meenoAppCli.Classes.BrowserBodyTagView"
+            "class": "mee.cla.BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
@@ -1148,7 +1148,7 @@
             "description": "Sets the view's model label to the input (`span.label`) value and saves the model",
             "itemtype": "method",
             "name": "save",
-            "class": "meenoAppCli.Classes.BrowserBodyTagView"
+            "class": "mee.cla.BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
@@ -1156,7 +1156,7 @@
             "description": "Will destroy the view's model and the view itself when the user clics on `.delete` class DOM element",
             "itemtype": "method",
             "name": "delete",
-            "class": "meenoAppCli.Classes.BrowserBodyTagView"
+            "class": "mee.cla.BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
@@ -1166,7 +1166,7 @@
                 "description": "",
                 "type": "Void"
             },
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
@@ -1176,7 +1176,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
@@ -1186,7 +1186,7 @@
                 "description": "",
                 "type": "Void"
             },
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
@@ -1196,7 +1196,7 @@
                 "description": "",
                 "type": "Void"
             },
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
@@ -1206,7 +1206,7 @@
                 "description": "",
                 "type": "Void"
             },
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
@@ -1214,7 +1214,7 @@
             "description": "Makes the browser visible",
             "itemtype": "method",
             "name": "toggle",
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
@@ -1229,23 +1229,23 @@
                     "type": "Event"
                 }
             ],
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
             "line": 222,
-            "description": "Event triggered on meenoAppCli.dispatcher after the user clicks on an action button\n(flagged in the DOM with the `.actions-contextual-trigger button` classes).\nIt should be listened by subviews (for example instances of\n{{#crossLink \"meenoAppCli.Classes.BrowserBodyTagView\"}}{{/crossLink}}) to let them\nrelay the action to their respective model.",
+            "description": "Event triggered on mee.dispatcher after the user clicks on an action button\n(flagged in the DOM with the `.actions-contextual-trigger button` classes).\nIt should be listened by subviews (for example instances of\n{{#crossLink \"mee.cla.BrowserBodyTagView\"}}{{/crossLink}}) to let them\nrelay the action to their respective model.",
             "itemtype": "event",
             "name": "browser:[collection-name]:[action]",
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
             "line": 369,
-            "description": "Event triggered on meenoAppCli.dispatcher after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"meenoAppCli.Classes.BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
+            "description": "Event triggered on mee.dispatcher after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"mee.cla.BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
             "itemtype": "event",
             "name": "browser:filters:[filter-name]:remove-active",
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
@@ -1267,7 +1267,7 @@
                 "description": "nothing to return",
                 "type": "Void"
             },
-            "class": "meenoAppCli.Classes.BrowserBodyView"
+            "class": "mee.cla.BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/editor-body-object.js",

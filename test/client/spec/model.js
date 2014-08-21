@@ -7,9 +7,9 @@ describe("Business Models", function() {
 	describe("Defaults", function() {
 
 		beforeEach(function() {
-			this.note = new meenoAppCli.Classes.Note();
-			this.tag  = new meenoAppCli.Classes.Tag();
-			this.task = new meenoAppCli.Classes.Task();
+			this.note = new mee.cla.Note();
+			this.tag  = new mee.cla.Tag();
+			this.task = new mee.cla.Task();
 		});
 
 		describe("Note", function() {
@@ -100,19 +100,19 @@ describe("Business Models", function() {
 	describe("Relations and methods", function() {
 
 		beforeEach(function() {
-			this.note       = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
-			this.note2      = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
-			this.note3      = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
-			this.tag        = new meenoAppCli.Classes.Tag({label:"My test tag"});
-			this.tag2       = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
-			this.tag3       = new meenoAppCli.Classes.Tag({label:"My test tag 3"});
-			this.task       = new meenoAppCli.Classes.Task({label:"My test task"});
-			this.task2      = new meenoAppCli.Classes.Task({label:"My test task 2"});
-			this.task3      = new meenoAppCli.Classes.Task({label:"My test task 3"});
-			this.noteFilter = new meenoAppCli.Classes.NoteFilter();
-			this.notes      = new meenoAppCli.Classes.Notes();
-			this.tags       = new meenoAppCli.Classes.Tags();
-			this.tasks      = new meenoAppCli.Classes.Tasks();
+			this.note       = new mee.cla.Note({title:"Nouvelle note"});
+			this.note2      = new mee.cla.Note({title:"Nouvelle note bis"});
+			this.note3      = new mee.cla.Note({title:"Nouvelle note ter"});
+			this.tag        = new mee.cla.Tag({label:"My test tag"});
+			this.tag2       = new mee.cla.Tag({label:"My test tag 2"});
+			this.tag3       = new mee.cla.Tag({label:"My test tag 3"});
+			this.task       = new mee.cla.Task({label:"My test task"});
+			this.task2      = new mee.cla.Task({label:"My test task 2"});
+			this.task3      = new mee.cla.Task({label:"My test task 3"});
+			this.noteFilter = new mee.cla.NoteFilter();
+			this.notes      = new mee.cla.Notes();
+			this.tags       = new mee.cla.Tags();
+			this.tasks      = new mee.cla.Tasks();
 			this.notes.add(this.note);
 			this.notes.add(this.note2);
 			this.notes.add(this.note3);
@@ -150,24 +150,24 @@ describe("Business Models", function() {
 describe("Filter models", function() {
 
 	beforeEach(function() {
-		this.noteFilter  = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter2 = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter3 = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter4 = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter5 = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter6 = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter7 = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter8 = new meenoAppCli.Classes.NoteFilter();
-		this.noteFilter9 = new meenoAppCli.Classes.NoteFilter();
-		this.taskFilter  = new meenoAppCli.Classes.TaskFilter();
-		this.taskFilter2 = new meenoAppCli.Classes.TaskFilter();
-		this.taskFilter3 = new meenoAppCli.Classes.TaskFilter();
-		this.tagFilter   = new meenoAppCli.Classes.TagFilter();
-		this.tagFilter2  = new meenoAppCli.Classes.TagFilter();
-		this.tag         = new meenoAppCli.Classes.Tag({label:"My test tag"});
-		this.tag2        = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
-		this.task        = new meenoAppCli.Classes.Task({label:"My test task"});
-		this.task2       = new meenoAppCli.Classes.Task({label:"My test task 2"});
+		this.noteFilter  = new mee.cla.NoteFilter();
+		this.noteFilter2 = new mee.cla.NoteFilter();
+		this.noteFilter3 = new mee.cla.NoteFilter();
+		this.noteFilter4 = new mee.cla.NoteFilter();
+		this.noteFilter5 = new mee.cla.NoteFilter();
+		this.noteFilter6 = new mee.cla.NoteFilter();
+		this.noteFilter7 = new mee.cla.NoteFilter();
+		this.noteFilter8 = new mee.cla.NoteFilter();
+		this.noteFilter9 = new mee.cla.NoteFilter();
+		this.taskFilter  = new mee.cla.TaskFilter();
+		this.taskFilter2 = new mee.cla.TaskFilter();
+		this.taskFilter3 = new mee.cla.TaskFilter();
+		this.tagFilter   = new mee.cla.TagFilter();
+		this.tagFilter2  = new mee.cla.TagFilter();
+		this.tag         = new mee.cla.Tag({label:"My test tag"});
+		this.tag2        = new mee.cla.Tag({label:"My test tag 2"});
+		this.task        = new mee.cla.Task({label:"My test task"});
+		this.task2       = new mee.cla.Task({label:"My test task 2"});
 	});
 
 	it("NoteFilter can be related to a tag and a task through a link", function() {
@@ -262,33 +262,33 @@ describe("Filter models", function() {
 describe("Collections", function() {
 
 	beforeEach(function() {
-		this.note        = new meenoAppCli.Classes.Note({title:"Nouvelle note"});
-		this.note2       = new meenoAppCli.Classes.Note({title:"Nouvelle note bis"});
-		this.note3       = new meenoAppCli.Classes.Note({title:"Nouvelle note ter"});
-		this.note4       = new meenoAppCli.Classes.Note({title:"Nouvelle note 4"});
-		this.tag         = new meenoAppCli.Classes.Tag({label:"My test tag"});
-		this.tag2        = new meenoAppCli.Classes.Tag({label:"My test tag 2"});
-		this.tag3        = new meenoAppCli.Classes.Tag({label:"My test tag 3"});
-		this.tag4        = new meenoAppCli.Classes.Tag({label:"My test tag 4"});
-		this.tag5        = new meenoAppCli.Classes.Tag({label:"My test tag 5"});
-		this.tag6        = new meenoAppCli.Classes.Tag({label:"My test tag 6"});
-		this.task        = new meenoAppCli.Classes.Task({label:"My test task 1"});
-		this.task2       = new meenoAppCli.Classes.Task({label:"My test task 2"});
-		this.task3       = new meenoAppCli.Classes.Task({label:"My test task 3"});
-		this.task4       = new meenoAppCli.Classes.Task({label:"My test task 4"});
-		this.task5       = new meenoAppCli.Classes.Task({label:"My test task 5"});
-		this.task6       = new meenoAppCli.Classes.Task({label:"My test task 6"});
-		this.task7       = new meenoAppCli.Classes.Task({label:"My test task 7"});
-		this.task8       = new meenoAppCli.Classes.Task({label:"My test task 8"});
-		this.noteFilter  = new meenoAppCli.Classes.NoteFilter();
-		this.taskFilter1 = new meenoAppCli.Classes.TaskFilter();
-		this.taskFilter2 = new meenoAppCli.Classes.TaskFilter();
-		this.taskFilter3 = new meenoAppCli.Classes.TaskFilter();
-		this.taskFilter4 = new meenoAppCli.Classes.TaskFilter();
-		this.tagFilter   = new meenoAppCli.Classes.TagFilter();
-		this.notes       = new meenoAppCli.Classes.Notes();
-		this.tags        = new meenoAppCli.Classes.Tags();
-		this.tasks       = new meenoAppCli.Classes.Tasks();
+		this.note        = new mee.cla.Note({title:"Nouvelle note"});
+		this.note2       = new mee.cla.Note({title:"Nouvelle note bis"});
+		this.note3       = new mee.cla.Note({title:"Nouvelle note ter"});
+		this.note4       = new mee.cla.Note({title:"Nouvelle note 4"});
+		this.tag         = new mee.cla.Tag({label:"My test tag"});
+		this.tag2        = new mee.cla.Tag({label:"My test tag 2"});
+		this.tag3        = new mee.cla.Tag({label:"My test tag 3"});
+		this.tag4        = new mee.cla.Tag({label:"My test tag 4"});
+		this.tag5        = new mee.cla.Tag({label:"My test tag 5"});
+		this.tag6        = new mee.cla.Tag({label:"My test tag 6"});
+		this.task        = new mee.cla.Task({label:"My test task 1"});
+		this.task2       = new mee.cla.Task({label:"My test task 2"});
+		this.task3       = new mee.cla.Task({label:"My test task 3"});
+		this.task4       = new mee.cla.Task({label:"My test task 4"});
+		this.task5       = new mee.cla.Task({label:"My test task 5"});
+		this.task6       = new mee.cla.Task({label:"My test task 6"});
+		this.task7       = new mee.cla.Task({label:"My test task 7"});
+		this.task8       = new mee.cla.Task({label:"My test task 8"});
+		this.noteFilter  = new mee.cla.NoteFilter();
+		this.taskFilter1 = new mee.cla.TaskFilter();
+		this.taskFilter2 = new mee.cla.TaskFilter();
+		this.taskFilter3 = new mee.cla.TaskFilter();
+		this.taskFilter4 = new mee.cla.TaskFilter();
+		this.tagFilter   = new mee.cla.TagFilter();
+		this.notes       = new mee.cla.Notes();
+		this.tags        = new mee.cla.Tags();
+		this.tasks       = new mee.cla.Tasks();
 		this.notes.add(this.note);
 		this.notes.add(this.note2);
 		this.notes.add(this.note3);

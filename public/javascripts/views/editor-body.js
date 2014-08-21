@@ -1,7 +1,7 @@
-var meenoAppCli     = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee     = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
+mee.cla.EditorBodyView = Backbone.View.extend({
 
 	tagName           : 'div',
 	className         : 'tab object note',
@@ -23,9 +23,9 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		Backbone.View.prototype.initialize.apply(this, arguments);
 		this.children = [];
 
-		this.listenTo(meenoAppCli.dispatcher, 'keyboard:tag', function () {this.newObject("tag");});
-		this.listenTo(meenoAppCli.dispatcher, 'keyboard:task', function () {this.newObject("task");});
-		this.listenTo(meenoAppCli.dispatcher, 'keyboard:entity', function () {this.newObject("entity");});
+		this.listenTo(mee.dispatcher, 'keyboard:tag', function () {this.newObject("tag");});
+		this.listenTo(mee.dispatcher, 'keyboard:task', function () {this.newObject("task");});
+		this.listenTo(mee.dispatcher, 'keyboard:entity', function () {this.newObject("entity");});
 	},
 
 	delegatedKill: function() {
@@ -45,8 +45,8 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	clone: function() {
 		this.save();
 		var cloneModel = this.model.clone();
-		meenoAppCli.Notes.add(cloneModel);
-		var newEditor = new meenoAppCli.Classes.EditorView ({ model: cloneModel });
+		mee.Notes.add(cloneModel);
+		var newEditor = new mee.cla.EditorView ({ model: cloneModel });
 		newEditor.toggle();
 	},
 
@@ -63,9 +63,9 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 			var model = {};
 			var modelClass = $object.hasClass('tag') ? "tag" : "task";
 
-			model = meenoAppCli[modelClass+"s"].get($object.attr('data-model-id'));
+			model = mee[modelClass+"s"].get($object.attr('data-model-id'));
 			if (model) {
-				subView  = new meenoAppCli.Classes.EditorBodyObjectView({
+				subView  = new mee.cla.EditorBodyObjectView({
 					model     : model,
 					modelClass: modelClass,
 					el        : $object[0], // We bind the sub view to the element we just created
@@ -98,7 +98,7 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 		if (!this.checkFocus()) {return;} // No action if no focus in the editor
 		console.log('>>> New '+className);
 
-		var newView = new meenoAppCli.Classes.EditorBodyObjectView({
+		var newView = new mee.cla.EditorBodyObjectView({
 			note      : this.model,
 			parent    : this,
 			modelClass: className
@@ -152,4 +152,4 @@ meenoAppCli.Classes.EditorBodyView = Backbone.View.extend({
 	}
 });
 
-//_.extend(meenoAppCli.Classes.EditorBodyView.prototype, meenoAppCli.l18n.EditorBodyView);
+//_.extend(mee.cla.EditorBodyView.prototype, mee.l18n.EditorBodyView);

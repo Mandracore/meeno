@@ -1,6 +1,6 @@
 //javascripts/appCli.js
 
-var meenoAppCli = meenoAppCli || {};
+var mee = mee || {};
 
 $(function() { // This ensures the code will be executed when DOM is ready
 
@@ -17,16 +17,16 @@ $(function() { // This ensures the code will be executed when DOM is ready
 		if (this.model) {this.model.off( null, null, this );}
 		// Beware : this remove cannot event listeners referring to this view and set on other objects !
 	};
-	meenoAppCli.dispatcher  = _.extend({}, Backbone.Events); // Init our app-wide listener
-	meenoAppCli.notes       = new meenoAppCli.Classes.Notes(); // Our global collection of notes
-	meenoAppCli.tasks       = new meenoAppCli.Classes.Tasks(); // Our global collection of tasks
-	meenoAppCli.tags        = new meenoAppCli.Classes.Tags(); // Our global collection of tags
-	meenoAppCli.noteFilters = new meenoAppCli.Classes.NoteFilters(); // Our global collection of tasks
-	meenoAppCli.taskFilters = new meenoAppCli.Classes.TaskFilters(); // Our global collection of tasks
-	meenoAppCli.tagFilters  = new meenoAppCli.Classes.TagFilters(); // Our global collection of tasks
-	meenoAppCli.mainView    = new meenoAppCli.Classes.MainView(); // Kick things off by creating the **main view**.
-	meenoAppCli.router      = new meenoAppCli.Classes.Router(); // Initiate Router
-	meenoAppCli.counters = {
+	mee.dispatcher  = _.extend({}, Backbone.Events); // Init our app-wide listener
+	mee.notes       = new mee.cla.Notes(); // Our global collection of notes
+	mee.tasks       = new mee.cla.Tasks(); // Our global collection of tasks
+	mee.tags        = new mee.cla.Tags(); // Our global collection of tags
+	mee.noteFilters = new mee.cla.NoteFilters(); // Our global collection of tasks
+	mee.taskFilters = new mee.cla.TaskFilters(); // Our global collection of tasks
+	mee.tagFilters  = new mee.cla.TagFilters(); // Our global collection of tasks
+	mee.mainView    = new mee.cla.MainView(); // Kick things off by creating the **main view**.
+	mee.router      = new mee.cla.Router(); // Initiate Router
+	mee.counters = {
 		openedEditors: 0
 	};
 

@@ -1,11 +1,11 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
- * @class meenoAppCli.Classes.TaskFilters
- * @extends meenoAppCli.Classes.ObjectFilters
+ * @class mee.cla.TaskFilters
+ * @extends mee.cla.ObjectFilters
  */
-meenoAppCli.Classes.TaskFilters = meenoAppCli.Classes.ObjectFilters.extend ({
-	model: meenoAppCli.Classes.TaskFilter,
+mee.cla.TaskFilters = mee.cla.ObjectFilters.extend ({
+	model: mee.cla.TaskFilter,
 	url: '/api/filters/task'
 });

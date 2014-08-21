@@ -1,8 +1,8 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.Tags = Backbone.Collection.extend({
-	model: meenoAppCli.Classes.Tag,
+mee.cla.Tags = Backbone.Collection.extend({
+	model: mee.cla.Tag,
 	url: '/api/tags',
 
 	search : function (filter) {
@@ -10,7 +10,7 @@ meenoAppCli.Classes.Tags = Backbone.Collection.extend({
 		// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 		var pattern = new RegExp(filter.get('text'),"i");
 
-		return new meenoAppCli.Classes.Tasks (this.filter(function(model) {
+		return new mee.cla.Tasks (this.filter(function(model) {
 			// Full text search
 			return (pattern.test(model.get("label")));
 		}));

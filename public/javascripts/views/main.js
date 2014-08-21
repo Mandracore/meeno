@@ -1,11 +1,11 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 // The Application
 // ---------------
 
 // MainView is the master piece of UI
-meenoAppCli.Classes.MainView = Backbone.View.extend({
+mee.cla.MainView = Backbone.View.extend({
 
 	// Instead of generating a new DOM element, bind to the existing skeleton of
 	// the App already present in the HTML.
@@ -27,54 +27,54 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 		this.on('server:auth', this.toggleAuth, this );
 
 		Mousetrap.bind(['ctrl+alt+shift+h'], function() {
-			meenoAppCli.dispatcher.trigger('keyboard:tag');
+			mee.dispatcher.trigger('keyboard:tag');
 			// return false; // return false to prevent default browser behavior and stop event from bubbling
 		});
 		Mousetrap.bind(['ctrl+alt+shift+a'], function() {
-			meenoAppCli.dispatcher.trigger('keyboard:entity');
+			mee.dispatcher.trigger('keyboard:entity');
 			// return false; // return false to prevent default browser behavior and stop event from bubbling
 		});
 		Mousetrap.bind(['ctrl+alt+shift+t'], function() {
-			meenoAppCli.dispatcher.trigger('keyboard:task');
+			mee.dispatcher.trigger('keyboard:task');
 			// return false; // return false to prevent default browser behavior and stop event from bubbling
 		});
 		Mousetrap.bind(['escape'], function() {
-			meenoAppCli.dispatcher.trigger('keyboard:escape');
+			mee.dispatcher.trigger('keyboard:escape');
 		});
 		Mousetrap.bind(['backspace'], function() {
-			meenoAppCli.dispatcher.trigger('keyboard:backspace');
+			mee.dispatcher.trigger('keyboard:backspace');
 		});
 		Mousetrap.bind('enter', function() {
-			meenoAppCli.dispatcher.trigger('keyboard:enter');
+			mee.dispatcher.trigger('keyboard:enter');
 		}, 'keydown');
 
 		this.fetchData();
 	},
 
 	fetchData: function() {
-		meenoAppCli.tags.fetch({
+		mee.tags.fetch({
 			success: function (collection, xhr, options) {
-				meenoAppCli.tasks.fetch({})
-				meenoAppCli.notes.fetch({})
-				meenoAppCli.noteFilters.fetch({});
-				meenoAppCli.taskFilters.fetch({});
-				meenoAppCli.tagFilters.fetch({});
+				mee.tasks.fetch({})
+				mee.notes.fetch({})
+				mee.noteFilters.fetch({});
+				mee.taskFilters.fetch({});
+				mee.tagFilters.fetch({});
 				// Initialize mandatory static tabs
-				meenoAppCli.helper  = new meenoAppCli.Classes.HelperView();
-				meenoAppCli.browser = new meenoAppCli.Classes.BrowserView({ collections : {
-					notes       : meenoAppCli.notes,
-					tags        : meenoAppCli.tags,
-					tasks       : meenoAppCli.tasks,
-					noteFilters : meenoAppCli.noteFilters,
-					taskFilters : meenoAppCli.taskFilters,
-					tagFilters  : meenoAppCli.tagFilters,
+				mee.helper  = new mee.cla.HelperView();
+				mee.browser = new mee.cla.BrowserView({ collections : {
+					notes       : mee.notes,
+					tags        : mee.tags,
+					tasks       : mee.tasks,
+					noteFilters : mee.noteFilters,
+					taskFilters : mee.taskFilters,
+					tagFilters  : mee.tagFilters,
 				}});
 			},
 			error: function (collection, xhr, options) {
 				console.log ("Fetching tasks failed // Server response status : "+xhr.status);
 				if (xhr.status == 401) {
 					console.log ("Unauthorized, displaying user authentification form");
-					meenoAppCli.mainView.trigger('server:auth');
+					mee.mainView.trigger('server:auth');
 				}
 			}
 		});
@@ -175,8 +175,8 @@ meenoAppCli.Classes.MainView = Backbone.View.extend({
 	},
 
 	newNote: function() {
-		var newNote   = meenoAppCli.notes.create({silent:true});
-		var newEditor = new meenoAppCli.Classes.EditorView ({ model: newNote });
+		var newNote   = mee.notes.create({silent:true});
+		var newEditor = new mee.cla.EditorView ({ model: newNote });
 		newEditor.render();
 		newEditor.toggle();
 	},

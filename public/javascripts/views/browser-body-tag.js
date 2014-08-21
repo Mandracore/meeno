@@ -1,18 +1,18 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
  * A backbone view to display one tag in the browser
  * 
- * @class meenoAppCli.Classes.BrowserBodyTagView
- * @extends meenoAppCli.Classes.BrowserBodyObjectView
+ * @class mee.cla.BrowserBodyTagView
+ * @extends mee.cla.BrowserBodyObjectView
  */
-meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectView.extend({
+mee.cla.BrowserBodyTagView = mee.cla.BrowserBodyObjectView.extend({
 
 	template : '#browser-body-tag-template',
 
 	events: function(){
-		return _.extend({},meenoAppCli.Classes.BrowserBodyObjectView.prototype.events,{
+		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
 			'click .edit'    : 'edit',
 			'click .delete'  : 'delete',
 			'blur .label'    : 'save'
@@ -31,10 +31,10 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 		this.$el.html (templateFn (this.model.toJSON()));
 
 		/**
-		 * Event triggered on `meenoAppCli.dispatcher` when this.render() method is called
+		 * Event triggered on `mee.dispatcher` when this.render() method is called
 		 * @event browser:tags:reSyncSelectors
 		 */
-		meenoAppCli.dispatcher.trigger("browser:tags:reSyncSelectors");
+		mee.dispatcher.trigger("browser:tags:reSyncSelectors");
 		return this;
 	},
 
@@ -76,7 +76,7 @@ meenoAppCli.Classes.BrowserBodyTagView = meenoAppCli.Classes.BrowserBodyObjectVi
 	 */
 	delete: function() {
 		this.model.destroy();
-		meenoAppCli.Tags.remove(this.model);
+		mee.Tags.remove(this.model);
 		this.remove();
 	},
 });

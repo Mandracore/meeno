@@ -1,11 +1,11 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 /**
- * @class meenoAppCli.Classes.ObjectFilters
+ * @class mee.cla.ObjectFilters
  * @extends Backbone.Collection
  */
-meenoAppCli.Classes.ObjectFilters = Backbone.Collection.extend({
+mee.cla.ObjectFilters = Backbone.Collection.extend({
 	containsSimilar: function (of) {
 		// If we can find a filter that is similar to of, this.find will be different from undefined
 		// => containsSimilar() will return true

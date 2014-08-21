@@ -1,11 +1,11 @@
 // js/routers/router.js
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
 // Todo Router
 // ----------
 
-meenoAppCli.Classes.Router = Backbone.Router.extend({
+mee.cla.Router = Backbone.Router.extend({
 	routes:{
 		'*filter': 'setFilter'
 	},

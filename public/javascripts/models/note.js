@@ -1,12 +1,12 @@
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+var mee = mee || {};
+mee.cla = mee.cla || {};
 
-meenoAppCli.Classes.Note = Backbone.RelationalModel.extend({
+mee.cla.Note = Backbone.RelationalModel.extend({
 	idAttribute: '_id',
 	relations: [{
 		type: 'HasMany',
 		key: 'tagLinks',
-		relatedModel: 'meenoAppCli.Classes.LinkNoteTag',
+		relatedModel: 'mee.cla.LinkNoteTag',
 		reverseRelation: {
 			key: 'note',
 			includeInJSON: '_id'
@@ -15,7 +15,7 @@ meenoAppCli.Classes.Note = Backbone.RelationalModel.extend({
 	{
 		type: 'HasMany',
 		key: 'taskLinks',
-		relatedModel: 'meenoAppCli.Classes.LinkNoteTask',
+		relatedModel: 'mee.cla.LinkNoteTask',
 		reverseRelation: {
 			key: 'note',
 			includeInJSON: '_id',
