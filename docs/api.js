@@ -4,6 +4,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "mee.cla.BrowserBodyFilterView",
         "mee.cla.BrowserBodyObjectView",
         "mee.cla.BrowserBodyTagView",
+        "mee.cla.BrowserBodyTaskView",
         "mee.cla.BrowserBodyView",
         "mee.cla.NoteFilter",
         "mee.cla.NoteFilters",

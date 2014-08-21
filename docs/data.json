@@ -146,7 +146,9 @@
         "public/javascripts/views/browser-body-task.js": {
             "name": "public/javascripts/views/browser-body-task.js",
             "modules": {},
-            "classes": {},
+            "classes": {
+                "mee.cla.BrowserBodyTaskView": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -342,6 +344,18 @@
             "line": 4,
             "description": "A backbone view to display one tag in the browser",
             "extends": "mee.cla.BrowserBodyObjectView"
+        },
+        "mee.cla.BrowserBodyTaskView": {
+            "name": "mee.cla.BrowserBodyTaskView",
+            "shortname": "mee.cla.BrowserBodyTaskView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 4,
+            "extends": "{mee.cla.BrowserBodyObjectView}"
         },
         "mee.cla.BrowserBodyView": {
             "name": "mee.cla.BrowserBodyView",
@@ -1160,53 +1174,89 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 43,
-            "description": "Updates the view after the user modified the tags related to the task",
-            "return": {
-                "description": "",
-                "type": "Void"
-            },
-            "class": "mee.cla.BrowserBodyView"
+            "line": 23,
+            "itemtype": "method",
+            "name": "initialize",
+            "class": "mee.cla.BrowserBodyTaskView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 33,
+            "itemtype": "method",
+            "name": "render",
+            "chainable": 1,
+            "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
             "line": 54,
-            "description": "Triggered when the user hits ENTER",
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "mee.cla.BrowserBodyView"
+            "itemtype": "method",
+            "name": "edit",
+            "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 105,
-            "description": "Should initialize the task's tag autocomplete input\nTo be called only when a task is being edited, and deleted when its form is closed",
-            "return": {
-                "description": "",
-                "type": "Void"
-            },
-            "class": "mee.cla.BrowserBodyView"
+            "line": 63,
+            "description": "Updates the view after the user modified the tags related to the task",
+            "itemtype": "method",
+            "name": "renderTagUpdate",
+            "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 147,
-            "description": "Should unlink the clicked tag from the task",
-            "return": {
-                "description": "",
-                "type": "Void"
-            },
-            "class": "mee.cla.BrowserBodyView"
+            "line": 75,
+            "description": "When the user tries to link the task to a new tag, this method will create the desired tag \nand link it to the view's model.",
+            "itemtype": "method",
+            "name": "addNewTag",
+            "class": "mee.cla.BrowserBodyTaskView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 112,
+            "description": "Should initialize the task's tag autocomplete input and allow for linking existing tags\nto the task.\nTo be called only when a task is being edited, and deleted when its form is closed",
+            "itemtype": "method",
+            "name": "initAutocomplete",
+            "class": "mee.cla.BrowserBodyTaskView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 148,
+            "description": "Saves the changes made into the database",
+            "itemtype": "method",
+            "name": "update",
+            "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
             "line": 161,
-            "description": "Will reset the model to the value stored in DB and re-render the view accordingly",
-            "return": {
-                "description": "",
-                "type": "Void"
-            },
-            "class": "mee.cla.BrowserBodyView"
+            "description": "Should unlink the clicked tag from the task",
+            "itemtype": "method",
+            "name": "unlink",
+            "class": "mee.cla.BrowserBodyTaskView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 176,
+            "description": "Will reset the model to the value stored in DB and re-render the view accordingly.",
+            "itemtype": "method",
+            "name": "reset",
+            "class": "mee.cla.BrowserBodyTaskView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 190,
+            "description": "To remove the view's model from database and kill the view.",
+            "itemtype": "method",
+            "name": "delete",
+            "class": "mee.cla.BrowserBodyTaskView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 200,
+            "description": "To close the task form",
+            "itemtype": "method",
+            "name": "close",
+            "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
@@ -1512,26 +1562,6 @@
         {
             "message": "Missing item type\nBackbone localStorage Adapter\nhttps://github.com/jeromegn/Backbone.localStorage\n/(function(){function n(){return((1+Math.random())*65536|0).toString(16).substring(1)}function r(){return n()+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+n()+n()}var e=this._,t=this.Backbone;t.LocalStorage=window.Store=function(e){this.name=e;var t=this.localStorage().getItem(this.name);this.records=t&&t.split(\",\")||[]},e.extend(t.LocalStorage.prototype,{save:function(){this.localStorage().setItem(this.name,this.records.join(\",\"))},create:function(e){return e.id||(e.id=r(),e.set(e.idAttribute,e.id)),this.localStorage().setItem(this.name+\"-\"+e.id,JSON.stringify(e)),this.records.push(e.id.toString()),this.save(),e.toJSON()},update:function(t){return this.localStorage().setItem(this.name+\"-\"+t.id,JSON.stringify(t)),e.include(this.records,t.id.toString())||this.records.push(t.id.toString()),this.save(),t.toJSON()},find:function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e.id))},findAll:function(){return e(this.records).chain().map(function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e))},this).compact().value()},destroy:function(t){return this.localStorage().removeItem(this.name+\"-\"+t.id),this.records=e.reject(this.records,function(e){return e==t.id.toString()}),this.save(),t},localStorage:function(){return localStorage}}),t.LocalStorage.sync=window.Store.sync=t.localSync=function(e,t,n,r){var i=t.localStorage||t.collection.localStorage;typeof n==\"function\"&&(n={success:n,error:r});var s,o=$.Deferred&&$.Deferred();switch(e){case\"read\":s=t.id!=undefined?i.find(t):i.findAll();break;case\"create\":s=i.create(t);break;case\"update\":s=i.update(t);break;case\"delete\":s=i.destroy(t)}return s?(n.success(s),o&&o.resolve()):(n.error(\"Record not found\"),o&&o.reject()),o&&o.promise()},t.ajaxSync=t.sync,t.getSyncMethod=function(e){return e.localStorage||e.collection&&e.collection.localStorage?t.LocalStorage.sync:t.ajaxSync},t.sync=function(e,n,r,i){return t.getSyncMethod(n).apply(this,[e,n,r,i])}})();",
             "line": " public/javascripts/lib/backbone.localStorage-min.js:1"
-        },
-        {
-            "message": "Missing item type\nUpdates the view after the user modified the tags related to the task",
-            "line": " public/javascripts/views/browser-body-task.js:43"
-        },
-        {
-            "message": "Missing item type\nTriggered when the user hits ENTER",
-            "line": " public/javascripts/views/browser-body-task.js:54"
-        },
-        {
-            "message": "Missing item type\nShould initialize the task's tag autocomplete input\nTo be called only when a task is being edited, and deleted when its form is closed",
-            "line": " public/javascripts/views/browser-body-task.js:105"
-        },
-        {
-            "message": "Missing item type\nShould unlink the clicked tag from the task",
-            "line": " public/javascripts/views/browser-body-task.js:147"
-        },
-        {
-            "message": "Missing item type\nWill reset the model to the value stored in DB and re-render the view accordingly",
-            "line": " public/javascripts/views/browser-body-task.js:161"
         },
         {
             "message": "Missing item type\nThis methods aims at saving the new positions of the objects",

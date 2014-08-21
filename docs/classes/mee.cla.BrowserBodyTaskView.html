@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>mee.cla.BrowserBodyTagView - Meeno source code documentation</title>
+    <title>mee.cla.BrowserBodyTaskView - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -110,7 +110,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>mee.cla.BrowserBodyTagView Class</h1>
+                        <h1>mee.cla.BrowserBodyTaskView Class</h1>
 <div class="box meta">
     
 
@@ -122,7 +122,7 @@
 
     
         <div class="foundat">
-            Defined in: <a href="../files/public_javascripts_views_browser-body-tag.js.html#l4"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-tag.js:4</code></a>
+            Defined in: <a href="../files/public_javascripts_views_browser-body-task.js.html#l4"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:4</code></a>
         </div>
     
 
@@ -134,8 +134,7 @@
 
 
 <div class="box intro">
-    <p>A backbone view to display one tag in the browser</p>
-
+    
 </div>
 
 
@@ -150,8 +149,6 @@
         
         
         
-            <li class="api-class-tab events"><a href="#events">Events</a></li>
-        
     </ul>
 
     <div>
@@ -163,6 +160,20 @@
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
+                        
+                            <li class="index-item method">
+                                <a href="#method_addNewTag">addNewTag</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_close">close</a>
+
+                                
+                                
+                            </li>
                         
                             <li class="index-item method">
                                 <a href="#method_delete">delete</a>
@@ -179,6 +190,20 @@
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_initAutocomplete">initAutocomplete</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_initialize">initialize</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_render">render</a>
 
                                 
@@ -186,7 +211,28 @@
                             </li>
                         
                             <li class="index-item method">
-                                <a href="#method_save">save</a>
+                                <a href="#method_renderTagUpdate">renderTagUpdate</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_reset">reset</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_unlink">unlink</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_update">update</a>
 
                                 
                                 
@@ -200,27 +246,123 @@
 
             
 
-            
-                <div class="index-section events">
-                    <h3>Events</h3>
-
-                    <ul class="index-list events extends">
-                        
-                            <li class="index-item event">
-                                <a href="#event_browser:tags:reSyncSelectors">browser:tags:reSyncSelectors</a>
-
-                                
-                                
-                            </li>
-                        
-                    </ul>
-                </div>
             
         </div>
 
         
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_addNewTag" class="method item">
+    <h3 class="name"><code>addNewTag</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l75"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:75</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>When the user tries to link the task to a new tag, this method will create the desired tag 
+and link it to the view&#39;s model.</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_close" class="method item">
+    <h3 class="name"><code>close</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l200"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:200</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>To close the task form</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
 
                 
                     <div id="method_delete" class="method item">
@@ -255,7 +397,7 @@
             
         
         
-        <a href="../files/public_javascripts_views_browser-body-tag.js.html#l72"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-tag.js:72</code></a>
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l190"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:190</code></a>
         
         </p>
 
@@ -266,7 +408,7 @@
     </div>
 
     <div class="description">
-        <p>Will destroy the view&#39;s model and the view itself when the user clics on <code>.delete</code> class DOM element</p>
+        <p>To remove the view&#39;s model from database and kill the view.</p>
 
     </div>
 
@@ -310,7 +452,7 @@
             
         
         
-        <a href="../files/public_javascripts_views_browser-body-tag.js.html#l41"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-tag.js:41</code></a>
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l54"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:54</code></a>
         
         </p>
 
@@ -321,8 +463,118 @@
     </div>
 
     <div class="description">
-        <p>Displays an input to edit the tag label</p>
+        
+    </div>
 
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_initAutocomplete" class="method item">
+    <h3 class="name"><code>initAutocomplete</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l112"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:112</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Should initialize the task&#39;s tag autocomplete input and allow for linking existing tags
+to the task.
+To be called only when a task is being edited, and deleted when its form is closed</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_initialize" class="method item">
+    <h3 class="name"><code>initialize</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l23"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:23</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
     </div>
 
     
@@ -367,7 +619,7 @@
             
         
         
-        <a href="../files/public_javascripts_views_browser-body-tag.js.html#l22"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-tag.js:22</code></a>
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l33"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:33</code></a>
         
         </p>
 
@@ -378,8 +630,7 @@
     </div>
 
     <div class="description">
-        <p>Renders one tag : generates the HTML and appends it to the DOM element of the view</p>
-
+        
     </div>
 
     
@@ -390,8 +641,8 @@
 </div>
 
                 
-                    <div id="method_save" class="method item">
-    <h3 class="name"><code>save</code></h3>
+                    <div id="method_renderTagUpdate" class="method item">
+    <h3 class="name"><code>renderTagUpdate</code></h3>
 
     
         <span class="paren">()</span>
@@ -422,7 +673,7 @@
             
         
         
-        <a href="../files/public_javascripts_views_browser-body-tag.js.html#l52"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-tag.js:52</code></a>
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l63"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:63</code></a>
         
         </p>
 
@@ -433,7 +684,7 @@
     </div>
 
     <div class="description">
-        <p>Sets the view&#39;s model label to the input (<code>span.label</code>) value and saves the model</p>
+        <p>Updates the view after the user modified the tags related to the task</p>
 
     </div>
 
@@ -445,21 +696,18 @@
 </div>
 
                 
-            </div>
-        
+                    <div id="method_reset" class="method item">
+    <h3 class="name"><code>reset</code></h3>
 
-        
+    
+        <span class="paren">()</span>
+    
 
-        
+    
 
-        
-            <div id="events" class="api-class-tabpanel">
-                <h2 class="off-left">Events</h2>
+    
 
-                
-                    <div id="event_browser:tags:reSyncSelectors" class="events item">
-    <h3 class="name"><code>browser:tags:reSyncSelectors</code></h3>
-    <span class="type"></span>
+    
 
     
 
@@ -480,9 +728,10 @@
             
         
         
-        <a href="../files/public_javascripts_views_browser-body-tag.js.html#l33"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-tag.js:33</code></a>
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l176"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:176</code></a>
         
         </p>
+
 
         
 
@@ -490,18 +739,135 @@
     </div>
 
     <div class="description">
-        <p>Event triggered on <code>mee.dispatcher</code> when this.render() method is called</p>
+        <p>Will reset the model to the value stored in DB and re-render the view accordingly.</p>
 
     </div>
 
     
 
+    
+
+    
+</div>
+
+                
+                    <div id="method_unlink" class="method item">
+    <h3 class="name"><code>unlink</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l161"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:161</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Should unlink the clicked tag from the task</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_update" class="method item">
+    <h3 class="name"><code>update</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body-task.js.html#l148"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body-task.js:148</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Saves the changes made into the database</p>
+
+    </div>
+
+    
+
+    
 
     
 </div>
 
                 
             </div>
+        
+
+        
+
+        
+
         
     </div>
 </div>

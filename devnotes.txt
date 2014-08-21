@@ -317,3 +317,5 @@ Corriger bug au rajout de nvx tags :
 - saisir un tag sans l'autocomplete casse des choses
 	- si existant ça remplace
 	- si nv ça créé bien un nv mais ça remplace aussi
+Les nouveaux remplacent des liens existants vers des anciens
+Ca peut même enlever un ancien lien sans en enregistrer le nouveau modèle ???

@@ -1,6 +1,10 @@
 var mee = mee || {};
 mee.cla = mee.cla || {};
 
+/**
+ * @class mee.cla.BrowserBodyTaskView
+ * @extends {mee.cla.BrowserBodyObjectView}
+ */
 mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 
 	template : '#browser-body-task-template',
@@ -16,13 +20,20 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		});
 	},
 
+	/**
+	 * @method initialize
+	 */
 	initialize: function() {
 		this.options.hasSelectedTag = false;
 		this.listenTo(mee.dispatcher, 'keyboard:enter',
-			function () { this.enter(); }
+			function () { this.addNewTag(); }
 		);
 	},
 
+	/**
+	 * @method render
+	 * @chainable
+	 */
 	render: function() {
 		var json = {
 			task: this.model.toJSON(),
@@ -41,8 +52,18 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	},
 
 	/**
+	 * @method edit
+	 */
+	edit: function() {
+		this.$(".details").slideDown();
+		this.$("input[name='label']").focus().select();
+		this.initAutocomplete();
+	},
+
+	/**
 	 * Updates the view after the user modified the tags related to the task
-	 * @return {void}
+	 * 
+	 * @method renderTagUpdate
 	 */
 	renderTagUpdate: function() {
 		this.render();
@@ -52,60 +73,48 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	},
 
 	/**
-	 * Triggered when the user hits ENTER
-	 * @return {[type]} [description]
+	 * When the user tries to link the task to a new tag, this method will create the desired tag 
+	 * and link it to the view's model.
+	 * 
+	 * @method addNewTag
 	 */
-	enter: function() {
+	addNewTag: function() {
 		var self = this;
-		if (this.$("input[name='newTag']").is(":focus") && !this.options.hasSelectedTag) {
-			if (this.options.hasSelectedTag) { // The Enter keypress has already been taken into account
-				this.options.hasSelectedTag = false; // We reinitialize
-				return;
+		if (this.$("input[name='newTag']").is(":focus")) {
+			console.log ("triggered this.enter()");
 
-			} else { // The Enter keypress has not been taken into account yet
-				var tagFilter = new mee.cla.TagFilter({text: this.$("input[name='newTag']").val()});
-				var selection = mee.tags.search(tagFilter).at(0);
-				// Lancer pas à pas à partir de ce point
-				if (!selection) {
-					// 1. create a new tag
-					var newTag = new mee.cla.Tag ({
-						label : self.$("input[name='newTag']").val(),
-					});
-					mee.tags.add(newTag); // We add it to the collection so that we can save it
-					newTag.save({}, {
-						success: function () {
-							console.log('new tag created OK');
-					// 2. link the new tag
-							self.model.get('tagLinks').add( { tag: newTag } );
-							self.renderTagUpdate();
-						},
-					});
-				} else {
-					console.log("tag to be linked : "+selection.get('label'));
-					// link the existing tag
-					// self.model.get('tagLinks').add( { tag: selection.at(0) } );
-					self.model.get('tagLinks').add({ tag: selection });
-					// console.log
-/*
-				var selection = mee.tags.get(ui.item.value) // ui.item.value == model.cid
-					self.model.get('tagLinks').add({ tag: selection });*/
+			// Check that the value set by the user correspond to a new tag, so we are sure
+			// that we are not getting in the way of the autocomplete nrmal behaviour
+			var tagFilter = new mee.cla.TagFilter({text: this.$("input[name='newTag']").val()});
+			var selection = mee.tags.search(tagFilter).at(0);
 
-					self.renderTagUpdate();
-				}
+			if (!selection) {
+				// The user wants a new tag
+				console.log ("triggered this.enter() PHASE 2");
+				// 1. create a new tag
+				var newTag = new mee.cla.Tag ({
+					label : self.$("input[name='newTag']").val(),
+				});
+				mee.tags.add(newTag); // We add it to the collection so that we can save it
+				newTag.save({}, {
+					success: function () {
+						console.log('new tag created OK');
+				// 2. link the new tag
+						self.model.get('tagLinks').add({ tag: newTag });
+						self.renderTagUpdate();
+					},
+				});
 			}
 		}
 	},
 
-	edit: function() {
-		this.$(".details").slideDown();
-		this.$("input[name='label']").focus().select();
-		this.initAutocomplete();
-	},
 
 	/**
-	 * Should initialize the task's tag autocomplete input
+	 * Should initialize the task's tag autocomplete input and allow for linking existing tags
+	 * to the task.
 	 * To be called only when a task is being edited, and deleted when its form is closed
-	 * @return {void}
+	 * 
+	 * @method initAutocomplete
 	 */
 	initAutocomplete: function() {
 		var self = this;
@@ -127,8 +136,8 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 				self.$("input[name='newTag']").val(ui.item.label);
 				return false; // to cancel normal behaviour
 			},
-			select: function(event, ui) {console.log('autocomplete SELECT triggered');
-				self.options.hasSelectedTag = true;
+			select: function(event, ui) {
+				console.log ("triggered this.initAutocomplete()");
 				var selection = mee.tags.get(ui.item.value) // ui.item.value == model.cid
 				self.model.get('tagLinks').add({ tag: selection });
 				self.renderTagUpdate();
@@ -136,6 +145,11 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		});
 	},
 
+	/**
+	 * Saves the changes made into the database
+	 * 
+	 * @method update
+	 */
 	update: function() {
 		this.model.set({
 			label : this.$("input[name='label']").val(),
@@ -146,7 +160,8 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 
 	/**
 	 * Should unlink the clicked tag from the task
-	 * @return {void}
+	 * 
+	 * @method unlink
 	 */
 	unlink: function(event) {
 		var tag = mee.tags.get($(event.target).attr('data-cid'));
@@ -159,8 +174,9 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	},
 
 	/**
-	 * Will reset the model to the value stored in DB and re-render the view accordingly
-	 * @return {void}
+	 * Will reset the model to the value stored in DB and re-render the view accordingly.
+	 * 
+	 * @method reset
 	 */
 	reset: function() {
 		var self = this;
@@ -171,11 +187,21 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		}});
 	},
 
+	/**
+	 * To remove the view's model from database and kill the view.
+	 * 
+	 * @method delete
+	 */
 	delete: function() {
 		this.model.destroy();
 		this.remove();
 	},
 
+	/**
+	 * To close the task form
+	 * 
+	 * @method close
+	 */
 	close: function() {
 		this.$(".autocomplete").autocomplete("destroy");
 		this.$(".details").slideUp();
