@@ -19,9 +19,9 @@
 		<form onsubmit="return false;">
 			<fieldset>
 				<label for="label">Label</label>
-				<input type="text" name="label" value="<%= task.label %>"/></br>
+				<input class="submitOnEnter" type="text" name="label" value="<%= task.label %>"/></br>
 				<label for="description">Description</label>
-				<input type="text" name="description" value="<%= task.description %>"/></br>
+				<input class="submitOnEnter" type="text" name="description" value="<%= task.description %>"/></br>
 				<label for="newTag">Tags</label>
 				<span class="tagButtons">
 					<% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %>

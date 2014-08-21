@@ -319,3 +319,11 @@ Corriger bug au rajout de nvx tags :
 	- si nv ça créé bien un nv mais ça remplace aussi
 Les nouveaux remplacent des liens existants vers des anciens
 Ca peut même enlever un ancien lien sans en enregistrer le nouveau modèle ???
+
+Quand le modèle vient d'être créé, ça remplace forcément un des liens existants. Ca ne peut pas créer
+de nouveaux liens et réutilise donc les anciens.
+Pourtant au moment où on le relie, il a déjà été sauvegardé dans la base...incohérent
+
+Piste : quand on appuie sur ENTER sans rien sélectionner et sur une valeur qui existe, ça supprime un lien...
+Problème identifié : la méthode UNLINK se déclenche lorsqu'on appuie sur ENTER et qu'il n'est pas catché par l'autocomplete...
+la touche ENTER déclenche un evt click sur le dernier tag button

@@ -11,7 +11,6 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 
 	events: function(){
 		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
-			'click .edit'             : 'edit',
 			'click .delete'           : 'delete',
 			'click .close'            : 'close',
 			'click .update'           : 'update',
@@ -35,6 +34,7 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @chainable
 	 */
 	render: function() {
+		var self = this;
 		var json = {
 			task: this.model.toJSON(),
 			tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {
@@ -48,6 +48,20 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		this.$el.html (templateFn (json));
 		this.$el.attr("data-cid",this.model.cid);
 		mee.dispatcher.trigger("browser:tasks:reSyncSelectors");
+
+		//submitOnEnter
+		self.$("input.submitOnEnter").on("keydown", function(event) {
+			// track enter key
+			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+			if (keycode == 13) { // keycode for enter key
+				// force the 'Enter Key' to implicitly click the Update button
+				self.$(".update").click();
+				return false;
+			} else  {
+				return true;
+			}
+		});
+
 		return this;
 	},
 
@@ -79,9 +93,9 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method addNewTag
 	 */
 	addNewTag: function() {
+		console.log ("triggered this.enter()");
 		var self = this;
 		if (this.$("input[name='newTag']").is(":focus")) {
-			console.log ("triggered this.enter()");
 
 			// Check that the value set by the user correspond to a new tag, so we are sure
 			// that we are not getting in the way of the autocomplete nrmal behaviour
@@ -164,6 +178,11 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method unlink
 	 */
 	unlink: function(event) {
+		console.log('UNLINK');
+		console.log(event);
+		if ($(event.target).attr('name') != "newTag") {
+			return;
+		}
 		var tag = mee.tags.get($(event.target).attr('data-cid'));
 		var tagLink = this.model.get('tagLinks').find(
 			function (tagLink) {return tagLink.get("tag") == tag; }
