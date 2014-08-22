@@ -327,3 +327,6 @@ Pourtant au moment où on le relie, il a déjà été sauvegardé dans la base..
 Piste : quand on appuie sur ENTER sans rien sélectionner et sur une valeur qui existe, ça supprime un lien...
 Problème identifié : la méthode UNLINK se déclenche lorsqu'on appuie sur ENTER et qu'il n'est pas catché par l'autocomplete...
 la touche ENTER déclenche un evt click sur le dernier tag button
+
+21/08=========================================
+Nouveau bug : la touche entrée n'a pas d'effet quand la dropdown de l'autcomplete est ouverte.

@@ -50,12 +50,14 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		mee.dispatcher.trigger("browser:tasks:reSyncSelectors");
 
 		//submitOnEnter
-		self.$("input.submitOnEnter").on("keydown", function(event) {
+		self.$("input").on("keydown", function(event) {
 			// track enter key
 			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
 			if (keycode == 13) { // keycode for enter key
-				// force the 'Enter Key' to implicitly click the Update button
-				self.$(".update").click();
+				if ($(event.target).hasClass("submitOnEnter")) {
+					// force the 'Enter Key' to implicitly trigger a click the Update button
+					self.$(".update").click();
+				}
 				return false;
 			} else  {
 				return true;
@@ -93,18 +95,15 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method addNewTag
 	 */
 	addNewTag: function() {
-		console.log ("triggered this.enter()");
 		var self = this;
 		if (this.$("input[name='newTag']").is(":focus")) {
 
-			// Check that the value set by the user correspond to a new tag, so we are sure
-			// that we are not getting in the way of the autocomplete nrmal behaviour
-			var tagFilter = new mee.cla.TagFilter({text: this.$("input[name='newTag']").val()});
-			var selection = mee.tags.search(tagFilter).at(0);
+			// Check that the value set by the user corresponds to a new tag
+			// get all tags having exactly the label value = input value
+			var selection = mee.tags.where({label: self.$("input[name='newTag']").val()});
 
-			if (!selection) {
+			if (selection.length == 0) {
 				// The user wants a new tag
-				console.log ("triggered this.enter() PHASE 2");
 				// 1. create a new tag
 				var newTag = new mee.cla.Tag ({
 					label : self.$("input[name='newTag']").val(),
@@ -178,11 +177,16 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method unlink
 	 */
 	unlink: function(event) {
+		// PB1 : ENTER dans le input.autocomplete lance la soumission du form ==> unlink sur button proche
+		// PB2 : le unlink doit toujours foncitonner quand je clique sur le bouton !
 		console.log('UNLINK');
-		console.log(event);
-		if ($(event.target).attr('name') != "newTag") {
+		console.log(event);/*
+		if ($(event.target).parent().hasClass("tagButtons") === false) {
+			// When the user pushes the ENTER key, the browser will try to submit
+			// the form by clicking on any button close to the input
+			// We bypass this issue by checking the target of the event
 			return;
-		}
+		}*/
 		var tag = mee.tags.get($(event.target).attr('data-cid'));
 		var tagLink = this.model.get('tagLinks').find(
 			function (tagLink) {return tagLink.get("tag") == tag; }

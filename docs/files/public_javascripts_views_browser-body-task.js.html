@@ -63,6 +63,8 @@
             
                 <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
             
+                <li><a href="../classes/mee.cla.Tags.html">mee.cla.Tags</a></li>
+            
                 <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
             
                 <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
@@ -127,7 +129,6 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 
 	events: function(){
 		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
-			&#x27;click .edit&#x27;             : &#x27;edit&#x27;,
 			&#x27;click .delete&#x27;           : &#x27;delete&#x27;,
 			&#x27;click .close&#x27;            : &#x27;close&#x27;,
 			&#x27;click .update&#x27;           : &#x27;update&#x27;,
@@ -151,6 +152,7 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @chainable
 	 */
 	render: function() {
+		var self = this;
 		var json = {
 			task: this.model.toJSON(),
 			tags: _.map(this.model.get(&#x27;tagLinks&#x27;).pluck(&#x27;tag&#x27;), function(tag) {
@@ -164,6 +166,20 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		this.$el.html (templateFn (json));
 		this.$el.attr(&quot;data-cid&quot;,this.model.cid);
 		mee.dispatcher.trigger(&quot;browser:tasks:reSyncSelectors&quot;);
+
+		//submitOnEnter
+		self.$(&quot;input.submitOnEnter&quot;).on(&quot;keydown&quot;, function(event) {
+			// track enter key
+			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+			if (keycode == 13) { // keycode for enter key
+				// force the &#x27;Enter Key&#x27; to implicitly click the Update button
+				self.$(&quot;.update&quot;).click();
+				return false;
+			} else  {
+				return true;
+			}
+		});
+
 		return this;
 	},
 
@@ -195,14 +211,20 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method addNewTag
 	 */
 	addNewTag: function() {
+		console.log (&quot;triggered this.enter()&quot;);
 		var self = this;
 		if (this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).is(&quot;:focus&quot;)) {
-			console.log (&quot;triggered this.enter()&quot;);
+			console.log (&quot;triggered this.enter() PHASE 1&quot;);
 
 			// Check that the value set by the user correspond to a new tag, so we are sure
-			// that we are not getting in the way of the autocomplete nrmal behaviour
-			var tagFilter = new mee.cla.TagFilter({text: this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
-			var selection = mee.tags.search(tagFilter).at(0);
+			// that we are not getting in the way of the autocomplete normal behaviour
+			// var tagFilter = new mee.cla.TagFilter({text: this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
+			// var selection = mee.tags.search(tagFilter).at(0);
+			var selection = mee.tags.findWhere({label: this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
+
+			// Problème : quand la recherche renvoi plusieurs résultats, ex. &quot;ta&quot; renvoie presque tous
+			// les tags, on ne rentre pas dans le if au ENTER alors qu&#x27;on devrait créer un nouveau tag
+			// &quot;ta&quot;
 
 			if (!selection) {
 				// The user wants a new tag
@@ -280,6 +302,14 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method unlink
 	 */
 	unlink: function(event) {
+		console.log(&#x27;UNLINK&#x27;);
+		console.log(event);
+		if ($(event.target).attr(&#x27;name&#x27;) != &quot;newTag&quot;) {
+			// When the user pushes the ENTER key, the browser will try to submit
+			// the form by clicking on any button close to the input
+			// We bypass this issue by checking the target of the event
+			return;
+		}
 		var tag = mee.tags.get($(event.target).attr(&#x27;data-cid&#x27;));
 		var tagLink = this.model.get(&#x27;tagLinks&#x27;).find(
 			function (tagLink) {return tagLink.get(&quot;tag&quot;) == tag; }

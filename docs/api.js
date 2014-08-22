@@ -12,6 +12,7 @@ YUI.add("yuidoc-meta", function(Y) {
         "mee.cla.ObjectFilters",
         "mee.cla.TagFilter",
         "mee.cla.TagFilters",
+        "mee.cla.Tags",
         "mee.cla.Task",
         "mee.cla.TaskFilter",
         "mee.cla.TaskFilters",

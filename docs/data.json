@@ -41,6 +41,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "public/javascripts/collections/tags.js": {
+            "name": "public/javascripts/collections/tags.js",
+            "modules": {},
+            "classes": {
+                "mee.cla.Tags": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "public/javascripts/collections/tasks.js": {
             "name": "public/javascripts/collections/tasks.js",
             "modules": {},
@@ -218,6 +227,17 @@
             "file": "public/javascripts/collections/filters-task.js",
             "line": 4,
             "extends": "mee.cla.ObjectFilters"
+        },
+        "mee.cla.Tags": {
+            "name": "mee.cla.Tags",
+            "shortname": "mee.cla.Tags",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/collections/tags.js",
+            "line": 4
         },
         "mee.cla.Tasks": {
             "name": "mee.cla.Tasks",
@@ -418,6 +438,20 @@
         }
     },
     "classitems": [
+        {
+            "file": "public/javascripts/collections/tags.js",
+            "line": 11,
+            "itemtype": "method",
+            "name": "search",
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "",
+                    "type": "mee.cla.TagFilter"
+                }
+            ],
+            "class": "mee.cla.Tags"
+        },
         {
             "file": "public/javascripts/collections/tasks.js",
             "line": 14,
@@ -1174,14 +1208,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 23,
+            "line": 22,
             "itemtype": "method",
             "name": "initialize",
             "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 33,
+            "line": 32,
             "itemtype": "method",
             "name": "render",
             "chainable": 1,
@@ -1189,14 +1223,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 54,
+            "line": 68,
             "itemtype": "method",
             "name": "edit",
             "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 63,
+            "line": 77,
             "description": "Updates the view after the user modified the tags related to the task",
             "itemtype": "method",
             "name": "renderTagUpdate",
@@ -1204,7 +1238,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 75,
+            "line": 89,
             "description": "When the user tries to link the task to a new tag, this method will create the desired tag \nand link it to the view's model.",
             "itemtype": "method",
             "name": "addNewTag",
@@ -1212,7 +1246,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 112,
+            "line": 132,
             "description": "Should initialize the task's tag autocomplete input and allow for linking existing tags\nto the task.\nTo be called only when a task is being edited, and deleted when its form is closed",
             "itemtype": "method",
             "name": "initAutocomplete",
@@ -1220,7 +1254,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 148,
+            "line": 168,
             "description": "Saves the changes made into the database",
             "itemtype": "method",
             "name": "update",
@@ -1228,7 +1262,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 161,
+            "line": 181,
             "description": "Should unlink the clicked tag from the task",
             "itemtype": "method",
             "name": "unlink",
@@ -1236,7 +1270,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 176,
+            "line": 204,
             "description": "Will reset the model to the value stored in DB and re-render the view accordingly.",
             "itemtype": "method",
             "name": "reset",
@@ -1244,7 +1278,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 190,
+            "line": 218,
             "description": "To remove the view's model from database and kill the view.",
             "itemtype": "method",
             "name": "delete",
@@ -1252,7 +1286,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 200,
+            "line": 228,
             "description": "To close the task form",
             "itemtype": "method",
             "name": "close",
