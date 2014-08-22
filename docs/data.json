@@ -387,7 +387,7 @@
             "extension_for": [],
             "file": "public/javascripts/views/browser-body.js",
             "line": 4,
-            "description": "te Q;O LIWETH\nThis class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"mee.cla.BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"mee.cla.BrowserBodyFilterView\"}}{{/crossLink}},...",
+            "description": "This class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"mee.cla.BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"mee.cla.BrowserBodyFilterView\"}}{{/crossLink}},...",
             "is_constructor": 1,
             "params": [
                 {
@@ -1223,14 +1223,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 68,
+            "line": 70,
             "itemtype": "method",
             "name": "edit",
             "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 77,
+            "line": 79,
             "description": "Updates the view after the user modified the tags related to the task",
             "itemtype": "method",
             "name": "renderTagUpdate",
@@ -1238,7 +1238,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 89,
+            "line": 91,
             "description": "When the user tries to link the task to a new tag, this method will create the desired tag \nand link it to the view's model.",
             "itemtype": "method",
             "name": "addNewTag",
@@ -1246,7 +1246,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 132,
+            "line": 125,
             "description": "Should initialize the task's tag autocomplete input and allow for linking existing tags\nto the task.\nTo be called only when a task is being edited, and deleted when its form is closed",
             "itemtype": "method",
             "name": "initAutocomplete",
@@ -1254,7 +1254,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 168,
+            "line": 161,
             "description": "Saves the changes made into the database",
             "itemtype": "method",
             "name": "update",
@@ -1262,7 +1262,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 181,
+            "line": 174,
             "description": "Should unlink the clicked tag from the task",
             "itemtype": "method",
             "name": "unlink",
@@ -1270,7 +1270,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 204,
+            "line": 199,
             "description": "Will reset the model to the value stored in DB and re-render the view accordingly.",
             "itemtype": "method",
             "name": "reset",
@@ -1278,7 +1278,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 218,
+            "line": 213,
             "description": "To remove the view's model from database and kill the view.",
             "itemtype": "method",
             "name": "delete",
@@ -1286,7 +1286,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 228,
+            "line": 223,
             "description": "To close the task form",
             "itemtype": "method",
             "name": "close",
@@ -1294,7 +1294,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 120,
+            "line": 119,
             "description": "Makes the browser visible",
             "itemtype": "method",
             "name": "toggle",
@@ -1302,7 +1302,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 134,
+            "line": 133,
             "description": "Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks\non the right button (class `.filter li`).",
             "itemtype": "method",
             "name": "toggleObject",
@@ -1317,7 +1317,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 222,
+            "line": 221,
             "description": "Event triggered on mee.dispatcher after the user clicks on an action button\n(flagged in the DOM with the `.actions-contextual-trigger button` classes).\nIt should be listened by subviews (for example instances of\n{{#crossLink \"mee.cla.BrowserBodyTagView\"}}{{/crossLink}}) to let them\nrelay the action to their respective model.",
             "itemtype": "event",
             "name": "browser:[collection-name]:[action]",
@@ -1325,7 +1325,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 369,
+            "line": 368,
             "description": "Event triggered on mee.dispatcher after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"mee.cla.BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
             "itemtype": "event",
             "name": "browser:filters:[filter-name]:remove-active",
@@ -1333,7 +1333,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 487,
+            "line": 486,
             "description": "This methods aims at saving the new positions of the objects",
             "params": [
                 {
@@ -1599,7 +1599,7 @@
         },
         {
             "message": "Missing item type\nThis methods aims at saving the new positions of the objects",
-            "line": " public/javascripts/views/browser-body.js:487"
+            "line": " public/javascripts/views/browser-body.js:486"
         },
         {
             "message": "Missing item type\nFilters the keyboard events to pass only ENTER and TAB to the lock() method",

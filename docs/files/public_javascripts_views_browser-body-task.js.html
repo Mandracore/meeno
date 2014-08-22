@@ -168,12 +168,14 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		mee.dispatcher.trigger(&quot;browser:tasks:reSyncSelectors&quot;);
 
 		//submitOnEnter
-		self.$(&quot;input.submitOnEnter&quot;).on(&quot;keydown&quot;, function(event) {
+		self.$(&quot;input&quot;).on(&quot;keydown&quot;, function(event) {
 			// track enter key
 			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
 			if (keycode == 13) { // keycode for enter key
-				// force the &#x27;Enter Key&#x27; to implicitly click the Update button
-				self.$(&quot;.update&quot;).click();
+				if ($(event.target).hasClass(&quot;submitOnEnter&quot;)) {
+					// force the &#x27;Enter Key&#x27; to implicitly trigger a click the Update button
+					self.$(&quot;.update&quot;).click();
+				}
 				return false;
 			} else  {
 				return true;
@@ -211,24 +213,15 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method addNewTag
 	 */
 	addNewTag: function() {
-		console.log (&quot;triggered this.enter()&quot;);
 		var self = this;
 		if (this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).is(&quot;:focus&quot;)) {
-			console.log (&quot;triggered this.enter() PHASE 1&quot;);
 
-			// Check that the value set by the user correspond to a new tag, so we are sure
-			// that we are not getting in the way of the autocomplete normal behaviour
-			// var tagFilter = new mee.cla.TagFilter({text: this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
-			// var selection = mee.tags.search(tagFilter).at(0);
-			var selection = mee.tags.findWhere({label: this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
+			// Check that the value set by the user corresponds to a new tag
+			// get all tags having exactly the label value = input value
+			var selection = mee.tags.where({label: self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
 
-			// Problème : quand la recherche renvoi plusieurs résultats, ex. &quot;ta&quot; renvoie presque tous
-			// les tags, on ne rentre pas dans le if au ENTER alors qu&#x27;on devrait créer un nouveau tag
-			// &quot;ta&quot;
-
-			if (!selection) {
+			if (selection.length == 0) {
 				// The user wants a new tag
-				console.log (&quot;triggered this.enter() PHASE 2&quot;);
 				// 1. create a new tag
 				var newTag = new mee.cla.Tag ({
 					label : self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(),
@@ -302,14 +295,16 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method unlink
 	 */
 	unlink: function(event) {
+		// PB1 : ENTER dans le input.autocomplete lance la soumission du form ==&gt; unlink sur button proche
+		// PB2 : le unlink doit toujours foncitonner quand je clique sur le bouton !
 		console.log(&#x27;UNLINK&#x27;);
-		console.log(event);
-		if ($(event.target).attr(&#x27;name&#x27;) != &quot;newTag&quot;) {
+		console.log(event);/*
+		if ($(event.target).parent().hasClass(&quot;tagButtons&quot;) === false) {
 			// When the user pushes the ENTER key, the browser will try to submit
 			// the form by clicking on any button close to the input
 			// We bypass this issue by checking the target of the event
 			return;
-		}
+		}*/
 		var tag = mee.tags.get($(event.target).attr(&#x27;data-cid&#x27;));
 		var tagLink = this.model.get(&#x27;tagLinks&#x27;).find(
 			function (tagLink) {return tagLink.get(&quot;tag&quot;) == tag; }
