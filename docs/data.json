@@ -1215,7 +1215,8 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 32,
+            "line": 29,
+            "description": "This method aims at rendering the HTML elements for a given task model.\nOnce it is appended to the DOM, some event bindings are also done.\nIn particular, we control the events occuring when the ENTER key is pressed,\nso that the browser does not try to submit the form by faking a click event on\nthe closest button (which triggers unwanted behaviours).",
             "itemtype": "method",
             "name": "render",
             "chainable": 1,
@@ -1223,14 +1224,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 70,
+            "line": 80,
             "itemtype": "method",
             "name": "edit",
             "class": "mee.cla.BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 79,
+            "line": 89,
             "description": "Updates the view after the user modified the tags related to the task",
             "itemtype": "method",
             "name": "renderTagUpdate",
@@ -1238,7 +1239,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 91,
+            "line": 101,
             "description": "When the user tries to link the task to a new tag, this method will create the desired tag \nand link it to the view's model.",
             "itemtype": "method",
             "name": "addNewTag",
@@ -1246,7 +1247,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 125,
+            "line": 136,
             "description": "Should initialize the task's tag autocomplete input and allow for linking existing tags\nto the task.\nTo be called only when a task is being edited, and deleted when its form is closed",
             "itemtype": "method",
             "name": "initAutocomplete",
@@ -1254,7 +1255,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 161,
+            "line": 171,
             "description": "Saves the changes made into the database",
             "itemtype": "method",
             "name": "update",
@@ -1262,7 +1263,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 174,
+            "line": 184,
             "description": "Should unlink the clicked tag from the task",
             "itemtype": "method",
             "name": "unlink",

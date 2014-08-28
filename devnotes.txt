@@ -330,3 +330,12 @@ la touche ENTER déclenche un evt click sur le dernier tag button
 
 21/08=========================================
 Nouveau bug : la touche entrée n'a pas d'effet quand la dropdown de l'autcomplete est ouverte.
+
+
+28/08========================================
+tester :
+- unlink
+- link ENTER sur nouveau
+- link ENTER SUR nouveau avec liste absente
+- selection autocomplete
+>> bug du 21/08 corrigé

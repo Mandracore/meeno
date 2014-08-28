@@ -24,12 +24,15 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 */
 	initialize: function() {
 		this.options.hasSelectedTag = false;
-		this.listenTo(mee.dispatcher, 'keyboard:enter',
-			function () { this.addNewTag(); }
-		);
 	},
 
 	/**
+	 * This method aims at rendering the HTML elements for a given task model.
+	 * Once it is appended to the DOM, some event bindings are also done.
+	 * In particular, we control the events occuring when the ENTER key is pressed,
+	 * so that the browser does not try to submit the form by faking a click event on
+	 * the closest button (which triggers unwanted behaviours).
+	 * 
 	 * @method render
 	 * @chainable
 	 */
@@ -49,16 +52,23 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		this.$el.attr("data-cid",this.model.cid);
 		mee.dispatcher.trigger("browser:tasks:reSyncSelectors");
 
-		//submitOnEnter
-		self.$("input").on("keydown", function(event) {
+		// Control the behaviour when ENTER key is keyed down
+		self.$("input").not('.autocomplete').on("keydown", function(event) {
 			// track enter key
 			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
 			if (keycode == 13) { // keycode for enter key
-				if ($(event.target).hasClass("submitOnEnter")) {
-					// force the 'Enter Key' to implicitly trigger a click the Update button
-					self.$(".update").click();
-				}
-				return false;
+				self.$(".update").click();
+				return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
+			} else  {
+				return true;
+			}
+		});
+		self.$("input.autocomplete").on("keydown", function(event) {
+			// track enter key
+			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+			if (keycode == 13) { // keycode for enter key
+				self.addNewTag();
+				return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
 			} else  {
 				return true;
 			}
@@ -96,12 +106,11 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 */
 	addNewTag: function() {
 		var self = this;
-		if (this.$("input[name='newTag']").is(":focus")) {
+		if (self.$("input[name='newTag']").is(":focus") && self.$("input[name='newTag']").val().length > 1) {
 
 			// Check that the value set by the user corresponds to a new tag
 			// get all tags having exactly the label value = input value
 			var selection = mee.tags.where({label: self.$("input[name='newTag']").val()});
-
 			if (selection.length == 0) {
 				// The user wants a new tag
 				// 1. create a new tag
@@ -111,14 +120,16 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 				mee.tags.add(newTag); // We add it to the collection so that we can save it
 				newTag.save({}, {
 					success: function () {
-						console.log('new tag created OK');
 				// 2. link the new tag
 						self.model.get('tagLinks').add({ tag: newTag });
 						self.renderTagUpdate();
+						return false;
 					},
 				});
+				return false;
 			}
 		}
+		return false;
 	},
 
 
@@ -150,7 +161,6 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 				return false; // to cancel normal behaviour
 			},
 			select: function(event, ui) {
-				console.log ("triggered this.initAutocomplete()");
 				var selection = mee.tags.get(ui.item.value) // ui.item.value == model.cid
 				self.model.get('tagLinks').add({ tag: selection });
 				self.renderTagUpdate();
@@ -177,16 +187,6 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 	 * @method unlink
 	 */
 	unlink: function(event) {
-		// PB1 : ENTER dans le input.autocomplete lance la soumission du form ==> unlink sur button proche
-		// PB2 : le unlink doit toujours foncitonner quand je clique sur le bouton !
-		console.log('UNLINK');
-		console.log(event);/*
-		if ($(event.target).parent().hasClass("tagButtons") === false) {
-			// When the user pushes the ENTER key, the browser will try to submit
-			// the form by clicking on any button close to the input
-			// We bypass this issue by checking the target of the event
-			return;
-		}*/
 		var tag = mee.tags.get($(event.target).attr('data-cid'));
 		var tagLink = this.model.get('tagLinks').find(
 			function (tagLink) {return tagLink.get("tag") == tag; }
