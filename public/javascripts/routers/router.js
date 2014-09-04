@@ -1,17 +1,17 @@
-// js/routers/router.js
-var mee = mee || {};
-mee.cla = mee.cla || {};
+define ([
+		'backbone',
+	], function (Backbone) {
 
-// Todo Router
-// ----------
+		var Router = Backbone.Router.extend({
+			routes:{
+				'*filter': 'setFilter'
+			},
 
-mee.cla.Router = Backbone.Router.extend({
-	routes:{
-		'*filter': 'setFilter'
-	},
+			setFilter: function( param ) {
+				//console.log("Router param:"+param);
+			}
+		});
 
-	setFilter: function( param ) {
-		//console.log("Router param:"+param);
+		return Router;
 	}
-});
-
+);

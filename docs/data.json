@@ -41,6 +41,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "public/javascripts/collections/notes.js": {
+            "name": "public/javascripts/collections/notes.js",
+            "modules": {},
+            "classes": {
+                "Notes": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "public/javascripts/collections/tags.js": {
             "name": "public/javascripts/collections/tags.js",
             "modules": {},
@@ -112,6 +121,33 @@
             "modules": {},
             "classes": {
                 "mee.cla.TaskFilter": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/models/link-note-tag.js": {
+            "name": "public/javascripts/models/link-note-tag.js",
+            "modules": {},
+            "classes": {
+                "LinkNoteTag": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/models/link-note-task.js": {
+            "name": "public/javascripts/models/link-note-task.js",
+            "modules": {},
+            "classes": {
+                "LinkNoteTask": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/models/note.js": {
+            "name": "public/javascripts/models/note.js",
+            "modules": {},
+            "classes": {
+                "Note": 1
             },
             "fors": {},
             "namespaces": {}
@@ -228,6 +264,22 @@
             "line": 4,
             "extends": "mee.cla.ObjectFilters"
         },
+        "Notes": {
+            "name": "Notes",
+            "shortname": "Notes",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/collections/notes.js",
+            "line": 1,
+            "description": "This class holds collections of notes",
+            "extends": "Backbone.Collection",
+            "requires": [
+                "Note"
+            ]
+        },
         "mee.cla.Tags": {
             "name": "mee.cla.Tags",
             "shortname": "mee.cla.Tags",
@@ -298,6 +350,49 @@
             "file": "public/javascripts/models/filter-task.js",
             "line": 4,
             "extends": "mee.cla.ObjectFilter"
+        },
+        "LinkNoteTag": {
+            "name": "LinkNoteTag",
+            "shortname": "LinkNoteTag",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/models/link-note-tag.js",
+            "line": 1,
+            "description": "This class holds the model relating one note to one tag",
+            "extends": "Backbone.RelationalModel"
+        },
+        "LinkNoteTask": {
+            "name": "LinkNoteTask",
+            "shortname": "LinkNoteTask",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/models/link-note-task.js",
+            "line": 1,
+            "description": "This class holds the model relating one note to one task",
+            "extends": "Backbone.RelationalModel"
+        },
+        "Note": {
+            "name": "Note",
+            "shortname": "Note",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/models/note.js",
+            "line": 1,
+            "description": "This class holds the note model",
+            "extends": "Backbone.RelationalModel",
+            "requires": [
+                "LinkNoteTask",
+                "LinkNoteTag"
+            ]
         },
         "mee.cla.Task": {
             "name": "mee.cla.Task",

@@ -1,7 +1,20 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
+/**
+ * This class holds the model relating one note to one tag
+ * 
+ * @class LinkNoteTag
+ * @extends Backbone.RelationalModel
+ */
 
-// A link object between 'Note' and 'Tag'
-mee.cla.LinkNoteTag = Backbone.RelationalModel.extend({
-	idAttribute: "_id"
-});
+define ([
+		'jquery',
+		'underscore',
+		'backbone',
+	], function ($, _, Backbone) {
+
+		var LinkNoteTag = Backbone.RelationalModel.extend({
+			idAttribute: "_id"
+		});
+
+		return LinkNoteTag;
+	}
+);

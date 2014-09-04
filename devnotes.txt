@@ -339,3 +339,8 @@ tester :
 - link ENTER SUR nouveau avec liste absente
 - selection autocomplete
 >> bug du 21/08 corrigé
+
+30/08========================================
+Intégrer Backbone.RelationalModel dans le module Backbone
+>> notes et deps OK
+

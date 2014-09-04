@@ -1,6 +1,10 @@
 YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
+        "LinkNoteTag",
+        "LinkNoteTask",
+        "Note",
+        "Notes",
         "mee.cla.BrowserBodyFilterView",
         "mee.cla.BrowserBodyObjectView",
         "mee.cla.BrowserBodyTagView",

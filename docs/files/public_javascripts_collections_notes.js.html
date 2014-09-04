@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>mee.cla.ObjectFilter - Meeno source code documentation</title>
+    <title>public/javascripts/collections/notes.js - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -120,66 +120,57 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>mee.cla.ObjectFilter Class</h1>
-<div class="box meta">
-    
+                        <h1 class="file-heading">File: public/javascripts/collections/notes.js</h1>
 
-    
-        <div class="extends">
-            Extends Backbone.RelationalModel
-        </div>
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * This class holds collections of notes
+ * 
+ * @class Notes
+ * @extends Backbone.Collection
+ * @requires Note
+ */
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/public_javascripts_models_filter-object.js.html#l4"><code>public&#x2F;javascripts&#x2F;models&#x2F;filter-object.js:4</code></a>
-        </div>
-    
+define ([
+		&#x27;jquery&#x27;,
+		&#x27;underscore&#x27;,
+		&#x27;backbone&#x27;,
+		&#x27;models/note&#x27;
+	], function ($, _, Backbone, Note) {
 
-    
+		var Notes = Backbone.Collection.extend({
+			model: mee.cla.Note,
+			url: &#x27;/api/notes&#x27;,
 
-    
-</div>
+			search : function (filter) {
+				if(filter.get(&#x27;text&#x27;) === &quot;&quot; &amp;&amp; filter.get(&#x27;tags&#x27;).length == 0 &amp;&amp; filter.get(&#x27;tasks&#x27;).length == 0) return this;
+				// filter.text = $.ui.autocomplete.escapeRegex(filter.text);
+				var pattern = new RegExp(filter.get(&#x27;text&#x27;),&quot;i&quot;);
 
+				return new Notes (this.filter(function(model) {
+					// Full text search
+					if (false === (pattern.test(model.get(&quot;title&quot;)) || pattern.test(model.get(&quot;content&quot;)))) {
+						return false;
+					}
+					if (filter.get(&#x27;tags&#x27;).length == 0 &amp;&amp; filter.get(&#x27;tasks&#x27;).length == 0) { return true; }
 
+					// Search by related objects
+					// This finder will return the objects for which there is no link
+					// If it returns undefined, that means that the current model is a match for our search
+					return (undefined === filter.get(&#x27;tags&#x27;).find(function(tag) {
+						return (false === _.contains(model.get(&#x27;tagLinks&#x27;).pluck(&#x27;tag&#x27;), tag)); // Looking for the tag of the filter that is not related to current model
+					})) &amp;&amp; (undefined === filter.get(&#x27;tasks&#x27;).find(function(task) {
+						return (false === _.contains(model.get(&#x27;taskLinks&#x27;).pluck(&#x27;task&#x27;), task)); // Looking for the task of the filter that is not related to current model
+					}));
+				}));
+			}
+		});
 
-<div class="box intro">
-    
-</div>
-
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-        
-        
-        
-        
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-            
-
-            
-
-            
-
-            
-        </div>
-
-        
-
-        
-
-        
-
-        
-    </div>
+		return Notes;
+	}
+);
+    </pre>
 </div>
 
                     </div>
