@@ -344,3 +344,10 @@ tester :
 Intégrer Backbone.RelationalModel dans le module Backbone
 >> notes et deps OK
 
+
+23/09========================================
+Passer à un Backbone AMD pour pouvoir l'utiliser avec Require.js
+
+26/09========================================
+Développer un module de stockage temporaire des variables de l'app : 
+les filtres loadés, les collections de base,...

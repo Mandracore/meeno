@@ -5,14 +5,15 @@ define ([
 	'underscore',
 	'backbone',
 	'views/main',
-	'collections/notes',
-	'collections/tasks',
-	'collections/tags',
-	'collections/filters-note',
-	'collections/filters-task',
-	'collections/filters-tag',
 	'routers/router',
-	], function ($, _, Backbone, MainView, Notes, Tasks, Tags, NoteFilters, TaskFilters, TagFilters, Router) {
+	// 'collections/notes',
+	// 'collections/tasks',
+	// 'collections/tags',
+	// 'collections/filters-note',
+	// 'collections/filters-task',
+	// 'collections/filters-tag',
+	// ], function ($, _, Backbone, MainView, Notes, Tasks, Tags, NoteFilters, TaskFilters, TagFilters, Router) {
+	], function ($, _, Backbone, MainView, Router) {
 
 		// Building the attributes and methods of the App object
 		// -------------------------------------------------------
@@ -34,13 +35,12 @@ define ([
 		};
 
 		// 2. The attributes of the App object
-		var dispatcher  = _.extend({}, Backbone.Events); // Init our app-wide listener
-		var notes       = new Notes(); // Our global collection of notes
-		var tasks       = new Tasks(); // Our global collection of tasks
-		var tags        = new Tags(); // Our global collection of tags
-		var noteFilters = new NoteFilters(); // Our global collection of tasks
-		var taskFilters = new TaskFilters(); // Our global collection of tasks
-		var tagFilters  = new TagFilters(); // Our global collection of tasks
+		// var notes       = new Notes(); // Our global collection of notes
+		// var tasks       = new Tasks(); // Our global collection of tasks
+		// var tags        = new Tags(); // Our global collection of tags
+		// var noteFilters = new NoteFilters(); // Our global collection of tasks
+		// var taskFilters = new TaskFilters(); // Our global collection of tasks
+		// var tagFilters  = new TagFilters(); // Our global collection of tasks
 		var mainView    = new MainView(); // Kick things off by creating the **main view**.
 		var router      = new Router(); // Initiate Router
 		var counters = {
@@ -51,13 +51,12 @@ define ([
 		// ----------------------------------------
 		return {
 			initialize: initialize,
-			dispatcher: dispatcher,
-			notes: notes,
-			tasks: tasks,
-			tags: tags,
-			noteFilters: noteFilters,
-			taskFilters: taskFilters,
-			tagFilters: tagFilters,
+			// notes: notes,
+			// tasks: tasks,
+			// tags: tags,
+			// noteFilters: noteFilters,
+			// taskFilters: taskFilters,
+			// tagFilters: tagFilters,
 			mainView: mainView,
 			router: router,
 			counters: counters,

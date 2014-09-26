@@ -1,6 +1,8 @@
 define ([
+		'jquery',
+		'underscore',
 		'backbone',
-	], function (Backbone) {
+	], function ($, _, Backbone) {
 
 		var Router = Backbone.Router.extend({
 			routes:{
@@ -15,3 +17,15 @@ define ([
 		return Router;
 	}
 );
+
+/*
+
+
+define ([
+		'jquery',
+		'underscore',
+		'backbone',
+	], function ($, _, Backbone) {
+		return {};
+	}
+);*/
