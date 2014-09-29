@@ -351,3 +351,11 @@ Passer à un Backbone AMD pour pouvoir l'utiliser avec Require.js
 26/09========================================
 Développer un module de stockage temporaire des variables de l'app : 
 les filtres loadés, les collections de base,...
+!!!!!!
+Les collections de base de l'app sont stockées dans mee./app. mais en plus elles sont repassées
+par paramètre dans browser-body, ce qui a priory n'a aucun sens...
+1. créé dans main.js
+2. fetché dans app.js
+3. passé dans browser
+4. passé dans browser-body
+==> tout doit être créé dans temp-store et appelé ailleurs

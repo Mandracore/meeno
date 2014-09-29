@@ -4,21 +4,21 @@ mee.cla = mee.cla || {};
 /**
  * This class will be used to support the main view of the object browser.
  * From here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.
- * It controls the creation of several subviews, like {{#crossLink "mee.cla.BrowserBodyTagView"}}{{/crossLink}},
- * {{#crossLink "mee.cla.BrowserBodyFilterView"}}{{/crossLink}},...
+ * It controls the creation of several subviews, like {{#crossLink "BrowserBodyTagView"}}{{/crossLink}},
+ * {{#crossLink "BrowserBodyFilterView"}}{{/crossLink}},...
  * 
- * @class mee.cla.BrowserBodyView
+ * @class BrowserBodyView
  * @constructor
  * @param {Object} options Holds all the options of the view
  * @param {Object} options.collections Holds the 6 collections of objects to be used by the browser
- * @param {mee.cla.Notes} options.collections.notes
- * @param {mee.cla.Tags} options.collections.tags
- * @param {mee.cla.Tasks} options.collections.tasks
- * @param {mee.cla.NoteFilters} options.collections.noteFilters
- * @param {mee.cla.TaskFilters} options.collections.taskFilters
- * @param {mee.cla.TagFilters} options.collections.tagFilters
+ * @param {Notes} options.collections.notes
+ * @param {Tags} options.collections.tags
+ * @param {Tasks} options.collections.tasks
+ * @param {NoteFilters} options.collections.noteFilters
+ * @param {TaskFilters} options.collections.taskFilters
+ * @param {TagFilters} options.collections.tagFilters
  */
-mee.cla.BrowserBodyView = Backbone.View.extend ({
+BrowserBodyView = Backbone.View.extend ({
 
 	// Initialize the view
 	// =============================================================================
@@ -63,21 +63,21 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		// this.filters stores the filters that actually filter the displayed collections
 		// they can be cloned for saving
 		this.filters = {
-			"noteFilter": new mee.cla.NoteFilter(),
-			"taskFilter": new mee.cla.TaskFilter(),
-			"tagFilter" : new mee.cla.TagFilter()
+			"noteFilter": new NoteFilter(),
+			"taskFilter": new TaskFilter(),
+			"tagFilter" : new TagFilter()
 		};
 
-		this.listenTo(this.options.collections.notes, 'reset add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
-		this.listenTo(this.options.collections.tags, 'reset add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
-		this.listenTo(this.options.collections.tasks, 'reset add remove change:label', function () {this.renderCollection("tasks");});
+		this.listenTo(temp.coll.notes, 'reset add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+		this.listenTo(temp.coll.tags, 'reset add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
+		this.listenTo(temp.coll.tasks, 'reset add remove change:label', function () {this.renderCollection("tasks");});
 
-		this.listenTo(this.options.collections.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
-		this.listenTo(this.options.collections.taskFilters, 'reset add remove', function () {this.renderFilterCollection("taskFilters");});
-		this.listenTo(this.options.collections.tagFilters, 'reset add remove', function () {this.renderFilterCollection("tagFilters");});
-		this.listenTo(this.options.collections.noteFilters, 'change add remove', function () {this.refreshFilterControls("note");});
-		this.listenTo(this.options.collections.taskFilters, 'change add remove', function () {this.refreshFilterControls("task");});
-		this.listenTo(this.options.collections.tagFilters, 'change add remove', function () {this.refreshFilterControls("tag");});
+		this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
+		this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.renderFilterCollection("taskFilters");});
+		this.listenTo(temp.coll.tagFilters, 'reset add remove', function () {this.renderFilterCollection("tagFilters");});
+		this.listenTo(temp.coll.noteFilters, 'change add remove', function () {this.refreshFilterControls("note");});
+		this.listenTo(temp.coll.taskFilters, 'change add remove', function () {this.refreshFilterControls("task");});
+		this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.refreshFilterControls("tag");});
 
 		this.listenTo(this.filters.noteFilter, 'change add:tags remove:tags add:tasks remove:tasks', function () {
 			this.renderCollection("notes");
@@ -92,18 +92,15 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 			this.refreshFilterControls("tag");
 			this.renderFilterInSuperInput("tagFilter");});
 
-		this.listenTo(mee.dispatcher, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
-		this.listenTo(mee.dispatcher, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
-		this.listenTo(mee.dispatcher, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
-		this.listenTo(mee.dispatcher, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
-		this.listenTo(mee.dispatcher, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
-		this.listenTo(mee.dispatcher, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
-		this.listenTo(mee.dispatcher, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
-		this.listenTo(mee.dispatcher, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
+		this.listenTo(channel, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
+		this.listenTo(channel, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
+		this.listenTo(channel, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
+		this.listenTo(channel, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
+		this.listenTo(channel, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
+		this.listenTo(channel, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
+		this.listenTo(channel, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
+		this.listenTo(channel, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 
-		// this.listenTo($("ul.objects"), 'sortupdate', function (event, ui) { this.sortableUpdate (event, ui); });
-		// this.listenTo($("ul.notes.objects"), 'sortupdate', function () { console.log ('SORT')});
-		//objects notes ui-sortable
 		this.render();
 		this.refreshFilterControls("note");
 		this.refreshFilterControls("task");
@@ -219,58 +216,66 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		// Which action do we want to trigger ?
 		var action = $(event.target).attr('class');
 		/**
-		* Event triggered on mee.dispatcher after the user clicks on an action button
+		* Event triggered on channel after the user clicks on an action button
 		* (flagged in the DOM with the `.actions-contextual-trigger button` classes).
 		* It should be listened by subviews (for example instances of
-		* {{#crossLink "mee.cla.BrowserBodyTagView"}}{{/crossLink}}) to let them
+		* {{#crossLink "BrowserBodyTagView"}}{{/crossLink}}) to let them
 		* relay the action to their respective model.
 		* 
 		* @event browser:[collection-name]:[action]
 		*/
-		mee.dispatcher.trigger("browser:"+collName+":"+action);
+		channel.trigger("browser:"+collName+":"+action);
 	},
 
 
 	// Search business objets in database
 	// =============================================================================
-	// To display the browser itself and then to choose which objects to display
-	searchGetFocus: function (io) {
-		var focus = false;
-		var $listObjects = {};
-		var inputClass = io ? "search" : "autocomplete";
-		this.$(".search-wrapper").find('input.'+inputClass).each(function(idx,el) {
+
+	/**
+	 * Checks whether the user is currently using a search input and if so tells which collection is visible
+	 * 
+	 * @method searchGetFocus
+	 * @return {object} Returns the name of the collection studied (example : `notes`) or `false` if no search input has focus
+	 */
+	searchGetFocus: function () {
+		var $listObjects;
+		var sColl1;
+		this.$(".super-input").find('input').each(function(idx,el) {
 			if ($(el).is(":focus")) {
-				focus = true;
 				$listObjects = $(el).closest('.listobjects');
-				browserActiveView = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
+				sColl1 = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks'); //common
+				return sColl1;
 			}
 		});
-		if (!focus) { return false; }
-		else {
-			return browserActiveView;
-		}
+		return false;
 	},
 
-	searchOpenAutocomplete: function (autoColl) {
+	/**
+	 * Will prepare and open an autocomplete input.
+	 * It should help the user selecting objects from collection named `sColl2` (example : `tags`) 
+	 * that will then be used to filter the objects from collection named `sColl1`
+	 *
+	 * @method searchOpenAutocomplete
+	 * @param sColl2 the name of the collection (example : `tags`) used to filter the collection currently displayed in browser
+	 */
+	searchOpenAutocomplete: function (sColl2) {
 		// Check focus before taking action
 		var self = this;
-		var filteredColl = this.searchGetFocus(true); // the kind of object we are filtering now
-		if (filteredColl === false) { return; }
-		var $listObjects           = this.$(".listobjects."+filteredColl);
-		var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return ""; })+"Filter";
+		var sColl1 = this.searchGetFocus(); // the kind of object we are filtering now
+		if (sColl1 === false) { return; }
 
-		// autoColl : the kind of object that will be used to retrieve the ones we look for
-		var autoCollFilterClass = autoColl.replace(/^(.)/, function($1){ return $1.toUpperCase( ); })
-									.replace(/(s)$/, function($1){ return ""; })+"Filter";
+		var $listObjects = this.$(".listobjects."+sColl1);
+		var sColl1Filter = sColl1.replace(/(s)$/, function($1){ return ""; })+"Filter";
 
 		// Parameter the autocomplete to propose the right kind of objects
 		$listObjects.find(".search-wrapper .autocomplete").autocomplete({
 			source: function (request, response) {
 				// request.term : data typed in by the user ("new yor")
 				// response : native callback that must be called with the data to suggest to the user
-				var autoCollFilter = new mee.cla[autoCollFilterClass]({text: request.term});
+				var oColl2Filter = (sColl2 == "tasks") ? new TaskFilter ({text: request.term}) : new TagFilter ({text: request.term});
+
 				response (
-					self.options.collections[autoColl].search(autoCollFilter).map(function (model, key, list) {
+					self.options.collections[sColl2].search(oColl2Filter).map(function (model, key, list) {
 						return {
 							label: model.get("label"),
 							value: model.cid
@@ -287,17 +292,18 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 				$listObjects.find(".search").focus();
 
 				// Saving input value into the global filter
-				var autoSelModel = self.options.collections[autoColl].get(ui.item.value) // ui.item.value == model.cid
-				if (self.filters[filteredCollFilterName].get(autoColl).contains(autoSelModel) === true) { return; }
-				self.filters[filteredCollFilterName].get(autoColl).add(autoSelModel);
+				var mSelection = temp.coll[sColl2].get(ui.item.value) // ui.item.value == model.cid
+				if (self.filters[sColl1Filter].get(sColl2).contains(mSelection) !== true) { 
+					self.filters[sColl1Filter].get(sColl2).add(mSelection);
+				}
 			}
 		// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
-		}).attr("placeholder","filter by related "+autoColl).val('').show().focus(); 
+		}).attr("placeholder","filter by related "+sColl2).val('').show().focus(); 
 	},
 
 	searchCloseAutocomplete: function (event) {
 		// Check focus before taking action
-		var browserActiveView = this.searchGetFocus(false); // the kind of object we are looking for
+		var browserActiveView = this.searchGetFocus(); // the kind of object we are looking for
 		if (browserActiveView === false) { return; }
 		var $listObjects = this.$(".listobjects."+browserActiveView);
 		// Listening to "backspace" & "escape" events triggered by mousetrap
@@ -313,7 +319,7 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		var $listObjects           = $objectButton.closest('.listobjects');
 		var filteredColl           = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
 		var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return ""; })+"Filter";
-		var object                 = this.options.collections[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
+		var object                 = temp.coll[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
 		this.filters[filteredCollFilterName].get($objectButton.attr('data-class')).remove(object); // Removing model from Filter
 	},
 
@@ -334,7 +340,7 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		$listObjects.find('.filter-editor .action').hide(); // No action controls should be displayed
 
 		if (!this.filters[filterName].isEmpty()) { // The user has set a filter set in the super-input
-			if (this.options.collections[filtersCollName].containsSimilar(this.filters[filterName]) === false) {
+			if (temp.coll[filtersCollName].containsSimilar(this.filters[filterName]) === false) {
 				$listObjects.find('.filter-editor .action.save').show(); // "Save" button is displayed
 			} else {
 				$listObjects.find('.filter-editor .action.delete').show(); // "Delete" button is displayed
@@ -358,7 +364,7 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		$listObjects.find('.filter-editor .action.saveConfirm').hide();
 		$inputFilterLabel.hide().val('');
 		var cloneFilter = this.filters[filterName].superClone();
-		this.options.collections[filtersCollName].add(cloneFilter);
+		temp.coll[filtersCollName].add(cloneFilter);
 		cloneFilter.save();
 	},
 
@@ -366,13 +372,13 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		var $listObjects = $(event.target).closest(".listobjects");
 		var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
 		/**
-		* Event triggered on mee.dispatcher after the user decides to delete the saved tag
+		* Event triggered on channel after the user decides to delete the saved tag
 		* that is currently active. This event is listened by the views of 
-		* the class {{#crossLink "mee.cla.BrowserBodyFilterView"}}{{/crossLink}}. The
+		* the class {{#crossLink "BrowserBodyFilterView"}}{{/crossLink}}. The
 		* one view related to a model with the right filter name will delete its model.
 		* @event browser:filters:[filter-name]:remove-active
 		*/
-		mee.dispatcher.trigger("browser:filters:"+filterName+":remove-active");
+		channel.trigger("browser:filters:"+filterName+":remove-active");
 	},
 
 	renderFilterCollection: function (filtersCollName) {
@@ -391,8 +397,8 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		this.children[filtersCollName] = [];
 
 		// Third, filling the DOM again
-		this.options.collections[filtersCollName].each(function (element) {
-			var newView = new mee.cla.BrowserBodyFilterView({ filterName: filterName, model: element, parent: self });
+		temp.coll[filtersCollName].each(function (element) {
+			var newView = new BrowserBodyFilterView({ filterName: filterName, model: element, parent: self });
 			self.children[filtersCollName].push (newView);
 			$list.append(newView.render().el);
 		}, this);
@@ -456,7 +462,7 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		}
 		$list.html('');
 
-		// Second, killing children views of right collection
+		// Second, killing children views of the right collection
 		_.each(this.children[collName], function (child, index) {
 			child.kill();
 		});
@@ -464,12 +470,12 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 
 		// Third, filling the DOM again
 		var newView = {};
-		var results = this.options.collections[collName].search(this.filters[filterName]);
+		var results = temp.coll[collName].search(this.filters[filterName]);
 
 		results.each(function (element) {
-			if (collName == "notes") { newView = new mee.cla.BrowserBodyNoteView({ model: element }); }
-			if (collName == "tags") { newView = new mee.cla.BrowserBodyTagView({ model: element }); }
-			if (collName == "tasks") { newView = new mee.cla.BrowserBodyTaskView({ model: element }); }
+			if (collName == "notes") { newView = new BrowserBodyNoteView({ model: element }); }
+			if (collName == "tags") { newView = new BrowserBodyTagView({ model: element }); }
+			if (collName == "tasks") { newView = new BrowserBodyTaskView({ model: element }); }
 			self.children[collName].push (newView);
 			$list.append(newView.render().el);
 		}, this);
@@ -493,17 +499,17 @@ mee.cla.BrowserBodyView = Backbone.View.extend ({
 		console.log("sortable update");
 
 		// 1. Find the model corresponding to the sorted DOM node
-		var sortedModel = this.options.collections.tasks.get(ui.item.attr('data-cid'));
+		var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 		// 2. Find out in which scenario we are
 		if (!ui.item.next().length) { // The moved item is now the last one of the list (than could be filtered)
-			var prevModel = this.options.collections.tasks.get(ui.item.prev().attr('data-cid'));
+			var prevModel = temp.coll.tasks.get(ui.item.prev().attr('data-cid'));
 			sortedModel.set('position', prevModel.get('position')+1);
 		} else { // The moved item is somewhere in the list
-			var nextModel = this.options.collections.tasks.get(ui.item.next().attr('data-cid'));
+			var nextModel = temp.coll.tasks.get(ui.item.next().attr('data-cid'));
 			sortedModel.set('position', nextModel.get('position'));
 		}
 		sortedModel.save();
 		// 3. Shift all the following models
-		this.options.collections.tasks.shiftDown(sortedModel);
+		temp.coll.tasks.shiftDown(sortedModel);
 	}
 });

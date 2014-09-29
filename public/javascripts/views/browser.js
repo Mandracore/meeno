@@ -7,7 +7,7 @@ mee.cla.BrowserView = Backbone.View.extend({
 		mee.dispatcher.on('tab:toggle:browser', this.toggle, this);
 		this.children = {
 			tab  : new mee.cla.BrowserTabView({ el: $("#nav .browse"), parent: this }),
-			body : new mee.cla.BrowserBodyView({ el: $("#tabs .browse"), parent: this, collections: this.options.collections })
+			body : new mee.cla.BrowserBodyView({ el: $("#tabs .browse"), parent: this })
 		};
 	},
 

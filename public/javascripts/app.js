@@ -35,31 +35,18 @@ define ([
 		};
 
 		// 2. The attributes of the App object
-		// var notes       = new Notes(); // Our global collection of notes
-		// var tasks       = new Tasks(); // Our global collection of tasks
-		// var tags        = new Tags(); // Our global collection of tags
-		// var noteFilters = new NoteFilters(); // Our global collection of tasks
-		// var taskFilters = new TaskFilters(); // Our global collection of tasks
-		// var tagFilters  = new TagFilters(); // Our global collection of tasks
-		var mainView    = new MainView(); // Kick things off by creating the **main view**.
-		var router      = new Router(); // Initiate Router
-		var counters = {
-			openedEditors: 0
-		};
+		// var mainView    = new MainView(); // Kick things off by creating the **main view**.
+		// var router      = new Router(); // Initiate Router
+		new MainView(); // Kick things off by creating the **main view**.
+		new Router(); // Initiate Router
+
 
 		// Return what will embody the "App" object
 		// ----------------------------------------
 		return {
 			initialize: initialize,
-			// notes: notes,
-			// tasks: tasks,
-			// tags: tags,
-			// noteFilters: noteFilters,
-			// taskFilters: taskFilters,
-			// tagFilters: tagFilters,
-			mainView: mainView,
-			router: router,
-			counters: counters,
+			// mainView: mainView,
+			// router: router,
 		};
 	}
 );

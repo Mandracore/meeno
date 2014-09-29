@@ -5,7 +5,8 @@ define ([
 		'backbone',
 		'mousetrap',
 		'channel',
-	], function ($, _, Backbone, Mousetrap, channel) {
+		'temp',
+	], function ($, _, Backbone, Mousetrap, channel, temp) {
 
 		/**
 		 * This backbone view holds the entire UI.
@@ -60,23 +61,16 @@ define ([
 			},
 
 			fetchData: function() {
-				App.tags.fetch({
+				temp.coll.tags.fetch({
 					success: function (collection, xhr, options) {
-						App.tasks.fetch({})
-						App.notes.fetch({})
-						App.noteFilters.fetch({});
-						App.taskFilters.fetch({});
-						App.tagFilters.fetch({});
+						temp.coll.tasks.fetch({})
+						temp.coll.notes.fetch({})
+						temp.coll.noteFilters.fetch({});
+						temp.coll.taskFilters.fetch({});
+						temp.coll.tagFilters.fetch({});
 						// Initialize mandatory static tabs
-						App.helper  = new HelperView();
-						App.browser = new BrowserView({ collections : {
-							notes       : App.notes,
-							tags        : App.tags,
-							tasks       : App.tasks,
-							noteFilters : App.noteFilters,
-							taskFilters : App.taskFilters,
-							tagFilters  : App.tagFilters,
-						}});
+						new HelperView();
+						new BrowserView();
 					},
 					error: function (collection, xhr, options) {
 						console.log ("Fetching tasks failed // Server response status : "+xhr.status);
@@ -188,12 +182,6 @@ define ([
 				newEditor.render();
 				newEditor.toggle();
 			},
-
-			searchTag: function () {
-				console.log('>>> Search note related to a tag DANS MAIN');
-				return false;
-			},
-
 		});
 
 		return MainView; // The module returns the class
