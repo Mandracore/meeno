@@ -1,13 +1,10 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.HelperView = Backbone.View.extend({
+HelperView = Backbone.View.extend({
 
 	initialize: function() {
-		mee.dispatcher.on('tab:toggle:helper', this.toggle, this);
+		channel.on('tab:toggle:helper', this.toggle, this);
 		this.children = {
-			tab  : new mee.cla.HelperTabView ({ el: $("#nav .help"), parent: this }),
-			body : new mee.cla.HelperBodyView ({ el: $("#tabs .help"), parent: this })
+			tab  : new HelperTabView ({ el: $("#nav .help"), parent: this }),
+			body : new HelperBodyView ({ el: $("#tabs .help"), parent: this })
 		};
 	},
 

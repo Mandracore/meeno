@@ -1,18 +1,15 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
-
 /**
  * This class holds the view of the filter models that are used to filter the browser's search results.
- * This view can accept models of classes {{#crossLink "mee.cla.NoteFilter"}}{{/crossLink}},
- * {{#crossLink "mee.cla.TaskFilter"}}{{/crossLink}} and {{#crossLink "mee.cla.TagFilter"}}{{/crossLink}}.
+ * This view can accept models of classes {{#crossLink "NoteFilter"}}{{/crossLink}},
+ * {{#crossLink "TaskFilter"}}{{/crossLink}} and {{#crossLink "TagFilter"}}{{/crossLink}}.
  * 
- * @class mee.cla.BrowserBodyFilterView
+ * @class BrowserBodyFilterView
  * @extends Backbone.View
  * @constructor
  * @param {Object} options Holds all the options of the view.
  * @param {Object} options.filterName Must be passed to initialize the view's model name.
  */
-mee.cla.BrowserBodyFilterView = Backbone.View.extend({
+BrowserBodyFilterView = Backbone.View.extend({
 	tagName  : "li",
 	className: "icon-filter",
 	template : '#browser-body-filter-template',
@@ -25,7 +22,7 @@ mee.cla.BrowserBodyFilterView = Backbone.View.extend({
 		this.active = false;
 		this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
 		this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
-		this.listenTo(mee.dispatcher, "browser:filters:"+this.options.filterName+":remove-active", function () {this.removeIfActive();});
+		this.listenTo(channel, "browser:filters:"+this.options.filterName+":remove-active", function () {this.removeIfActive();});
 
 	},
 
@@ -44,7 +41,7 @@ mee.cla.BrowserBodyFilterView = Backbone.View.extend({
 	},
 
 	/**
-	 * Called every time the filters of the {{#crossLink "mee.cla.BrowserBodyView"}}browser{{/crossLink}} 
+	 * Called every time the filters of the {{#crossLink "BrowserBodyView"}}browser{{/crossLink}} 
 	 * are updated. Checks if its model is similar to the one in use in the browser and 
 	 * highlights it if it's true.
 	 *
@@ -62,7 +59,7 @@ mee.cla.BrowserBodyFilterView = Backbone.View.extend({
 
 	/**
 	 * Called when the user clicks on the view.
-	 * Updates the right {{#crossLink "mee.cla.BrowserBodyView"}}browser{{/crossLink}}'s 
+	 * Updates the right {{#crossLink "BrowserBodyView"}}browser{{/crossLink}}'s 
 	 * filter to clone the view's model properties and highlights it.
 	 *
 	 * @method activate
@@ -77,7 +74,7 @@ mee.cla.BrowserBodyFilterView = Backbone.View.extend({
 
 	/**
 	 * Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by
-	 * the {{#crossLink "mee.cla.BrowserBodyView"}}browser{{/crossLink}}.
+	 * the {{#crossLink "BrowserBodyView"}}browser{{/crossLink}}.
 	 * Will destroy both the view and its model.
 	 *
 	 * @method removeIfActive

@@ -1,13 +1,10 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
-
 /**
  * Holds collection of tasks
  * 
- * @class mee.cla.Tasks
+ * @class Tasks
  */
-mee.cla.Tasks = Backbone.Collection.extend({
-	model: mee.cla.Task,
+Tasks = Backbone.Collection.extend({
+	model: Task,
 	url: '/api/tasks',
 	comparator: 'position',
 
@@ -16,8 +13,8 @@ mee.cla.Tasks = Backbone.Collection.extend({
 	 * and on tags related or not to the models
 	 * 
 	 * @method search
-	 * @param  {mee.cla.TaskFilter} filter the filter used to search the collection
-	 * @return {mee.cla.Tasks} a new filtered collection of tasks
+	 * @param  {TaskFilter} filter the filter used to search the collection
+	 * @return {Tasks} a new filtered collection of tasks
 	 * @chainable
 	 */
 	search: function (filter) {
@@ -25,7 +22,7 @@ mee.cla.Tasks = Backbone.Collection.extend({
 		// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 		var pattern = new RegExp(filter.get('text'),"i");
 
-		return new mee.cla.Tasks (this.filter(function(model) {
+		return new Tasks (this.filter(function(model) {
 			// Full text search
 			if (false === (pattern.test(model.get("label")))) {
 				return false;
@@ -48,7 +45,7 @@ mee.cla.Tasks = Backbone.Collection.extend({
 	 * Also needs to be called when a new task is appended to a collection.
 	 * 
 	 * @method shiftDown
-	 * @param  {mee.cla.Task} anchor the task that was moved, point of reference 
+	 * @param  {Task} anchor the task that was moved, point of reference 
 	 */
 	shiftDown: function (anchor) {
 		this.each (function (model) {

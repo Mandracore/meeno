@@ -1,18 +1,15 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
-
 /**
  * This class retains all core features for displaying objects views in the browser.
  * Several classes will inherit from it, one per kind of business object :
- * - mee.cla.BrowserBodyNoteView
- * - mee.cla.BrowserBodyTaskView
- * - mee.cla.BrowserBodyTagView
+ * - BrowserBodyNoteView
+ * - BrowserBodyTaskView
+ * - BrowserBodyTagView
  * - ...
  * 
- * @class mee.cla.BrowserBodyObjectView
+ * @class BrowserBodyObjectView
  * @extends Backbone.View
  */
-mee.cla.BrowserBodyObjectView = Backbone.View.extend({
+BrowserBodyObjectView = Backbone.View.extend({
 	tagName  : 'li',
 
 	// The DOM events specific to an item.
@@ -25,9 +22,9 @@ mee.cla.BrowserBodyObjectView = Backbone.View.extend({
 		this.collName = undefined;
 		// this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
 		this.listenTo(this.model, 'change:title change:position', this.render);
-		this.listenTo(mee.dispatcher, 'browser:notes:delete', function () {this.deleteIfSelected("notes")});
-		this.listenTo(mee.dispatcher, 'browser:tags:delete', function () {this.deleteIfSelected("tags")});
-		this.listenTo(mee.dispatcher, 'browser:taks:delete', function () {this.deleteIfSelected("taks")});
+		this.listenTo(channel, 'browser:notes:delete', function () {this.deleteIfSelected("notes")});
+		this.listenTo(channel, 'browser:tags:delete', function () {this.deleteIfSelected("tags")});
+		this.listenTo(channel, 'browser:taks:delete', function () {this.deleteIfSelected("taks")});
 	},
 
 	deleteIfSelected: function(collName) {

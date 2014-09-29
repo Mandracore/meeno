@@ -1,19 +1,16 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.EditorView = Backbone.View.extend({
+EditorView = Backbone.View.extend({
 
 	initialize: function() {
 		this.listenTo(this.model, 'remove', this.kill);
 		this.children = {
-			tab  : new mee.cla.EditorTabView({ model: this.model, parent: this }),
-			body : new mee.cla.EditorBodyView({ model: this.model, parent: this })
+			tab  : new EditorTabView({ model: this.model, parent: this }),
+			body : new EditorBodyView({ model: this.model, parent: this })
 		};
 	},
 
 	beforeKill: function() {
 		console.log('Killing editor');
-		mee.dispatcher.trigger('tab:toggle:browser');
+		channel.trigger('tab:toggle:browser');
 		this.children.tab.kill();
 		this.children.body.kill();
 		mee.counters.openedEditors--;
@@ -28,7 +25,7 @@ mee.cla.EditorView = Backbone.View.extend({
 			$("#tabs").append(this.children.body.render().el);
 			return this;
 		} else {
-			mee.dispatcher.trigger('tab:toggle:browser');
+			channel.trigger('tab:toggle:browser');
 			this.kill();
 		}
 	},

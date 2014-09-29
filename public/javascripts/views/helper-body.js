@@ -1,7 +1,4 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.HelperBodyView = Backbone.View.extend ({
+HelperBodyView = Backbone.View.extend ({
 
 	events: {},
 	initialize: function() {},

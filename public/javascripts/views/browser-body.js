@@ -1,6 +1,3 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
 /**
  * This class will be used to support the main view of the object browser.
  * From here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.
@@ -105,8 +102,6 @@ BrowserBodyView = Backbone.View.extend ({
 		this.refreshFilterControls("note");
 		this.refreshFilterControls("task");
 		this.refreshFilterControls("tag");
-
-
 	},
 
 	// Navigation in the browser

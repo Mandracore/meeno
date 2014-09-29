@@ -6,7 +6,10 @@ define ([
 		'mousetrap',
 		'channel',
 		'temp',
-	], function ($, _, Backbone, Mousetrap, channel, temp) {
+		'views/helper',
+		'views/browser',
+		'views/editor',
+	], function ($, _, Backbone, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
 
 		/**
 		 * This backbone view holds the entire UI.
@@ -33,7 +36,6 @@ define ([
 				this.auth                 = false;
 				this.logging              = false;
 				this.registering          = false;
-				this.on('server:auth', this.toggleAuth, this );
 
 				Mousetrap.bind(['ctrl+alt+shift+h'], function() {
 					channel.trigger('keyboard:tag');
@@ -61,6 +63,7 @@ define ([
 			},
 
 			fetchData: function() {
+				var self = this;
 				temp.coll.tags.fetch({
 					success: function (collection, xhr, options) {
 						temp.coll.tasks.fetch({})
@@ -76,7 +79,7 @@ define ([
 						console.log ("Fetching tasks failed // Server response status : "+xhr.status);
 						if (xhr.status == 401) {
 							console.log ("Unauthorized, displaying user authentification form");
-							App.mainView.trigger('server:auth');
+							self.toggleAuth();
 						}
 					}
 				});
@@ -177,7 +180,7 @@ define ([
 			},
 
 			newNote: function() {
-				var newNote   = App.notes.create({silent:true});
+				var newNote   = temp.coll.notes.create({silent:true});
 				var newEditor = new EditorView ({ model: newNote });
 				newEditor.render();
 				newEditor.toggle();

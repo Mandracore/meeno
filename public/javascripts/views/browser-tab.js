@@ -1,7 +1,4 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.BrowserTabView = Backbone.View.extend({
+BrowserTabView = Backbone.View.extend({
 
 	// That view will always be binded to pre-existing pieces of DOM ("el" is passed directly to the class constructor)
 	// It explains why we don't need a render function

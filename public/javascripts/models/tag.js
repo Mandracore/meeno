@@ -1,12 +1,9 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.Tag = Backbone.RelationalModel.extend({
+Tag = Backbone.RelationalModel.extend({
 	idAttribute: "_id",
 	relations: [{
 		type: 'HasMany',
 		key: 'noteLinks',
-		relatedModel: 'mee.cla.LinkNoteTag',
+		relatedModel: 'LinkNoteTag',
 		reverseRelation: {
 			key: 'tag',
 			includeInJSON: '_id'
@@ -14,7 +11,7 @@ mee.cla.Tag = Backbone.RelationalModel.extend({
 	},{
 		type: 'HasMany',
 		key: 'taskLinks',
-		relatedModel: 'mee.cla.LinkTaskTag',
+		relatedModel: 'LinkTaskTag',
 		reverseRelation: {
 			key: 'tag',
 			includeInJSON: '_id'

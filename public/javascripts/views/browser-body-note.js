@@ -1,7 +1,4 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.BrowserBodyNoteView = mee.cla.BrowserBodyObjectView.extend({
+BrowserBodyNoteView = BrowserBodyObjectView.extend({
 
 	template : '#browser-body-note-template',
 
@@ -15,12 +12,12 @@ mee.cla.BrowserBodyNoteView = mee.cla.BrowserBodyObjectView.extend({
 
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (json));
-		mee.dispatcher.trigger("browser:notes:reSyncSelectors");
+		channel.trigger("browser:notes:reSyncSelectors");
 		return this;
 	},
 
 	edit: function() {
-		var newEditor = new mee.cla.EditorView ({ model: this.model });
+		var newEditor = new EditorView ({ model: this.model });
 		newEditor.render();
 		newEditor.toggle();
 	}

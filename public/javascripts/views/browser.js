@@ -1,13 +1,18 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.BrowserView = Backbone.View.extend({
+/**
+ * This class is mainly a proxy for two subclasses : {{#crossLink "BrowserTabView"}}{{/crossLink}} and {{#crossLink "BrowserBodyView"}}{{/crossLink}}.
+ * It listens to the event tab:toggle:browser and make the two subviews visible.
+ * 
+ * @class BrowserView
+ * @constructor
+ */
+BrowserView = Backbone.View.extend({
 
 	initialize: function() {
-		mee.dispatcher.on('tab:toggle:browser', this.toggle, this);
+		this.listenTo(channel, 'tab:toggle:browser', this.toggle);
+
 		this.children = {
-			tab  : new mee.cla.BrowserTabView({ el: $("#nav .browse"), parent: this }),
-			body : new mee.cla.BrowserBodyView({ el: $("#tabs .browse"), parent: this })
+			tab  : new BrowserTabView({ el: $("#nav .browse"), parent: this }),
+			body : new BrowserBodyView({ el: $("#tabs .browse"), parent: this })
 		};
 	},
 

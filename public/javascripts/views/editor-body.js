@@ -1,7 +1,4 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.EditorBodyView = Backbone.View.extend({
+EditorBodyView = Backbone.View.extend({
 
 	tagName           : 'div',
 	className         : 'tab object note',
@@ -23,9 +20,9 @@ mee.cla.EditorBodyView = Backbone.View.extend({
 		Backbone.View.prototype.initialize.apply(this, arguments);
 		this.children = [];
 
-		this.listenTo(mee.dispatcher, 'keyboard:tag', function () {this.newObject("tag");});
-		this.listenTo(mee.dispatcher, 'keyboard:task', function () {this.newObject("task");});
-		this.listenTo(mee.dispatcher, 'keyboard:entity', function () {this.newObject("entity");});
+		this.listenTo(channel, 'keyboard:tag', function () {this.newObject("tag");});
+		this.listenTo(channel, 'keyboard:task', function () {this.newObject("task");});
+		this.listenTo(channel, 'keyboard:entity', function () {this.newObject("entity");});
 	},
 
 	delegatedKill: function() {
@@ -46,7 +43,7 @@ mee.cla.EditorBodyView = Backbone.View.extend({
 		this.save();
 		var cloneModel = this.model.clone();
 		mee.Notes.add(cloneModel);
-		var newEditor = new mee.cla.EditorView ({ model: cloneModel });
+		var newEditor = new EditorView ({ model: cloneModel });
 		newEditor.toggle();
 	},
 
@@ -65,7 +62,7 @@ mee.cla.EditorBodyView = Backbone.View.extend({
 
 			model = mee[modelClass+"s"].get($object.attr('data-model-id'));
 			if (model) {
-				subView  = new mee.cla.EditorBodyObjectView({
+				subView  = new EditorBodyObjectView({
 					model     : model,
 					modelClass: modelClass,
 					el        : $object[0], // We bind the sub view to the element we just created
@@ -98,7 +95,7 @@ mee.cla.EditorBodyView = Backbone.View.extend({
 		if (!this.checkFocus()) {return;} // No action if no focus in the editor
 		console.log('>>> New '+className);
 
-		var newView = new mee.cla.EditorBodyObjectView({
+		var newView = new EditorBodyObjectView({
 			note      : this.model,
 			parent    : this,
 			modelClass: className
@@ -152,4 +149,4 @@ mee.cla.EditorBodyView = Backbone.View.extend({
 	}
 });
 
-//_.extend(mee.cla.EditorBodyView.prototype, mee.l18n.EditorBodyView);
+//_.extend(EditorBodyView.prototype, mee.l18n.EditorBodyView);

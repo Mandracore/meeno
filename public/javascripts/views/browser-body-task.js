@@ -1,16 +1,13 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
-
 /**
- * @class mee.cla.BrowserBodyTaskView
- * @extends {mee.cla.BrowserBodyObjectView}
+ * @class BrowserBodyTaskView
+ * @extends {BrowserBodyObjectView}
  */
-mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
+BrowserBodyTaskView = BrowserBodyObjectView.extend({
 
 	template : '#browser-body-task-template',
 
 	events: function(){
-		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
+		return _.extend({},BrowserBodyObjectView.prototype.events,{
 			'click .delete'           : 'delete',
 			'click .close'            : 'close',
 			'click .update'           : 'update',
@@ -50,7 +47,7 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 		var templateFn = _.template( $(this.template).html() );
 		this.$el.html (templateFn (json));
 		this.$el.attr("data-cid",this.model.cid);
-		mee.dispatcher.trigger("browser:tasks:reSyncSelectors");
+		channel.trigger("browser:tasks:reSyncSelectors");
 
 		// Control the behaviour when ENTER key is keyed down
 		self.$("input").not('.autocomplete').on("keydown", function(event) {
@@ -114,7 +111,7 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 			if (selection.length == 0) {
 				// The user wants a new tag
 				// 1. create a new tag
-				var newTag = new mee.cla.Tag ({
+				var newTag = new Tag ({
 					label : self.$("input[name='newTag']").val(),
 				});
 				mee.tags.add(newTag); // We add it to the collection so that we can save it
@@ -146,7 +143,7 @@ mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
 			source: function (request, response) {
 				// request.term : data typed in by the user ("new yor")
 				// response : native callback that must be called with the data to suggest to the user
-				var tagFilter = new mee.cla.TagFilter({text: request.term});
+				var tagFilter = new TagFilter({text: request.term});
 				response (
 					mee.tags.search(tagFilter).map(function (model, key, list) {
 						return {

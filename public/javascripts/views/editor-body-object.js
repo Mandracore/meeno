@@ -1,7 +1,4 @@
-var mee     = mee || {};
-mee.cla = mee.cla || {};
-
-mee.cla.EditorBodyObjectView = Backbone.View.extend({
+EditorBodyObjectView = Backbone.View.extend({
 	// this.options.modelClass = 'tag' OR 'task'
 	tagName   :'span',
 	template  :'#editor-body-object-template',

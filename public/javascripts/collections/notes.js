@@ -3,7 +3,6 @@
  * 
  * @class Notes
  * @extends Backbone.Collection
- * @requires Note
  */
 
 define ([
@@ -14,7 +13,7 @@ define ([
 	], function ($, _, Backbone, Note) {
 
 		var Notes = Backbone.Collection.extend({
-			model: mee.cla.Note,
+			model: Note,
 			url: '/api/notes',
 
 			search : function (filter) {

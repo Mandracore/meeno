@@ -1,18 +1,15 @@
-var mee = mee || {};
-mee.cla = mee.cla || {};
-
 /**
  * A backbone view to display one tag in the browser
  * 
- * @class mee.cla.BrowserBodyTagView
- * @extends mee.cla.BrowserBodyObjectView
+ * @class BrowserBodyTagView
+ * @extends BrowserBodyObjectView
  */
-mee.cla.BrowserBodyTagView = mee.cla.BrowserBodyObjectView.extend({
+BrowserBodyTagView = BrowserBodyObjectView.extend({
 
 	template : '#browser-body-tag-template',
 
 	events: function(){
-		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
+		return _.extend({},BrowserBodyObjectView.prototype.events,{
 			'click .edit'    : 'edit',
 			'click .delete'  : 'delete',
 			'blur .label'    : 'save'
@@ -31,10 +28,10 @@ mee.cla.BrowserBodyTagView = mee.cla.BrowserBodyObjectView.extend({
 		this.$el.html (templateFn (this.model.toJSON()));
 
 		/**
-		 * Event triggered on `mee.dispatcher` when this.render() method is called
+		 * Event triggered on `channel` when this.render() method is called
 		 * @event browser:tags:reSyncSelectors
 		 */
-		mee.dispatcher.trigger("browser:tags:reSyncSelectors");
+		channel.trigger("browser:tags:reSyncSelectors");
 		return this;
 	},
 
