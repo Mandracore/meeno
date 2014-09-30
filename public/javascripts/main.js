@@ -4,11 +4,29 @@
 // Configuring aliases for most important modules and libraries to load
 require.config ({
 	paths: {
-		jquery: 'lib/jquery-1.8.3.min',
-		underscore: 'lib/underscore',
-		backbone: 'lib/backbone.amd',
-		mousetrap: 'lib/mousetrap.min',
-		channel: 'channel',
+		jquery               : 'lib/jquery-1.8.3.min',
+		underscore           : 'lib/underscore',
+		backbone             : 'lib/backbone',
+		'backbone.relational': 'lib/backbone-relational',
+		'backbone.mousetrap' : 'lib/backbone.mousetrap',
+		mousetrap            : 'lib/mousetrap.min',
+	},
+	shim: {
+		underscore: {
+			exports: "_"
+		},
+		backbone: {
+			deps: ['underscore', 'jquery'],
+			exports: 'Backbone'
+		},
+		'backbone.relational': {
+			deps: ['backbone'],
+			exports: 'Backbone'
+		},
+		'backbone.mousetrap': {
+			deps: ['backbone'],
+			exports: 'Backbone'
+		},
 	}
 });
 

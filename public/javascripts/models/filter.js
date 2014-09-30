@@ -177,9 +177,9 @@ define ([
 		});
 
 		return {
-			note: NoteFilter,
-			task: TaskFilter,
-			tag : TagFilter,
+			Note: NoteFilter,
+			Task: TaskFilter,
+			Tag : TagFilter,
 		};
 	}
 );

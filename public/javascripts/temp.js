@@ -13,9 +13,9 @@ define ([
 		var notes       = new Notes(); // Our global collection of notes
 		var tasks       = new Tasks(); // Our global collection of tasks
 		var tags        = new Tags(); // Our global collection of tags
-		var noteFilters = new Filters.note(); // Our global collection of note filters
-		var taskFilters = new Filters.task(); // Our global collection of task filters
-		var tagFilters  = new Filters.tag(); // Our global collection of tag filters
+		var noteFilters = new Filters.Note(); // Our global collection of note filters
+		var taskFilters = new Filters.Task(); // Our global collection of task filters
+		var tagFilters  = new Filters.Tag(); // Our global collection of tag filters
 
 		var temp = {
 			coll: {

@@ -1,25 +1,22 @@
-/**
- * This class holds the note model
- * 
- * @class Note
- * @extends Backbone.RelationalModel
- * @requires LinkNoteTask
- * @requires LinkNoteTag
- */
-
 define ([
 		'jquery',
 		'underscore',
 		'backbone',
-		'models/link-note-task',
-		'models/link-note-tag',
-	], function ($, _, Backbone, LinkNoteTag, LinkNoteTask) {
+		'models/link',
+	], function ($, _, Backbone, Link) {
+
+		/**
+		 * This class holds the note model
+		 * 
+		 * @class Note
+		 * @extends Backbone.RelationalModel
+		 */
 		var Note = Backbone.RelationalModel.extend({
 			idAttribute: '_id',
 			relations: [{
 				type: 'HasMany',
 				key: 'tagLinks',
-				relatedModel: 'LinkNoteTag',
+				relatedModel: 'Link.NoteTag',
 				reverseRelation: {
 					key: 'note',
 					includeInJSON: '_id'
@@ -28,7 +25,7 @@ define ([
 			{
 				type: 'HasMany',
 				key: 'taskLinks',
-				relatedModel: 'LinkNoteTask',
+				relatedModel: 'Link.NoteTask',
 				reverseRelation: {
 					key: 'note',
 					includeInJSON: '_id',

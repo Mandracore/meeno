@@ -29,7 +29,7 @@ define ([
 		 * @extends ObjectFilters
 		 */
 		var NoteFilters = ObjectFilters.extend({
-			model: Filter.note,
+			model: Filter.Note,
 			url: '/api/filters/note'
 		});
 
@@ -40,7 +40,7 @@ define ([
 		 * @extends ObjectFilters
 		 */
 		var TagFilters = ObjectFilters.extend ({
-			model: Filter.tag,
+			model: Filter.Tag,
 			url: '/api/filters/tag'
 		});
 
@@ -51,14 +51,14 @@ define ([
 		* @extends ObjectFilters
 		*/
 		var TaskFilters = ObjectFilters.extend ({
-			model: Filter.task,
+			model: Filter.Task,
 			url: '/api/filters/task'
 		});
 
 		return {
-			note: NoteFilters,
-			task: TaskFilters,
-			tag : TagFilters,
+			Note: NoteFilters,
+			Task: TaskFilters,
+			Tag : TagFilters,
 		};
 	}
 );

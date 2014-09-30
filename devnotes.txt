@@ -359,3 +359,6 @@ par paramètre dans browser-body, ce qui a priory n'a aucun sens...
 3. passé dans browser
 4. passé dans browser-body
 ==> tout doit être créé dans temp-store et appelé ailleurs
+
+30/09===========================================
+Prévoir un problème avec backbone.mousetrap et l18n (qui se chargera mal, cf local var dans index.jade)

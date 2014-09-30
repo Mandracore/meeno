@@ -1,9 +1,3 @@
-/**
- * This class holds collections of notes
- * 
- * @class Notes
- * @extends Backbone.Collection
- */
 
 define ([
 		'jquery',
@@ -12,6 +6,12 @@ define ([
 		'models/note'
 	], function ($, _, Backbone, Note) {
 
+		/**
+		 * This class holds collections of notes
+		 * 
+		 * @class Notes
+		 * @extends Backbone.Collection
+		 */
 		var Notes = Backbone.Collection.extend({
 			model: Note,
 			url: '/api/notes',
