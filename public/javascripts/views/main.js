@@ -1,5 +1,4 @@
 define ([
-	// path aliases preconfigured in ../main.js
 		'jquery',
 		'underscore',
 		'backbone',
