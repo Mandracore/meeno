@@ -1,10 +1,14 @@
 define ([
-		'jquery',
+		'jquery.ui',
 		'underscore',
 		'backbone',
 		'temp',
 		'channel',
-	], function ($, _, Backbone, temp, channel) {
+		'models/filter',
+		'views/browser-body-note',
+		'views/browser-body-task',
+		'views/browser-body-tag',
+	], function ($, _, Backbone, temp, channel, Filter, BrowserBodyNoteView, BrowserBodyTaskView, BrowserBodyTagView) {
 
 		/**
 		 * This class will be used to support the main view of the object browser.
@@ -69,9 +73,9 @@ define ([
 				// this.filters stores the filters that actually filter the displayed collections
 				// they can be cloned for saving
 				this.filters = {
-					"noteFilter": new NoteFilter(),
-					"taskFilter": new TaskFilter(),
-					"tagFilter" : new TagFilter()
+					"noteFilter": new Filter.Note(),
+					"taskFilter": new Filter.Task(),
+					"tagFilter" : new Filter.Tag()
 				};
 
 				this.listenTo(temp.coll.notes, 'reset add remove change:title add:tagLinks', function () {this.renderCollection("notes");});

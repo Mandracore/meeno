@@ -10,7 +10,7 @@ define ([
 			relations: [{
 				type: 'HasMany',
 				key: 'noteLinks',
-				relatedModel: 'Link.NoteTag',
+				relatedModel: Link.NoteTag,
 				reverseRelation: {
 					key: 'tag',
 					includeInJSON: '_id'
@@ -18,7 +18,7 @@ define ([
 			},{
 				type: 'HasMany',
 				key: 'taskLinks',
-				relatedModel: 'Link.TaskTag',
+				relatedModel: Link.TaskTag,
 				reverseRelation: {
 					key: 'tag',
 					includeInJSON: '_id'

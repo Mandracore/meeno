@@ -16,7 +16,7 @@ define ([
 			relations: [{
 				type: 'HasMany',
 				key: 'tagLinks',
-				relatedModel: 'Link.NoteTag',
+				relatedModel: Link.NoteTag,
 				reverseRelation: {
 					key: 'note',
 					includeInJSON: '_id'
@@ -25,7 +25,7 @@ define ([
 			{
 				type: 'HasMany',
 				key: 'taskLinks',
-				relatedModel: 'Link.NoteTask',
+				relatedModel: Link.NoteTask,
 				reverseRelation: {
 					key: 'note',
 					includeInJSON: '_id',

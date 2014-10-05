@@ -135,7 +135,7 @@ define ([
 			relations: [{
 				type: 'HasMany',
 				key: 'tags',
-				relatedModel: 'Tag'
+				relatedModel: Tag
 			}],
 			defaults: function() {
 				return {
@@ -156,13 +156,13 @@ define ([
 			relations: [{
 				type: 'HasMany',
 				key: 'tags',
-				relatedModel: 'Tag',
+				relatedModel: Tag,
 				includeInJSON: '_id',
 			},
 			{
 				type: 'HasMany',
 				key: 'tasks',
-				relatedModel: 'Task',
+				relatedModel: Task,
 				includeInJSON: '_id',
 			}],
 			defaults: function() {

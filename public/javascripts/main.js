@@ -5,6 +5,7 @@
 require.config ({
 	paths: {
 		jquery               : 'lib/jquery-1.8.3.min',
+		'jquery.ui'          : 'lib/jquery-ui-1.10.3.custom.min',
 		underscore           : 'lib/underscore',
 		backbone             : 'lib/backbone',
 		'backbone.relational': 'lib/backbone-relational',
@@ -12,8 +13,12 @@ require.config ({
 		mousetrap            : 'lib/mousetrap.min',
 	},
 	shim: {
+		'jquery.ui': {
+			deps: ['jquery'],
+			exports: '$'
+		},
 		underscore: {
-			exports: "_"
+			exports: '_'
 		},
 		backbone: {
 			deps: ['underscore', 'jquery'],

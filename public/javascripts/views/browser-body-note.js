@@ -1,24 +1,37 @@
-BrowserBodyNoteView = BrowserBodyObjectView.extend({
+define ([
+		'jquery',
+		'underscore',
+		'backbone',
+		'channel',
+		'views/browser-body-object',
+		'views/editor',
+	], function ($, _, Backbone, channel, BrowserBodyObjectView, EditorView) {
 
-	template : '#browser-body-note-template',
+		var BrowserBodyNoteView = BrowserBodyObjectView.extend({
 
-	render: function () {
-		var json        = this.model.toJSON();
-		// json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
-		json = {
-			note: json,
-			tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {return tag.get('label')})
-		};
+			template : '#browser-body-note-template',
 
-		var templateFn = _.template( $(this.template).html() );
-		this.$el.html (templateFn (json));
-		channel.trigger("browser:notes:reSyncSelectors");
-		return this;
-	},
+			render: function () {
+				var json        = this.model.toJSON();
+				// json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
+				json = {
+					note: json,
+					tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {return tag.get('label')})
+				};
 
-	edit: function() {
-		var newEditor = new EditorView ({ model: this.model });
-		newEditor.render();
-		newEditor.toggle();
+				var templateFn = _.template( $(this.template).html() );
+				this.$el.html (templateFn (json));
+				channel.trigger("browser:notes:reSyncSelectors");
+				return this;
+			},
+
+			edit: function() {
+				var newEditor = new EditorView ({ model: this.model });
+				newEditor.render();
+				newEditor.toggle();
+			}
+		});
+
+		return BrowserBodyNoteView;
 	}
-});
+);

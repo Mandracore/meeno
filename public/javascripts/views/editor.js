@@ -3,9 +3,11 @@ define ([
 		'jquery',
 		'underscore',
 		'backbone',
+		'temp',
+		'channel',
 		'views/editor-tab',
 		'views/editor-body',
-	], function ($, _, Backbone, EditorTabView, EditorBodyView) {
+	], function ($, _, Backbone, temp, channel, EditorTabView, EditorBodyView) {
 
 		/**
 		 * This backbone view holds the note editor
@@ -28,13 +30,13 @@ define ([
 				channel.trigger('tab:toggle:browser');
 				this.children.tab.kill();
 				this.children.body.kill();
-				mee.counters.openedEditors--;
+				temp.count.openedEditors--;
 				this.model.isInEditor = false;
 			},
 
 			render: function() {
-				if (mee.counters.openedEditors < 6 && !this.model.isInEditor) {
-					mee.counters.openedEditors++;
+				if (temp.count.openedEditors < 6 && !this.model.isInEditor) {
+					temp.count.openedEditors++;
 					this.model.isInEditor = true;
 					$("#nav").append(this.children.tab.render().el);
 					$("#tabs").append(this.children.body.render().el);

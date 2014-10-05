@@ -1,9 +1,10 @@
 define ([
-	// path aliases preconfigured in ../main.js
 		'jquery',
 		'underscore',
 		'backbone',
-	], function ($, _, Backbone) {
+		'channel',
+	], function ($, _, Backbone, channel) {
+
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
 		 * 
