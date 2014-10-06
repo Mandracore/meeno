@@ -1,9 +1,13 @@
 define ([
 		'jquery',
+		'jquery.dateFormat',
 		'underscore',
 		'backbone',
+		'temp',
 		'channel',
-	], function ($, _, Backbone, channel) {
+		'text!../../templates/editor-body.html',
+		'views/editor-body-object',
+	], function ($, $, _, Backbone, temp, channel, hTemplate, EditorBodyObjectView) {
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
@@ -15,7 +19,6 @@ define ([
 
 			tagName           : 'div',
 			className         : 'tab object note',
-			template          : '#editor-body-template',
 			numberOfEdit      : 0,
 			limitNumberOfEdit : 5,
 
@@ -29,7 +32,8 @@ define ([
 				'blur .edit-title'     : 'save'
 			},
 
-			initialize: function() {
+			initialize: function(options) {
+				this.options = options;
 				Backbone.View.prototype.initialize.apply(this, arguments);
 				this.children = [];
 
@@ -62,18 +66,18 @@ define ([
 
 			render: function() {
 				// Renders the tab-content item to the current state of the model
-				var templateFn = _.template( $(this.template).html() );
-				this.$el.html( templateFn( this.model.toJSON() ) );
-				var self = this;
+				var self             = this;
+				var data             = this.model.toJSON();
+				var compiledTemplate = _.template(hTemplate);
+				this.$el.html( compiledTemplate(data) );
 
 				// Activating sub-views of embedded objects like tags, notes,...
 				this.$(".object").each(function (index, object) {
-					var $object = $(object);
-					var subView = {};
-					var model = {};
+					var $object    = $(object);
+					var subView    = {};
 					var modelClass = $object.hasClass('tag') ? "tag" : "task";
+					var model      = temp.coll[modelClass+"s"].get($object.attr('data-model-id'));
 
-					model = mee[modelClass+"s"].get($object.attr('data-model-id'));
 					if (model) {
 						subView  = new EditorBodyObjectView({
 							model     : model,
