@@ -3,11 +3,12 @@ define ([
 		'jquery.dateFormat',
 		'underscore',
 		'backbone',
+		'lib/tools',
 		'temp',
 		'channel',
 		'text!../../templates/editor-body.html',
 		'views/editor-body-object',
-	], function ($, $, _, Backbone, temp, channel, hTemplate, EditorBodyObjectView) {
+	], function ($, $, _, Backbone, tools, temp, channel, hTemplate, EditorBodyObjectView) {
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
@@ -96,7 +97,7 @@ define ([
 			},
 
 			checkFocus: function () {
-				var $caretsNode = $(getCaretsNode());
+				var $caretsNode = $(tools.getCaretsNode());
 				if (
 					!($caretsNode.hasClass("edit-content")) && 
 					$caretsNode.parents("section.edit-content").length === 0) {
@@ -120,7 +121,7 @@ define ([
 
 				newView.undelegateEvents();
 				var newHtml = $("<div></div>").append(newView.render().el).html();
-				pasteHtmlAtCaret(
+				tools.pasteHtmlAtCaret(
 					newHtml + // The tag itself with a trick to get its html back
 					"<span class='void'>&nbsp;</span>" // A place to put the caret
 				);

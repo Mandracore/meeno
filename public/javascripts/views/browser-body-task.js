@@ -2,9 +2,11 @@ define ([
 		'jquery',
 		'underscore',
 		'backbone',
+		'temp',
 		'channel',
 		'views/browser-body-object',
-	], function ($, _, Backbone, channel, BrowserBodyObjectView) {
+		'models/filter',
+	], function ($, _, Backbone, temp, channel, BrowserBodyObjectView, Filter) {
 
 		/**
 		 * @class BrowserBodyTaskView
@@ -115,14 +117,14 @@ define ([
 
 					// Check that the value set by the user corresponds to a new tag
 					// get all tags having exactly the label value = input value
-					var selection = mee.tags.where({label: self.$("input[name='newTag']").val()});
+					var selection = temp.coll.tags.where({label: self.$("input[name='newTag']").val()});
 					if (selection.length == 0) {
 						// The user wants a new tag
 						// 1. create a new tag
 						var newTag = new Tag ({
 							label : self.$("input[name='newTag']").val(),
 						});
-						mee.tags.add(newTag); // We add it to the collection so that we can save it
+						temp.coll.tags.add(newTag); // We add it to the collection so that we can save it
 						newTag.save({}, {
 							success: function () {
 						// 2. link the new tag
@@ -151,9 +153,9 @@ define ([
 					source: function (request, response) {
 						// request.term : data typed in by the user ("new yor")
 						// response : native callback that must be called with the data to suggest to the user
-						var tagFilter = new TagFilter({text: request.term});
+						var tagFilter = new Filter.Tag ({text: request.term});
 						response (
-							mee.tags.search(tagFilter).map(function (model, key, list) {
+							temp.coll.tags.search(tagFilter).map(function (model, key, list) {
 								return {
 									label: model.get("label"),
 									value: model.cid
@@ -166,7 +168,7 @@ define ([
 						return false; // to cancel normal behaviour
 					},
 					select: function(event, ui) {
-						var selection = mee.tags.get(ui.item.value) // ui.item.value == model.cid
+						var selection = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
 						self.model.get('tagLinks').add({ tag: selection });
 						self.renderTagUpdate();
 					}
@@ -192,7 +194,7 @@ define ([
 			 * @method unlink
 			 */
 			unlink: function(event) {
-				var tag = mee.tags.get($(event.target).attr('data-cid'));
+				var tag = temp.coll.tags.get($(event.target).attr('data-cid'));
 				var tagLink = this.model.get('tagLinks').find(
 					function (tagLink) {return tagLink.get("tag") == tag; }
 				);

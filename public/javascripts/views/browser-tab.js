@@ -20,7 +20,9 @@ define ([
 				'click': 'delegatedToggle'
 			},
 
-			initialize: function() {},
+			initialize: function(options) {
+				this.options = options;
+			},
 
 			delegatedToggle: function() {
 				this.options.parent.toggle();

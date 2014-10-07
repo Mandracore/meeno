@@ -8,7 +8,8 @@ define ([
 		'views/browser-body-note',
 		'views/browser-body-task',
 		'views/browser-body-tag',
-	], function ($, _, Backbone, temp, channel, Filter, BrowserBodyNoteView, BrowserBodyTaskView, BrowserBodyTagView) {
+		'views/browser-body-filter',
+	], function ($, _, Backbone, temp, channel, Filter, BrowserBodyNoteView, BrowserBodyTaskView, BrowserBodyTagView, BrowserBodyFilterView) {
 
 		/**
 		 * This class will be used to support the main view of the object browser.

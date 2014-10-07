@@ -3,12 +3,15 @@ define ([
 		'jquery',
 		'underscore',
 		'backbone',
-		'text!../../templates/editor-body.html',
-	], function ($, _, Backbone) {
+		'temp',
+		'lib/tools',
+		'text!../../templates/editor-body-object.html',
+		'models/task',
+		'models/tag',
+	], function ($, _, Backbone, temp, tools, hTemplate, Task, Tag) {
 		var EditorBodyObjectView = Backbone.View.extend({
 			// this.options.modelClass = 'tag' OR 'task'
 			tagName   :'span',
-			template  :'#editor-body-object-template',
 			className :'object',
 
 			// The DOM events specific to an item.
@@ -33,7 +36,7 @@ define ([
 					this.listenTo(this.model, 'change', this.render);
 					this.listenTo(this.model, 'remove', this.kill);
 				} else {
-					this.options.id = makeid();
+					this.options.id = tools.makeid();
 				}
 				this.listenTo(this.options.note, 'change:content', this.checkChanges);
 			},
@@ -65,11 +68,10 @@ define ([
 				console.log ('R[emb-'+this.options.modelClass+']');
 				this.$el.attr('id', this.options.id);
 				this.$el.attr('contentEditable',false);
-				var templateData = {
-					id       : this.options.id,
-				};
-				var templateFn = _.template( $(this.template).html() );
-				this.$el.html( templateFn( templateData ) );
+
+				var compiledTemplate = _.template(hTemplate);
+				this.$el.html( compiledTemplate({ id:this.options.id }) );
+
 				if (!this.$el.hasClass(this.options.modelClass)) { this.$el.addClass(this.options.modelClass); }
 				if (!this.$el.hasClass('icon-'+this.options.modelClass+'s')) { this.$el.addClass('icon-'+this.options.modelClass+'s'); }
 				return this;
@@ -79,7 +81,7 @@ define ([
 				var strHint = (this.$(".body").val());
 				if (strHint.length > -1) {
 					var pattern = new RegExp(strHint,"i");
-					var proposals = mee[this.options.modelClass+'s'].filter(function (model) {
+					var proposals = temp.coll[this.options.modelClass+'s'].filter(function (model) {
 						return pattern.test(model.get('label'));
 					});
 					var datalistOptions = proposals.map(function (obj, key) {
@@ -102,7 +104,6 @@ define ([
 			 */
 			lock: function (event) {
 				console.log("locking");
-				var modelClassName = this.options.modelClass.replace(/^(.)/, function($1){ return $1.toUpperCase( ); });
 				var self = this;
 				if (!this.options.isLocked) {
 					if (this.$('.body').val().length <= 2) {
@@ -110,21 +111,26 @@ define ([
 					} else {
 						console.log('______ Locking Object ______');
 
-						var selectedModel = mee[this.options.modelClass+'s'].find(function (model) {
+						var selectedModel = temp.coll[this.options.modelClass+'s'].find(function (model) {
 							return model.get('label') == self.$(".body").val();
 						});
 
 						if (!selectedModel) {
 						// If the model doesn't exist, we create it
 							console.log('--- Creating new '+this.options.modelClass+' ---');
-							this.model = new mee.cla[modelClassName]({
-								label : this.$(".body").val()
-							});
-
+							
 							if (this.options.modelClass == "task") {
-								mee.tasks.shiftDown(this.model);
+								this.model = new Task ({
+									label : this.$(".body").val()
+								});
+								temp.coll.tasks.shiftDown(this.model);
+							} else {
+								this.model = new Tag ({
+									label : this.$(".body").val()
+								});
 							}
-							mee[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+							temp.coll[this.options.modelClass+'s'].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+							
 							// Now that the model is into a collection, the .save() method will work
 							this.model.save({}, {
 								success: function () { 
@@ -156,10 +162,7 @@ define ([
 				} else {
 					this.options.note.get('taskLinks').add({ task : this.model });
 				}
-				// var link = new mee.cla["linkNote"+modelClassName] ({});
-				// link.set('note', this.options.note);
-				// link.set(this.options.modelClass, this.model);
-				// mee["linkNote"+modelClassName].add(link);
+
 				this.options.note.save({},{ 
 					success: function () {
 						var $newSpan = $("<span>",{class:"body"}).html(self.model.get('label'));
@@ -169,7 +172,7 @@ define ([
 						self.$el.addClass("locked");
 						self.$el.attr("data-model-id",self.model.get("_id"));
 						self.isLocked = true;
-						moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
+						tools.moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
 						console.log("[OK] "+self.options.modelClass+' "'+self.model.get('label')+'" linked to current note');
 						self.options.isLocked = true;
 					},
