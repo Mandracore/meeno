@@ -41,45 +41,59 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/LinkNoteTag.html">LinkNoteTag</a></li>
+                <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/LinkNoteTask.html">LinkNoteTask</a></li>
+                <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/BrowserBodyTaskView.html">BrowserBodyTaskView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
+                <li><a href="../classes/BrowserBodyView.html">BrowserBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTaskView.html">mee.cla.BrowserBodyTaskView</a></li>
+                <li><a href="../classes/BrowserTabView.html">BrowserTabView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
+                <li><a href="../classes/BrowserView.html">BrowserView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
+                <li><a href="../classes/EditorBodyView.html">EditorBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
+                <li><a href="../classes/EditorTabView.html">EditorTabView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
+                <li><a href="../classes/EditorView.html">EditorView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tags.html">mee.cla.Tags</a></li>
-            
-                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
+                <li><a href="../classes/MainView.html">MainView</a></li>
             
                 <li><a href="../classes/Note.html">Note</a></li>
             
+                <li><a href="../classes/NoteFilter.html">NoteFilter</a></li>
+            
+                <li><a href="../classes/NoteFilters.html">NoteFilters</a></li>
+            
                 <li><a href="../classes/Notes.html">Notes</a></li>
+            
+                <li><a href="../classes/NoteTag.html">NoteTag</a></li>
+            
+                <li><a href="../classes/NoteTask.html">NoteTask</a></li>
+            
+                <li><a href="../classes/ObjectFilter.html">ObjectFilter</a></li>
+            
+                <li><a href="../classes/ObjectFilters.html">ObjectFilters</a></li>
+            
+                <li><a href="../classes/TagFilter.html">TagFilter</a></li>
+            
+                <li><a href="../classes/TagFilters.html">TagFilters</a></li>
+            
+                <li><a href="../classes/Tags.html">Tags</a></li>
+            
+                <li><a href="../classes/Task.html">Task</a></li>
+            
+                <li><a href="../classes/TaskFilter.html">TaskFilter</a></li>
+            
+                <li><a href="../classes/TaskFilters.html">TaskFilters</a></li>
+            
+                <li><a href="../classes/Tasks.html">Tasks</a></li>
+            
+                <li><a href="../classes/TaskTag.html">TaskTag</a></li>
             
             </ul>
 
@@ -124,31 +138,47 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var mee = mee || {};
-mee.cla = mee.cla || {};
+define ([
+		&#x27;jquery&#x27;,
+		&#x27;underscore&#x27;,
+		&#x27;backbone&#x27;,
+		&#x27;models/tag&#x27;,
+	], function ($, _, Backbone, Tag) {
 
-/**
- * @class mee.cla.Tags
- */
-mee.cla.Tags = Backbone.Collection.extend({
-	model: mee.cla.Tag,
-	url: &#x27;/api/tags&#x27;,
+		/**
+		 * This class holds collections of tags
+		 * 
+		 * @class Tags
+		 * @extends Backbone.Collection
+		 */
 
-	/**
-	 * @method search
-	 * @param {mee.cla.TagFilter} filter
-	 */
-	search : function (filter) {
-		if(filter.get(&#x27;text&#x27;) === &quot;&quot;) return this;
-		// var letters = $.ui.autocomplete.escapeRegex(filter.get(&#x27;text&#x27;));
-		var pattern = new RegExp(filter.get(&#x27;text&#x27;),&quot;i&quot;);
+		var Tags = Backbone.Collection.extend({
+			model: Tag,
+			url: &#x27;/api/tags&#x27;,
 
-		return new mee.cla.Tasks (this.filter(function(model) {
-			// Full text search
-			return (pattern.test(model.get(&quot;label&quot;)));
-		}));
+			/**
+			 * Allows to search through a collection of tags based on full-text search (in label)
+			 * 
+			 * @method search
+			 * @param  {TagFilter} filter the filter used to search the collection
+			 * @return {Tags} a new filtered collection of tags
+			 * @chainable
+			 */
+			search : function (filter) {
+				if(filter.get(&#x27;text&#x27;) === &quot;&quot;) return this;
+				// var letters = $.ui.autocomplete.escapeRegex(filter.get(&#x27;text&#x27;));
+				var pattern = new RegExp(filter.get(&#x27;text&#x27;),&quot;i&quot;);
+
+				return new Tags (this.filter(function(model) {
+					// Full text search
+					return (pattern.test(model.get(&quot;label&quot;)));
+				}));
+			}
+		});
+
+		return Tags;
 	}
-});
+);
     </pre>
 </div>
 

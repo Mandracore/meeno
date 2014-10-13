@@ -1,16 +1,28 @@
 {
-  "name": "meeno",
-  "version": "0.0.1",
+  "name"   : "meeno",
+  "version": "0.3.0",
   "private": true,
-  "scripts": {
-    "start": "node app"
+  "author" :"Romain Latroy",
+  "contributors": [
+    {
+      "name": "Objectifmars"
+    }
+  ],
+  "devDependencies": {
+    "zombie"      : "latest",
+    "jasmine-node": "latest"
   },
   "dependencies": {
-    "express": "3.0.3",
-    "jade": "*",
-    "stylus": "*",
-    "nib": "*",
-    "mongoose": ">=3.6.*",
-    "negotiator": "~0.2.6"
+    "express"   : "3.0.3",
+    "jade"      : "*",
+    "stylus"    : "*",
+    "nib"       : "*",
+    "mongoose"  : ">=3.6.*",
+    "negotiator": "~0.2.6",
+    "yuidocjs"  : "0.3.*"
+  },
+  "scripts": {
+    "start": "nodejs appSrv.js",
+    "doc": "yuidoc"
   }
 }

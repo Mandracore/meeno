@@ -20,6 +20,19 @@ npm install
 This should download the node.js modules specified in package.json.
 You can now launch the server by executing this last command :
 ````
-node appSrv.js
+npm run start
 ````
 The server will be listening on port 3000 (you can modify `appSrv.js` to change it), so launch your favorite browser on [http://localhost:3000](http://localhost:3000) and start enjoying the app.
+
+##Documentation
+
+Code documentation can be found in the folder `docs/`. Use the command `npm run doc` to regenerate it, for instance if you made some updates.
+
+##Testing
+Both unit-testing and integration-testing routines have been implemented to ensure front-end code stability. The related specifications (BDD style) can be found in the folder `test`.
+
+####Unit tests
+Relies on Jasmine (tester) and Karma (runner). Run `npm run test-unit` to execute the test runner and check the results.
+
+####Integration tests
+Relies on Jasmine (tester), jasmine-node (runner) and Zombie (emulated browser). Run `npm run test-int` to execute the test runner and check the results.

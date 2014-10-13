@@ -41,45 +41,59 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/LinkNoteTag.html">LinkNoteTag</a></li>
+                <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/LinkNoteTask.html">LinkNoteTask</a></li>
+                <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/BrowserBodyTaskView.html">BrowserBodyTaskView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
+                <li><a href="../classes/BrowserBodyView.html">BrowserBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTaskView.html">mee.cla.BrowserBodyTaskView</a></li>
+                <li><a href="../classes/BrowserTabView.html">BrowserTabView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
+                <li><a href="../classes/BrowserView.html">BrowserView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
+                <li><a href="../classes/EditorBodyView.html">EditorBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
+                <li><a href="../classes/EditorTabView.html">EditorTabView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
+                <li><a href="../classes/EditorView.html">EditorView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tags.html">mee.cla.Tags</a></li>
-            
-                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
+                <li><a href="../classes/MainView.html">MainView</a></li>
             
                 <li><a href="../classes/Note.html">Note</a></li>
             
+                <li><a href="../classes/NoteFilter.html">NoteFilter</a></li>
+            
+                <li><a href="../classes/NoteFilters.html">NoteFilters</a></li>
+            
                 <li><a href="../classes/Notes.html">Notes</a></li>
+            
+                <li><a href="../classes/NoteTag.html">NoteTag</a></li>
+            
+                <li><a href="../classes/NoteTask.html">NoteTask</a></li>
+            
+                <li><a href="../classes/ObjectFilter.html">ObjectFilter</a></li>
+            
+                <li><a href="../classes/ObjectFilters.html">ObjectFilters</a></li>
+            
+                <li><a href="../classes/TagFilter.html">TagFilter</a></li>
+            
+                <li><a href="../classes/TagFilters.html">TagFilters</a></li>
+            
+                <li><a href="../classes/Tags.html">Tags</a></li>
+            
+                <li><a href="../classes/Task.html">Task</a></li>
+            
+                <li><a href="../classes/TaskFilter.html">TaskFilter</a></li>
+            
+                <li><a href="../classes/TaskFilters.html">TaskFilters</a></li>
+            
+                <li><a href="../classes/Tasks.html">Tasks</a></li>
+            
+                <li><a href="../classes/TaskTag.html">TaskTag</a></li>
             
             </ul>
 
@@ -124,238 +138,249 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var mee = mee || {};
-mee.cla = mee.cla || {};
+define ([
+		&#x27;jquery&#x27;,
+		&#x27;underscore&#x27;,
+		&#x27;backbone&#x27;,
+		&#x27;temp&#x27;,
+		&#x27;channel&#x27;,
+		&#x27;views/browser-body-object&#x27;,
+		&#x27;models/filter&#x27;,
+	], function ($, _, Backbone, temp, channel, BrowserBodyObjectView, Filter) {
 
-/**
- * @class mee.cla.BrowserBodyTaskView
- * @extends {mee.cla.BrowserBodyObjectView}
- */
-mee.cla.BrowserBodyTaskView = mee.cla.BrowserBodyObjectView.extend({
+		/**
+		 * @class BrowserBodyTaskView
+		 * @extends {BrowserBodyObjectView}
+		 */
+		var BrowserBodyTaskView = BrowserBodyObjectView.extend({
 
-	template : &#x27;#browser-body-task-template&#x27;,
+			template : &#x27;#browser-body-task-template&#x27;,
 
-	events: function(){
-		return _.extend({},mee.cla.BrowserBodyObjectView.prototype.events,{
-			&#x27;click .delete&#x27;           : &#x27;delete&#x27;,
-			&#x27;click .close&#x27;            : &#x27;close&#x27;,
-			&#x27;click .update&#x27;           : &#x27;update&#x27;,
-			&#x27;click .reset&#x27;            : &#x27;reset&#x27;,
-			&#x27;click .tagButtons button&#x27;: &#x27;unlink&#x27;,
-		});
-	},
-
-	/**
-	 * @method initialize
-	 */
-	initialize: function() {
-		this.options.hasSelectedTag = false;
-	},
-
-	/**
-	 * This method aims at rendering the HTML elements for a given task model.
-	 * Once it is appended to the DOM, some event bindings are also done.
-	 * In particular, we control the events occuring when the ENTER key is pressed,
-	 * so that the browser does not try to submit the form by faking a click event on
-	 * the closest button (which triggers unwanted behaviours).
-	 * 
-	 * @method render
-	 * @chainable
-	 */
-	render: function() {
-		var self = this;
-		var json = {
-			task: this.model.toJSON(),
-			tags: _.map(this.model.get(&#x27;tagLinks&#x27;).pluck(&#x27;tag&#x27;), function(tag) {
-				return {
-					cid : tag.cid,
-					&#x27;label&#x27; : tag.get(&#x27;label&#x27;),
-			}}),
-		};
-
-		var templateFn = _.template( $(this.template).html() );
-		this.$el.html (templateFn (json));
-		this.$el.attr(&quot;data-cid&quot;,this.model.cid);
-		mee.dispatcher.trigger(&quot;browser:tasks:reSyncSelectors&quot;);
-
-		// Control the behaviour when ENTER key is keyed down
-		self.$(&quot;input&quot;).not(&#x27;.autocomplete&#x27;).on(&quot;keydown&quot;, function(event) {
-			// track enter key
-			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
-			if (keycode == 13) { // keycode for enter key
-				self.$(&quot;.update&quot;).click();
-				return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
-			} else  {
-				return true;
-			}
-		});
-		self.$(&quot;input.autocomplete&quot;).on(&quot;keydown&quot;, function(event) {
-			// track enter key
-			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
-			if (keycode == 13) { // keycode for enter key
-				self.addNewTag();
-				return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
-			} else  {
-				return true;
-			}
-		});
-
-		return this;
-	},
-
-	/**
-	 * @method edit
-	 */
-	edit: function() {
-		this.$(&quot;.details&quot;).slideDown();
-		this.$(&quot;input[name=&#x27;label&#x27;]&quot;).focus().select();
-		this.initAutocomplete();
-	},
-
-	/**
-	 * Updates the view after the user modified the tags related to the task
-	 * 
-	 * @method renderTagUpdate
-	 */
-	renderTagUpdate: function() {
-		this.render();
-		this.$(&quot;.details&quot;).show();
-		this.initAutocomplete();
-		this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(&quot;&quot;).focus();
-	},
-
-	/**
-	 * When the user tries to link the task to a new tag, this method will create the desired tag 
-	 * and link it to the view&#x27;s model.
-	 * 
-	 * @method addNewTag
-	 */
-	addNewTag: function() {
-		var self = this;
-		if (self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).is(&quot;:focus&quot;) &amp;&amp; self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val().length &gt; 1) {
-
-			// Check that the value set by the user corresponds to a new tag
-			// get all tags having exactly the label value = input value
-			var selection = mee.tags.where({label: self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
-			if (selection.length == 0) {
-				// The user wants a new tag
-				// 1. create a new tag
-				var newTag = new mee.cla.Tag ({
-					label : self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(),
+			events: function(){
+				return _.extend({},BrowserBodyObjectView.prototype.events,{
+					&#x27;click .delete&#x27;           : &#x27;delete&#x27;,
+					&#x27;click .close&#x27;            : &#x27;close&#x27;,
+					&#x27;click .update&#x27;           : &#x27;update&#x27;,
+					&#x27;click .reset&#x27;            : &#x27;reset&#x27;,
+					&#x27;click .tagButtons button&#x27;: &#x27;unlink&#x27;,
 				});
-				mee.tags.add(newTag); // We add it to the collection so that we can save it
-				newTag.save({}, {
-					success: function () {
-				// 2. link the new tag
-						self.model.get(&#x27;tagLinks&#x27;).add({ tag: newTag });
-						self.renderTagUpdate();
-						return false;
-					},
-				});
-				return false;
-			}
-		}
-		return false;
-	},
+			},
 
+			/**
+			 * @method initialize
+			 */
+			initialize: function() {
+				//this.options.hasSelectedTag = false;
+			},
 
-	/**
-	 * Should initialize the task&#x27;s tag autocomplete input and allow for linking existing tags
-	 * to the task.
-	 * To be called only when a task is being edited, and deleted when its form is closed
-	 * 
-	 * @method initAutocomplete
-	 */
-	initAutocomplete: function() {
-		var self = this;
-		this.$(&quot;.autocomplete&quot;).autocomplete({
-			source: function (request, response) {
-				// request.term : data typed in by the user (&quot;new yor&quot;)
-				// response : native callback that must be called with the data to suggest to the user
-				var tagFilter = new mee.cla.TagFilter({text: request.term});
-				response (
-					mee.tags.search(tagFilter).map(function (model, key, list) {
+			/**
+			 * This method aims at rendering the HTML elements for a given task model.
+			 * Once it is appended to the DOM, some event bindings are also done.
+			 * In particular, we control the events occuring when the ENTER key is pressed,
+			 * so that the browser does not try to submit the form by faking a click event on
+			 * the closest button (which triggers unwanted behaviours).
+			 * 
+			 * @method render
+			 * @chainable
+			 */
+			render: function() {
+				var self = this;
+				var json = {
+					task: this.model.toJSON(),
+					tags: _.map(this.model.get(&#x27;tagLinks&#x27;).pluck(&#x27;tag&#x27;), function(tag) {
 						return {
-							label: model.get(&quot;label&quot;),
-							value: model.cid
-						};
-					})
+							cid : tag.cid,
+							&#x27;label&#x27; : tag.get(&#x27;label&#x27;),
+					}}),
+				};
+
+				var templateFn = _.template( $(this.template).html() );
+				this.$el.html (templateFn (json));
+				this.$el.attr(&quot;data-cid&quot;,this.model.cid);
+				channel.trigger(&quot;browser:tasks:reSyncSelectors&quot;);
+
+				// Control the behaviour when ENTER key is keyed down
+				self.$(&quot;input&quot;).not(&#x27;.autocomplete&#x27;).on(&quot;keydown&quot;, function(event) {
+					// track enter key
+					var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+					if (keycode == 13) { // keycode for enter key
+						self.$(&quot;.update&quot;).click();
+						return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
+					} else  {
+						return true;
+					}
+				});
+				self.$(&quot;input.autocomplete&quot;).on(&quot;keydown&quot;, function(event) {
+					// track enter key
+					var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+					if (keycode == 13) { // keycode for enter key
+						self.addNewTag();
+						return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
+					} else  {
+						return true;
+					}
+				});
+
+				return this;
+			},
+
+			/**
+			 * @method edit
+			 */
+			edit: function() {
+				this.$(&quot;.details&quot;).slideDown();
+				this.$(&quot;input[name=&#x27;label&#x27;]&quot;).focus().select();
+				this.initAutocomplete();
+			},
+
+			/**
+			 * Updates the view after the user modified the tags related to the task
+			 * 
+			 * @method renderTagUpdate
+			 */
+			renderTagUpdate: function() {
+				this.render();
+				this.$(&quot;.details&quot;).show();
+				this.initAutocomplete();
+				this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(&quot;&quot;).focus();
+			},
+
+			/**
+			 * When the user tries to link the task to a new tag, this method will create the desired tag 
+			 * and link it to the view&#x27;s model.
+			 * 
+			 * @method addNewTag
+			 */
+			addNewTag: function() {
+				var self = this;
+				if (self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).is(&quot;:focus&quot;) &amp;&amp; self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val().length &gt; 1) {
+
+					// Check that the value set by the user corresponds to a new tag
+					// get all tags having exactly the label value = input value
+					var selection = temp.coll.tags.where({label: self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
+					if (selection.length == 0) {
+						// The user wants a new tag
+						// 1. create a new tag
+						var newTag = new Tag ({
+							label : self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(),
+						});
+						temp.coll.tags.add(newTag); // We add it to the collection so that we can save it
+						newTag.save({}, {
+							success: function () {
+						// 2. link the new tag
+								self.model.get(&#x27;tagLinks&#x27;).add({ tag: newTag });
+								self.renderTagUpdate();
+								return false;
+							},
+						});
+						return false;
+					}
+				}
+				return false;
+			},
+
+
+			/**
+			 * Should initialize the task&#x27;s tag autocomplete input and allow for linking existing tags
+			 * to the task.
+			 * To be called only when a task is being edited, and deleted when its form is closed
+			 * 
+			 * @method initAutocomplete
+			 */
+			initAutocomplete: function() {
+				var self = this;
+				this.$(&quot;.autocomplete&quot;).autocomplete({
+					source: function (request, response) {
+						// request.term : data typed in by the user (&quot;new yor&quot;)
+						// response : native callback that must be called with the data to suggest to the user
+						var tagFilter = new Filter.Tag ({text: request.term});
+						response (
+							temp.coll.tags.search(tagFilter).map(function (model, key, list) {
+								return {
+									label: model.get(&quot;label&quot;),
+									value: model.cid
+								};
+							})
+						);
+					},
+					focus: function(event, ui) {
+						self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(ui.item.label);
+						return false; // to cancel normal behaviour
+					},
+					select: function(event, ui) {
+						var selection = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
+						self.model.get(&#x27;tagLinks&#x27;).add({ tag: selection });
+						self.renderTagUpdate();
+					}
+				});
+			},
+
+			/**
+			 * Saves the changes made into the database
+			 * 
+			 * @method update
+			 */
+			update: function() {
+				this.model.set({
+					label : this.$(&quot;input[name=&#x27;label&#x27;]&quot;).val(),
+					description : this.$(&quot;input[name=&#x27;description&#x27;]&quot;).val(),
+				}).save();
+				this.close();
+			},
+
+			/**
+			 * Should unlink the clicked tag from the task
+			 * 
+			 * @method unlink
+			 */
+			unlink: function(event) {
+				var tag = temp.coll.tags.get($(event.target).attr(&#x27;data-cid&#x27;));
+				var tagLink = this.model.get(&#x27;tagLinks&#x27;).find(
+					function (tagLink) {return tagLink.get(&quot;tag&quot;) == tag; }
 				);
+
+				this.model.get(&#x27;tagLinks&#x27;).remove(tagLink);
+				this.renderTagUpdate();
 			},
-			focus: function(event, ui) {
-				self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(ui.item.label);
-				return false; // to cancel normal behaviour
+
+			/**
+			 * Will reset the model to the value stored in DB and re-render the view accordingly.
+			 * 
+			 * @method reset
+			 */
+			reset: function() {
+				var self = this;
+				this.model.fetch({success: function(model, response) {
+					self.render();
+					self.$(&quot;.details&quot;).show();
+					self.initAutocomplete();
+				}});
 			},
-			select: function(event, ui) {
-				var selection = mee.tags.get(ui.item.value) // ui.item.value == model.cid
-				self.model.get(&#x27;tagLinks&#x27;).add({ tag: selection });
-				self.renderTagUpdate();
+
+			/**
+			 * To remove the view&#x27;s model from database and kill the view.
+			 * 
+			 * @method delete
+			 */
+			delete: function() {
+				this.model.destroy();
+				this.remove();
+			},
+
+			/**
+			 * To close the task form
+			 * 
+			 * @method close
+			 */
+			close: function() {
+				this.$(&quot;.autocomplete&quot;).autocomplete(&quot;destroy&quot;);
+				this.$(&quot;.details&quot;).slideUp();
 			}
 		});
-	},
 
-	/**
-	 * Saves the changes made into the database
-	 * 
-	 * @method update
-	 */
-	update: function() {
-		this.model.set({
-			label : this.$(&quot;input[name=&#x27;label&#x27;]&quot;).val(),
-			description : this.$(&quot;input[name=&#x27;description&#x27;]&quot;).val(),
-		}).save();
-		this.close();
-	},
-
-	/**
-	 * Should unlink the clicked tag from the task
-	 * 
-	 * @method unlink
-	 */
-	unlink: function(event) {
-		var tag = mee.tags.get($(event.target).attr(&#x27;data-cid&#x27;));
-		var tagLink = this.model.get(&#x27;tagLinks&#x27;).find(
-			function (tagLink) {return tagLink.get(&quot;tag&quot;) == tag; }
-		);
-
-		this.model.get(&#x27;tagLinks&#x27;).remove(tagLink);
-		this.renderTagUpdate();
-	},
-
-	/**
-	 * Will reset the model to the value stored in DB and re-render the view accordingly.
-	 * 
-	 * @method reset
-	 */
-	reset: function() {
-		var self = this;
-		this.model.fetch({success: function(model, response) {
-			self.render();
-			self.$(&quot;.details&quot;).show();
-			self.initAutocomplete();
-		}});
-	},
-
-	/**
-	 * To remove the view&#x27;s model from database and kill the view.
-	 * 
-	 * @method delete
-	 */
-	delete: function() {
-		this.model.destroy();
-		this.remove();
-	},
-
-	/**
-	 * To close the task form
-	 * 
-	 * @method close
-	 */
-	close: function() {
-		this.$(&quot;.autocomplete&quot;).autocomplete(&quot;destroy&quot;);
-		this.$(&quot;.details&quot;).slideUp();
+		return BrowserBodyTaskView;
 	}
-});
+);
     </pre>
 </div>
 

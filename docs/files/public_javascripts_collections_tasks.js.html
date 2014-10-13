@@ -41,45 +41,59 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/LinkNoteTag.html">LinkNoteTag</a></li>
+                <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/LinkNoteTask.html">LinkNoteTask</a></li>
+                <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/BrowserBodyTaskView.html">BrowserBodyTaskView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
+                <li><a href="../classes/BrowserBodyView.html">BrowserBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTaskView.html">mee.cla.BrowserBodyTaskView</a></li>
+                <li><a href="../classes/BrowserTabView.html">BrowserTabView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
+                <li><a href="../classes/BrowserView.html">BrowserView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
+                <li><a href="../classes/EditorBodyView.html">EditorBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
+                <li><a href="../classes/EditorTabView.html">EditorTabView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
+                <li><a href="../classes/EditorView.html">EditorView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tags.html">mee.cla.Tags</a></li>
-            
-                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
+                <li><a href="../classes/MainView.html">MainView</a></li>
             
                 <li><a href="../classes/Note.html">Note</a></li>
             
+                <li><a href="../classes/NoteFilter.html">NoteFilter</a></li>
+            
+                <li><a href="../classes/NoteFilters.html">NoteFilters</a></li>
+            
                 <li><a href="../classes/Notes.html">Notes</a></li>
+            
+                <li><a href="../classes/NoteTag.html">NoteTag</a></li>
+            
+                <li><a href="../classes/NoteTask.html">NoteTask</a></li>
+            
+                <li><a href="../classes/ObjectFilter.html">ObjectFilter</a></li>
+            
+                <li><a href="../classes/ObjectFilters.html">ObjectFilters</a></li>
+            
+                <li><a href="../classes/TagFilter.html">TagFilter</a></li>
+            
+                <li><a href="../classes/TagFilters.html">TagFilters</a></li>
+            
+                <li><a href="../classes/Tags.html">Tags</a></li>
+            
+                <li><a href="../classes/Task.html">Task</a></li>
+            
+                <li><a href="../classes/TaskFilter.html">TaskFilter</a></li>
+            
+                <li><a href="../classes/TaskFilters.html">TaskFilters</a></li>
+            
+                <li><a href="../classes/Tasks.html">Tasks</a></li>
+            
+                <li><a href="../classes/TaskTag.html">TaskTag</a></li>
             
             </ul>
 
@@ -124,67 +138,77 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var mee = mee || {};
-mee.cla = mee.cla || {};
+define ([
+	// path aliases preconfigured in ../main.js
+		&#x27;jquery&#x27;,
+		&#x27;underscore&#x27;,
+		&#x27;backbone&#x27;,
+		&#x27;models/task&#x27;,
+	], function ($, _, Backbone, Task) {
 
-/**
- * Holds collection of tasks
- * 
- * @class mee.cla.Tasks
- */
-mee.cla.Tasks = Backbone.Collection.extend({
-	model: mee.cla.Task,
-	url: &#x27;/api/tasks&#x27;,
-	comparator: &#x27;position&#x27;,
+		/**
+		 * Holds a collection of tasks
+		 * 
+		 * @class Tasks
+		 * @extends Backbone.Collection
+		 */
+		var Tasks = Backbone.Collection.extend({
+			model: Task,
+			url: &#x27;/api/tasks&#x27;,
+			comparator: &#x27;position&#x27;,
 
-	/**
-	 * Allows to search through a collection of tasks with a complex filter based on full-text search (in label)
-	 * and on tags related or not to the models
-	 * 
-	 * @method search
-	 * @param  {mee.cla.TaskFilter} filter the filter used to search the collection
-	 * @return {mee.cla.Tasks} a new filtered collection of tasks
-	 * @chainable
-	 */
-	search: function (filter) {
-		if(filter.get(&#x27;text&#x27;) === &quot;&quot; &amp;&amp; filter.get(&#x27;tags&#x27;).length == 0) return this;
-		// var letters = $.ui.autocomplete.escapeRegex(filter.get(&#x27;text&#x27;));
-		var pattern = new RegExp(filter.get(&#x27;text&#x27;),&quot;i&quot;);
+			/**
+			 * Allows to search through a collection of tasks with a complex filter based on full-text search (in label)
+			 * and on tags related or not to the models
+			 * 
+			 * @method search
+			 * @param  {TaskFilter} filter the filter used to search the collection
+			 * @return {Tasks} a new filtered collection of tasks
+			 * @chainable
+			 */
+			search: function (filter) {
+				if(filter.get(&#x27;text&#x27;) === &quot;&quot; &amp;&amp; filter.get(&#x27;tags&#x27;).length == 0) return this;
+				// var letters = $.ui.autocomplete.escapeRegex(filter.get(&#x27;text&#x27;));
+				var pattern = new RegExp(filter.get(&#x27;text&#x27;),&quot;i&quot;);
 
-		return new mee.cla.Tasks (this.filter(function(model) {
-			// Full text search
-			if (false === (pattern.test(model.get(&quot;label&quot;)))) {
-				return false;
-			}
+				return new Tasks (this.filter(function(model) {
+					// Full text search
+					if (false === (pattern.test(model.get(&quot;label&quot;)))) {
+						return false;
+					}
 
-			if (filter.get(&#x27;tags&#x27;).length == 0) { return true; }
+					if (filter.get(&#x27;tags&#x27;).length == 0) { return true; }
 
-			// Search by related objects
-			// This finder will return the objects for which there is no link
-			// If it returns undefined, that means that the current model is a match for our search
-			return (undefined === filter.get(&#x27;tags&#x27;).find(function(tag) {
-				//return (false === _.contains(model.pluckAllTags(), tag)); // Looking for the tag of the filter that is not related to current model
-				return (false === _.contains(model.get(&#x27;tagLinks&#x27;).pluck(&#x27;tag&#x27;), tag)); // Looking for the tag of the filter that is not related to current model
-			}));
-		}));
-	},
+					// Search by related objects
+					// This finder will return the objects for which there is no link
+					// If it returns undefined, that means that the current model is a match for our search
+					return (undefined === filter.get(&#x27;tags&#x27;).find(function(tag) {
+						//return (false === _.contains(model.pluckAllTags(), tag)); // Looking for the tag of the filter that is not related to current model
+						return (false === _.contains(model.get(&#x27;tagLinks&#x27;).pluck(&#x27;tag&#x27;), tag)); // Looking for the tag of the filter that is not related to current model
+					}));
+				}));
+			},
 
-	/**
-	 * When moving a task to a new position, shift the following ones down to make some room for it.
-	 * Also needs to be called when a new task is appended to a collection.
-	 * 
-	 * @method shiftDown
-	 * @param  {mee.cla.Task} anchor the task that was moved, point of reference 
-	 */
-	shiftDown: function (anchor) {
-		this.each (function (model) {
-			if (model != anchor &amp;&amp; model.get(&#x27;position&#x27;) &gt;= anchor.get(&#x27;position&#x27;)) {
-				model.set(&#x27;position&#x27;,model.get(&#x27;position&#x27;)+1);
-				model.save();
-			}
+			/**
+			 * When moving a task to a new position, shift the following ones down to make some room for it.
+			 * Also needs to be called when a new task is appended to a collection.
+			 * 
+			 * @method shiftDown
+			 * @param  {Task} anchor the task that was moved, point of reference 
+			 */
+			shiftDown: function (anchor) {
+				this.each (function (model) {
+					if (model != anchor &amp;&amp; model.get(&#x27;position&#x27;) &gt;= anchor.get(&#x27;position&#x27;)) {
+						model.set(&#x27;position&#x27;,model.get(&#x27;position&#x27;)+1);
+						model.save();
+					}
+				});
+			},
 		});
-	},
-});
+
+		return Tasks;
+	}
+);
     </pre>
 </div>
 

@@ -1,42 +1,17 @@
 {
     "project": {
         "name": "Meeno source code documentation",
-        "version": "0.2.5",
-        "url": "http://net.tutsplus.com"
+        "version": "0.2.5"
     },
     "files": {
-        "public/javascripts/collections/filters-note.js": {
-            "name": "public/javascripts/collections/filters-note.js",
+        "public/javascripts/collections/filters.js": {
+            "name": "public/javascripts/collections/filters.js",
             "modules": {},
             "classes": {
-                "mee.cla.NoteFilters": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/collections/filters-object.js": {
-            "name": "public/javascripts/collections/filters-object.js",
-            "modules": {},
-            "classes": {
-                "mee.cla.ObjectFilters": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/collections/filters-tag.js": {
-            "name": "public/javascripts/collections/filters-tag.js",
-            "modules": {},
-            "classes": {
-                "mee.cla.TagFilters": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/collections/filters-task.js": {
-            "name": "public/javascripts/collections/filters-task.js",
-            "modules": {},
-            "classes": {
-                "mee.cla.TaskFilters": 1
+                "ObjectFilters": 1,
+                "NoteFilters": 1,
+                "TagFilters": 1,
+                "TaskFilters": 1
             },
             "fors": {},
             "namespaces": {}
@@ -54,7 +29,7 @@
             "name": "public/javascripts/collections/tags.js",
             "modules": {},
             "classes": {
-                "mee.cla.Tags": 1
+                "Tags": 1
             },
             "fors": {},
             "namespaces": {}
@@ -63,15 +38,8 @@
             "name": "public/javascripts/collections/tasks.js",
             "modules": {},
             "classes": {
-                "mee.cla.Tasks": 1
+                "Tasks": 1
             },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/lib/backbone-nested-v1.1.2.min.js": {
-            "name": "public/javascripts/lib/backbone-nested-v1.1.2.min.js",
-            "modules": {},
-            "classes": {},
             "fors": {},
             "namespaces": {}
         },
@@ -89,56 +57,25 @@
             "fors": {},
             "namespaces": {}
         },
-        "public/javascripts/models/filter-note.js": {
-            "name": "public/javascripts/models/filter-note.js",
+        "public/javascripts/models/filter.js": {
+            "name": "public/javascripts/models/filter.js",
             "modules": {},
             "classes": {
-                "mee.cla.NoteFilter": 1
+                "ObjectFilter": 1,
+                "TagFilter": 1,
+                "TaskFilter": 1,
+                "NoteFilter": 1
             },
             "fors": {},
             "namespaces": {}
         },
-        "public/javascripts/models/filter-object.js": {
-            "name": "public/javascripts/models/filter-object.js",
+        "public/javascripts/models/link.js": {
+            "name": "public/javascripts/models/link.js",
             "modules": {},
             "classes": {
-                "mee.cla.ObjectFilter": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/models/filter-tag.js": {
-            "name": "public/javascripts/models/filter-tag.js",
-            "modules": {},
-            "classes": {
-                "mee.cla.TagFilter": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/models/filter-task.js": {
-            "name": "public/javascripts/models/filter-task.js",
-            "modules": {},
-            "classes": {
-                "mee.cla.TaskFilter": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/models/link-note-tag.js": {
-            "name": "public/javascripts/models/link-note-tag.js",
-            "modules": {},
-            "classes": {
-                "LinkNoteTag": 1
-            },
-            "fors": {},
-            "namespaces": {}
-        },
-        "public/javascripts/models/link-note-task.js": {
-            "name": "public/javascripts/models/link-note-task.js",
-            "modules": {},
-            "classes": {
-                "LinkNoteTask": 1
+                "NoteTask": 1,
+                "NoteTag": 1,
+                "TaskTag": 1
             },
             "fors": {},
             "namespaces": {}
@@ -156,7 +93,7 @@
             "name": "public/javascripts/models/task.js",
             "modules": {},
             "classes": {
-                "mee.cla.Task": 1
+                "Task": 1
             },
             "fors": {},
             "namespaces": {}
@@ -165,7 +102,7 @@
             "name": "public/javascripts/views/browser-body-filter.js",
             "modules": {},
             "classes": {
-                "mee.cla.BrowserBodyFilterView": 1
+                "BrowserBodyFilterView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -174,7 +111,7 @@
             "name": "public/javascripts/views/browser-body-object.js",
             "modules": {},
             "classes": {
-                "mee.cla.BrowserBodyObjectView": 1
+                "BrowserBodyObjectView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -183,7 +120,7 @@
             "name": "public/javascripts/views/browser-body-tag.js",
             "modules": {},
             "classes": {
-                "mee.cla.BrowserBodyTagView": 1
+                "BrowserBodyTagView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -192,7 +129,7 @@
             "name": "public/javascripts/views/browser-body-task.js",
             "modules": {},
             "classes": {
-                "mee.cla.BrowserBodyTaskView": 1
+                "BrowserBodyTaskView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -201,7 +138,25 @@
             "name": "public/javascripts/views/browser-body.js",
             "modules": {},
             "classes": {
-                "mee.cla.BrowserBodyView": 1
+                "BrowserBodyView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/browser-tab.js": {
+            "name": "public/javascripts/views/browser-tab.js",
+            "modules": {},
+            "classes": {
+                "BrowserTabView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/browser.js": {
+            "name": "public/javascripts/views/browser.js",
+            "modules": {},
+            "classes": {
+                "BrowserView": 1
             },
             "fors": {},
             "namespaces": {}
@@ -212,57 +167,104 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        "public/javascripts/views/editor-body.js": {
+            "name": "public/javascripts/views/editor-body.js",
+            "modules": {},
+            "classes": {
+                "EditorBodyView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/editor-tab.js": {
+            "name": "public/javascripts/views/editor-tab.js",
+            "modules": {},
+            "classes": {
+                "EditorTabView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/editor.js": {
+            "name": "public/javascripts/views/editor.js",
+            "modules": {},
+            "classes": {
+                "EditorView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/views/main.js": {
+            "name": "public/javascripts/views/main.js",
+            "modules": {},
+            "classes": {
+                "MainView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/text.js": {
+            "name": "public/javascripts/text.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {},
     "classes": {
-        "mee.cla.NoteFilters": {
-            "name": "mee.cla.NoteFilters",
-            "shortname": "mee.cla.NoteFilters",
+        "ObjectFilters": {
+            "name": "ObjectFilters",
+            "shortname": "ObjectFilters",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/collections/filters-note.js",
-            "line": 4,
-            "extends": "mee.cla.ObjectFilters"
-        },
-        "mee.cla.ObjectFilters": {
-            "name": "mee.cla.ObjectFilters",
-            "shortname": "mee.cla.ObjectFilters",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "public/javascripts/collections/filters-object.js",
-            "line": 4,
+            "file": "public/javascripts/collections/filters.js",
+            "line": 8,
+            "description": "Parent of the classes {{#crossLink \"NoteFilters\"}}{{/crossLink}}, {{#crossLink \"TaskFilters\"}}{{/crossLink}} and {{#crossLink \"TagFilters\"}}{{/crossLink}}.\nIt holds all the common methods necessary to deal with collections of filters.",
             "extends": "Backbone.Collection"
         },
-        "mee.cla.TagFilters": {
-            "name": "mee.cla.TagFilters",
-            "shortname": "mee.cla.TagFilters",
+        "NoteFilters": {
+            "name": "NoteFilters",
+            "shortname": "NoteFilters",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/collections/filters-tag.js",
-            "line": 4,
-            "extends": "mee.cla.ObjectFilters"
+            "file": "public/javascripts/collections/filters.js",
+            "line": 25,
+            "description": "This class defines a collection of {{#crossLink \"NoteFilter\"}}{{/crossLink}}s.",
+            "extends": "ObjectFilters"
         },
-        "mee.cla.TaskFilters": {
-            "name": "mee.cla.TaskFilters",
-            "shortname": "mee.cla.TaskFilters",
+        "TagFilters": {
+            "name": "TagFilters",
+            "shortname": "TagFilters",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/collections/filters-task.js",
-            "line": 4,
-            "extends": "mee.cla.ObjectFilters"
+            "file": "public/javascripts/collections/filters.js",
+            "line": 36,
+            "description": "This class defines a collection of {{#crossLink \"TagFilter\"}}{{/crossLink}}s.",
+            "extends": "ObjectFilters"
+        },
+        "TaskFilters": {
+            "name": "TaskFilters",
+            "shortname": "TaskFilters",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/collections/filters.js",
+            "line": 47,
+            "description": "This class defines a collection of {{#crossLink \"TaskFilter\"}}{{/crossLink}}s.",
+            "extends": "ObjectFilters"
         },
         "Notes": {
             "name": "Notes",
@@ -273,108 +275,125 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/collections/notes.js",
-            "line": 1,
+            "line": 9,
             "description": "This class holds collections of notes",
-            "extends": "Backbone.Collection",
-            "requires": [
-                "Note"
-            ]
+            "extends": "Backbone.Collection"
         },
-        "mee.cla.Tags": {
-            "name": "mee.cla.Tags",
-            "shortname": "mee.cla.Tags",
+        "Tags": {
+            "name": "Tags",
+            "shortname": "Tags",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/collections/tags.js",
-            "line": 4
+            "line": 8,
+            "description": "This class holds collections of tags",
+            "extends": "Backbone.Collection"
         },
-        "mee.cla.Tasks": {
-            "name": "mee.cla.Tasks",
-            "shortname": "mee.cla.Tasks",
+        "Tasks": {
+            "name": "Tasks",
+            "shortname": "Tasks",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/collections/tasks.js",
-            "line": 4,
-            "description": "Holds collection of tasks"
+            "line": 9,
+            "description": "Holds a collection of tasks",
+            "extends": "Backbone.Collection"
         },
-        "mee.cla.NoteFilter": {
-            "name": "mee.cla.NoteFilter",
-            "shortname": "mee.cla.NoteFilter",
+        "ObjectFilter": {
+            "name": "ObjectFilter",
+            "shortname": "ObjectFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/models/filter-note.js",
-            "line": 4,
-            "extends": "mee.cla.ObjectFilter"
-        },
-        "mee.cla.ObjectFilter": {
-            "name": "mee.cla.ObjectFilter",
-            "shortname": "mee.cla.ObjectFilter",
-            "classitems": [],
-            "plugins": [],
-            "extensions": [],
-            "plugin_for": [],
-            "extension_for": [],
-            "file": "public/javascripts/models/filter-object.js",
-            "line": 4,
+            "file": "public/javascripts/models/filter.js",
+            "line": 10,
+            "description": "Parent of the classes {{#crossLink \"NoteFilter\"}}{{/crossLink}}, {{#crossLink \"TaskFilter\"}}{{/crossLink}} and {{#crossLink \"TagFilter\"}}{{/crossLink}}.\nIt holds all the common methods.",
             "extends": "Backbone.RelationalModel"
         },
-        "mee.cla.TagFilter": {
-            "name": "mee.cla.TagFilter",
-            "shortname": "mee.cla.TagFilter",
+        "TagFilter": {
+            "name": "TagFilter",
+            "shortname": "TagFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/models/filter-tag.js",
-            "line": 4,
-            "extends": "mee.cla.ObjectFilter"
+            "file": "public/javascripts/models/filter.js",
+            "line": 114,
+            "description": "Used to filter collections of {{#crossLink \"Tag\"}}{{/crossLink}}s.",
+            "extends": "ObjectFilter"
         },
-        "mee.cla.TaskFilter": {
-            "name": "mee.cla.TaskFilter",
-            "shortname": "mee.cla.TaskFilter",
+        "TaskFilter": {
+            "name": "TaskFilter",
+            "shortname": "TaskFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/models/filter-task.js",
-            "line": 4,
-            "extends": "mee.cla.ObjectFilter"
+            "file": "public/javascripts/models/filter.js",
+            "line": 132,
+            "description": "Used to filter collections of {{#crossLink \"Task\"}}{{/crossLink}}s.",
+            "extends": "ObjectFilter"
         },
-        "LinkNoteTag": {
-            "name": "LinkNoteTag",
-            "shortname": "LinkNoteTag",
+        "NoteFilter": {
+            "name": "NoteFilter",
+            "shortname": "NoteFilter",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/models/link-note-tag.js",
-            "line": 1,
+            "file": "public/javascripts/models/filter.js",
+            "line": 155,
+            "description": "Used to filter collections of {{#crossLink \"Note\"}}{{/crossLink}}s.",
+            "extends": "ObjectFilter"
+        },
+        "NoteTask": {
+            "name": "NoteTask",
+            "shortname": "NoteTask",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/models/link.js",
+            "line": 7,
+            "description": "This class holds the model relating one note to one task",
+            "extends": "Backbone.RelationalModel"
+        },
+        "NoteTag": {
+            "name": "NoteTag",
+            "shortname": "NoteTag",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/models/link.js",
+            "line": 17,
             "description": "This class holds the model relating one note to one tag",
             "extends": "Backbone.RelationalModel"
         },
-        "LinkNoteTask": {
-            "name": "LinkNoteTask",
-            "shortname": "LinkNoteTask",
+        "TaskTag": {
+            "name": "TaskTag",
+            "shortname": "TaskTag",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
-            "file": "public/javascripts/models/link-note-task.js",
-            "line": 1,
-            "description": "This class holds the model relating one note to one task",
+            "file": "public/javascripts/models/link.js",
+            "line": 27,
+            "description": "This class holds the model relating one task to one tag",
             "extends": "Backbone.RelationalModel"
         },
         "Note": {
@@ -386,37 +405,33 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/models/note.js",
-            "line": 1,
+            "line": 8,
             "description": "This class holds the note model",
-            "extends": "Backbone.RelationalModel",
-            "requires": [
-                "LinkNoteTask",
-                "LinkNoteTag"
-            ]
+            "extends": "Backbone.RelationalModel"
         },
-        "mee.cla.Task": {
-            "name": "mee.cla.Task",
-            "shortname": "mee.cla.Task",
+        "Task": {
+            "name": "Task",
+            "shortname": "Task",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/models/task.js",
-            "line": 4,
+            "line": 8,
             "description": "Holds the task model"
         },
-        "mee.cla.BrowserBodyFilterView": {
-            "name": "mee.cla.BrowserBodyFilterView",
-            "shortname": "mee.cla.BrowserBodyFilterView",
+        "BrowserBodyFilterView": {
+            "name": "BrowserBodyFilterView",
+            "shortname": "BrowserBodyFilterView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 4,
-            "description": "This class holds the view of the filter models that are used to filter the browser's search results.\nThis view can accept models of classes {{#crossLink \"mee.cla.NoteFilter\"}}{{/crossLink}},\n{{#crossLink \"mee.cla.TaskFilter\"}}{{/crossLink}} and {{#crossLink \"mee.cla.TagFilter\"}}{{/crossLink}}.",
+            "line": 8,
+            "description": "This class holds the view of the filter models that are used to filter the browser's search results.\nThis view can accept models of classes {{#crossLink \"NoteFilter\"}}{{/crossLink}},\n{{#crossLink \"TaskFilter\"}}{{/crossLink}} and {{#crossLink \"TagFilter\"}}{{/crossLink}}.",
             "extends": "Backbone.View",
             "is_constructor": 1,
             "params": [
@@ -434,55 +449,55 @@
                 }
             ]
         },
-        "mee.cla.BrowserBodyObjectView": {
-            "name": "mee.cla.BrowserBodyObjectView",
-            "shortname": "mee.cla.BrowserBodyObjectView",
+        "BrowserBodyObjectView": {
+            "name": "BrowserBodyObjectView",
+            "shortname": "BrowserBodyObjectView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-object.js",
-            "line": 4,
-            "description": "This class retains all core features for displaying objects views in the browser.\nSeveral classes will inherit from it, one per kind of business object :\n- mee.cla.BrowserBodyNoteView\n- mee.cla.BrowserBodyTaskView\n- mee.cla.BrowserBodyTagView\n- ...",
+            "line": 8,
+            "description": "This class retains all core features for displaying objects views in the browser.\nSeveral classes will inherit from it, one per kind of business object :\n- BrowserBodyNoteView\n- BrowserBodyTaskView\n- BrowserBodyTagView\n- ...",
             "extends": "Backbone.View"
         },
-        "mee.cla.BrowserBodyTagView": {
-            "name": "mee.cla.BrowserBodyTagView",
-            "shortname": "mee.cla.BrowserBodyTagView",
+        "BrowserBodyTagView": {
+            "name": "BrowserBodyTagView",
+            "shortname": "BrowserBodyTagView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-tag.js",
-            "line": 4,
+            "line": 9,
             "description": "A backbone view to display one tag in the browser",
-            "extends": "mee.cla.BrowserBodyObjectView"
+            "extends": "BrowserBodyObjectView"
         },
-        "mee.cla.BrowserBodyTaskView": {
-            "name": "mee.cla.BrowserBodyTaskView",
-            "shortname": "mee.cla.BrowserBodyTaskView",
+        "BrowserBodyTaskView": {
+            "name": "BrowserBodyTaskView",
+            "shortname": "BrowserBodyTaskView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 4,
-            "extends": "{mee.cla.BrowserBodyObjectView}"
+            "line": 11,
+            "extends": "{BrowserBodyObjectView}"
         },
-        "mee.cla.BrowserBodyView": {
-            "name": "mee.cla.BrowserBodyView",
-            "shortname": "mee.cla.BrowserBodyView",
+        "BrowserBodyView": {
+            "name": "BrowserBodyView",
+            "shortname": "BrowserBodyView",
             "classitems": [],
             "plugins": [],
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/browser-body.js",
-            "line": 4,
-            "description": "This class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"mee.cla.BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"mee.cla.BrowserBodyFilterView\"}}{{/crossLink}},...",
+            "line": 14,
+            "description": "This class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"BrowserBodyFilterView\"}}{{/crossLink}},...",
             "is_constructor": 1,
             "params": [
                 {
@@ -498,58 +513,143 @@
                                 {
                                     "name": "notes",
                                     "description": "",
-                                    "type": "mee.cla.Notes"
+                                    "type": "Notes"
                                 },
                                 {
                                     "name": "tags",
                                     "description": "",
-                                    "type": "mee.cla.Tags"
+                                    "type": "Tags"
                                 },
                                 {
                                     "name": "tasks",
                                     "description": "",
-                                    "type": "mee.cla.Tasks"
+                                    "type": "Tasks"
                                 },
                                 {
                                     "name": "noteFilters",
                                     "description": "",
-                                    "type": "mee.cla.NoteFilters"
+                                    "type": "NoteFilters"
                                 },
                                 {
                                     "name": "taskFilters",
                                     "description": "",
-                                    "type": "mee.cla.TaskFilters"
+                                    "type": "TaskFilters"
                                 },
                                 {
                                     "name": "tagFilters",
                                     "description": "",
-                                    "type": "mee.cla.TagFilters"
+                                    "type": "TagFilters"
                                 }
                             ]
                         }
                     ]
                 }
-            ]
+            ],
+            "extends": "Backbone.View"
+        },
+        "BrowserTabView": {
+            "name": "BrowserTabView",
+            "shortname": "BrowserTabView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser-tab.js",
+            "line": 7,
+            "description": "This backbone view holds the browser tab (simple button) controlling the display of the body rendered by {{#crossLink \"BrowserBodyView\"}}{{/crossLink}}",
+            "extends": "Backbone.View"
+        },
+        "BrowserView": {
+            "name": "BrowserView",
+            "shortname": "BrowserView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser.js",
+            "line": 9,
+            "description": "This class is mainly a proxy for two subclasses : {{#crossLink \"BrowserTabView\"}}{{/crossLink}} and {{#crossLink \"BrowserBodyView\"}}{{/crossLink}}.\nIt listens to the event tab:toggle:browser and make the two subviews visible.",
+            "is_constructor": 1
+        },
+        "EditorBodyView": {
+            "name": "EditorBodyView",
+            "shortname": "EditorBodyView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/editor-body.js",
+            "line": 13,
+            "description": "This backbone view holds the body of a note editor (where the note is actually rendered)",
+            "extends": "Backbone.View"
+        },
+        "EditorTabView": {
+            "name": "EditorTabView",
+            "shortname": "EditorTabView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/editor-tab.js",
+            "line": 6,
+            "description": "This backbone view holds the editor tab (simple button) controlling the display of the body rendered by {{#crossLink \"EditorBodyView\"}}{{/crossLink}}",
+            "extends": "Backbone.View"
+        },
+        "EditorView": {
+            "name": "EditorView",
+            "shortname": "EditorView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/editor.js",
+            "line": 12,
+            "description": "This backbone view holds the note editor",
+            "extends": "Backbone.View"
+        },
+        "MainView": {
+            "name": "MainView",
+            "shortname": "MainView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/main.js",
+            "line": 13,
+            "description": "This backbone view holds the entire UI.",
+            "extends": "Backbone.View"
         }
     },
     "classitems": [
         {
             "file": "public/javascripts/collections/tags.js",
-            "line": 11,
+            "line": 19,
+            "description": "Allows to search through a collection of tags based on full-text search (in label)",
             "itemtype": "method",
             "name": "search",
             "params": [
                 {
                     "name": "filter",
-                    "description": "",
-                    "type": "mee.cla.TagFilter"
+                    "description": "the filter used to search the collection",
+                    "type": "TagFilter"
                 }
             ],
-            "class": "mee.cla.Tags"
+            "return": {
+                "description": "a new filtered collection of tags",
+                "type": "Tags"
+            },
+            "chainable": 1,
+            "class": "Tags"
         },
         {
             "file": "public/javascripts/collections/tasks.js",
-            "line": 14,
+            "line": 20,
             "description": "Allows to search through a collection of tasks with a complex filter based on full-text search (in label)\nand on tags related or not to the models",
             "itemtype": "method",
             "name": "search",
@@ -557,19 +657,19 @@
                 {
                     "name": "filter",
                     "description": "the filter used to search the collection",
-                    "type": "mee.cla.TaskFilter"
+                    "type": "TaskFilter"
                 }
             ],
             "return": {
                 "description": "a new filtered collection of tasks",
-                "type": "mee.cla.Tasks"
+                "type": "Tasks"
             },
             "chainable": 1,
-            "class": "mee.cla.Tasks"
+            "class": "Tasks"
         },
         {
             "file": "public/javascripts/collections/tasks.js",
-            "line": 46,
+            "line": 52,
             "description": "When moving a task to a new position, shift the following ones down to make some room for it.\nAlso needs to be called when a new task is appended to a collection.",
             "itemtype": "method",
             "name": "shiftDown",
@@ -577,52 +677,46 @@
                 {
                     "name": "anchor",
                     "description": "the task that was moved, point of reference",
-                    "type": "mee.cla.Task"
+                    "type": "Task"
                 }
             ],
-            "class": "mee.cla.Tasks"
-        },
-        {
-            "file": "public/javascripts/lib/backbone-nested-v1.1.2.min.js",
-            "line": 1,
-            "description": "Backbone-Nested 1.1.2 - An extension of Backbone.js that keeps track of nested attributes\n\nhttp://afeld.github.com/backbone-nested/\n\nCopyright (c) 2011-2012 Aidan Feldman\nMIT Licensed (LICENSE)",
-            "class": "mee.cla.NoteFilter"
+            "class": "Tasks"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 2,
             "description": "Backbone-relational.js 0.7.0\n(c) 2011-2013 Paul Uithol\n\nBackbone-relational may be freely distributed under the MIT license; see the accompanying LICENSE.txt.\nFor details and documentation: https://github.com/PaulUithol/Backbone-relational.\nDepends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 13,
             "description": "CommonJS shim",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 32,
             "description": "Semaphore mixin; can be used as both binary and counting.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 69,
             "description": "A BlockingQueue that accumulates items while blocked (via 'block'),\nand processes them when unblocked (via 'unblock').\nProcess can also be called manually (via 'process').",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 110,
             "description": "Global event queue. Accumulates external events ('add:<key>', 'remove:<key>' and 'update:<key>')\nuntil the top-level object is fully initialized (see 'Backbone.RelationalModel').",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 116,
             "description": "Backbone.Store keeps track of all created (and destruction of) Backbone.RelationalModel.\nHandles lookup for relations.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -640,7 +734,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -653,7 +747,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -688,7 +782,7 @@
                     ]
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -701,7 +795,7 @@
                     "type": "Object"
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -718,7 +812,7 @@
                 "description": "A collection if found (or applicable for 'model'), or null",
                 "type": "Backbone.Collection"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -735,7 +829,7 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -756,7 +850,7 @@
                 "description": "",
                 "type": "String|Number"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -772,7 +866,7 @@
                     "type": "String|Number|Object|Backbone.RelationalModel"
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -785,7 +879,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -798,7 +892,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -811,7 +905,7 @@
                     "type": "Backbone.RelationalModel"
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -861,7 +955,7 @@
                     ]
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -871,7 +965,7 @@
                 "description": "True if pre-conditions are satisfied, false if they're not.",
                 "type": "Boolean"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -890,7 +984,7 @@
                     "optional": true
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -907,7 +1001,7 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -925,7 +1019,7 @@
                 "description": "",
                 "type": "Backbone.Relation[]"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -943,7 +1037,7 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -961,19 +1055,19 @@
                 "description": "",
                 "type": "Object"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 669,
             "description": "If the key is changed, notify old & new reverse relations and initialize the new relation",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 726,
             "description": "If a new 'this.relatedModel' appears in the 'store', try to match it to the last set 'keyContents'",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -987,61 +1081,61 @@
                     "optional": true
                 }
             ],
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 880,
             "description": "If the key is changed, notify old & new reverse relations and initialize the new relation",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 953,
             "description": "When a model is added to a 'HasMany', trigger 'add' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', must set 'this.instance' as their related).",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 978,
             "description": "When a model is removed from a 'HasMany', trigger 'remove' on 'this.instance' and notify reverse relations.\n(should be 'HasOne', which should be nullified)",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1027,
             "description": "A type of Backbone.Model that also maintains relations to other models and collections.\nNew events when compared to the original:\n - 'add:<key>' (model, related collection, options)\n - 'remove:<key>' (model, related collection, options)\n - 'update:<key>' (model, related model or collection, options)",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1081,
             "description": "Override 'trigger' to queue 'change' and 'change:*' events",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1098,
             "description": "Initialize Relations present in this.relations; determine the type (HasOne/HasMany), then creates a new instance.\nInvoked in the first call so 'set' (which is made from the Backbone.Model constructor).",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1121,
             "description": "When new values are set, notify this model's relations (also if options.silent is set).\n(Relation.setRelated locks this model before calling 'set' on it to prevent loops)",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1137,
             "description": "Either add to the queue (if we're not initialized yet), or execute right away.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1144,
             "description": "Process _queue",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -1058,7 +1152,7 @@
                 "description": "An instance of 'Backbone.Relation', if a relation was found for 'key', or null.",
                 "type": "Backbone.Relation"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -1068,7 +1162,7 @@
                 "description": "",
                 "type": "Backbone.Relation[]"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -1098,25 +1192,25 @@
                 "description": "An array of request objects",
                 "type": "jQuery.when[]"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1317,
             "description": "Override 'change', so the change will only execute after 'set' has finised (relations are updated),\nand 'previousAttributes' will be available when the event is fired.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1341,
             "description": "Convert relations to JSON, omits them when required",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1442,
             "description": "The related model might not be defined for two reasons\n 1. it never gets defined, e.g. a typo\n 2. it is related to itself\nIn neither of these cases do we need to pre-initialize reverse relations.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -1139,7 +1233,7 @@
                 "description": "",
                 "type": "Backbone.Model"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
@@ -1171,53 +1265,53 @@
                 "description": "",
                 "type": "Backbone.RelationalModel"
             },
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1553,
             "description": "Override Backbone.Collection._prepareModel, so objects will be built using the correct type\nif the collection.model has subModels.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1587,
             "description": "Override Backbone.Collection.add, so objects fetched from the server multiple times will\nupdate the existing Model. Also, trigger 'relational:add'.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1625,
             "description": "Override 'Backbone.Collection.remove' to trigger 'relational:remove'.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1651,
             "description": "Override 'Backbone.Collection.reset' to trigger 'relational:reset'.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1662,
             "description": "Override 'Backbone.Collection.sort' to trigger 'relational:reset'.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone-relational.js",
             "line": 1673,
             "description": "Override 'Backbone.Collection.trigger' so 'add', 'remove' and 'reset' events are queued until relations\nare ready.",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/lib/backbone.localStorage-min.js",
             "line": 1,
             "description": "Backbone localStorage Adapter\nhttps://github.com/jeromegn/Backbone.localStorage\n/(function(){function n(){return((1+Math.random())*65536|0).toString(16).substring(1)}function r(){return n()+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+n()+n()}var e=this._,t=this.Backbone;t.LocalStorage=window.Store=function(e){this.name=e;var t=this.localStorage().getItem(this.name);this.records=t&&t.split(\",\")||[]},e.extend(t.LocalStorage.prototype,{save:function(){this.localStorage().setItem(this.name,this.records.join(\",\"))},create:function(e){return e.id||(e.id=r(),e.set(e.idAttribute,e.id)),this.localStorage().setItem(this.name+\"-\"+e.id,JSON.stringify(e)),this.records.push(e.id.toString()),this.save(),e.toJSON()},update:function(t){return this.localStorage().setItem(this.name+\"-\"+t.id,JSON.stringify(t)),e.include(this.records,t.id.toString())||this.records.push(t.id.toString()),this.save(),t.toJSON()},find:function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e.id))},findAll:function(){return e(this.records).chain().map(function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e))},this).compact().value()},destroy:function(t){return this.localStorage().removeItem(this.name+\"-\"+t.id),this.records=e.reject(this.records,function(e){return e==t.id.toString()}),this.save(),t},localStorage:function(){return localStorage}}),t.LocalStorage.sync=window.Store.sync=t.localSync=function(e,t,n,r){var i=t.localStorage||t.collection.localStorage;typeof n==\"function\"&&(n={success:n,error:r});var s,o=$.Deferred&&$.Deferred();switch(e){case\"read\":s=t.id!=undefined?i.find(t):i.findAll();break;case\"create\":s=i.create(t);break;case\"update\":s=i.update(t);break;case\"delete\":s=i.destroy(t)}return s?(n.success(s),o&&o.resolve()):(n.error(\"Record not found\"),o&&o.reject()),o&&o.promise()},t.ajaxSync=t.sync,t.getSyncMethod=function(e){return e.localStorage||e.collection&&e.collection.localStorage?t.LocalStorage.sync:t.ajaxSync},t.sync=function(e,n,r,i){return t.getSyncMethod(n).apply(this,[e,n,r,i])}})();",
-            "class": "mee.cla.NoteFilter"
+            "class": "ObjectFilter"
         },
         {
             "file": "public/javascripts/models/task.js",
-            "line": 29,
+            "line": 33,
             "description": "This method overrides the one provided by Backbone so that the attribute cid is also included in the json output\nThis is necessary for decoupling testing from database : we need unique IDs in unit testing but we don't \nwant to rely on a database layer",
             "itemtype": "method",
             "name": "toJSON",
@@ -1225,180 +1319,180 @@
                 "description": "all the attributes of the model put in a json object",
                 "type": "Json"
             },
-            "class": "mee.cla.Task"
+            "class": "Task"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 32,
+            "line": 37,
             "description": "Renders one filter : generates the HTML and appends it to the DOM element of the view",
             "itemtype": "method",
             "name": "render",
             "chainable": 1,
-            "class": "mee.cla.BrowserBodyFilterView"
+            "class": "BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 46,
-            "description": "Called every time the filters of the {{#crossLink \"mee.cla.BrowserBodyView\"}}browser{{/crossLink}} \nare updated. Checks if its model is similar to the one in use in the browser and \nhighlights it if it's true.",
+            "line": 51,
+            "description": "Called every time the filters of the {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}} \nare updated. Checks if its model is similar to the one in use in the browser and \nhighlights it if it's true.",
             "itemtype": "method",
             "name": "checkStatus",
-            "class": "mee.cla.BrowserBodyFilterView"
+            "class": "BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 63,
-            "description": "Called when the user clicks on the view.\nUpdates the right {{#crossLink \"mee.cla.BrowserBodyView\"}}browser{{/crossLink}}'s \nfilter to clone the view's model properties and highlights it.",
+            "line": 68,
+            "description": "Called when the user clicks on the view.\nUpdates the right {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}}'s \nfilter to clone the view's model properties and highlights it.",
             "itemtype": "method",
             "name": "activate",
-            "class": "mee.cla.BrowserBodyFilterView"
+            "class": "BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 78,
-            "description": "Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by\nthe {{#crossLink \"mee.cla.BrowserBodyView\"}}browser{{/crossLink}}.\nWill destroy both the view and its model.",
+            "line": 83,
+            "description": "Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by\nthe {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}}.\nWill destroy both the view and its model.",
             "itemtype": "method",
             "name": "removeIfActive",
-            "class": "mee.cla.BrowserBodyFilterView"
+            "class": "BrowserBodyFilterView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
-            "line": 22,
+            "line": 27,
             "description": "Renders one tag : generates the HTML and appends it to the DOM element of the view",
             "itemtype": "method",
             "name": "render",
             "chainable": 1,
-            "class": "mee.cla.BrowserBodyTagView"
+            "class": "BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
-            "line": 33,
-            "description": "Event triggered on `mee.dispatcher` when this.render() method is called",
+            "line": 38,
+            "description": "Event triggered on `channel` when this.render() method is called",
             "itemtype": "event",
             "name": "browser:tags:reSyncSelectors",
-            "class": "mee.cla.BrowserBodyTagView"
+            "class": "BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
-            "line": 41,
+            "line": 46,
             "description": "Displays an input to edit the tag label",
             "itemtype": "method",
             "name": "edit",
-            "class": "mee.cla.BrowserBodyTagView"
+            "class": "BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
-            "line": 52,
+            "line": 57,
             "description": "Sets the view's model label to the input (`span.label`) value and saves the model",
             "itemtype": "method",
             "name": "save",
-            "class": "mee.cla.BrowserBodyTagView"
+            "class": "BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-tag.js",
-            "line": 72,
+            "line": 77,
             "description": "Will destroy the view's model and the view itself when the user clics on `.delete` class DOM element",
             "itemtype": "method",
             "name": "delete",
-            "class": "mee.cla.BrowserBodyTagView"
-        },
-        {
-            "file": "public/javascripts/views/browser-body-task.js",
-            "line": 22,
-            "itemtype": "method",
-            "name": "initialize",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTagView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
             "line": 29,
+            "itemtype": "method",
+            "name": "initialize",
+            "class": "BrowserBodyTaskView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body-task.js",
+            "line": 36,
             "description": "This method aims at rendering the HTML elements for a given task model.\nOnce it is appended to the DOM, some event bindings are also done.\nIn particular, we control the events occuring when the ENTER key is pressed,\nso that the browser does not try to submit the form by faking a click event on\nthe closest button (which triggers unwanted behaviours).",
             "itemtype": "method",
             "name": "render",
             "chainable": 1,
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 80,
+            "line": 87,
             "itemtype": "method",
             "name": "edit",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 89,
+            "line": 96,
             "description": "Updates the view after the user modified the tags related to the task",
             "itemtype": "method",
             "name": "renderTagUpdate",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 101,
+            "line": 108,
             "description": "When the user tries to link the task to a new tag, this method will create the desired tag \nand link it to the view's model.",
             "itemtype": "method",
             "name": "addNewTag",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 136,
+            "line": 143,
             "description": "Should initialize the task's tag autocomplete input and allow for linking existing tags\nto the task.\nTo be called only when a task is being edited, and deleted when its form is closed",
             "itemtype": "method",
             "name": "initAutocomplete",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 171,
+            "line": 178,
             "description": "Saves the changes made into the database",
             "itemtype": "method",
             "name": "update",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 184,
+            "line": 191,
             "description": "Should unlink the clicked tag from the task",
             "itemtype": "method",
             "name": "unlink",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 199,
+            "line": 206,
             "description": "Will reset the model to the value stored in DB and re-render the view accordingly.",
             "itemtype": "method",
             "name": "reset",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 213,
+            "line": 220,
             "description": "To remove the view's model from database and kill the view.",
             "itemtype": "method",
             "name": "delete",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 223,
+            "line": 230,
             "description": "To close the task form",
             "itemtype": "method",
             "name": "close",
-            "class": "mee.cla.BrowserBodyTaskView"
+            "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 119,
+            "line": 125,
             "description": "Makes the browser visible",
             "itemtype": "method",
             "name": "toggle",
-            "class": "mee.cla.BrowserBodyView"
+            "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 133,
+            "line": 139,
             "description": "Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks\non the right button (class `.filter li`).",
             "itemtype": "method",
             "name": "toggleObject",
@@ -1409,27 +1503,53 @@
                     "type": "Event"
                 }
             ],
-            "class": "mee.cla.BrowserBodyView"
+            "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 221,
-            "description": "Event triggered on mee.dispatcher after the user clicks on an action button\n(flagged in the DOM with the `.actions-contextual-trigger button` classes).\nIt should be listened by subviews (for example instances of\n{{#crossLink \"mee.cla.BrowserBodyTagView\"}}{{/crossLink}}) to let them\nrelay the action to their respective model.",
+            "line": 227,
+            "description": "Event triggered on channel after the user clicks on an action button\n(flagged in the DOM with the `.actions-contextual-trigger button` classes).\nIt should be listened by subviews (for example instances of\n{{#crossLink \"BrowserBodyTagView\"}}{{/crossLink}}) to let them\nrelay the action to their respective model.",
             "itemtype": "event",
             "name": "browser:[collection-name]:[action]",
-            "class": "mee.cla.BrowserBodyView"
+            "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 368,
-            "description": "Event triggered on mee.dispatcher after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"mee.cla.BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
+            "line": 243,
+            "description": "Checks whether the user is currently using a search input and if so tells which collection is visible",
+            "itemtype": "method",
+            "name": "searchGetFocus",
+            "return": {
+                "description": "Returns the name of the collection studied (example : `notes`) or `false` if no search input has focus",
+                "type": "Object"
+            },
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 262,
+            "description": "Will prepare and open an autocomplete input.\nIt should help the user selecting objects from collection named `sColl2` (example : `tags`) \nthat will then be used to filter the objects from collection named `sColl1`",
+            "itemtype": "method",
+            "name": "searchOpenAutocomplete",
+            "params": [
+                {
+                    "name": "sColl2",
+                    "description": "the name of the collection (example : `tags`) used to filter the collection currently displayed in browser"
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 383,
+            "description": "Event triggered on channel after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
             "itemtype": "event",
             "name": "browser:filters:[filter-name]:remove-active",
-            "class": "mee.cla.BrowserBodyView"
+            "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 486,
+            "line": 501,
             "description": "This methods aims at saving the new positions of the objects",
             "params": [
                 {
@@ -1447,11 +1567,11 @@
                 "description": "nothing to return",
                 "type": "Void"
             },
-            "class": "mee.cla.BrowserBodyView"
+            "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/editor-body-object.js",
-            "line": 43,
+            "line": 56,
             "description": "Filters the keyboard events to pass only ENTER and TAB to the lock() method",
             "params": [
                 {
@@ -1464,11 +1584,11 @@
                 "description": "",
                 "type": "Void"
             },
-            "class": ""
+            "class": "EditorBodyView"
         },
         {
             "file": "public/javascripts/views/editor-body-object.js",
-            "line": 87,
+            "line": 99,
             "description": "Triggered once the user finishes typing in the new object.\nUsed as a proxy to either link the note to a new object, or to create a new object",
             "params": [
                 {
@@ -1481,13 +1601,60 @@
                 "description": "",
                 "type": "Void"
             },
+            "class": "EditorBodyView"
+        },
+        {
+            "file": "public/javascripts/text.js",
+            "line": 1,
+            "license": "RequireJS text 2.0.12 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/requirejs/text for details",
+            "class": ""
+        },
+        {
+            "file": "public/javascripts/text.js",
+            "line": 77,
+            "description": "Parses a resource name into its component parts. Resource names\nlook like: module/name.ext!strip, where the !strip part is\noptional.",
+            "params": [
+                {
+                    "name": "name",
+                    "description": "the resource name",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "with properties \"moduleName\", \"ext\" and \"strip\"\nwhere strip is a boolean.",
+                "type": "Object"
+            },
+            "class": ""
+        },
+        {
+            "file": "public/javascripts/text.js",
+            "line": 121,
+            "description": "Is an URL on another domain. Only works for browser use, returns\nfalse in non-browser environments. Only used to know if an\noptimized .js version of a text resource should be loaded\ninstead.",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Boolean"
+            },
             "class": ""
         }
     ],
     "warnings": [
         {
-            "message": "Missing item type\nBackbone-Nested 1.1.2 - An extension of Backbone.js that keeps track of nested attributes\n\nhttp://afeld.github.com/backbone-nested/\n\nCopyright (c) 2011-2012 Aidan Feldman\nMIT Licensed (LICENSE)",
-            "line": " public/javascripts/lib/backbone-nested-v1.1.2.min.js:1"
+            "message": "unknown tag: license",
+            "line": " public/javascripts/text.js:1"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/javascripts/text.js:77"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " public/javascripts/text.js:121"
         },
         {
             "message": "Missing item type\nBackbone-relational.js 0.7.0\n(c) 2011-2013 Paul Uithol\n\nBackbone-relational may be freely distributed under the MIT license; see the accompanying LICENSE.txt.\nFor details and documentation: https://github.com/PaulUithol/Backbone-relational.\nDepends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone.",
@@ -1695,15 +1862,27 @@
         },
         {
             "message": "Missing item type\nThis methods aims at saving the new positions of the objects",
-            "line": " public/javascripts/views/browser-body.js:486"
+            "line": " public/javascripts/views/browser-body.js:501"
         },
         {
             "message": "Missing item type\nFilters the keyboard events to pass only ENTER and TAB to the lock() method",
-            "line": " public/javascripts/views/editor-body-object.js:43"
+            "line": " public/javascripts/views/editor-body-object.js:56"
         },
         {
             "message": "Missing item type\nTriggered once the user finishes typing in the new object.\nUsed as a proxy to either link the note to a new object, or to create a new object",
-            "line": " public/javascripts/views/editor-body-object.js:87"
+            "line": " public/javascripts/views/editor-body-object.js:99"
+        },
+        {
+            "message": "Missing item type",
+            "line": " public/javascripts/text.js:1"
+        },
+        {
+            "message": "Missing item type\nParses a resource name into its component parts. Resource names\nlook like: module/name.ext!strip, where the !strip part is\noptional.",
+            "line": " public/javascripts/text.js:77"
+        },
+        {
+            "message": "Missing item type\nIs an URL on another domain. Only works for browser use, returns\nfalse in non-browser environments. Only used to know if an\noptimized .js version of a text resource should be loaded\ninstead.",
+            "line": " public/javascripts/text.js:121"
         }
     ]
 }

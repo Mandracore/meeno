@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>public/javascripts/views/browser-body-tag.js - Meeno source code documentation</title>
+    <title>public/javascripts/collections/filters.js - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -134,7 +134,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: public/javascripts/views/browser-body-tag.js</h1>
+                        <h1 class="file-heading">File: public/javascripts/collections/filters.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -142,91 +142,64 @@ define ([
 		&#x27;jquery&#x27;,
 		&#x27;underscore&#x27;,
 		&#x27;backbone&#x27;,
-		&#x27;channel&#x27;,
-		&#x27;views/browser-body-object&#x27;,
-	], function ($, _, Backbone, channel, BrowserBodyObjectView) {
+		&#x27;models/filter&#x27;,
+	], function ($, _, Backbone, Filter) {
 
 		/**
-		 * A backbone view to display one tag in the browser
+		 * Parent of the classes {{#crossLink &quot;NoteFilters&quot;}}{{/crossLink}}, {{#crossLink &quot;TaskFilters&quot;}}{{/crossLink}} and {{#crossLink &quot;TagFilters&quot;}}{{/crossLink}}.
+		 * It holds all the common methods necessary to deal with collections of filters.
 		 * 
-		 * @class BrowserBodyTagView
-		 * @extends BrowserBodyObjectView
+		 * @class ObjectFilters
+		 * @extends Backbone.Collection
 		 */
-		var BrowserBodyTagView = BrowserBodyObjectView.extend({
-
-			template : &#x27;#browser-body-tag-template&#x27;,
-
-			events: function(){
-				return _.extend({},BrowserBodyObjectView.prototype.events,{
-					&#x27;click .edit&#x27;    : &#x27;edit&#x27;,
-					&#x27;click .delete&#x27;  : &#x27;delete&#x27;,
-					&#x27;blur .label&#x27;    : &#x27;save&#x27;
-				});
-			},
-
-			/**
-			 * Renders one tag : generates the HTML and appends it to the DOM element of the view
-			 *
-			 * @method render
-			 * @chainable
-			 */
-			render: function() {
-				this.collName = &quot;tags&quot;;
-				var templateFn = _.template( $(this.template).html() );
-				this.$el.html (templateFn (this.model.toJSON()));
-
-				/**
-				 * Event triggered on &#x60;channel&#x60; when this.render() method is called
-				 * @event browser:tags:reSyncSelectors
-				 */
-				channel.trigger(&quot;browser:tags:reSyncSelectors&quot;);
-				return this;
-			},
-
-			/**
-			 * Displays an input to edit the tag label
-			 *
-			 * @method edit
-			 */
-			edit: function() {
-				console.log(&#x27;edit&#x27;);
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;true&#x27;).focus().select();
-				document.execCommand(&#x27;selectAll&#x27;,false,null);
-			},
-
-			/**
-			 * Sets the view&#x27;s model label to the input (&#x60;span.label&#x60;) value and saves the model
-			 *
-			 * @method save
-			 */
-			save: function() {
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;false&#x27;);
-				console.log(&#x27;save&#x27;);
-				this.model.set({
-					label  :this.$(&quot;span.label&quot;).html()
-				}).save({},{
-					success: function() {
-						console.log(&#x27;save success&#x27;);
-					},
-					error  : function() {
-						console.log(&#x27;save error&#x27;);
-					}
-				});
-			},
-
-			/**
-			 * Will destroy the view&#x27;s model and the view itself when the user clics on &#x60;.delete&#x60; class DOM element
-			 *
-			 * @method delete
-			 */
-			delete: function() {
-				this.model.destroy();
-				mee.Tags.remove(this.model);
-				this.remove();
+		var ObjectFilters = Backbone.Collection.extend({
+			containsSimilar: function (of) {
+				// If we can find a filter that is similar to of, this.find will be different from undefined
+				// =&gt; containsSimilar() will return true
+				return (undefined !== this.find(function(filter) {
+					return filter.isSimilar(of);
+				}));
 			},
 		});
 
-		return BrowserBodyTagView;
+		/**
+		 * This class defines a collection of {{#crossLink &quot;NoteFilter&quot;}}{{/crossLink}}s.
+		 * 
+		 * @class NoteFilters
+		 * @extends ObjectFilters
+		 */
+		var NoteFilters = ObjectFilters.extend({
+			model: Filter.Note,
+			url: &#x27;/api/filters/note&#x27;
+		});
+
+		/**
+		 * This class defines a collection of {{#crossLink &quot;TagFilter&quot;}}{{/crossLink}}s.
+		 * 
+		 * @class TagFilters
+		 * @extends ObjectFilters
+		 */
+		var TagFilters = ObjectFilters.extend ({
+			model: Filter.Tag,
+			url: &#x27;/api/filters/tag&#x27;
+		});
+
+		/**
+		* This class defines a collection of {{#crossLink &quot;TaskFilter&quot;}}{{/crossLink}}s.
+		* 
+		* @class TaskFilters
+		* @extends ObjectFilters
+		*/
+		var TaskFilters = ObjectFilters.extend ({
+			model: Filter.Task,
+			url: &#x27;/api/filters/task&#x27;
+		});
+
+		return {
+			Note: NoteFilters,
+			Task: TaskFilters,
+			Tag : TagFilters,
+		};
 	}
 );
     </pre>

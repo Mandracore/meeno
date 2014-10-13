@@ -1,7 +1,6 @@
 {
 	"name": "Meeno source code documentation",
 	"version": "0.2.5",
-	"url": "http://net.tutsplus.com",
 	"options": {
 		"linkNatives": "true",
 		"outdir": "./docs",

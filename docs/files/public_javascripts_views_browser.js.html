@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>public/javascripts/views/browser-body-tag.js - Meeno source code documentation</title>
+    <title>public/javascripts/views/browser.js - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -134,7 +134,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: public/javascripts/views/browser-body-tag.js</h1>
+                        <h1 class="file-heading">File: public/javascripts/views/browser.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -143,90 +143,34 @@ define ([
 		&#x27;underscore&#x27;,
 		&#x27;backbone&#x27;,
 		&#x27;channel&#x27;,
-		&#x27;views/browser-body-object&#x27;,
-	], function ($, _, Backbone, channel, BrowserBodyObjectView) {
-
+		&#x27;views/browser-tab&#x27;,
+		&#x27;views/browser-body&#x27;,
+	], function ($, _, Backbone, channel, BrowserTabView, BrowserBodyView) {
 		/**
-		 * A backbone view to display one tag in the browser
+		 * This class is mainly a proxy for two subclasses : {{#crossLink &quot;BrowserTabView&quot;}}{{/crossLink}} and {{#crossLink &quot;BrowserBodyView&quot;}}{{/crossLink}}.
+		 * It listens to the event tab:toggle:browser and make the two subviews visible.
 		 * 
-		 * @class BrowserBodyTagView
-		 * @extends BrowserBodyObjectView
+		 * @class BrowserView
+		 * @constructor
 		 */
-		var BrowserBodyTagView = BrowserBodyObjectView.extend({
+		var BrowserView = Backbone.View.extend({
 
-			template : &#x27;#browser-body-tag-template&#x27;,
+			initialize: function() {
+				this.listenTo(channel, &#x27;tab:toggle:browser&#x27;, this.toggle);
 
-			events: function(){
-				return _.extend({},BrowserBodyObjectView.prototype.events,{
-					&#x27;click .edit&#x27;    : &#x27;edit&#x27;,
-					&#x27;click .delete&#x27;  : &#x27;delete&#x27;,
-					&#x27;blur .label&#x27;    : &#x27;save&#x27;
-				});
+				this.children = {
+					tab  : new BrowserTabView({ el: $(&quot;#nav .browse&quot;), parent: this }),
+					body : new BrowserBodyView({ el: $(&quot;#tabs .browse&quot;), parent: this })
+				};
 			},
 
-			/**
-			 * Renders one tag : generates the HTML and appends it to the DOM element of the view
-			 *
-			 * @method render
-			 * @chainable
-			 */
-			render: function() {
-				this.collName = &quot;tags&quot;;
-				var templateFn = _.template( $(this.template).html() );
-				this.$el.html (templateFn (this.model.toJSON()));
-
-				/**
-				 * Event triggered on &#x60;channel&#x60; when this.render() method is called
-				 * @event browser:tags:reSyncSelectors
-				 */
-				channel.trigger(&quot;browser:tags:reSyncSelectors&quot;);
-				return this;
-			},
-
-			/**
-			 * Displays an input to edit the tag label
-			 *
-			 * @method edit
-			 */
-			edit: function() {
-				console.log(&#x27;edit&#x27;);
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;true&#x27;).focus().select();
-				document.execCommand(&#x27;selectAll&#x27;,false,null);
-			},
-
-			/**
-			 * Sets the view&#x27;s model label to the input (&#x60;span.label&#x60;) value and saves the model
-			 *
-			 * @method save
-			 */
-			save: function() {
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;false&#x27;);
-				console.log(&#x27;save&#x27;);
-				this.model.set({
-					label  :this.$(&quot;span.label&quot;).html()
-				}).save({},{
-					success: function() {
-						console.log(&#x27;save success&#x27;);
-					},
-					error  : function() {
-						console.log(&#x27;save error&#x27;);
-					}
-				});
-			},
-
-			/**
-			 * Will destroy the view&#x27;s model and the view itself when the user clics on &#x60;.delete&#x60; class DOM element
-			 *
-			 * @method delete
-			 */
-			delete: function() {
-				this.model.destroy();
-				mee.Tags.remove(this.model);
-				this.remove();
-			},
+			toggle: function() {
+				this.children.tab.toggle();
+				this.children.body.toggle();
+			}
 		});
 
-		return BrowserBodyTagView;
+		return BrowserView;
 	}
 );
     </pre>

@@ -112,6 +112,8 @@ define ([
 		});
 
 		/**
+		 * Used to filter collections of {{#crossLink "Tag"}}{{/crossLink}}s.
+		 * 
 		 * @class TagFilter
 		 * @extends ObjectFilter
 		 */
@@ -128,6 +130,8 @@ define ([
 		});
 
 		/**
+		 * Used to filter collections of {{#crossLink "Task"}}{{/crossLink}}s.
+		 * 
 		 * @class TaskFilter
 		 * @extends ObjectFilter
 		 */
@@ -149,6 +153,8 @@ define ([
 		});
 
 		/**
+		 * Used to filter collections of {{#crossLink "Note"}}{{/crossLink}}s.
+		 * 
 		 * @class NoteFilter
 		 * @extends ObjectFilter
 		 */

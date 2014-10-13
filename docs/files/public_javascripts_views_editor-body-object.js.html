@@ -41,45 +41,59 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/LinkNoteTag.html">LinkNoteTag</a></li>
+                <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/LinkNoteTask.html">LinkNoteTask</a></li>
+                <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/BrowserBodyTaskView.html">BrowserBodyTaskView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
+                <li><a href="../classes/BrowserBodyView.html">BrowserBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTaskView.html">mee.cla.BrowserBodyTaskView</a></li>
+                <li><a href="../classes/BrowserTabView.html">BrowserTabView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
+                <li><a href="../classes/BrowserView.html">BrowserView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
+                <li><a href="../classes/EditorBodyView.html">EditorBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
+                <li><a href="../classes/EditorTabView.html">EditorTabView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
+                <li><a href="../classes/EditorView.html">EditorView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tags.html">mee.cla.Tags</a></li>
-            
-                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
+                <li><a href="../classes/MainView.html">MainView</a></li>
             
                 <li><a href="../classes/Note.html">Note</a></li>
             
+                <li><a href="../classes/NoteFilter.html">NoteFilter</a></li>
+            
+                <li><a href="../classes/NoteFilters.html">NoteFilters</a></li>
+            
                 <li><a href="../classes/Notes.html">Notes</a></li>
+            
+                <li><a href="../classes/NoteTag.html">NoteTag</a></li>
+            
+                <li><a href="../classes/NoteTask.html">NoteTask</a></li>
+            
+                <li><a href="../classes/ObjectFilter.html">ObjectFilter</a></li>
+            
+                <li><a href="../classes/ObjectFilters.html">ObjectFilters</a></li>
+            
+                <li><a href="../classes/TagFilter.html">TagFilter</a></li>
+            
+                <li><a href="../classes/TagFilters.html">TagFilters</a></li>
+            
+                <li><a href="../classes/Tags.html">Tags</a></li>
+            
+                <li><a href="../classes/Task.html">Task</a></li>
+            
+                <li><a href="../classes/TaskFilter.html">TaskFilter</a></li>
+            
+                <li><a href="../classes/TaskFilters.html">TaskFilters</a></li>
+            
+                <li><a href="../classes/Tasks.html">Tasks</a></li>
+            
+                <li><a href="../classes/TaskTag.html">TaskTag</a></li>
             
             </ul>
 
@@ -124,185 +138,204 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var mee     = mee || {};
-mee.cla = mee.cla || {};
+define ([
+	// path aliases preconfigured in ../main.js
+		&#x27;jquery&#x27;,
+		&#x27;underscore&#x27;,
+		&#x27;backbone&#x27;,
+		&#x27;temp&#x27;,
+		&#x27;lib/tools&#x27;,
+		&#x27;text!../../templates/editor-body-object.html&#x27;,
+		&#x27;models/task&#x27;,
+		&#x27;models/tag&#x27;,
+	], function ($, _, Backbone, temp, tools, hTemplate, Task, Tag) {
+		var EditorBodyObjectView = Backbone.View.extend({
+			// this.options.modelClass = &#x27;tag&#x27; OR &#x27;task&#x27;
+			tagName   :&#x27;span&#x27;,
+			className :&#x27;object&#x27;,
 
-mee.cla.EditorBodyObjectView = Backbone.View.extend({
-	// this.options.modelClass = &#x27;tag&#x27; OR &#x27;task&#x27;
-	tagName   :&#x27;span&#x27;,
-	template  :&#x27;#editor-body-object-template&#x27;,
-	className :&#x27;object&#x27;,
-
-	// The DOM events specific to an item.
-	events: {
-		&#x27;input&#x27;    : &#x27;autocomplete&#x27;,
-		&#x27;keypress&#x27; : &#x27;keyProxy&#x27;
-	},
-
-	initialize: function() {
-		this.options.isLocked = false;
-		Backbone.View.prototype.initialize.apply(this, arguments);
-
-		if (this.model) {
-			this.options.id = this.$el.attr(&#x27;id&#x27;);
-			this.options.isLocked = true;
-			this.listenTo(this.model, &#x27;change&#x27;, this.render);
-			this.listenTo(this.model, &#x27;remove&#x27;, this.kill);
-		} else {
-			this.options.id = makeid();
-		}
-		this.listenTo(this.options.note, &#x27;change:content&#x27;, this.checkChanges);
-	},
-
-	checkChanges: function () {
-		if (this.options.parentDOM.find(this.$el).length === 0) {
-			console.log(this.cid+&quot;&#x27;s DOM element has been removed&quot;);
-			if (!this.model) {
-				this.kill();
-			} else {
-				this.unlink();
-			}
-		}
-		else {console.log(this.cid+&quot;&#x27;s DOM element still exists&quot;);}
-	},
-
-	/**
-	 * Filters the keyboard events to pass only ENTER and TAB to the lock() method
-	 * @param  {keyboard event} event The keyboard event
-	 * @return {void}
-	 */
-	keyProxy: function(event) {
-		if (event.keyCode == 13 || event.keyCode == 9) {
-			this.lock();
-		}
-	},
-
-	render: function() {
-		console.log (&#x27;R[emb-&#x27;+this.options.modelClass+&#x27;]&#x27;);
-		this.$el.attr(&#x27;id&#x27;, this.options.id);
-		this.$el.attr(&#x27;contentEditable&#x27;,false);
-		var templateData = {
-			id       : this.options.id,
-		};
-		var templateFn = _.template( $(this.template).html() );
-		this.$el.html( templateFn( templateData ) );
-		if (!this.$el.hasClass(this.options.modelClass)) { this.$el.addClass(this.options.modelClass); }
-		if (!this.$el.hasClass(&#x27;icon-&#x27;+this.options.modelClass+&#x27;s&#x27;)) { this.$el.addClass(&#x27;icon-&#x27;+this.options.modelClass+&#x27;s&#x27;); }
-		return this;
-	},
-
-	autocomplete: function() {
-		var strHint = (this.$(&quot;.body&quot;).val());
-		if (strHint.length &gt; -1) {
-			var pattern = new RegExp(strHint,&quot;i&quot;);
-			var proposals = mee[this.options.modelClass+&#x27;s&#x27;].filter(function (model) {
-				return pattern.test(model.get(&#x27;label&#x27;));
-			});
-			var datalistOptions = proposals.map(function (obj, key) {
-				return &quot;&lt;option class=&#x27;trick&#x27; data-model-id=&#x27;&quot;+obj.get(&#x27;_id&#x27;)+&quot;&#x27; value=&#x27;&quot;+obj.get(&#x27;label&#x27;)+&quot;&#x27;&gt;&quot;+obj.get(&#x27;label&#x27;)+&quot;&lt;/option&gt;&quot;;
-			});
-			this.$(&quot;.datalist&quot;).html(datalistOptions);
-		}
-	},
-
-	error: function (msg) {
-		console.error(msg);
-		this.$el.addClass(&quot;broken&quot;);
-	},
-
-	/**
-	 * Triggered once the user finishes typing in the new object.
-	 * Used as a proxy to either link the note to a new object, or to create a new object
-	 * @param  {keyboard event} event The keyboard event
-	 * @return {void}
-	 */
-	lock: function (event) {
-		console.log(&quot;locking&quot;);
-		var modelClassName = this.options.modelClass.replace(/^(.)/, function($1){ return $1.toUpperCase( ); });
-		var self = this;
-		if (!this.options.isLocked) {
-			if (this.$(&#x27;.body&#x27;).val().length &lt;= 2) {
-				console.log(&#x27;##WARNING## &#x27;+this.options.modelClass+&#x27; too short to lock&#x27;); // We save only tasks/tags of more than 2 characters
-			} else {
-				console.log(&#x27;______ Locking Object ______&#x27;);
-
-				var selectedModel = mee[this.options.modelClass+&#x27;s&#x27;].find(function (model) {
-					return model.get(&#x27;label&#x27;) == self.$(&quot;.body&quot;).val();
-				});
-
-				if (!selectedModel) {
-				// If the model doesn&#x27;t exist, we create it
-					console.log(&#x27;--- Creating new &#x27;+this.options.modelClass+&#x27; ---&#x27;);
-					this.model = new mee.cla[modelClassName]({
-						label : this.$(&quot;.body&quot;).val()
-					});
-
-					if (this.options.modelClass == &quot;task&quot;) {
-						mee.tasks.shiftDown(this.model);
-					}
-					mee[this.options.modelClass+&#x27;s&#x27;].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
-					// Now that the model is into a collection, the .save() method will work
-					this.model.save({}, {
-						success: function () { 
-							console.log (&quot;[OK] &quot;+self.options.modelClass+&quot; successfully created&quot;);
-							self.link();
-						},
-						error  : function () { self.error(&quot;### Impossible to link &quot;+self.options.modelClass); }
-					});
-				} else {
-				// The model already exists, so we retrieve it
-					if (_.contains(selectedModel.get(&#x27;noteLinks&#x27;).pluck(&#x27;note&#x27;), this.options.note)) {
-						console.log(this.options.modelClass+&#x27; already linked to this note&#x27;);
-						return;
-					}
-					this.model = selectedModel;
-					this.link();
-				}
-			}
-		}
-	},
-
-	link: function () {
-		// Linking view&#x27;s model (created or retrieved) to the note
-		var self = this;
-		console.log(&#x27;------ trying to link &#x27;+this.options.modelClass);
-		
-		if (this.options.modelClass == &quot;tag&quot;) {
-			this.options.note.get(&#x27;tagLinks&#x27;).add( { tag: this.model } );
-		} else {
-			this.options.note.get(&#x27;taskLinks&#x27;).add({ task : this.model });
-		}
-		// var link = new mee.cla[&quot;linkNote&quot;+modelClassName] ({});
-		// link.set(&#x27;note&#x27;, this.options.note);
-		// link.set(this.options.modelClass, this.model);
-		// mee[&quot;linkNote&quot;+modelClassName].add(link);
-		this.options.note.save({},{ 
-			success: function () {
-				var $newSpan = $(&quot;&lt;span&gt;&quot;,{class:&quot;body&quot;}).html(self.model.get(&#x27;label&#x27;));
-				self.$(&quot;.body&quot;).parent().remove();
-				self.$el.append($newSpan);
-				self.$el.removeClass(&quot;broken&quot;);
-				self.$el.addClass(&quot;locked&quot;);
-				self.$el.attr(&quot;data-model-id&quot;,self.model.get(&quot;_id&quot;));
-				self.isLocked = true;
-				moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
-				console.log(&quot;[OK] &quot;+self.options.modelClass+&#x27; &quot;&#x27;+self.model.get(&#x27;label&#x27;)+&#x27;&quot; linked to current note&#x27;);
-				self.options.isLocked = true;
+			// The DOM events specific to an item.
+			events: {
+				&#x27;input&#x27;    : &#x27;autocomplete&#x27;,
+				&#x27;keypress&#x27; : &#x27;keyProxy&#x27;
 			},
-			error  : function () {self.error(&quot;### Impossible to link &quot;+self.options.modelClass);}
-		});
-	},
 
-	unlink: function () {
-		var self = this;
-		var link2remove = this.model.get(&#x27;noteLinks&#x27;).find(function(noteLink){return noteLink.get(self.options.modelClass) == self.model; });
-		//this.model.get(&#x27;noteLinks&#x27;).remove(link2remove);
-		link2remove.destroy({},{
-			success: function () {console.log(&#x27;Object successfully unlinked&#x27;);self.kill();},
-			error: function () {console.error(&#x27;Impossible to unlink object&#x27;);self.kill();}
+			initialize: function(options) {
+				this.options = options;
+				//this.options.isLocked
+				//this.options.id
+				//this.options.parentDOM
+				//this.options.note
+				//this.options.modelClass
+				this.options.isLocked = false;
+				Backbone.View.prototype.initialize.apply(this, arguments);
+
+				if (this.model) {
+					this.options.id = this.$el.attr(&#x27;id&#x27;);
+					this.options.isLocked = true;
+					this.listenTo(this.model, &#x27;change&#x27;, this.render);
+					this.listenTo(this.model, &#x27;remove&#x27;, this.kill);
+				} else {
+					this.options.id = tools.makeid();
+				}
+				this.listenTo(this.options.note, &#x27;change:content&#x27;, this.checkChanges);
+			},
+
+			checkChanges: function () {
+				if (this.options.parentDOM.find(this.$el).length === 0) {
+					console.log(this.cid+&quot;&#x27;s DOM element has been removed&quot;);
+					if (!this.model) {
+						this.kill();
+					} else {
+						this.unlink();
+					}
+				}
+				else {console.log(this.cid+&quot;&#x27;s DOM element still exists&quot;);}
+			},
+
+			/**
+			 * Filters the keyboard events to pass only ENTER and TAB to the lock() method
+			 * @param  {keyboard event} event The keyboard event
+			 * @return {void}
+			 */
+			keyProxy: function(event) {
+				if (event.keyCode == 13 || event.keyCode == 9) {
+					this.lock();
+				}
+			},
+
+			render: function() {
+				console.log (&#x27;R[emb-&#x27;+this.options.modelClass+&#x27;]&#x27;);
+				this.$el.attr(&#x27;id&#x27;, this.options.id);
+				this.$el.attr(&#x27;contentEditable&#x27;,false);
+
+				var compiledTemplate = _.template(hTemplate);
+				this.$el.html( compiledTemplate({ id:this.options.id }) );
+
+				if (!this.$el.hasClass(this.options.modelClass)) { this.$el.addClass(this.options.modelClass); }
+				if (!this.$el.hasClass(&#x27;icon-&#x27;+this.options.modelClass+&#x27;s&#x27;)) { this.$el.addClass(&#x27;icon-&#x27;+this.options.modelClass+&#x27;s&#x27;); }
+				return this;
+			},
+
+			autocomplete: function() {
+				var strHint = (this.$(&quot;.body&quot;).val());
+				if (strHint.length &gt; -1) {
+					var pattern = new RegExp(strHint,&quot;i&quot;);
+					var proposals = temp.coll[this.options.modelClass+&#x27;s&#x27;].filter(function (model) {
+						return pattern.test(model.get(&#x27;label&#x27;));
+					});
+					var datalistOptions = proposals.map(function (obj, key) {
+						return &quot;&lt;option class=&#x27;trick&#x27; data-model-id=&#x27;&quot;+obj.get(&#x27;_id&#x27;)+&quot;&#x27; value=&#x27;&quot;+obj.get(&#x27;label&#x27;)+&quot;&#x27;&gt;&quot;+obj.get(&#x27;label&#x27;)+&quot;&lt;/option&gt;&quot;;
+					});
+					this.$(&quot;.datalist&quot;).html(datalistOptions);
+				}
+			},
+
+			error: function (msg) {
+				console.error(msg);
+				this.$el.addClass(&quot;broken&quot;);
+			},
+
+			/**
+			 * Triggered once the user finishes typing in the new object.
+			 * Used as a proxy to either link the note to a new object, or to create a new object
+			 * @param  {keyboard event} event The keyboard event
+			 * @return {void}
+			 */
+			lock: function (event) {
+				console.log(&quot;locking&quot;);
+				var self = this;
+				if (!this.options.isLocked) {
+					if (this.$(&#x27;.body&#x27;).val().length &lt;= 2) {
+						console.log(&#x27;##WARNING## &#x27;+this.options.modelClass+&#x27; too short to lock&#x27;); // We save only tasks/tags of more than 2 characters
+					} else {
+						console.log(&#x27;______ Locking Object ______&#x27;);
+
+						var selectedModel = temp.coll[this.options.modelClass+&#x27;s&#x27;].find(function (model) {
+							return model.get(&#x27;label&#x27;) == self.$(&quot;.body&quot;).val();
+						});
+
+						if (!selectedModel) {
+						// If the model doesn&#x27;t exist, we create it
+							console.log(&#x27;--- Creating new &#x27;+this.options.modelClass+&#x27; ---&#x27;);
+							
+							if (this.options.modelClass == &quot;task&quot;) {
+								this.model = new Task ({
+									label : this.$(&quot;.body&quot;).val()
+								});
+								temp.coll.tasks.shiftDown(this.model);
+							} else {
+								this.model = new Tag ({
+									label : this.$(&quot;.body&quot;).val()
+								});
+							}
+							temp.coll[this.options.modelClass+&#x27;s&#x27;].add(this.model,{merge: true}); // We add it to the collection in case it has been freshly created
+							
+							// Now that the model is into a collection, the .save() method will work
+							this.model.save({}, {
+								success: function () { 
+									console.log (&quot;[OK] &quot;+self.options.modelClass+&quot; successfully created&quot;);
+									self.link();
+								},
+								error  : function () { self.error(&quot;### Impossible to link &quot;+self.options.modelClass); }
+							});
+						} else {
+						// The model already exists, so we retrieve it
+							if (_.contains(selectedModel.get(&#x27;noteLinks&#x27;).pluck(&#x27;note&#x27;), this.options.note)) {
+								console.log(this.options.modelClass+&#x27; already linked to this note&#x27;);
+								return;
+							}
+							this.model = selectedModel;
+							this.link();
+						}
+					}
+				}
+			},
+
+			link: function () {
+				// Linking view&#x27;s model (created or retrieved) to the note
+				var self = this;
+				console.log(&#x27;------ trying to link &#x27;+this.options.modelClass);
+				
+				if (this.options.modelClass == &quot;tag&quot;) {
+					this.options.note.get(&#x27;tagLinks&#x27;).add( { tag: this.model } );
+				} else {
+					this.options.note.get(&#x27;taskLinks&#x27;).add({ task : this.model });
+				}
+
+				this.options.note.save({},{ 
+					success: function () {
+						var $newSpan = $(&quot;&lt;span&gt;&quot;,{class:&quot;body&quot;}).html(self.model.get(&#x27;label&#x27;));
+						self.$(&quot;.body&quot;).parent().remove();
+						self.$el.append($newSpan);
+						self.$el.removeClass(&quot;broken&quot;);
+						self.$el.addClass(&quot;locked&quot;);
+						self.$el.attr(&quot;data-model-id&quot;,self.model.get(&quot;_id&quot;));
+						self.isLocked = true;
+						tools.moveCaret (self.$el.next()[0], 1); // Moving the caret out of the object
+						console.log(&quot;[OK] &quot;+self.options.modelClass+&#x27; &quot;&#x27;+self.model.get(&#x27;label&#x27;)+&#x27;&quot; linked to current note&#x27;);
+						self.options.isLocked = true;
+					},
+					error  : function () {self.error(&quot;### Impossible to link &quot;+self.options.modelClass);}
+				});
+			},
+
+			unlink: function () {
+				var self = this;
+				var link2remove = this.model.get(&#x27;noteLinks&#x27;).find(function(noteLink){return noteLink.get(self.options.modelClass) == self.model; });
+				//this.model.get(&#x27;noteLinks&#x27;).remove(link2remove);
+				link2remove.destroy({},{
+					success: function () {console.log(&#x27;Object successfully unlinked&#x27;);self.kill();},
+					error: function () {console.error(&#x27;Impossible to unlink object&#x27;);self.kill();}
+				});
+			}
 		});
+
+		return EditorBodyObjectView;
 	}
-});
+);
+
+
     </pre>
 </div>
 

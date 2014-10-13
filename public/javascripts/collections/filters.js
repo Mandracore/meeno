@@ -7,7 +7,7 @@ define ([
 
 		/**
 		 * Parent of the classes {{#crossLink "NoteFilters"}}{{/crossLink}}, {{#crossLink "TaskFilters"}}{{/crossLink}} and {{#crossLink "TagFilters"}}{{/crossLink}}.
-		 * It holds all the common methods.
+		 * It holds all the common methods necessary to deal with collections of filters.
 		 * 
 		 * @class ObjectFilters
 		 * @extends Backbone.Collection
@@ -23,7 +23,7 @@ define ([
 		});
 
 		/**
-		 * This class defines a collection of {{#crossLink "TaskFilter"}}{{/crossLink}},
+		 * This class defines a collection of {{#crossLink "NoteFilter"}}{{/crossLink}}s.
 		 * 
 		 * @class NoteFilters
 		 * @extends ObjectFilters
@@ -34,7 +34,7 @@ define ([
 		});
 
 		/**
-		 * This class defines a collection of {{#crossLink "TaskFilter"}}{{/crossLink}},
+		 * This class defines a collection of {{#crossLink "TagFilter"}}{{/crossLink}}s.
 		 * 
 		 * @class TagFilters
 		 * @extends ObjectFilters
@@ -45,7 +45,7 @@ define ([
 		});
 
 		/**
-		* This class defines a collection of {{#crossLink "TaskFilter"}}{{/crossLink}},
+		* This class defines a collection of {{#crossLink "TaskFilter"}}{{/crossLink}}s.
 		* 
 		* @class TaskFilters
 		* @extends ObjectFilters

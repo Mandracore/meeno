@@ -362,3 +362,18 @@ par paramètre dans browser-body, ce qui a priory n'a aucun sens...
 
 30/09===========================================
 Prévoir un problème avec backbone.mousetrap et l18n (qui se chargera mal, cf local var dans index.jade)
+
+
+12/10===========================================
+Possibilités à valider pour le test
+
+Unit :
+	runner : Karma (avec son webdriver ou selenium) / lance un 1er server node
+	tester : Jasmine
+	browser : Selenium ?
+Integration :
+	runner : Jasmine-node, qui est aussi un runner
+	tester : Jasmine
+	browser : Zombie
+
+Rajouter des scripts npm pour télécommander la génération de la documentation

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>public/javascripts/views/browser-body-tag.js - Meeno source code documentation</title>
+    <title>EditorView - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -134,102 +134,67 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: public/javascripts/views/browser-body-tag.js</h1>
+                        <h1>EditorView Class</h1>
+<div class="box meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-define ([
-		&#x27;jquery&#x27;,
-		&#x27;underscore&#x27;,
-		&#x27;backbone&#x27;,
-		&#x27;channel&#x27;,
-		&#x27;views/browser-body-object&#x27;,
-	], function ($, _, Backbone, channel, BrowserBodyObjectView) {
+    
+        <div class="extends">
+            Extends Backbone.View
+        </div>
+    
 
-		/**
-		 * A backbone view to display one tag in the browser
-		 * 
-		 * @class BrowserBodyTagView
-		 * @extends BrowserBodyObjectView
-		 */
-		var BrowserBodyTagView = BrowserBodyObjectView.extend({
+    
+        <div class="foundat">
+            Defined in: <a href="../files/public_javascripts_views_editor.js.html#l12"><code>public&#x2F;javascripts&#x2F;views&#x2F;editor.js:12</code></a>
+        </div>
+    
 
-			template : &#x27;#browser-body-tag-template&#x27;,
+    
 
-			events: function(){
-				return _.extend({},BrowserBodyObjectView.prototype.events,{
-					&#x27;click .edit&#x27;    : &#x27;edit&#x27;,
-					&#x27;click .delete&#x27;  : &#x27;delete&#x27;,
-					&#x27;blur .label&#x27;    : &#x27;save&#x27;
-				});
-			},
+    
+</div>
 
-			/**
-			 * Renders one tag : generates the HTML and appends it to the DOM element of the view
-			 *
-			 * @method render
-			 * @chainable
-			 */
-			render: function() {
-				this.collName = &quot;tags&quot;;
-				var templateFn = _.template( $(this.template).html() );
-				this.$el.html (templateFn (this.model.toJSON()));
 
-				/**
-				 * Event triggered on &#x60;channel&#x60; when this.render() method is called
-				 * @event browser:tags:reSyncSelectors
-				 */
-				channel.trigger(&quot;browser:tags:reSyncSelectors&quot;);
-				return this;
-			},
 
-			/**
-			 * Displays an input to edit the tag label
-			 *
-			 * @method edit
-			 */
-			edit: function() {
-				console.log(&#x27;edit&#x27;);
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;true&#x27;).focus().select();
-				document.execCommand(&#x27;selectAll&#x27;,false,null);
-			},
+<div class="box intro">
+    <p>This backbone view holds the note editor</p>
 
-			/**
-			 * Sets the view&#x27;s model label to the input (&#x60;span.label&#x60;) value and saves the model
-			 *
-			 * @method save
-			 */
-			save: function() {
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;false&#x27;);
-				console.log(&#x27;save&#x27;);
-				this.model.set({
-					label  :this.$(&quot;span.label&quot;).html()
-				}).save({},{
-					success: function() {
-						console.log(&#x27;save success&#x27;);
-					},
-					error  : function() {
-						console.log(&#x27;save error&#x27;);
-					}
-				});
-			},
+</div>
 
-			/**
-			 * Will destroy the view&#x27;s model and the view itself when the user clics on &#x60;.delete&#x60; class DOM element
-			 *
-			 * @method delete
-			 */
-			delete: function() {
-				this.model.destroy();
-				mee.Tags.remove(this.model);
-				this.remove();
-			},
-		});
 
-		return BrowserBodyTagView;
-	}
-);
-    </pre>
+
+<div id="classdocs" class="tabview">
+    <ul class="api-class-tabs">
+        <li class="api-class-tab index"><a href="#index">Index</a></li>
+
+        
+        
+        
+        
+    </ul>
+
+    <div>
+        <div id="index" class="api-class-tabpanel index">
+            <h2 class="off-left">Item Index</h2>
+
+            
+
+            
+
+            
+
+            
+        </div>
+
+        
+
+        
+
+        
+
+        
+    </div>
 </div>
 
                     </div>

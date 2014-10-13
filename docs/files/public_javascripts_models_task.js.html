@@ -41,45 +41,59 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
-                <li><a href="../classes/LinkNoteTag.html">LinkNoteTag</a></li>
+                <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
-                <li><a href="../classes/LinkNoteTask.html">LinkNoteTask</a></li>
+                <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyFilterView.html">mee.cla.BrowserBodyFilterView</a></li>
+                <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyObjectView.html">mee.cla.BrowserBodyObjectView</a></li>
+                <li><a href="../classes/BrowserBodyTaskView.html">BrowserBodyTaskView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTagView.html">mee.cla.BrowserBodyTagView</a></li>
+                <li><a href="../classes/BrowserBodyView.html">BrowserBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyTaskView.html">mee.cla.BrowserBodyTaskView</a></li>
+                <li><a href="../classes/BrowserTabView.html">BrowserTabView</a></li>
             
-                <li><a href="../classes/mee.cla.BrowserBodyView.html">mee.cla.BrowserBodyView</a></li>
+                <li><a href="../classes/BrowserView.html">BrowserView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilter.html">mee.cla.NoteFilter</a></li>
+                <li><a href="../classes/EditorBodyView.html">EditorBodyView</a></li>
             
-                <li><a href="../classes/mee.cla.NoteFilters.html">mee.cla.NoteFilters</a></li>
+                <li><a href="../classes/EditorTabView.html">EditorTabView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilter.html">mee.cla.ObjectFilter</a></li>
+                <li><a href="../classes/EditorView.html">EditorView</a></li>
             
-                <li><a href="../classes/mee.cla.ObjectFilters.html">mee.cla.ObjectFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilter.html">mee.cla.TagFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TagFilters.html">mee.cla.TagFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tags.html">mee.cla.Tags</a></li>
-            
-                <li><a href="../classes/mee.cla.Task.html">mee.cla.Task</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilter.html">mee.cla.TaskFilter</a></li>
-            
-                <li><a href="../classes/mee.cla.TaskFilters.html">mee.cla.TaskFilters</a></li>
-            
-                <li><a href="../classes/mee.cla.Tasks.html">mee.cla.Tasks</a></li>
+                <li><a href="../classes/MainView.html">MainView</a></li>
             
                 <li><a href="../classes/Note.html">Note</a></li>
             
+                <li><a href="../classes/NoteFilter.html">NoteFilter</a></li>
+            
+                <li><a href="../classes/NoteFilters.html">NoteFilters</a></li>
+            
                 <li><a href="../classes/Notes.html">Notes</a></li>
+            
+                <li><a href="../classes/NoteTag.html">NoteTag</a></li>
+            
+                <li><a href="../classes/NoteTask.html">NoteTask</a></li>
+            
+                <li><a href="../classes/ObjectFilter.html">ObjectFilter</a></li>
+            
+                <li><a href="../classes/ObjectFilters.html">ObjectFilters</a></li>
+            
+                <li><a href="../classes/TagFilter.html">TagFilter</a></li>
+            
+                <li><a href="../classes/TagFilters.html">TagFilters</a></li>
+            
+                <li><a href="../classes/Tags.html">Tags</a></li>
+            
+                <li><a href="../classes/Task.html">Task</a></li>
+            
+                <li><a href="../classes/TaskFilter.html">TaskFilter</a></li>
+            
+                <li><a href="../classes/TaskFilters.html">TaskFilters</a></li>
+            
+                <li><a href="../classes/Tasks.html">Tasks</a></li>
+            
+                <li><a href="../classes/TaskTag.html">TaskTag</a></li>
             
             </ul>
 
@@ -124,59 +138,67 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-var mee = mee || {};
-mee.cla = mee.cla || {};
+define ([
+		&#x27;jquery&#x27;,
+		&#x27;underscore&#x27;,
+		&#x27;backbone&#x27;,
+		&#x27;models/link&#x27;,
+	], function ($, _, Backbone, Link) {
 
-/**
- * Holds the task model
- * 
- * @class mee.cla.Task
- */
-mee.cla.Task = Backbone.RelationalModel.extend({
-	idAttribute: &quot;_id&quot;,
-	relations  : [{
-		type           : &#x27;HasMany&#x27;,
-		key            : &#x27;noteLinks&#x27;,
-		relatedModel   : &#x27;mee.cla.LinkNoteTask&#x27;,
-		reverseRelation: {
-			key          : &#x27;task&#x27;,
-			includeInJSON: &#x27;_id&#x27;
-		}
-	},{
-		type           : &#x27;HasMany&#x27;,
-		key            : &#x27;tagLinks&#x27;,
-		relatedModel   : &#x27;mee.cla.LinkTaskTag&#x27;,
-		reverseRelation: {
-			key          : &#x27;task&#x27;,
-			includeInJSON: &#x27;_id&#x27;
-		}
-	}],
+		/**
+		 * Holds the task model
+		 * 
+		 * @class Task
+		 */
+		var Task = Backbone.RelationalModel.extend({
+			idAttribute: &quot;_id&quot;,
+			relations  : [{
+				type           : &#x27;HasMany&#x27;,
+				key            : &#x27;noteLinks&#x27;,
+				relatedModel   : Link.NoteTask,
+				reverseRelation: {
+					key          : &#x27;task&#x27;,
+					includeInJSON: &#x27;_id&#x27;
+				}
+			},{
+				type           : &#x27;HasMany&#x27;,
+				key            : &#x27;tagLinks&#x27;,
+				relatedModel   : Link.TaskTag,
+				reverseRelation: {
+					key          : &#x27;task&#x27;,
+					includeInJSON: &#x27;_id&#x27;
+				}
+			}],
 
-	/**
-	 * This method overrides the one provided by Backbone so that the attribute cid is also included in the json output
-	 * This is necessary for decoupling testing from database : we need unique IDs in unit testing but we don&#x27;t 
-	 * want to rely on a database layer
-	 * 
-	 * @method toJSON
-	 * @return {json} all the attributes of the model put in a json object
-	 */
-	toJSON: function() {
-		var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
-		json.cid = this.cid;
-		return json;
-	},
+			/**
+			 * This method overrides the one provided by Backbone so that the attribute cid is also included in the json output
+			 * This is necessary for decoupling testing from database : we need unique IDs in unit testing but we don&#x27;t 
+			 * want to rely on a database layer
+			 * 
+			 * @method toJSON
+			 * @return {json} all the attributes of the model put in a json object
+			 */
+			toJSON: function() {
+				var json = Backbone.Model.prototype.toJSON.apply(this, arguments);
+				json.cid = this.cid;
+				return json;
+			},
 
-	defaults: function() {
-		return {
-			label      : &#x27;New Task&#x27;,
-			description: &#x27;Description of your task...&#x27;,
-			position   : 0,
-			due_at     : new Date(),
-			created_at : new Date(),
-			updated_at : new Date()
-		};
+			defaults: function() {
+				return {
+					label      : &#x27;New Task&#x27;,
+					description: &#x27;Description of your task...&#x27;,
+					position   : 0,
+					due_at     : new Date(),
+					created_at : new Date(),
+					updated_at : new Date()
+				};
+			}
+		});
+
+		return Task;
 	}
-});
+);
     </pre>
 </div>
 

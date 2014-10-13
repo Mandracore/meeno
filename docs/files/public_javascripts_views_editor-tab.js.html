@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>public/javascripts/views/browser-body-tag.js - Meeno source code documentation</title>
+    <title>public/javascripts/views/editor-tab.js - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -134,7 +134,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: public/javascripts/views/browser-body-tag.js</h1>
+                        <h1 class="file-heading">File: public/javascripts/views/editor-tab.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -142,91 +142,52 @@ define ([
 		&#x27;jquery&#x27;,
 		&#x27;underscore&#x27;,
 		&#x27;backbone&#x27;,
-		&#x27;channel&#x27;,
-		&#x27;views/browser-body-object&#x27;,
-	], function ($, _, Backbone, channel, BrowserBodyObjectView) {
-
+	], function ($, _, Backbone) {
 		/**
-		 * A backbone view to display one tag in the browser
+		 * This backbone view holds the editor tab (simple button) controlling the display of the body rendered by {{#crossLink &quot;EditorBodyView&quot;}}{{/crossLink}}
 		 * 
-		 * @class BrowserBodyTagView
-		 * @extends BrowserBodyObjectView
+		 * @class EditorTabView
+		 * @extends Backbone.View
 		 */
-		var BrowserBodyTagView = BrowserBodyObjectView.extend({
+		var EditorTabView = Backbone.View.extend({
 
-			template : &#x27;#browser-body-tag-template&#x27;,
+			tagName   : &#x27;li&#x27;, // The View will generate itself within a &lt;tagName&gt; element (its top-level element)...
+			className : &#x27;object note&#x27;, // ... and will apply itself those classes : &lt;tagName class=&quot;className1 className2[...]&quot;
+			template  : &#x27;#editor-tab-template&#x27;, // ... and will finally use this template to render the related model with passed to the constructor
 
-			events: function(){
-				return _.extend({},BrowserBodyObjectView.prototype.events,{
-					&#x27;click .edit&#x27;    : &#x27;edit&#x27;,
-					&#x27;click .delete&#x27;  : &#x27;delete&#x27;,
-					&#x27;blur .label&#x27;    : &#x27;save&#x27;
-				});
+			// The DOM events we listen to
+			events: {
+				&#x27;click&#x27;: &#x27;delegatedToggle&#x27;
 			},
 
-			/**
-			 * Renders one tag : generates the HTML and appends it to the DOM element of the view
-			 *
-			 * @method render
-			 * @chainable
-			 */
-			render: function() {
-				this.collName = &quot;tags&quot;;
-				var templateFn = _.template( $(this.template).html() );
-				this.$el.html (templateFn (this.model.toJSON()));
+			initialize: function() {
+				this.listenTo(this.model, &#x27;change:title&#x27;, this.render); // If the model&#x27;s title is updated, the view will be redrawn
+			},
 
-				/**
-				 * Event triggered on &#x60;channel&#x60; when this.render() method is called
-				 * @event browser:tags:reSyncSelectors
-				 */
-				channel.trigger(&quot;browser:tags:reSyncSelectors&quot;);
+			beforeKill: function() {},
+
+			// Renders the tab-nav item to the current state of the model
+			render: function() {
+				var templateFn = _.template( $(this.template).html() );
+				this.$el.html( templateFn( this.model.toJSON() ) );
 				return this;
 			},
 
-			/**
-			 * Displays an input to edit the tag label
-			 *
-			 * @method edit
-			 */
-			edit: function() {
-				console.log(&#x27;edit&#x27;);
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;true&#x27;).focus().select();
-				document.execCommand(&#x27;selectAll&#x27;,false,null);
+			delegatedToggle: function() {
+				this.options.parent.toggle();
 			},
 
-			/**
-			 * Sets the view&#x27;s model label to the input (&#x60;span.label&#x60;) value and saves the model
-			 *
-			 * @method save
-			 */
-			save: function() {
-				this.$(&quot;span.label&quot;).attr(&#x27;contenteditable&#x27;,&#x27;false&#x27;);
-				console.log(&#x27;save&#x27;);
-				this.model.set({
-					label  :this.$(&quot;span.label&quot;).html()
-				}).save({},{
-					success: function() {
-						console.log(&#x27;save success&#x27;);
-					},
-					error  : function() {
-						console.log(&#x27;save error&#x27;);
-					}
+			toggle: function() {
+				// First, deactivate the other tabs
+				$(&quot;#nav&quot;).children().each(function(i,child){
+					$(child).removeClass(&quot;selected&quot;);
 				});
-			},
-
-			/**
-			 * Will destroy the view&#x27;s model and the view itself when the user clics on &#x60;.delete&#x60; class DOM element
-			 *
-			 * @method delete
-			 */
-			delete: function() {
-				this.model.destroy();
-				mee.Tags.remove(this.model);
-				this.remove();
-			},
+				// Then activate this one
+				this.$el.addClass(&#x27;selected&#x27;);
+			}
 		});
 
-		return BrowserBodyTagView;
+		return EditorTabView;
 	}
 );
     </pre>
