@@ -14,9 +14,9 @@ require.config({
 		'backbone.relational': 'lib/backbone-relational',
 		'backbone.mousetrap' : 'lib/backbone.mousetrap',
 		mousetrap            : 'lib/mousetrap.min',
-		jasmine              : '../../test/client/jasmine-standalone-1.3.1/lib/jasmine-1.3.1/jasmine',
-		'jasmine-html'       : '../../test/client/jasmine-standalone-1.3.1/lib/jasmine-1.3.1/jasmine-html',
-		'jasmine-jquery'     : '../../test/client/jasmine-standalone-1.3.1/lib/jasmine-jquery',
+		jasmine              : '../../test/client/lib/jasmine-1.3.1/jasmine',
+		'jasmine-html'       : '../../test/client/lib/jasmine-1.3.1/jasmine-html',
+		'jasmine-jquery'     : '../../test/client/lib/jasmine-jquery',
 		spec                 : '../../test/client/spec/',
 	},
 	shim: {
