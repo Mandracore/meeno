@@ -6,9 +6,8 @@ define ([
 		'lib/tools',
 		'temp',
 		'channel',
-		'text!../../templates/editor-body.html',
 		'views/editor-body-object',
-	], function ($, $, _, Backbone, tools, temp, channel, hTemplate, EditorBodyObjectView) {
+	], function ($, $, _, Backbone, tools, temp, channel, EditorBodyObjectView) {
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
@@ -18,10 +17,11 @@ define ([
 		 */
 		var EditorBodyView = Backbone.View.extend({
 
-			tagName           : 'div',
-			className         : 'tab object note',
-			numberOfEdit      : 0,
-			limitNumberOfEdit : 5,
+			tagName          : 'div',
+			className        : 'tab object note',
+			template         : '#editor-body-template',
+			numberOfEdit     : 0,
+			limitNumberOfEdit: 5,
 
 			// The DOM events specific to an item.
 			events: {
@@ -69,6 +69,7 @@ define ([
 				// Renders the tab-content item to the current state of the model
 				var self             = this;
 				var data             = this.model.toJSON();
+				var hTemplate        = $(this.template).html();
 				var compiledTemplate = _.template(hTemplate);
 				this.$el.html( compiledTemplate(data) );
 

@@ -5,14 +5,14 @@ define ([
 		'backbone',
 		'temp',
 		'lib/tools',
-		'text!../../templates/editor-body-object.html',
 		'models/task',
 		'models/tag',
-	], function ($, _, Backbone, temp, tools, hTemplate, Task, Tag) {
+	], function ($, _, Backbone, temp, tools, Task, Tag) {
 		var EditorBodyObjectView = Backbone.View.extend({
 			// this.options.modelClass = 'tag' OR 'task'
-			tagName   :'span',
-			className :'object',
+			tagName  :'span',
+			className:'object',
+			template : '#editor-body-object-template',
 
 			// The DOM events specific to an item.
 			events: {
@@ -65,10 +65,11 @@ define ([
 			},
 
 			render: function() {
-				console.log ('R[emb-'+this.options.modelClass+']');
+				console.log ('TTTR[emb-'+this.options.modelClass+']');
 				this.$el.attr('id', this.options.id);
 				this.$el.attr('contentEditable',false);
 
+				var hTemplate        = $(this.template).html();
 				var compiledTemplate = _.template(hTemplate);
 				this.$el.html( compiledTemplate({ id:this.options.id }) );
 
