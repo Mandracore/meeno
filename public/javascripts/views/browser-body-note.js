@@ -12,10 +12,10 @@ define ([
 			template : '#browser-body-note-template',
 
 			render: function () {
-				var json        = this.model.toJSON();
+				// var json        = this.model.toJSON();
 				// json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
-				json = {
-					note: json,
+				var json = {
+					note: this.model.toJSON(),
 					tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {return tag.get('label')})
 				};
 

@@ -377,3 +377,8 @@ Integration :
 	browser : Zombie
 
 Rajouter des scripts npm pour télécommander la génération de la documentation
+
+
+21/10===========================================
+on doit forcément sacrifier model.spec.js puisque si on met un baseUrl != "/base/public/javascripts/", 
+on casse tous les require du code de l'app

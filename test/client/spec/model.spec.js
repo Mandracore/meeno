@@ -11,7 +11,7 @@ define ([
 		'models/filter',
 	], function ($, _, Backbone, Note, Task, Tag, Notes, Tasks, Tags, Filter) {
 
-	return describe('Datamodel', function() {
+	describe('Datamodel', function() {
 
 		describe("Business Models", function() {
 
