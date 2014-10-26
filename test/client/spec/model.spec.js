@@ -27,6 +27,30 @@ define ([
 					this.task = new Task();
 				});
 
+				describe("Note, Task, Tags", function() {
+					it("when updated should have the right `updated_at` attribute", function(done) {
+						var self = this;
+						
+						this.timerNote0 = this.note.get('updated_at');
+						this.timerTask0 = this.task.get('updated_at');
+						this.timerTag0  = this.tag.get('updated_at');
+
+						setTimeout(function() {
+							self.note.set('title',"test update");
+							self.task.set('label',"test update");
+							self.tag.set('label',"test update");
+
+							self.timerNote = self.note.get('updated_at').getTime() - self.timerNote0.getTime();
+							self.timerTask = self.task.get('updated_at').getTime() - self.timerTask0.getTime();
+							self.timerTag  = self.tag.get('updated_at').getTime() - self.timerTag0.getTime();
+							expect(self.timerNote).toBeGreaterThan(9);
+							expect(self.timerTask).toBeGreaterThan(9);
+							expect(self.timerTag).toBeGreaterThan(9);
+							done();
+						}, 10); // wait 100ms then run function ()
+					});
+				});
+
 				describe("Note", function() {
 
 					describe("when creating a new note", function() {
@@ -41,15 +65,6 @@ define ([
 						});
 						it("should have a default content attribute", function() {
 							expect(this.note.get('content')).toBe('Saisissez ici le contenu de votre note...');
-						});
-					});
-
-					describe("when modifying a note", function() {
-						it("should have updated updated_at attribute", function() {
-							var time0 = this.note.get('updated_at');
-							this.note.set('title','new title');
-							var time1 = this.note.get('updated_at');
-							expect(time1 - time0).toBeGreaterThan(0);
 						});
 					});
 				});
@@ -67,15 +82,6 @@ define ([
 							expect(this.tag.get('label')).toBe('New Tag');
 						});
 					});
-
-					describe("when modifying a tag", function() {
-						it("should have updated updated_at attribute", function() {
-							var time0 = this.tag.get('updated_at');
-							// Modify object...
-							var time1 = this.tag.get('updated_at');
-							expect(time1 - time0).toBeGreaterThan(0);
-						});
-					});
 				});
 
 
@@ -85,24 +91,12 @@ define ([
 						it("should have a default created_at attribute", function() {
 							expect((new Date()).getTime() - this.task.get('created_at').getTime()).toBeGreaterThan(-1);
 						});
-						it("should have a default updated_at attribute", function() {
-							expect((new Date()).getTime() - this.task.get('updated_at').getTime()).toBeGreaterThan(-1);
-						});
 						it("should have a default description attribute", function() {
 							expect(this.task.get('description')).toBe('Description of your task...');
 						});
 						// Impossible to test here (DB connexion required)
 						it("should have a default position attribute set to 0", function() {
 							expect(this.task.get('position')).toBe(0);
-						});
-					});
-
-					describe("when modifying a task", function() {
-						it("should have updated updated_at attribute", function() {
-							var time0 = this.task.get('updated_at');
-							// Modify object...
-							var time1 = this.task.get('updated_at');
-							expect(time1 - time0).toBeGreaterThan(0);
 						});
 					});
 				});

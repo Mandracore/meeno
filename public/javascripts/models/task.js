@@ -44,6 +44,15 @@ define ([
 				return json;
 			},
 
+			initialize: function() {
+				var self = this;
+				this.listenTo(this,'change', this.updated);
+			},
+
+			updated: function() {
+				this.set('updated_at', new Date());
+			},
+
 			defaults: function() {
 				return {
 					label      : 'New Task',
@@ -51,7 +60,7 @@ define ([
 					position   : 0,
 					due_at     : new Date(),
 					created_at : new Date(),
-					updated_at : new Date()
+					updated_at : new Date(),
 				};
 			}
 		});

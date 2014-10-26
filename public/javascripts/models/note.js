@@ -31,6 +31,16 @@ define ([
 					includeInJSON: '_id',
 				}
 			}],
+
+			initialize: function() {
+				var self = this;
+				this.listenTo(this,'change', this.updated);
+			},
+
+			updated: function() {
+				this.set('updated_at', new Date());
+			},
+
 			defaults: function() {
 				return {
 					title     : 'Nouvelle note',
