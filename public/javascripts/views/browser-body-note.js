@@ -7,6 +7,12 @@ define ([
 		'views/editor',
 	], function ($, _, Backbone, channel, BrowserBodyObjectView, EditorView) {
 
+		/**
+		 * Displays notes in the browser.
+		 * 
+		 * @class BrowserBodyNoteView
+		 * @extends BrowserBodyObjectView
+		 */
 		var BrowserBodyNoteView = BrowserBodyObjectView.extend({
 
 			template : '#browser-body-note-template',

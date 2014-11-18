@@ -11,6 +11,7 @@ require.config({
 		'jquery.dateFormat'  : 'lib/jquery.dateFormat-1.0',
 		underscore           : 'lib/underscore',
 		backbone             : 'lib/backbone',
+		'backbone.custom'    : 'backbone.custom',
 		'backbone.relational': 'lib/backbone-relational',
 		'backbone.mousetrap' : 'lib/backbone.mousetrap',
 		mousetrap            : 'lib/mousetrap.min',
@@ -77,7 +78,7 @@ require([
 
 	// Specs to be executed must be defined hereafter
 	// specs.push('spec/app');
-	// specs.push('spec/model');
+	// specs.push('spec/model.spec');
 	specs.push('spec/view-browser');
 	// specs.push('spec/view-editor');
 

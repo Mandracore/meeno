@@ -19,14 +19,7 @@ define ([
 		 * 
 		 * @class BrowserBodyView
 		 * @constructor
-		 * @param {Object} options Holds all the options of the view
-		 * @param {Object} options.collections Holds the 6 collections of objects to be used by the browser
-		 * @param {Notes} options.collections.notes
-		 * @param {Tags} options.collections.tags
-		 * @param {Tasks} options.collections.tasks
-		 * @param {NoteFilters} options.collections.noteFilters
-		 * @param {TaskFilters} options.collections.taskFilters
-		 * @param {TagFilters} options.collections.tagFilters
+		 * @param {Object} parent Holds a reference to the mother browser view
 		 * @extends Backbone.View
 		 */
 		var BrowserBodyView = Backbone.View.extend ({
@@ -63,12 +56,12 @@ define ([
 					"tasks" : false
 				};
 				this.children = {
-					"notes" : [],
-					"tags"  : [],
-					"tasks" : [],
-					"noteFilters" : [],
+					"notes"      : [],
+					"tags"       : [],
+					"tasks"      : [],
+					"noteFilters": [],
 					"tagFilters" : [],
-					"taskFilters" : []
+					"taskFilters": []
 				};
 
 				// this.filters stores the filters that actually filter the displayed collections
@@ -79,9 +72,9 @@ define ([
 					"tagFilter" : new Filter.Tag()
 				};
 
-				this.listenTo(temp.coll.notes, 'reset add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
-				this.listenTo(temp.coll.tags, 'reset add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
-				this.listenTo(temp.coll.tasks, 'reset add remove change:label', function () {this.renderCollection("tasks");});
+				this.listenTo(temp.coll.notes, 'add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+				this.listenTo(temp.coll.tags, 'add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
+				this.listenTo(temp.coll.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
 
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
 				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.renderFilterCollection("taskFilters");});
@@ -112,7 +105,8 @@ define ([
 				this.listenTo(channel, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
 				this.listenTo(channel, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 
-				this.render();
+				// Deactivated for testing purposes only
+				// this.render();
 				this.refreshFilterControls("note");
 				this.refreshFilterControls("task");
 				this.refreshFilterControls("tag");

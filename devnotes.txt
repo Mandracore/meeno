@@ -382,3 +382,12 @@ Rajouter des scripts npm pour télécommander la génération de la documentatio
 21/10===========================================
 on doit forcément sacrifier model.spec.js puisque si on met un baseUrl != "/base/public/javascripts/", 
 on casse tous les require du code de l'app
+
+05/11===========================================
+Comme je ne lance pas l'App, les fonctions d'initialization ne sont pas lancées non plus (en particulier
+le Backbone.View.prototype.kill). Voir comment modulariser plus.
+Je peux dire par exemple que mes vues dépendent de ce fix (ce qui est bien le cas en fait) et ainsi
+je n'ai même pas à modifier mes specs.
+
+14/11==============================================
+Valider que app.js fonctionne bien avec backbone.custom.js

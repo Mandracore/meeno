@@ -9,6 +9,8 @@ define ([
 	], function ($, _, Backbone, temp, channel, BrowserBodyObjectView, Filter) {
 
 		/**
+		 * Displays a task in the browser
+		 * 
 		 * @class BrowserBodyTaskView
 		 * @extends {BrowserBodyObjectView}
 		 */

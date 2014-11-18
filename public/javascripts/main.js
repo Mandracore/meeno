@@ -11,6 +11,7 @@ require.config ({
 		backbone             : 'lib/backbone',
 		'backbone.relational': 'lib/backbone-relational',
 		'backbone.mousetrap' : 'lib/backbone.mousetrap',
+		'backbone.custom'    : 'backbone.custom',
 		mousetrap            : 'lib/mousetrap.min',
 	},
 	shim: {
@@ -27,6 +28,10 @@ require.config ({
 		},
 		backbone: {
 			deps: ['underscore', 'jquery'],
+			exports: 'Backbone'
+		},
+		'backbone.custom': {
+			deps: ['backbone'],
 			exports: 'Backbone'
 		},
 		'backbone.relational': {

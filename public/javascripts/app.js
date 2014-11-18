@@ -9,6 +9,7 @@ define ([
 	], function ($, _, Backbone, MainView, Router) {
 
 		var initialize = function () {
+
 			Backbone.View.prototype.kill = function () {
 				if (this.beforeKill) {
 					this.beforeKill();

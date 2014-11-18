@@ -19,9 +19,13 @@ define ([
 				this.listenTo(channel, 'tab:toggle:browser', this.toggle);
 
 				this.children = {
-					tab  : new BrowserTabView({ el: $("#nav .browse"), parent: this }),
-					body : new BrowserBodyView({ el: $("#tabs .browse"), parent: this })
+					tab  : new BrowserTabView({ el: $("#nav .browse") }),
+					body : new BrowserBodyView({ el: $("#tabs .browse") })
+					// tab  : new BrowserTabView({ el: $("#nav .browse"), parent: this }),
+					// body : new BrowserBodyView({ el: $("#tabs .browse"), parent: this })
 				};
+
+				this.children.body.render();
 			},
 
 			toggle: function() {

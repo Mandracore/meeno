@@ -1,9 +1,10 @@
 define ([
 		'jquery',
 		'underscore',
-		'backbone',
 		'channel',
-	], function ($, _, Backbone, channel) {
+		'backbone',
+		'backbone.custom',
+	], function ($, _, channel, Backbone) {
 
 		/**
 		 * This class retains all core features for displaying objects views in the browser.

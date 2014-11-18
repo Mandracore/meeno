@@ -41,7 +41,6 @@ define ([
 			 * @chainable
 			 */
 			render: function() {
-				console.log ("R[Browser-body-filter]");
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (this.model.toJSON()));
 				this.checkStatus();
