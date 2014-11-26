@@ -17,6 +17,13 @@ define ([
 
 			template : '#browser-body-note-template',
 
+			initialize: function(options){
+				BrowserBodyObjectView.prototype.initialize.apply(this, [options])
+				this.options = options;
+				this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
+				this.listenTo(this.model, 'change:title change:position', this.render);
+			},
+
 			render: function () {
 				// var json        = this.model.toJSON();
 				// json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
@@ -27,7 +34,7 @@ define ([
 
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (json));
-				channel.trigger("browser:notes:reSyncSelectors");
+
 				return this;
 			},
 

@@ -22,27 +22,30 @@ define ([
 
 			// The DOM events specific to an item.
 			events: {
-				'click .checkbox': 'check',
-				'click .edit'    : 'edit'
+				'click .checkbox': 'actionCheck',
 			},
 
-			initialize: function() {
-				this.collName = undefined;
-				// this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
-				this.listenTo(this.model, 'change:title change:position', this.render);
-				this.listenTo(channel, 'browser:notes:delete', function () {this.deleteIfSelected("notes")});
-				this.listenTo(channel, 'browser:tags:delete', function () {this.deleteIfSelected("tags")});
-				this.listenTo(channel, 'browser:taks:delete', function () {this.deleteIfSelected("taks")});
+			initialize: function(options) {
+				this.options = options;
+				this.listenTo(channel, 'browser:actions:toggle-checkboxes:'+this.options.collName, function () { this.actionToggleCheckbox() });
+				this.listenTo(channel, 'browser:actions:delete:'+this.options.collName, function () { this.actionDelete() });
+				this.listenTo(channel, 'browser:actions:select:all:'+this.options.collName, function () { this.actionSelectMe() });
+				this.listenTo(channel, 'browser:actions:select:none:'+this.options.collName, function () { this.actionUnSelectMe() });
 			},
 
-			deleteIfSelected: function(collName) {
-				if (collName == this.collName && this.$('span.checkbox').hasClass("icon-check")) {
+			actionToggleCheckbox: function() {
+				this.$('span.checkbox').toggle();
+			},
+
+			actionDelete: function() {
+				if (this.$('span.checkbox').hasClass("icon-check")) {
 					this.model.destroy();
 					this.kill();
 				}
 			},
 
-			check: function() {
+			actionCheck: function() {
+				console.log('checked');
 				if (this.$("span.checkbox").hasClass('icon-check')) {
 					this.$("span.checkbox").removeClass('icon-check');
 					this.$("span.checkbox").addClass('icon-check-empty');
@@ -50,7 +53,18 @@ define ([
 					this.$("span.checkbox").removeClass('icon-check-empty');
 					this.$("span.checkbox").addClass('icon-check');
 				}
-			}
+				channel.trigger("browser:actions:update-selectors:"+this.options.collName);
+			},
+
+			actionSelectMe: function() {
+				this.$("span.checkbox").removeClass('icon-check-empty');
+				this.$("span.checkbox").addClass('icon-check');
+			},
+
+			actionUnSelectMe: function() {
+				this.$("span.checkbox").removeClass('icon-check');
+				this.$("span.checkbox").addClass('icon-check-empty');
+			},
 		});
 
 		return BrowserBodyObjectView;

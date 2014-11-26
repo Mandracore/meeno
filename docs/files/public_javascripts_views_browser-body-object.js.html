@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -141,9 +143,10 @@
 define ([
 		&#x27;jquery&#x27;,
 		&#x27;underscore&#x27;,
-		&#x27;backbone&#x27;,
 		&#x27;channel&#x27;,
-	], function ($, _, Backbone, channel) {
+		&#x27;backbone&#x27;,
+		&#x27;backbone.custom&#x27;,
+	], function ($, _, channel, Backbone) {
 
 		/**
 		 * This class retains all core features for displaying objects views in the browser.
@@ -165,23 +168,26 @@ define ([
 				&#x27;click .edit&#x27;    : &#x27;edit&#x27;
 			},
 
-			initialize: function() {
-				this.collName = undefined;
-				// this.listenTo(this.model, &#x27;add:tagLinks remove:tagLinks change:title&#x27;, this.render);
-				this.listenTo(this.model, &#x27;change:title change:position&#x27;, this.render);
-				this.listenTo(channel, &#x27;browser:notes:delete&#x27;, function () {this.deleteIfSelected(&quot;notes&quot;)});
-				this.listenTo(channel, &#x27;browser:tags:delete&#x27;, function () {this.deleteIfSelected(&quot;tags&quot;)});
-				this.listenTo(channel, &#x27;browser:taks:delete&#x27;, function () {this.deleteIfSelected(&quot;taks&quot;)});
+			initialize: function(options) {
+				this.options = options;
+				this.listenTo(channel, &#x27;browser:actions:toggle-checkboxes:&#x27;+this.options.collName, function () { this.actionToggleCheckbox() });
+				this.listenTo(channel, &#x27;browser:actions:delete:&#x27;+this.options.collName, function () { this.actionDelete() });
+				this.listenTo(channel, &#x27;browser:actions:select:all:&#x27;+this.options.collName, function () { this.actionSelectMe() });
+				this.listenTo(channel, &#x27;browser:actions:select:none:&#x27;+this.options.collName, function () { this.actionUnSelectMe() });
 			},
 
-			deleteIfSelected: function(collName) {
-				if (collName == this.collName &amp;&amp; this.$(&#x27;span.checkbox&#x27;).hasClass(&quot;icon-check&quot;)) {
+			actionToggleCheckbox: function() {
+				this.$(&#x27;span.checkbox&#x27;).toggle();
+			},
+
+			actionDelete: function() {
+				if (this.$(&#x27;span.checkbox&#x27;).hasClass(&quot;icon-check&quot;)) {
 					this.model.destroy();
 					this.kill();
 				}
 			},
 
-			check: function() {
+			actionCheck: function() {
 				if (this.$(&quot;span.checkbox&quot;).hasClass(&#x27;icon-check&#x27;)) {
 					this.$(&quot;span.checkbox&quot;).removeClass(&#x27;icon-check&#x27;);
 					this.$(&quot;span.checkbox&quot;).addClass(&#x27;icon-check-empty&#x27;);
@@ -189,7 +195,18 @@ define ([
 					this.$(&quot;span.checkbox&quot;).removeClass(&#x27;icon-check-empty&#x27;);
 					this.$(&quot;span.checkbox&quot;).addClass(&#x27;icon-check&#x27;);
 				}
-			}
+				channel.trigger(&quot;browser:actions:update-selectors:&quot;+this.options.collName);
+			},
+
+			actionSelectMe: function() {
+				this.$(&quot;span.checkbox&quot;).removeClass(&#x27;icon-check-empty&#x27;);
+				this.$(&quot;span.checkbox&quot;).addClass(&#x27;icon-check&#x27;);
+			},
+
+			actionUnSelectMe: function() {
+				this.$(&quot;span.checkbox&quot;).removeClass(&#x27;icon-check&#x27;);
+				this.$(&quot;span.checkbox&quot;).addClass(&#x27;icon-check-empty&#x27;);
+			},
 		});
 
 		return BrowserBodyObjectView;

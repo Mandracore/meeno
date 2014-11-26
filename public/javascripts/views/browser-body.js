@@ -33,28 +33,24 @@ define ([
 
 			// ###Setup the view's DOM events
 			events: {
+				// Search-related events
 				'click .filter li'                                 : 'toggleObject',
 				'keyup .search'                                    : 'searchText',
-				'click .actions-contextual .delete'                : 'deleteToggle',
-				'click .actions-contextual-selection .select-all'  : 'selectAll',
-				'click .actions-contextual-selection .unselect-all': 'unSelectAll',
-				'click span.checkbox'                              : 'selection',
-				'click .actions-contextual-trigger button'         : 'actionTrigger',
 				'click .objectButtons span'                        : 'searchObjectRemove',
 				'click .filter-editor button.save'                 : 'filterSaveStep1',
 				'click .filter-editor button.saveConfirm'          : 'filterSaveStep2',
 				'click .filter-editor button.delete'               : 'filterDelete',
+				// Action-related events
+				'click .actions-contextual .delete'                : 'actionDeleteToggle',
+				'click .actions-contextual-selection .select-all'  : 'actionSelectAll',
+				'click .actions-contextual-selection .unselect-all': 'actionUnSelectAll',
+				'click .actions-contextual-trigger button'         : 'actionDeleteExecute',
 			},
 
 			// ###Setup the view
 			initialize: function() {
 				var self = this;
 
-				this.deleteInProgress = {
-					"notes" : false,
-					"tags"  : false,
-					"tasks" : false
-				};
 				this.children = {
 					"notes"      : [],
 					"tags"       : [],
@@ -73,7 +69,9 @@ define ([
 				};
 
 				this.listenTo(temp.coll.notes, 'add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
-				this.listenTo(temp.coll.tags, 'add remove change:label', function () {this.renderCollection("tags"); this.renderCollection("notes");});
+				this.listenTo(temp.coll.tags, 'add remove change:label', function () {
+					this.renderCollection("notes");
+					this.renderCollection("tags");});
 				this.listenTo(temp.coll.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
 
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
@@ -96,9 +94,6 @@ define ([
 					this.refreshFilterControls("tag");
 					this.renderFilterInSuperInput("tagFilter");});
 
-				this.listenTo(channel, 'browser:notes:reSyncSelectors', function () {this.reSyncSelectors("notes");});
-				this.listenTo(channel, 'browser:tags:reSyncSelectors', function () {this.reSyncSelectors("tags");});
-				this.listenTo(channel, 'browser:taks:reSyncSelectors', function () {this.reSyncSelectors("tasks");});
 				this.listenTo(channel, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
 				this.listenTo(channel, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
 				this.listenTo(channel, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
@@ -106,7 +101,6 @@ define ([
 				this.listenTo(channel, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 
 				// Deactivated for testing purposes only
-				// this.render();
 				this.refreshFilterControls("note");
 				this.refreshFilterControls("task");
 				this.refreshFilterControls("tag");
@@ -155,14 +149,16 @@ define ([
 			// =============================================================================
 			// Series of methods that allow for selecting several objects and operating an 
 			// action on them (delete, tag, move,...)
-			reSyncSelectors: function(collName) {
-				if (this.deleteInProgress[collName]) {
-					this.$(".listobjects ."+collName+" span.checkbox").show(); // Display object selectors or hide them
-				}
-			},
 
-			selection : function (event) {
-				var $listObjects = $(event.target).closest(".listobjects");
+			/**
+			 * Manages the buttons "select all" and "unselect all". Will be called every time an object
+			 * is selected or unseleted to make sure that the right buttons are displayed
+			 * 
+			 * @method actionSelectorsUpdate
+			 */
+			actionSelectorsUpdate : function (collName) {
+				var $listObjects = this.$(".listobjects."+collName);
+
 				var countUnselected = $listObjects.find("span.checkbox.icon-check-empty").length;
 				if (countUnselected === 0) { // "Unselect all" only
 					$listObjects.find(".actions-contextual-selection .select-all").hide();
@@ -179,55 +175,80 @@ define ([
 				}
 			},
 
-			selectAll: function (event) {
+			/**
+			 * Should select all objects
+			 * 
+			 * @method actionSelectAll
+			 */
+			actionSelectAll: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
-				$listObjects.find("span.checkbox").each(function (idx, checkbox) {
-					$(checkbox).addClass("icon-check").removeClass("icon-check-empty");
-				});
-				this.selection(event);
+				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+
+				channel.trigger("browser:actions:select:all:"+collName); // To display checked boxes
+				this.actionSelectorsUpdate(collName); // To update selectors
 			},
 
-			unSelectAll: function (event) {
+			/**
+			 * Should unselect all objects
+			 * 
+			 * @method actionUnSelectAll
+			 */
+			actionUnSelectAll: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
-				$listObjects.find("span.checkbox").each(function (idx, checkbox) {
-					$(checkbox).addClass("icon-check-empty").removeClass("icon-check");
-				});
-				this.selection(event);
+				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+
+				channel.trigger("browser:actions:select:none:"+collName); // To display checked boxes
+				this.actionSelectorsUpdate(collName); // To update selectors
 			},
 
-			deleteToggle: function (event) {
+			/**
+			 * Displays or hides the controls necessary to select/unselect all objects, delete them,...
+			 * Throws an event to make subviews display their checkboxes
+			 * 
+			 * @method actionDeleteToggle
+			 */
+			actionDeleteToggle: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
-				var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-				this.deleteInProgress[collName] = !this.deleteInProgress[collName];
+				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 
-				$listObjects.find("span.checkbox").toggle(); // Display object selectors or hide them
-				$listObjects.find(".actions-contextual .action").toggle();
-				$listObjects.find(".actions-contextual .cancel").toggle();
+				$listObjects.find(".actions-contextual .delete .action").toggle();
+				$listObjects.find(".actions-contextual .delete .cancel").toggle();
 				$listObjects.find(".actions-contextual-trigger").toggle();
 				$listObjects.find(".actions-contextual-trigger .delete").toggle();
 				$listObjects.find(".actions-contextual-selection").toggle();
 
+				/**
+				* To make objects subviews show/hide their checkbox.
+				* @event browser:actions:toggle-checkboxes:[collName]
+				*/
+				channel.trigger("browser:actions:toggle-checkboxes:"+collName);
+
 				if ($listObjects.find(".actions-contextual-selection").is(":visible")) {
-					this.selection(event);
+					this.actionSelectorsUpdate(collName);
 				}
 			},
 
-			actionTrigger: function (event) {
-				// Which list objects are we working on ?
+			/**
+			 * Triggers an event, which will be heard by sub-views that will actually execute the action
+			 * 
+			 * @method actionDeleteToggle
+			 */
+			actionDeleteExecute: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
-				var collName = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-				// Which action do we want to trigger ?
-				var action = $(event.target).attr('class');
+				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+				var action       = $(event.target).attr('class');// Which action do we want to trigger ?
+
 				/**
-				* Event triggered on channel after the user clicks on an action button
-				* (flagged in the DOM with the `.actions-contextual-trigger button` classes).
-				* It should be listened by subviews (for example instances of
-				* {{#crossLink "BrowserBodyTagView"}}{{/crossLink}}) to let them
-				* relay the action to their respective model.
-				* 
-				* @event browser:[collection-name]:[action]
+				* To make objects subviews kill themselves and destroy their model if they are selected.
+				* @event browser:actions:delete:[collName]
 				*/
-				channel.trigger("browser:"+collName+":"+action);
+				channel.trigger("browser:actions:delete:"+collName);
+
+				$listObjects.find(".actions-contextual .delete .action").toggle();
+				$listObjects.find(".actions-contextual .delete .cancel").toggle();
+				$listObjects.find(".actions-contextual-trigger").toggle();
+				$listObjects.find(".actions-contextual-trigger .delete").toggle();
+				$listObjects.find(".actions-contextual-selection").toggle();
 			},
 
 
@@ -476,9 +497,9 @@ define ([
 				var results = temp.coll[collName].search(this.filters[filterName]);
 
 				results.each(function (element) {
-					if (collName == "notes") { newView = new BrowserBodyNoteView({ model: element }); }
-					if (collName == "tags") { newView = new BrowserBodyTagView({ model: element }); }
-					if (collName == "tasks") { newView = new BrowserBodyTaskView({ model: element }); }
+					if (collName == "notes") { newView = new BrowserBodyNoteView({ collName:"notes", model: element }); }
+					if (collName == "tags") { newView = new BrowserBodyTagView({ collName:"tags", model: element }); }
+					if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); }
 					self.children[collName].push (newView);
 					$list.append(newView.render().el);
 				}, this);

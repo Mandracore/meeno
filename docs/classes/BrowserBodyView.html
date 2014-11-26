@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -177,7 +179,7 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
             
                 <li class="arg">
                     
-                        <code>options</code>
+                        <code>parent</code>
                     
                 </li>
             
@@ -232,105 +234,17 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
             
                 <li class="param">
                     
-                        <code class="param-name">options</code>
+                        <code class="param-name">parent</code>
                         <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
                     
 
                     
 
                     <div class="param-description">
-                        <p>Holds all the options of the view</p>
+                        <p>Holds a reference to the mother browser view</p>
 
                     </div>
 
-                    
-                        <ul class="params-list">
-                            
-                            <li class="param">
-                                
-                                    <code class="param-name">collections</code>
-                                    <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Object" class="crosslink external" target="_blank">Object</a></span>
-                                
-
-                                <div class="param-description">
-                                    <p>Holds the 6 collections of objects to be used by the browser</p>
-
-                                </div>
-
-                                
-                                    <ul class="params-list">
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">notes</code>
-                                                <span class="type"><a href="../classes/Notes.html" class="crosslink">Notes</a></span>
-                                            
-
-                                            <div class="param-description">
-                                                
-                                            </div>
-                                        </li>
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">tags</code>
-                                                <span class="type"><a href="../classes/Tags.html" class="crosslink">Tags</a></span>
-                                            
-
-                                            <div class="param-description">
-                                                
-                                            </div>
-                                        </li>
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">tasks</code>
-                                                <span class="type"><a href="../classes/Tasks.html" class="crosslink">Tasks</a></span>
-                                            
-
-                                            <div class="param-description">
-                                                
-                                            </div>
-                                        </li>
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">noteFilters</code>
-                                                <span class="type"><a href="../classes/NoteFilters.html" class="crosslink">NoteFilters</a></span>
-                                            
-
-                                            <div class="param-description">
-                                                
-                                            </div>
-                                        </li>
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">taskFilters</code>
-                                                <span class="type"><a href="../classes/TaskFilters.html" class="crosslink">TaskFilters</a></span>
-                                            
-
-                                            <div class="param-description">
-                                                
-                                            </div>
-                                        </li>
-                                        
-                                        <li class="param">
-                                            
-                                                <code class="param-name">tagFilters</code>
-                                                <span class="type"><a href="../classes/TagFilters.html" class="crosslink">TagFilters</a></span>
-                                            
-
-                                            <div class="param-description">
-                                                
-                                            </div>
-                                        </li>
-                                        
-                                    </ul>
-                                
-                            </li>
-                            
-                        </ul>
                     
                 </li>
             
@@ -369,6 +283,41 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
                     <h3>Methods</h3>
 
                     <ul class="index-list methods extends">
+                        
+                            <li class="index-item method">
+                                <a href="#method_actionDeleteToggle">actionDeleteToggle</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_actionDeleteToggle">actionDeleteToggle</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_actionSelectAll">actionSelectAll</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_actionSelectorsUpdate">actionSelectorsUpdate</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
+                                <a href="#method_actionUnSelectAll">actionUnSelectAll</a>
+
+                                
+                                
+                            </li>
                         
                             <li class="index-item method">
                                 <a href="#method_searchGetFocus">searchGetFocus</a>
@@ -413,7 +362,14 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
                     <ul class="index-list events extends">
                         
                             <li class="index-item event">
-                                <a href="#event_browser:[collection-name]:[action]">browser:[collection-name]:[action]</a>
+                                <a href="#event_browser:actions:delete:[collName]">browser:actions:delete:[collName]</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item event">
+                                <a href="#event_browser:actions:toggle-checkboxes:[collName]">browser:actions:toggle-checkboxes:[collName]</a>
 
                                 
                                 
@@ -434,6 +390,283 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
         
             <div id="methods" class="api-class-tabpanel">
                 <h2 class="off-left">Methods</h2>
+
+                
+                    <div id="method_actionDeleteToggle" class="method item">
+    <h3 class="name"><code>actionDeleteToggle</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l208"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:208</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Displays or hides the controls necessary to select/unselect all objects, delete them,...
+Throws an event to make subviews display their checkboxes</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_actionDeleteToggle" class="method item">
+    <h3 class="name"><code>actionDeleteToggle</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l234"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:234</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Triggers an event, which will be heard by sub-views that will actually execute the action</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_actionSelectAll" class="method item">
+    <h3 class="name"><code>actionSelectAll</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l182"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:182</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Should select all objects</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_actionSelectorsUpdate" class="method item">
+    <h3 class="name"><code>actionSelectorsUpdate</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l157"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:157</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Manages the buttons &quot;select all&quot; and &quot;unselect all&quot;. Will be called every time an object
+is selected or unseleted to make sure that the right buttons are displayed</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_actionUnSelectAll" class="method item">
+    <h3 class="name"><code>actionUnSelectAll</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l195"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:195</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>Should unselect all objects</p>
+
+    </div>
+
+    
+
+    
+
+    
+</div>
 
                 
                     <div id="method_searchGetFocus" class="method item">
@@ -472,7 +705,7 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l243"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:243</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l255"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:255</code></a>
         
         </p>
 
@@ -551,7 +784,7 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l262"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:262</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l274"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:274</code></a>
         
         </p>
 
@@ -632,7 +865,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l125"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:125</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l117"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:117</code></a>
         
         </p>
 
@@ -697,7 +930,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l139"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:139</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l131"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:131</code></a>
         
         </p>
 
@@ -757,8 +990,8 @@ on the right button (class <code>.filter li</code>).</p>
                 <h2 class="off-left">Events</h2>
 
                 
-                    <div id="event_browser:[collection-name]:[action]" class="events item">
-    <h3 class="name"><code>browser:[collection-name]:[action]</code></h3>
+                    <div id="event_browser:actions:delete:[collName]" class="events item">
+    <h3 class="name"><code>browser:actions:delete:[collName]</code></h3>
     <span class="type"></span>
 
     
@@ -780,7 +1013,7 @@ on the right button (class <code>.filter li</code>).</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l227"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:227</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l244"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:244</code></a>
         
         </p>
 
@@ -790,11 +1023,51 @@ on the right button (class <code>.filter li</code>).</p>
     </div>
 
     <div class="description">
-        <p>Event triggered on channel after the user clicks on an action button
-(flagged in the DOM with the <code>.actions-contextual-trigger button</code> classes).
-It should be listened by subviews (for example instances of
-<a href="../classes/BrowserBodyTagView.html" class="crosslink">BrowserBodyTagView</a>) to let them
-relay the action to their respective model.</p>
+        <p>To make objects subviews kill themselves and destroy their model if they are selected</p>
+
+    </div>
+
+    
+
+
+    
+</div>
+
+                
+                    <div id="event_browser:actions:toggle-checkboxes:[collName]" class="events item">
+    <h3 class="name"><code>browser:actions:toggle-checkboxes:[collName]</code></h3>
+    <span class="type"></span>
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l226"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:226</code></a>
+        
+        </p>
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>To make objects subviews show/hide their checkbox</p>
 
     </div>
 
@@ -828,7 +1101,7 @@ relay the action to their respective model.</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l383"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:383</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l395"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:395</code></a>
         
         </p>
 

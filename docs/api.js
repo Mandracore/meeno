@@ -2,6 +2,7 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [
         "BrowserBodyFilterView",
+        "BrowserBodyNoteView",
         "BrowserBodyObjectView",
         "BrowserBodyTagView",
         "BrowserBodyTaskView",

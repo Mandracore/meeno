@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -145,14 +147,14 @@ define ([
 		&#x27;backbone&#x27;,
 		&#x27;temp&#x27;,
 		&#x27;lib/tools&#x27;,
-		&#x27;text!../../templates/editor-body-object.html&#x27;,
 		&#x27;models/task&#x27;,
 		&#x27;models/tag&#x27;,
-	], function ($, _, Backbone, temp, tools, hTemplate, Task, Tag) {
+	], function ($, _, Backbone, temp, tools, Task, Tag) {
 		var EditorBodyObjectView = Backbone.View.extend({
 			// this.options.modelClass = &#x27;tag&#x27; OR &#x27;task&#x27;
-			tagName   :&#x27;span&#x27;,
-			className :&#x27;object&#x27;,
+			tagName  :&#x27;span&#x27;,
+			className:&#x27;object&#x27;,
+			template : &#x27;#editor-body-object-template&#x27;,
 
 			// The DOM events specific to an item.
 			events: {
@@ -205,10 +207,11 @@ define ([
 			},
 
 			render: function() {
-				console.log (&#x27;R[emb-&#x27;+this.options.modelClass+&#x27;]&#x27;);
+				console.log (&#x27;TTTR[emb-&#x27;+this.options.modelClass+&#x27;]&#x27;);
 				this.$el.attr(&#x27;id&#x27;, this.options.id);
 				this.$el.attr(&#x27;contentEditable&#x27;,false);
 
+				var hTemplate        = $(this.template).html();
 				var compiledTemplate = _.template(hTemplate);
 				this.$el.html( compiledTemplate({ id:this.options.id }) );
 

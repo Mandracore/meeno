@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -184,6 +186,15 @@ define ([
 				return json;
 			},
 
+			initialize: function() {
+				var self = this;
+				this.listenTo(this,&#x27;change&#x27;, this.updated);
+			},
+
+			updated: function() {
+				this.set(&#x27;updated_at&#x27;, new Date());
+			},
+
 			defaults: function() {
 				return {
 					label      : &#x27;New Task&#x27;,
@@ -191,7 +202,7 @@ define ([
 					position   : 0,
 					due_at     : new Date(),
 					created_at : new Date(),
-					updated_at : new Date()
+					updated_at : new Date(),
 				};
 			}
 		});

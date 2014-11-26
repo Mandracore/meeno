@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -159,14 +161,7 @@ define ([
 		 * 
 		 * @class BrowserBodyView
 		 * @constructor
-		 * @param {Object} options Holds all the options of the view
-		 * @param {Object} options.collections Holds the 6 collections of objects to be used by the browser
-		 * @param {Notes} options.collections.notes
-		 * @param {Tags} options.collections.tags
-		 * @param {Tasks} options.collections.tasks
-		 * @param {NoteFilters} options.collections.noteFilters
-		 * @param {TaskFilters} options.collections.taskFilters
-		 * @param {TagFilters} options.collections.tagFilters
+		 * @param {Object} parent Holds a reference to the mother browser view
 		 * @extends Backbone.View
 		 */
 		var BrowserBodyView = Backbone.View.extend ({
@@ -180,35 +175,31 @@ define ([
 
 			// ###Setup the view&#x27;s DOM events
 			events: {
+				// Search-related events
 				&#x27;click .filter li&#x27;                                 : &#x27;toggleObject&#x27;,
 				&#x27;keyup .search&#x27;                                    : &#x27;searchText&#x27;,
-				&#x27;click .actions-contextual .delete&#x27;                : &#x27;deleteToggle&#x27;,
-				&#x27;click .actions-contextual-selection .select-all&#x27;  : &#x27;selectAll&#x27;,
-				&#x27;click .actions-contextual-selection .unselect-all&#x27;: &#x27;unSelectAll&#x27;,
-				&#x27;click span.checkbox&#x27;                              : &#x27;selection&#x27;,
-				&#x27;click .actions-contextual-trigger button&#x27;         : &#x27;actionTrigger&#x27;,
 				&#x27;click .objectButtons span&#x27;                        : &#x27;searchObjectRemove&#x27;,
 				&#x27;click .filter-editor button.save&#x27;                 : &#x27;filterSaveStep1&#x27;,
 				&#x27;click .filter-editor button.saveConfirm&#x27;          : &#x27;filterSaveStep2&#x27;,
 				&#x27;click .filter-editor button.delete&#x27;               : &#x27;filterDelete&#x27;,
+				// Action-related events
+				&#x27;click .actions-contextual .delete&#x27;                : &#x27;actionDeleteToggle&#x27;,
+				&#x27;click .actions-contextual-selection .select-all&#x27;  : &#x27;actionSelectAll&#x27;,
+				&#x27;click .actions-contextual-selection .unselect-all&#x27;: &#x27;actionUnSelectAll&#x27;,
+				&#x27;click .actions-contextual-trigger button&#x27;         : &#x27;actionExecute&#x27;,
 			},
 
 			// ###Setup the view
 			initialize: function() {
 				var self = this;
 
-				this.deleteInProgress = {
-					&quot;notes&quot; : false,
-					&quot;tags&quot;  : false,
-					&quot;tasks&quot; : false
-				};
 				this.children = {
-					&quot;notes&quot; : [],
-					&quot;tags&quot;  : [],
-					&quot;tasks&quot; : [],
-					&quot;noteFilters&quot; : [],
+					&quot;notes&quot;      : [],
+					&quot;tags&quot;       : [],
+					&quot;tasks&quot;      : [],
+					&quot;noteFilters&quot;: [],
 					&quot;tagFilters&quot; : [],
-					&quot;taskFilters&quot; : []
+					&quot;taskFilters&quot;: []
 				};
 
 				// this.filters stores the filters that actually filter the displayed collections
@@ -219,9 +210,11 @@ define ([
 					&quot;tagFilter&quot; : new Filter.Tag()
 				};
 
-				this.listenTo(temp.coll.notes, &#x27;reset add remove change:title add:tagLinks&#x27;, function () {this.renderCollection(&quot;notes&quot;);});
-				this.listenTo(temp.coll.tags, &#x27;reset add remove change:label&#x27;, function () {this.renderCollection(&quot;tags&quot;); this.renderCollection(&quot;notes&quot;);});
-				this.listenTo(temp.coll.tasks, &#x27;reset add remove change:label&#x27;, function () {this.renderCollection(&quot;tasks&quot;);});
+				this.listenTo(temp.coll.notes, &#x27;add remove change:title add:tagLinks&#x27;, function () {this.renderCollection(&quot;notes&quot;);});
+				this.listenTo(temp.coll.tags, &#x27;add remove change:label&#x27;, function () {
+					this.renderCollection(&quot;notes&quot;);
+					this.renderCollection(&quot;tags&quot;);});
+				this.listenTo(temp.coll.tasks, &#x27;add remove change:label&#x27;, function () {this.renderCollection(&quot;tasks&quot;);});
 
 				this.listenTo(temp.coll.noteFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;noteFilters&quot;);});
 				this.listenTo(temp.coll.taskFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;taskFilters&quot;);});
@@ -243,16 +236,17 @@ define ([
 					this.refreshFilterControls(&quot;tag&quot;);
 					this.renderFilterInSuperInput(&quot;tagFilter&quot;);});
 
-				this.listenTo(channel, &#x27;browser:notes:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;notes&quot;);});
-				this.listenTo(channel, &#x27;browser:tags:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tags&quot;);});
-				this.listenTo(channel, &#x27;browser:taks:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tasks&quot;);});
 				this.listenTo(channel, &#x27;keyboard:tag&#x27;, function () {this.searchOpenAutocomplete(&quot;tags&quot;);});
 				this.listenTo(channel, &#x27;keyboard:task&#x27;, function () {this.searchOpenAutocomplete(&quot;tasks&quot;);});
 				this.listenTo(channel, &#x27;keyboard:entity&#x27;, function () {this.searchOpenAutocomplete(&quot;entities&quot;);});
 				this.listenTo(channel, &#x27;keyboard:escape&#x27;, function () {this.searchCloseAutocomplete(&quot;escape&quot;);});
 				this.listenTo(channel, &#x27;keyboard:backspace&#x27;, function () {this.searchCloseAutocomplete(&quot;backspace&quot;);});
 
-				this.render();
+				this.listenTo(channel, &#x27;browser:notes:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;notes&quot;);});
+				this.listenTo(channel, &#x27;browser:tags:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tags&quot;);});
+				this.listenTo(channel, &#x27;browser:taks:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tasks&quot;);});
+
+				// Deactivated for testing purposes only
 				this.refreshFilterControls(&quot;note&quot;);
 				this.refreshFilterControls(&quot;task&quot;);
 				this.refreshFilterControls(&quot;tag&quot;);
@@ -301,14 +295,16 @@ define ([
 			// =============================================================================
 			// Series of methods that allow for selecting several objects and operating an 
 			// action on them (delete, tag, move,...)
-			reSyncSelectors: function(collName) {
-				if (this.deleteInProgress[collName]) {
-					this.$(&quot;.listobjects .&quot;+collName+&quot; span.checkbox&quot;).show(); // Display object selectors or hide them
-				}
-			},
 
-			selection : function (event) {
-				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
+			/**
+			 * Manages the buttons &quot;select all&quot; and &quot;unselect all&quot;. Will be called every time an object
+			 * is selected or unseleted to make sure that the right buttons are displayed
+			 * 
+			 * @method actionSelectorsUpdate
+			 */
+			actionSelectorsUpdate : function (collName) {
+				var $listObjects = this.$(&quot;.listobjects.&quot;+collName);
+
 				var countUnselected = $listObjects.find(&quot;span.checkbox.icon-check-empty&quot;).length;
 				if (countUnselected === 0) { // &quot;Unselect all&quot; only
 					$listObjects.find(&quot;.actions-contextual-selection .select-all&quot;).hide();
@@ -325,28 +321,42 @@ define ([
 				}
 			},
 
-			selectAll: function (event) {
+			/**
+			 * Should select all objects
+			 * 
+			 * @method actionSelectAll
+			 */
+			actionSelectAll: function (event) {
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
-				$listObjects.find(&quot;span.checkbox&quot;).each(function (idx, checkbox) {
-					$(checkbox).addClass(&quot;icon-check&quot;).removeClass(&quot;icon-check-empty&quot;);
-				});
-				this.selection(event);
+				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
+
+				channel.trigger(&quot;browser:actions:select:all:&quot;+collName); // To display checked boxes
+				this.actionSelectorsUpdate(collName); // To update selectors
 			},
 
-			unSelectAll: function (event) {
+			/**
+			 * Should unselect all objects
+			 * 
+			 * @method actionUnSelectAll
+			 */
+			actionUnSelectAll: function (event) {
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
-				$listObjects.find(&quot;span.checkbox&quot;).each(function (idx, checkbox) {
-					$(checkbox).addClass(&quot;icon-check-empty&quot;).removeClass(&quot;icon-check&quot;);
-				});
-				this.selection(event);
+				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
+
+				channel.trigger(&quot;browser:actions:select:none:&quot;+collName); // To display checked boxes
+				this.actionSelectorsUpdate(collName); // To update selectors
 			},
 
-			deleteToggle: function (event) {
+			/**
+			 * Displays or hides the controls necessary to select/unselect all objects, delete them,...
+			 * Throws an event to make subviews display their checkboxes
+			 * 
+			 * @method actionDeleteToggle
+			 */
+			actionDeleteToggle: function (event) {
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
-				var collName = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
-				this.deleteInProgress[collName] = !this.deleteInProgress[collName];
+				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
 
-				$listObjects.find(&quot;span.checkbox&quot;).toggle(); // Display object selectors or hide them
 				$listObjects.find(&quot;.actions-contextual .action&quot;).toggle();
 				$listObjects.find(&quot;.actions-contextual .cancel&quot;).toggle();
 				$listObjects.find(&quot;.actions-contextual-trigger&quot;).toggle();
@@ -354,26 +364,30 @@ define ([
 				$listObjects.find(&quot;.actions-contextual-selection&quot;).toggle();
 
 				if ($listObjects.find(&quot;.actions-contextual-selection&quot;).is(&quot;:visible&quot;)) {
-					this.selection(event);
+					this.actionSelectorsUpdate(collName);
+					/**
+					* To make objects subviews show/hide their checkbox
+					* @event browser:actions:toggle-checkboxes:[collName]
+					*/
+					channel.trigger(&quot;browser:actions:toggle-checkboxes:&quot;+collName);
 				}
 			},
 
-			actionTrigger: function (event) {
-				// Which list objects are we working on ?
+			/**
+			 * Triggers an event, which will be heard by sub-views that will actually execute the action
+			 * 
+			 * @method actionDeleteToggle
+			 */
+			actionExecute: function (event) {
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
-				var collName = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
-				// Which action do we want to trigger ?
-				var action = $(event.target).attr(&#x27;class&#x27;);
+				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
+				var action       = $(event.target).attr(&#x27;class&#x27;);// Which action do we want to trigger ?
+
 				/**
-				* Event triggered on channel after the user clicks on an action button
-				* (flagged in the DOM with the &#x60;.actions-contextual-trigger button&#x60; classes).
-				* It should be listened by subviews (for example instances of
-				* {{#crossLink &quot;BrowserBodyTagView&quot;}}{{/crossLink}}) to let them
-				* relay the action to their respective model.
-				* 
-				* @event browser:[collection-name]:[action]
+				* To make objects subviews kill themselves and destroy their model if they are selected
+				* @event browser:actions:delete:[collName]
 				*/
-				channel.trigger(&quot;browser:&quot;+collName+&quot;:&quot;+action);
+				channel.trigger(&quot;browser:actions:delete:&quot;+collName);
 			},
 
 
@@ -622,9 +636,9 @@ define ([
 				var results = temp.coll[collName].search(this.filters[filterName]);
 
 				results.each(function (element) {
-					if (collName == &quot;notes&quot;) { newView = new BrowserBodyNoteView({ model: element }); }
-					if (collName == &quot;tags&quot;) { newView = new BrowserBodyTagView({ model: element }); }
-					if (collName == &quot;tasks&quot;) { newView = new BrowserBodyTaskView({ model: element }); }
+					if (collName == &quot;notes&quot;) { newView = new BrowserBodyNoteView({ collName:&quot;notes&quot;, model: element }); }
+					if (collName == &quot;tags&quot;) { newView = new BrowserBodyTagView({ collName:&quot;tags&quot;, model: element }); }
+					if (collName == &quot;tasks&quot;) { newView = new BrowserBodyTaskView({ collName:&quot;tasks&quot;, model: element }); }
 					self.children[collName].push (newView);
 					$list.append(newView.render().el);
 				}, this);

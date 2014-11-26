@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -159,9 +161,13 @@ define ([
 				this.listenTo(channel, &#x27;tab:toggle:browser&#x27;, this.toggle);
 
 				this.children = {
-					tab  : new BrowserTabView({ el: $(&quot;#nav .browse&quot;), parent: this }),
-					body : new BrowserBodyView({ el: $(&quot;#tabs .browse&quot;), parent: this })
+					tab  : new BrowserTabView({ el: $(&quot;#nav .browse&quot;) }),
+					body : new BrowserBodyView({ el: $(&quot;#tabs .browse&quot;) })
+					// tab  : new BrowserTabView({ el: $(&quot;#nav .browse&quot;), parent: this }),
+					// body : new BrowserBodyView({ el: $(&quot;#tabs .browse&quot;), parent: this })
 				};
+
+				this.children.body.render();
 			},
 
 			toggle: function() {

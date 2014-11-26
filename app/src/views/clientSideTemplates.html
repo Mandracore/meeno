@@ -1,14 +1,14 @@
 <script type="text/template" id="browser-body-note-template" style="display: none;">
-	<span class="checkbox icon-check-empty"></span>
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<span class="edit title attribute"><%= note.title %></span>
 	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag %>]</span><% }); %></span>
 </script>
 <script type="text/template" id="browser-body-tag-template" style="display: none;">
-	<span class="checkbox icon-check-empty"></span>
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<span class="edit label attribute"><%= label %></span>
 </script>
 <script type="text/template" id="browser-body-task-template" style="display: none;">
-	<span class="checkbox icon-check-empty"></span>
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<span class="check label attribute"><%= task.label %></span>
 	<span>[<%= task.position %>]</span>
 	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag.label %>]</span><% }); %></span>

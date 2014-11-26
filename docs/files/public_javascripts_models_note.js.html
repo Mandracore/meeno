@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -171,6 +173,16 @@ define ([
 					includeInJSON: &#x27;_id&#x27;,
 				}
 			}],
+
+			initialize: function() {
+				var self = this;
+				this.listenTo(this,&#x27;change&#x27;, this.updated);
+			},
+
+			updated: function() {
+				this.set(&#x27;updated_at&#x27;, new Date());
+			},
+
 			defaults: function() {
 				return {
 					title     : &#x27;Nouvelle note&#x27;,

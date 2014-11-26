@@ -107,6 +107,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "public/javascripts/views/browser-body-note.js": {
+            "name": "public/javascripts/views/browser-body-note.js",
+            "modules": {},
+            "classes": {
+                "BrowserBodyNoteView": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "public/javascripts/views/browser-body-object.js": {
             "name": "public/javascripts/views/browser-body-object.js",
             "modules": {},
@@ -449,6 +458,19 @@
                 }
             ]
         },
+        "BrowserBodyNoteView": {
+            "name": "BrowserBodyNoteView",
+            "shortname": "BrowserBodyNoteView",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "public/javascripts/views/browser-body-note.js",
+            "line": 10,
+            "description": "Displays notes in the browser.",
+            "extends": "BrowserBodyObjectView"
+        },
         "BrowserBodyObjectView": {
             "name": "BrowserBodyObjectView",
             "shortname": "BrowserBodyObjectView",
@@ -458,7 +480,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-object.js",
-            "line": 8,
+            "line": 9,
             "description": "This class retains all core features for displaying objects views in the browser.\nSeveral classes will inherit from it, one per kind of business object :\n- BrowserBodyNoteView\n- BrowserBodyTaskView\n- BrowserBodyTagView\n- ...",
             "extends": "Backbone.View"
         },
@@ -485,6 +507,7 @@
             "extension_for": [],
             "file": "public/javascripts/views/browser-body-task.js",
             "line": 11,
+            "description": "Displays a task in the browser",
             "extends": "{BrowserBodyObjectView}"
         },
         "BrowserBodyView": {
@@ -501,48 +524,9 @@
             "is_constructor": 1,
             "params": [
                 {
-                    "name": "options",
-                    "description": "Holds all the options of the view",
-                    "type": "Object",
-                    "props": [
-                        {
-                            "name": "collections",
-                            "description": "Holds the 6 collections of objects to be used by the browser",
-                            "type": "Object",
-                            "props": [
-                                {
-                                    "name": "notes",
-                                    "description": "",
-                                    "type": "Notes"
-                                },
-                                {
-                                    "name": "tags",
-                                    "description": "",
-                                    "type": "Tags"
-                                },
-                                {
-                                    "name": "tasks",
-                                    "description": "",
-                                    "type": "Tasks"
-                                },
-                                {
-                                    "name": "noteFilters",
-                                    "description": "",
-                                    "type": "NoteFilters"
-                                },
-                                {
-                                    "name": "taskFilters",
-                                    "description": "",
-                                    "type": "TaskFilters"
-                                },
-                                {
-                                    "name": "tagFilters",
-                                    "description": "",
-                                    "type": "TagFilters"
-                                }
-                            ]
-                        }
-                    ]
+                    "name": "parent",
+                    "description": "Holds a reference to the mother browser view",
+                    "type": "Object"
                 }
             ],
             "extends": "Backbone.View"
@@ -582,7 +566,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/editor-body.js",
-            "line": 13,
+            "line": 12,
             "description": "This backbone view holds the body of a note editor (where the note is actually rendered)",
             "extends": "Backbone.View"
         },
@@ -1332,7 +1316,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 51,
+            "line": 50,
             "description": "Called every time the filters of the {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}} \nare updated. Checks if its model is similar to the one in use in the browser and \nhighlights it if it's true.",
             "itemtype": "method",
             "name": "checkStatus",
@@ -1340,7 +1324,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 68,
+            "line": 67,
             "description": "Called when the user clicks on the view.\nUpdates the right {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}}'s \nfilter to clone the view's model properties and highlights it.",
             "itemtype": "method",
             "name": "activate",
@@ -1348,7 +1332,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 83,
+            "line": 82,
             "description": "Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by\nthe {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}}.\nWill destroy both the view and its model.",
             "itemtype": "method",
             "name": "removeIfActive",
@@ -1397,14 +1381,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 29,
+            "line": 31,
             "itemtype": "method",
             "name": "initialize",
             "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 36,
+            "line": 38,
             "description": "This method aims at rendering the HTML elements for a given task model.\nOnce it is appended to the DOM, some event bindings are also done.\nIn particular, we control the events occuring when the ENTER key is pressed,\nso that the browser does not try to submit the form by faking a click event on\nthe closest button (which triggers unwanted behaviours).",
             "itemtype": "method",
             "name": "render",
@@ -1413,14 +1397,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 87,
+            "line": 89,
             "itemtype": "method",
             "name": "edit",
             "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 96,
+            "line": 98,
             "description": "Updates the view after the user modified the tags related to the task",
             "itemtype": "method",
             "name": "renderTagUpdate",
@@ -1428,7 +1412,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 108,
+            "line": 110,
             "description": "When the user tries to link the task to a new tag, this method will create the desired tag \nand link it to the view's model.",
             "itemtype": "method",
             "name": "addNewTag",
@@ -1436,7 +1420,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 143,
+            "line": 145,
             "description": "Should initialize the task's tag autocomplete input and allow for linking existing tags\nto the task.\nTo be called only when a task is being edited, and deleted when its form is closed",
             "itemtype": "method",
             "name": "initAutocomplete",
@@ -1444,7 +1428,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 178,
+            "line": 180,
             "description": "Saves the changes made into the database",
             "itemtype": "method",
             "name": "update",
@@ -1452,7 +1436,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 191,
+            "line": 193,
             "description": "Should unlink the clicked tag from the task",
             "itemtype": "method",
             "name": "unlink",
@@ -1460,7 +1444,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 206,
+            "line": 208,
             "description": "Will reset the model to the value stored in DB and re-render the view accordingly.",
             "itemtype": "method",
             "name": "reset",
@@ -1468,7 +1452,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 220,
+            "line": 222,
             "description": "To remove the view's model from database and kill the view.",
             "itemtype": "method",
             "name": "delete",
@@ -1476,7 +1460,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 230,
+            "line": 232,
             "description": "To close the task form",
             "itemtype": "method",
             "name": "close",
@@ -1484,7 +1468,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 125,
+            "line": 117,
             "description": "Makes the browser visible",
             "itemtype": "method",
             "name": "toggle",
@@ -1492,7 +1476,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 139,
+            "line": 131,
             "description": "Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks\non the right button (class `.filter li`).",
             "itemtype": "method",
             "name": "toggleObject",
@@ -1507,15 +1491,63 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 227,
-            "description": "Event triggered on channel after the user clicks on an action button\n(flagged in the DOM with the `.actions-contextual-trigger button` classes).\nIt should be listened by subviews (for example instances of\n{{#crossLink \"BrowserBodyTagView\"}}{{/crossLink}}) to let them\nrelay the action to their respective model.",
-            "itemtype": "event",
-            "name": "browser:[collection-name]:[action]",
+            "line": 157,
+            "description": "Manages the buttons \"select all\" and \"unselect all\". Will be called every time an object\nis selected or unseleted to make sure that the right buttons are displayed",
+            "itemtype": "method",
+            "name": "actionSelectorsUpdate",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 243,
+            "line": 182,
+            "description": "Should select all objects",
+            "itemtype": "method",
+            "name": "actionSelectAll",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 195,
+            "description": "Should unselect all objects",
+            "itemtype": "method",
+            "name": "actionUnSelectAll",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 208,
+            "description": "Displays or hides the controls necessary to select/unselect all objects, delete them,...\nThrows an event to make subviews display their checkboxes",
+            "itemtype": "method",
+            "name": "actionDeleteToggle",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 226,
+            "description": "To make objects subviews show/hide their checkbox",
+            "itemtype": "event",
+            "name": "browser:actions:toggle-checkboxes:[collName]",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 234,
+            "description": "Triggers an event, which will be heard by sub-views that will actually execute the action",
+            "itemtype": "method",
+            "name": "actionDeleteToggle",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 244,
+            "description": "To make objects subviews kill themselves and destroy their model if they are selected",
+            "itemtype": "event",
+            "name": "browser:actions:delete:[collName]",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 255,
             "description": "Checks whether the user is currently using a search input and if so tells which collection is visible",
             "itemtype": "method",
             "name": "searchGetFocus",
@@ -1527,7 +1559,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 262,
+            "line": 274,
             "description": "Will prepare and open an autocomplete input.\nIt should help the user selecting objects from collection named `sColl2` (example : `tags`) \nthat will then be used to filter the objects from collection named `sColl1`",
             "itemtype": "method",
             "name": "searchOpenAutocomplete",
@@ -1541,7 +1573,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 383,
+            "line": 395,
             "description": "Event triggered on channel after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
             "itemtype": "event",
             "name": "browser:filters:[filter-name]:remove-active",
@@ -1549,7 +1581,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 501,
+            "line": 513,
             "description": "This methods aims at saving the new positions of the objects",
             "params": [
                 {
@@ -1588,7 +1620,7 @@
         },
         {
             "file": "public/javascripts/views/editor-body-object.js",
-            "line": 99,
+            "line": 100,
             "description": "Triggered once the user finishes typing in the new object.\nUsed as a proxy to either link the note to a new object, or to create a new object",
             "params": [
                 {
@@ -1862,7 +1894,7 @@
         },
         {
             "message": "Missing item type\nThis methods aims at saving the new positions of the objects",
-            "line": " public/javascripts/views/browser-body.js:501"
+            "line": " public/javascripts/views/browser-body.js:513"
         },
         {
             "message": "Missing item type\nFilters the keyboard events to pass only ENTER and TAB to the lock() method",
@@ -1870,7 +1902,7 @@
         },
         {
             "message": "Missing item type\nTriggered once the user finishes typing in the new object.\nUsed as a proxy to either link the note to a new object, or to create a new object",
-            "line": " public/javascripts/views/editor-body-object.js:99"
+            "line": " public/javascripts/views/editor-body-object.js:100"
         },
         {
             "message": "Missing item type",

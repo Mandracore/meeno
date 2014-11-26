@@ -43,6 +43,8 @@
             
                 <li><a href="../classes/BrowserBodyFilterView.html">BrowserBodyFilterView</a></li>
             
+                <li><a href="../classes/BrowserBodyNoteView.html">BrowserBodyNoteView</a></li>
+            
                 <li><a href="../classes/BrowserBodyObjectView.html">BrowserBodyObjectView</a></li>
             
                 <li><a href="../classes/BrowserBodyTagView.html">BrowserBodyTagView</a></li>
@@ -181,7 +183,6 @@ define ([
 			 * @chainable
 			 */
 			render: function() {
-				console.log (&quot;R[Browser-body-filter]&quot;);
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (this.model.toJSON()));
 				this.checkStatus();

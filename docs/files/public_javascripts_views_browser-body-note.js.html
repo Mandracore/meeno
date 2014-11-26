@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>ObjectFilters - Meeno source code documentation</title>
+    <title>public/javascripts/views/browser-body-note.js - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -136,68 +136,63 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>ObjectFilters Class</h1>
-<div class="box meta">
-    
+                        <h1 class="file-heading">File: public/javascripts/views/browser-body-note.js</h1>
 
-    
-        <div class="extends">
-            Extends Backbone.Collection
-        </div>
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+define ([
+		&#x27;jquery&#x27;,
+		&#x27;underscore&#x27;,
+		&#x27;backbone&#x27;,
+		&#x27;channel&#x27;,
+		&#x27;views/browser-body-object&#x27;,
+		&#x27;views/editor&#x27;,
+	], function ($, _, Backbone, channel, BrowserBodyObjectView, EditorView) {
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/public_javascripts_collections_filters.js.html#l8"><code>public&#x2F;javascripts&#x2F;collections&#x2F;filters.js:8</code></a>
-        </div>
-    
+		/**
+		 * Displays notes in the browser.
+		 * 
+		 * @class BrowserBodyNoteView
+		 * @extends BrowserBodyObjectView
+		 */
+		var BrowserBodyNoteView = BrowserBodyObjectView.extend({
 
-    
+			template : &#x27;#browser-body-note-template&#x27;,
 
-    
-</div>
+			initialize: function(options){
+				// EXTEND PARENT METHOD HERE
+				this.options = options;
+				this.listenTo(this.model, &#x27;add:tagLinks remove:tagLinks change:title&#x27;, this.render);
+				this.listenTo(this.model, &#x27;change:title change:position&#x27;, this.render);
+			},
 
+			render: function () {
+				// var json        = this.model.toJSON();
+				// json.created_at = json.created_at.toString(&#x27;dddd, MMMM ,yyyy&#x27;);
+				var json = {
+					note: this.model.toJSON(),
+					tags: _.map(this.model.get(&#x27;tagLinks&#x27;).pluck(&#x27;tag&#x27;), function(tag) {return tag.get(&#x27;label&#x27;)})
+				};
 
+				var templateFn = _.template( $(this.template).html() );
+				this.$el.html (templateFn (json));
 
-<div class="box intro">
-    <p>Parent of the classes <a href="../classes/NoteFilters.html" class="crosslink">NoteFilters</a>, <a href="../classes/TaskFilters.html" class="crosslink">TaskFilters</a> and <a href="../classes/TagFilters.html" class="crosslink">TagFilters</a>.
-It holds all the common methods necessary to deal with collections of filters.</p>
+				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
 
-</div>
+				return this;
+			},
 
+			edit: function() {
+				var newEditor = new EditorView ({ model: this.model });
+				newEditor.render();
+				newEditor.toggle();
+			}
+		});
 
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-        
-        
-        
-        
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-            
-
-            
-
-            
-
-            
-        </div>
-
-        
-
-        
-
-        
-
-        
-    </div>
+		return BrowserBodyNoteView;
+	}
+);
+    </pre>
 </div>
 
                     </div>
