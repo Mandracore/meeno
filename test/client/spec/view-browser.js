@@ -15,8 +15,9 @@ define ([
 		'views/browser',
 		'views/browser-body',
 		'views/browser-body-note',
+		'views/browser-body-filter',
 	// ], function ($, _, Backbone, temp, channel, Note, Task, Tag, Notes, Tasks, Tags, Filter, Filters) {
-	], function ($, _, Backbone, temp, channel, Note, Task, Tag, Notes, Tasks, Tags, Filter, Filters, BrowserView, BrowserBodyView, BrowserBodyNoteView) {
+	], function ($, _, Backbone, temp, channel, Note, Task, Tag, Notes, Tasks, Tags, Filter, Filters, BrowserView, BrowserBodyView, BrowserBodyNoteView, BrowserBodyFilterView) {
 
 	return describe("Browser", function() {
 		var browserBody, note, tag, task, noteFilter, taskFilter, tagFilter;
@@ -189,17 +190,20 @@ define ([
 						expect($autocomplete.attr('placeholder')).toBe("filter by related tasks"); // Placeholder should be correct
 					});
 
-//////////////////////////////////////////////
-
-					xit("should hide the autocomplete input (+ display the other one) when hitting the ESC key", function() {
+					it("should hide the autocomplete input (+ display the other one) when hitting the ESC key", function() {
+						spyOn(browserBody, 'searchCloseAutocomplete').andCallThrough();;
 						channel.trigger('keyboard:task'); // Display autocomplete
+
 						expect($autocomplete.is(':visible')).toBe(true); // Check Autocomplete is visible
 						expect($autocomplete.is(':focus')).toBe(true); // Check Autocomplete has focus
 						channel.trigger('keyboard:escape'); // Simulate escape (without testing mousetrap)
+
+						expect(browserBody.searchCloseAutocomplete).toHaveBeenCalled();
 						expect($autocomplete.is(':visible')).toBe(false); // Check Autocomplete is now hidden
 						expect($search.is(':focus')).toBe(true); // Check Search has focus
 					});
-					xit("should hide the autocomplete input (+ display the other one) when hitting the Backspace key if input is empty", function() {
+
+					it("should hide the autocomplete input (+ display the other one) when hitting the Backspace key if input is empty", function() {
 						channel.trigger('keyboard:tag'); // Display autocomplete
 						expect($autocomplete.is(':visible')).toBe(true); // Check Autocomplete is visible
 						expect($autocomplete.is(':focus')).toBe(true); // Check Autocomplete has focus
@@ -213,47 +217,35 @@ define ([
 					});
 				});
 
-				xdescribe("and leveraging the custom filters management", function() {
-					it("should refresh the controls displayed when one of its filters is updated", function() {
-						spyOn(this.browser.children.body, 'refreshFilterControls');
+				describe("and leveraging the custom filters management", function() {
+					it("should refresh the controls displayed when one of its filters or when the filters stored are updated", function() {
+						spyOn(browserBody, 'searchFiltersCtrlUpd');
 
-						this.browser.children.body.filters.noteFilter.get('tags').add(this.note); // Updating browser-body's noteFilter
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
-						this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');
-						this.browser.children.body.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tag');
-					});	
-					it("should refresh the controls displayed when the collection of filters is updated", function() {
-						spyOn(this.browser.children.body, 'refreshFilterControls');
+						browserBody.filters.noteFilter.get('tags').add(note); // Updating browser-body's noteFilter
+						expect(browserBody.searchFiltersCtrlUpd).toHaveBeenCalledWith('note');
 
-						this.browser.children.body.options.collections.noteFilters.add(this.noteFilter);
-						this.browser.children.body.options.collections.taskFilters.add(this.taskFilter);
-						this.browser.children.body.options.collections.tagFilters.add(this.tagFilter);
+						browserBody.filters.taskFilter.get('tags').add(tag); // Updating browser-body's taskFilter
+						expect(browserBody.searchFiltersCtrlUpd).toHaveBeenCalledWith('task');
 
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tag');
+						temp.coll.tagFilters.add(tagFilter); // Updating storage
+						expect(browserBody.searchFiltersCtrlUpd).toHaveBeenCalledWith('tag');
 					});
 					it("should display the right controls", function() {
 
-						this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
-						this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
-						this.browser.children.body.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
+						browserBody.filters.noteFilter.get('tags').add(tag); // Updating browser-body's noteFilter
+						browserBody.filters.taskFilter.get('tags').add(tag); // Updating browser-body's taskFilter
+						browserBody.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
 
 						expect($searchWrapperNotes.find(".filter-editor .action.save").is(':visible')).toBe(true);
 						expect($searchWrapperTasks.find(".filter-editor .action.save").is(':visible')).toBe(true);
 						expect($searchWrapperTags.find(".filter-editor .action.save").is(':visible')).toBe(true);
 
-						spyOn(this.browser.children.body, 'refreshFilterControls').andCallThrough();
+						spyOn(browserBody, 'searchFiltersCtrlUpd').andCallThrough();
 
-						this.browser.children.body.options.collections.noteFilters.add(this.browser.children.body.filters.noteFilter.superClone());
-						this.browser.children.body.options.collections.taskFilters.add(this.browser.children.body.filters.taskFilter.superClone());
-						this.browser.children.body.options.collections.tagFilters.add(this.browser.children.body.filters.tagFilter.superClone());
+						temp.coll.noteFilters.add(browserBody.filters.noteFilter.superClone());
+						temp.coll.taskFilters.add(browserBody.filters.taskFilter.superClone());
+						temp.coll.tagFilters.add(browserBody.filters.tagFilter.superClone());
 
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('note');
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('task');
-						expect(this.browser.children.body.refreshFilterControls).toHaveBeenCalledWith('tag');
 						expect($searchWrapperNotes.find(".filter-editor .action.save").is(':visible')).toBe(false);
 						expect($searchWrapperNotes.find(".filter-editor .action.delete").is(':visible')).toBe(true);
 						expect($searchWrapperTasks.find(".filter-editor .action.save").is(':visible')).toBe(false);
@@ -261,26 +253,28 @@ define ([
 						expect($searchWrapperTags.find(".filter-editor .action.save").is(':visible')).toBe(false); //
 						expect($searchWrapperTags.find(".filter-editor .action.delete").is(':visible')).toBe(true); //
 					});
-					it("should ensure browser-body-filter views react when one of its filters is updated", function() {
+
+
+					xit("should ensure browser-body-filter views react when one of its filters is updated", function() {
 						//1. Add filters to collections in order to force creation of browser-body-filter views
-						this.browser.children.body.options.collections.noteFilters.add(this.noteFilter);
-						this.browser.children.body.options.collections.taskFilters.add(this.taskFilter);
-						this.browser.children.body.options.collections.tagFilters.add(this.tagFilter);				
+						temp.coll.noteFilters.add(noteFilter);
+						temp.coll.taskFilters.add(taskFilter);
+						temp.coll.tagFilters.add(tagFilter);				
 
 						// 2. We spy on browser-body-filter views
-						spyOn(this.browser.children.body.children.noteFilters[0], 'checkStatus');
-						spyOn(this.browser.children.body.children.taskFilters[0], 'checkStatus');
-						spyOn(this.browser.children.body.children.tagFilters[0], 'checkStatus');
+						spyOn(browserBody.children.noteFilters[0], 'checkStatus');
+						spyOn(browserBody.children.taskFilters[0], 'checkStatus');
+						spyOn(browserBody.children.tagFilters[0], 'checkStatus');
 
 						// 3. We update browser-body's filters
-						this.browser.children.body.filters.noteFilter.get('tags').add(this.tag); // Updating browser-body's noteFilter
-						this.browser.children.body.filters.taskFilter.get('tags').add(this.tag); // Updating browser-body's taskFilter
-						this.browser.children.body.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
+						browserBody.filters.noteFilter.get('tags').add(tag); // Updating browser-body's noteFilter
+						browserBody.filters.taskFilter.get('tags').add(tag); // Updating browser-body's taskFilter
+						browserBody.filters.tagFilter.set('text','new test value 2'); // Updating browser-body's tagFilter
 
 						// 4. We check that the correct methods have been called
-						expect(this.browser.children.body.children.noteFilters[0].checkStatus).toHaveBeenCalled();
-						expect(this.browser.children.body.children.taskFilters[0].checkStatus).toHaveBeenCalled();
-						expect(this.browser.children.body.children.tagFilters[0].checkStatus).toHaveBeenCalled();
+						expect(browserBody.children.noteFilters[0].checkStatus).toHaveBeenCalled();
+						expect(browserBody.children.taskFilters[0].checkStatus).toHaveBeenCalled();
+						expect(browserBody.children.tagFilters[0].checkStatus).toHaveBeenCalled();
 					});
 					xit("should delete the active filter when clicking the dedicated button and deactivate search", function() {
 						expect(true).toBe(false);
@@ -288,7 +282,28 @@ define ([
 				});
 			});
 		});
+//=====================================================
+//=====================================================
+//=====================================================
+//=====================================================
+//=====================================================
 
+		describe("Body Filters", function() {
+			var browserBodyFilterView;
+
+			beforeEach(function () {
+				loadFixtures('clientSideTemplates.html'); // Inserting the client side templates into the fixtures area of the DOM
+				browserBodyFilterView = new BrowserBodyFilterView({ filterName: "noteFilter", model: noteFilter});
+				$("#jasmine-fixtures").append(browserBodyFilterView.render().el); // Render object and append to DOM
+			});
+
+			it("should check if it is active upon receiving event and update itself accordingly", function() {
+				expect(browserBodyFilterView.active).toBe(false);
+				spyOn(browserBodyFilterView, 'checkStatus');
+				channel.trigger("browser:search:filters:check-status:noteFilter", noteFilter);
+				expect(browserBodyFilterView.active).toBe(true);
+			});
+		});
 
 		describe("Body Objects", function() {
 			var browserBodyNoteView;

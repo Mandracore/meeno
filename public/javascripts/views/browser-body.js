@@ -77,21 +77,21 @@ define ([
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
 				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.renderFilterCollection("taskFilters");});
 				this.listenTo(temp.coll.tagFilters, 'reset add remove', function () {this.renderFilterCollection("tagFilters");});
-				this.listenTo(temp.coll.noteFilters, 'change add remove', function () {this.refreshFilterControls("note");});
-				this.listenTo(temp.coll.taskFilters, 'change add remove', function () {this.refreshFilterControls("task");});
-				this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.refreshFilterControls("tag");});
+				this.listenTo(temp.coll.noteFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("note");});
+				this.listenTo(temp.coll.taskFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("task");});
+				this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("tag");});
 
 				this.listenTo(this.filters.noteFilter, 'change add:tags remove:tags add:tasks remove:tasks', function () {
 					this.renderCollection("notes");
-					this.refreshFilterControls("note");
+					this.searchFiltersCtrlUpd("note");
 					this.renderFilterInSuperInput("noteFilter"); });
 				this.listenTo(this.filters.taskFilter, 'change add:tags remove:tags', function () {
 					this.renderCollection("tasks");
-					this.refreshFilterControls("task");
+					this.searchFiltersCtrlUpd("task");
 					this.renderFilterInSuperInput("taskFilter");});
 				this.listenTo(this.filters.tagFilter, 'change', function () {
 					this.renderCollection("tags");
-					this.refreshFilterControls("tag");
+					this.searchFiltersCtrlUpd("tag");
 					this.renderFilterInSuperInput("tagFilter");});
 
 				this.listenTo(channel, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
@@ -101,10 +101,14 @@ define ([
 				this.listenTo(channel, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 
 				// Deactivated for testing purposes only
-				this.refreshFilterControls("note");
-				this.refreshFilterControls("task");
-				this.refreshFilterControls("tag");
+				this.searchFiltersCtrlUpd("note");
+				this.searchFiltersCtrlUpd("task");
+				this.searchFiltersCtrlUpd("tag");
 
+				this.listenTo(channel, "browser:search:filters:activate", this.searchFilterActivate);
+
+
+				// Actions management
 				this.listenTo(channel, 'browser:actions:update-selectors:notes', function () {this.actionSelectorsUpdate("notes");});
 				this.listenTo(channel, 'browser:actions:update-selectors:tasks', function () {this.actionSelectorsUpdate("tasks");});
 				this.listenTo(channel, 'browser:actions:update-selectors:tags', function () {this.actionSelectorsUpdate("tags");});
@@ -268,7 +272,7 @@ define ([
 			searchGetFocus: function () {
 				var $listObjects;
 				var sColl1 = false;
-				this.$(".super-input").find('input.search').each(function(idx,el) {
+				this.$(".super-input").find('input').each(function(idx,el) {
 					if ($(el).is(":focus")) {
 						$listObjects = $(el).closest('.listobjects');
 						sColl1 = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks'); //common
@@ -335,7 +339,6 @@ define ([
 				var $listObjects = this.$(".listobjects."+browserActiveView);
 				// Listening to "backspace" & "escape" events triggered by mousetrap
 				if ( event == "escape" || (event == "backspace" && $listObjects.find(".search-wrapper .autocomplete").val() == '') ) {
-					console.log("Closing autocomplete");
 					$listObjects.find(".search-wrapper .autocomplete").hide();
 					$listObjects.find(".search-wrapper .search").focus();
 				}
@@ -356,10 +359,18 @@ define ([
 				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 				this.filters[filterName].set('text', $(event.target).val());
 				this.renderCollection(collName);
-				this.refreshFilterControls(collName.replace(/(s)$/, function($1){ return ""; }));
+				this.searchFiltersCtrlUpd(collName.replace(/(s)$/, function($1){ return ""; }));
 			},
 
-			refreshFilterControls: function (collName) { //note
+			/**
+			 * Should update the controls to save/delete filters
+			 * If temp contains a filter similar to the one that is currently applied, we propose to delete it
+			 * If not, we propose to save the currently applied one
+			 *
+			 * @method searchFiltersCtrlUpd
+			 * @param collName the name of the collection (example : `tags`)
+			 */
+			searchFiltersCtrlUpd: function (collName) { //note
 				var $listObjects    = this.$(".listobjects."+collName+"s");
 				var filtersCollName = collName+"Filters";
 				var filterName      = collName+"Filter";
@@ -468,6 +479,18 @@ define ([
 				}
 			},
 
+			/**
+			 * Forces the view's current filter to match the one clicked by the user
+			 *
+			 * @method searchFilterActivate
+			 * @param filter the model held by the filter view clicked on by the user
+			 */
+			searchFilterActivate: function (filter) {
+				var filterSubClass = filter.get('subClass');
+				var filterName = filterSubClass.charAt(0).toUpperCase() + filterSubClass.slice(1);
+				this.filters[filterName].makeItMatch(filter);
+				this.filters[filterName].trigger('change');
+			},
 
 			//=================================================================================
 			// Render business objects' sub views 

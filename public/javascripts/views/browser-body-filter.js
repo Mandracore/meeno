@@ -28,9 +28,11 @@ define ([
 			initialize: function(options) {
 				this.options = options;
 				this.active  = false;
-				this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
-				this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
-				this.listenTo(channel, "browser:filters:"+this.options.filterName+":remove-active", function () {this.removeIfActive();});
+//				this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
+//				this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
+				this.listenTo(channel, "browser:filters:"+this.options.filterName+":remove-active", this.removeIfActive);
+				
+				this.listenTo(channel, "browser:search:filters:check-status:"+this.options.filterName, this.checkStatus);
 
 			},
 
@@ -43,7 +45,6 @@ define ([
 			render: function() {
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (this.model.toJSON()));
-				this.checkStatus();
 				return this;
 			},
 
@@ -54,8 +55,8 @@ define ([
 			 *
 			 * @method checkStatus
 			 */
-			checkStatus: function () {
-				if (this.options.parent.filters[this.options.filterName].isSimilar(this.model)) {
+			checkStatus: function (currentFilter) {
+				if (currentFilter.isSimilar(this.model)) {
 					this.$el.addClass('active');
 					this.active = true;
 				} else {
@@ -73,9 +74,7 @@ define ([
 			 */
 			activate: function() {
 				if (!this.active) {
-					console.log("activate");
-					this.options.parent.filters[this.options.filterName].makeItMatch(this.model);
-					this.options.parent.filters[this.options.filterName].trigger('change');
+					channel.trigger("browser:search:filters:activate", this.model);
 				}
 			},
 
