@@ -186,7 +186,7 @@ define ([
 				&#x27;click .actions-contextual .delete&#x27;                : &#x27;actionDeleteToggle&#x27;,
 				&#x27;click .actions-contextual-selection .select-all&#x27;  : &#x27;actionSelectAll&#x27;,
 				&#x27;click .actions-contextual-selection .unselect-all&#x27;: &#x27;actionUnSelectAll&#x27;,
-				&#x27;click .actions-contextual-trigger button&#x27;         : &#x27;actionExecute&#x27;,
+				&#x27;click .actions-contextual-trigger button&#x27;         : &#x27;actionDeleteExecute&#x27;,
 			},
 
 			// ###Setup the view
@@ -241,10 +241,6 @@ define ([
 				this.listenTo(channel, &#x27;keyboard:entity&#x27;, function () {this.searchOpenAutocomplete(&quot;entities&quot;);});
 				this.listenTo(channel, &#x27;keyboard:escape&#x27;, function () {this.searchCloseAutocomplete(&quot;escape&quot;);});
 				this.listenTo(channel, &#x27;keyboard:backspace&#x27;, function () {this.searchCloseAutocomplete(&quot;backspace&quot;);});
-
-				this.listenTo(channel, &#x27;browser:notes:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;notes&quot;);});
-				this.listenTo(channel, &#x27;browser:tags:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tags&quot;);});
-				this.listenTo(channel, &#x27;browser:taks:reSyncSelectors&#x27;, function () {this.reSyncSelectors(&quot;tasks&quot;);});
 
 				// Deactivated for testing purposes only
 				this.refreshFilterControls(&quot;note&quot;);
@@ -357,37 +353,44 @@ define ([
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
 				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
 
-				$listObjects.find(&quot;.actions-contextual .action&quot;).toggle();
-				$listObjects.find(&quot;.actions-contextual .cancel&quot;).toggle();
+				$listObjects.find(&quot;.actions-contextual .delete .action&quot;).toggle();
+				$listObjects.find(&quot;.actions-contextual .delete .cancel&quot;).toggle();
 				$listObjects.find(&quot;.actions-contextual-trigger&quot;).toggle();
 				$listObjects.find(&quot;.actions-contextual-trigger .delete&quot;).toggle();
 				$listObjects.find(&quot;.actions-contextual-selection&quot;).toggle();
 
+				/**
+				* To make objects subviews show/hide their checkbox.
+				* @event browser:actions:toggle-checkboxes:[collName]
+				*/
+				channel.trigger(&quot;browser:actions:toggle-checkboxes:&quot;+collName);
+
 				if ($listObjects.find(&quot;.actions-contextual-selection&quot;).is(&quot;:visible&quot;)) {
 					this.actionSelectorsUpdate(collName);
-					/**
-					* To make objects subviews show/hide their checkbox
-					* @event browser:actions:toggle-checkboxes:[collName]
-					*/
-					channel.trigger(&quot;browser:actions:toggle-checkboxes:&quot;+collName);
 				}
 			},
 
 			/**
 			 * Triggers an event, which will be heard by sub-views that will actually execute the action
 			 * 
-			 * @method actionDeleteToggle
+			 * @method actionDeleteExecute
 			 */
-			actionExecute: function (event) {
+			actionDeleteExecute: function (event) {
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
 				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
 				var action       = $(event.target).attr(&#x27;class&#x27;);// Which action do we want to trigger ?
 
 				/**
-				* To make objects subviews kill themselves and destroy their model if they are selected
+				* To make objects subviews kill themselves and destroy their model if they are selected.
 				* @event browser:actions:delete:[collName]
 				*/
 				channel.trigger(&quot;browser:actions:delete:&quot;+collName);
+
+				$listObjects.find(&quot;.actions-contextual .delete .action&quot;).toggle();
+				$listObjects.find(&quot;.actions-contextual .delete .cancel&quot;).toggle();
+				$listObjects.find(&quot;.actions-contextual-trigger&quot;).toggle();
+				$listObjects.find(&quot;.actions-contextual-trigger .delete&quot;).toggle();
+				$listObjects.find(&quot;.actions-contextual-selection&quot;).toggle();
 			},
 
 

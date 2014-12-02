@@ -17,6 +17,12 @@ define ([
 
 			template : '#browser-body-note-template',
 
+			events: function(){
+				return _.extend({},BrowserBodyObjectView.prototype.events,{
+					'click .edit'           : 'edit',
+				});
+			},
+
 			initialize: function(options){
 				BrowserBodyObjectView.prototype.initialize.apply(this, [options])
 				this.options = options;

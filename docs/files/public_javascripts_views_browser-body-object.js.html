@@ -164,8 +164,7 @@ define ([
 
 			// The DOM events specific to an item.
 			events: {
-				&#x27;click .checkbox&#x27;: &#x27;check&#x27;,
-				&#x27;click .edit&#x27;    : &#x27;edit&#x27;
+				&#x27;click .checkbox&#x27;: &#x27;actionCheck&#x27;,
 			},
 
 			initialize: function(options) {
@@ -188,6 +187,7 @@ define ([
 			},
 
 			actionCheck: function() {
+				console.log(&#x27;checked&#x27;);
 				if (this.$(&quot;span.checkbox&quot;).hasClass(&#x27;icon-check&#x27;)) {
 					this.$(&quot;span.checkbox&quot;).removeClass(&#x27;icon-check&#x27;);
 					this.$(&quot;span.checkbox&quot;).addClass(&#x27;icon-check-empty&#x27;);

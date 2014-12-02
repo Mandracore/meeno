@@ -1468,7 +1468,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 117,
+            "line": 113,
             "description": "Makes the browser visible",
             "itemtype": "method",
             "name": "toggle",
@@ -1476,7 +1476,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 131,
+            "line": 127,
             "description": "Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks\non the right button (class `.filter li`).",
             "itemtype": "method",
             "name": "toggleObject",
@@ -1491,7 +1491,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 157,
+            "line": 153,
             "description": "Manages the buttons \"select all\" and \"unselect all\". Will be called every time an object\nis selected or unseleted to make sure that the right buttons are displayed",
             "itemtype": "method",
             "name": "actionSelectorsUpdate",
@@ -1499,7 +1499,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 182,
+            "line": 178,
             "description": "Should select all objects",
             "itemtype": "method",
             "name": "actionSelectAll",
@@ -1507,7 +1507,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 195,
+            "line": 191,
             "description": "Should unselect all objects",
             "itemtype": "method",
             "name": "actionUnSelectAll",
@@ -1515,7 +1515,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 208,
+            "line": 204,
             "description": "Displays or hides the controls necessary to select/unselect all objects, delete them,...\nThrows an event to make subviews display their checkboxes",
             "itemtype": "method",
             "name": "actionDeleteToggle",
@@ -1523,31 +1523,31 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 226,
-            "description": "To make objects subviews show/hide their checkbox",
+            "line": 220,
+            "description": "To make objects subviews show/hide their checkbox.",
             "itemtype": "event",
             "name": "browser:actions:toggle-checkboxes:[collName]",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 234,
+            "line": 231,
             "description": "Triggers an event, which will be heard by sub-views that will actually execute the action",
             "itemtype": "method",
-            "name": "actionDeleteToggle",
+            "name": "actionDeleteExecute",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 244,
-            "description": "To make objects subviews kill themselves and destroy their model if they are selected",
+            "line": 241,
+            "description": "To make objects subviews kill themselves and destroy their model if they are selected.",
             "itemtype": "event",
             "name": "browser:actions:delete:[collName]",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 255,
+            "line": 258,
             "description": "Checks whether the user is currently using a search input and if so tells which collection is visible",
             "itemtype": "method",
             "name": "searchGetFocus",
@@ -1559,7 +1559,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 274,
+            "line": 277,
             "description": "Will prepare and open an autocomplete input.\nIt should help the user selecting objects from collection named `sColl2` (example : `tags`) \nthat will then be used to filter the objects from collection named `sColl1`",
             "itemtype": "method",
             "name": "searchOpenAutocomplete",
@@ -1573,7 +1573,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 395,
+            "line": 398,
             "description": "Event triggered on channel after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
             "itemtype": "event",
             "name": "browser:filters:[filter-name]:remove-active",
@@ -1581,7 +1581,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 513,
+            "line": 516,
             "description": "This methods aims at saving the new positions of the objects",
             "params": [
                 {
@@ -1894,7 +1894,7 @@
         },
         {
             "message": "Missing item type\nThis methods aims at saving the new positions of the objects",
-            "line": " public/javascripts/views/browser-body.js:513"
+            "line": " public/javascripts/views/browser-body.js:516"
         },
         {
             "message": "Missing item type\nFilters the keyboard events to pass only ENTER and TAB to the lock() method",

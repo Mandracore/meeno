@@ -160,7 +160,7 @@ define ([
 			template : &#x27;#browser-body-note-template&#x27;,
 
 			initialize: function(options){
-				// EXTEND PARENT METHOD HERE
+				BrowserBodyObjectView.prototype.initialize.apply(this, [options])
 				this.options = options;
 				this.listenTo(this.model, &#x27;add:tagLinks remove:tagLinks change:title&#x27;, this.render);
 				this.listenTo(this.model, &#x27;change:title change:position&#x27;, this.render);
@@ -176,8 +176,6 @@ define ([
 
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (json));
-
-				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
 
 				return this;
 			},

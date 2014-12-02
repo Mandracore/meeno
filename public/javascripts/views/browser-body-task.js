@@ -20,6 +20,7 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserBodyObjectView.prototype.events,{
+					'click .edit'             : 'edit',
 					'click .delete'           : 'delete',
 					'click .close'            : 'close',
 					'click .update'           : 'update',

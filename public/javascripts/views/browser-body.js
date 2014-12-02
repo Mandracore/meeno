@@ -104,6 +104,10 @@ define ([
 				this.refreshFilterControls("note");
 				this.refreshFilterControls("task");
 				this.refreshFilterControls("tag");
+
+				this.listenTo(channel, 'browser:actions:update-selectors:notes', function () {this.actionSelectorsUpdate("notes");});
+				this.listenTo(channel, 'browser:actions:update-selectors:tasks', function () {this.actionSelectorsUpdate("tasks");});
+				this.listenTo(channel, 'browser:actions:update-selectors:tags', function () {this.actionSelectorsUpdate("tags");});
 			},
 
 			// Navigation in the browser
@@ -231,7 +235,7 @@ define ([
 			/**
 			 * Triggers an event, which will be heard by sub-views that will actually execute the action
 			 * 
-			 * @method actionDeleteToggle
+			 * @method actionDeleteExecute
 			 */
 			actionDeleteExecute: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
@@ -263,15 +267,14 @@ define ([
 			 */
 			searchGetFocus: function () {
 				var $listObjects;
-				var sColl1;
-				this.$(".super-input").find('input').each(function(idx,el) {
+				var sColl1 = false;
+				this.$(".super-input").find('input.search').each(function(idx,el) {
 					if ($(el).is(":focus")) {
 						$listObjects = $(el).closest('.listobjects');
 						sColl1 = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks'); //common
-						return sColl1;
 					}
 				});
-				return false;
+				return sColl1;
 			},
 
 			/**
@@ -296,10 +299,10 @@ define ([
 					source: function (request, response) {
 						// request.term : data typed in by the user ("new yor")
 						// response : native callback that must be called with the data to suggest to the user
-						var oColl2Filter = (sColl2 == "tasks") ? new TaskFilter ({text: request.term}) : new TagFilter ({text: request.term});
+						var oColl2Filter = (sColl2 == "tasks") ? new Filter.Task ({text: request.term}) : new Filter.Tag ({text: request.term});
 
 						response (
-							self.options.collections[sColl2].search(oColl2Filter).map(function (model, key, list) {
+							temp.coll[sColl2].search(oColl2Filter).map(function (model, key, list) {
 								return {
 									label: model.get("label"),
 									value: model.cid

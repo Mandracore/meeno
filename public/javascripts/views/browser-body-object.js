@@ -45,7 +45,7 @@ define ([
 			},
 
 			actionCheck: function() {
-				console.log('checked');
+				//console.log(this.options.collName);
 				if (this.$("span.checkbox").hasClass('icon-check')) {
 					this.$("span.checkbox").removeClass('icon-check');
 					this.$("span.checkbox").addClass('icon-check-empty');
