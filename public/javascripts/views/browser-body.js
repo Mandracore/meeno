@@ -39,7 +39,7 @@ define ([
 				'click .objectButtons span'                        : 'searchObjectRemove',
 				'click .filter-editor button.save'                 : 'filterSaveStep1',
 				'click .filter-editor button.saveConfirm'          : 'filterSaveStep2',
-				'click .filter-editor button.delete'               : 'filterDelete',
+				'click .filter-editor button.delete'               : 'searchFilterDelete',
 				// Action-related events
 				'click .actions-contextual .delete'                : 'actionDeleteToggle',
 				'click .actions-contextual-selection .select-all'  : 'actionSelectAll',
@@ -82,14 +82,17 @@ define ([
 				this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("tag");});
 
 				this.listenTo(this.filters.noteFilter, 'change add:tags remove:tags add:tasks remove:tasks', function () {
+					channel.trigger("browser:search:filters:check-status:noteFilter", this.filters.noteFilter);
 					this.renderCollection("notes");
 					this.searchFiltersCtrlUpd("note");
 					this.renderFilterInSuperInput("noteFilter"); });
 				this.listenTo(this.filters.taskFilter, 'change add:tags remove:tags', function () {
+					channel.trigger("browser:search:filters:check-status:taskFilter", this.filters.taskFilter);
 					this.renderCollection("tasks");
 					this.searchFiltersCtrlUpd("task");
 					this.renderFilterInSuperInput("taskFilter");});
 				this.listenTo(this.filters.tagFilter, 'change', function () {
+					channel.trigger("browser:search:filters:check-status:tagFilter", this.filters.tagFilter);
 					this.renderCollection("tags");
 					this.searchFiltersCtrlUpd("tag");
 					this.renderFilterInSuperInput("tagFilter");});
@@ -394,9 +397,9 @@ define ([
 			},
 
 			filterSaveStep2: function (event) {
-				var $listObjects    = $(event.target).closest(".listobjects");
-				var filterName      = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
-				var filtersCollName = filterName + "s";
+				var $listObjects      = $(event.target).closest(".listobjects");
+				var filterName        = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
+				var filtersCollName   = filterName + "s";
 				var $inputFilterLabel = $listObjects.find(".filter-editor input");
 				this.filters[filterName].set('label', $inputFilterLabel.val());
 				$listObjects.find('.filter-editor .action.saveConfirm').hide();
@@ -404,19 +407,23 @@ define ([
 				var cloneFilter = this.filters[filterName].superClone();
 				temp.coll[filtersCollName].add(cloneFilter);
 				cloneFilter.save();
+				channel.trigger("browser:search:filters:check-status:"+filterName, this.filters[filterName]);
 			},
 
-			filterDelete: function (event) {
+			/**
+			 * Sends an event to make the filter view holding the active filter destroy its model
+			 *
+			 * @method searchFilterDelete
+			 * @param event
+			 */
+			searchFilterDelete: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
 				var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
 				/**
-				* Event triggered on channel after the user decides to delete the saved tag
-				* that is currently active. This event is listened by the views of 
-				* the class {{#crossLink "BrowserBodyFilterView"}}{{/crossLink}}. The
-				* one view related to a model with the right filter name will delete its model.
-				* @event browser:filters:[filter-name]:remove-active
+				* Will make the view holding the active filter destroy its model
+				* @event browser:search:filters:remove:[filter-name]
 				*/
-				channel.trigger("browser:filters:"+filterName+":remove-active");
+				channel.trigger("browser:search:filters:remove:"+filterName);
 			},
 
 			renderFilterCollection: function (filtersCollName) {
@@ -486,10 +493,16 @@ define ([
 			 * @param filter the model held by the filter view clicked on by the user
 			 */
 			searchFilterActivate: function (filter) {
-				var filterSubClass = filter.get('subClass');
-				var filterName = filterSubClass.charAt(0).toUpperCase() + filterSubClass.slice(1);
+				var filterSubClass = filter.get('subClass'); // NoteFilter
+				var filterName     = filterSubClass.charAt(0).toLowerCase() + filterSubClass.slice(1); // noteFilter
 				this.filters[filterName].makeItMatch(filter);
 				this.filters[filterName].trigger('change');
+				/**
+				* This event is listened by filter views to make them check
+				* if they are active
+				* @event browser:search:filters:check-status:[filter-name]
+				*/
+				channel.trigger("browser:search:filters:check-status:"+filterName, this.filters[filterName]);
 			},
 
 			//=================================================================================

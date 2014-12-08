@@ -28,12 +28,8 @@ define ([
 			initialize: function(options) {
 				this.options = options;
 				this.active  = false;
-//				this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
-//				this.listenTo(this.options.parent.filters[this.options.filterName], 'change add:tags remove:tags add:tasks remove:tasks', function () {this.checkStatus()});
-				this.listenTo(channel, "browser:filters:"+this.options.filterName+":remove-active", this.removeIfActive);
-				
 				this.listenTo(channel, "browser:search:filters:check-status:"+this.options.filterName, this.checkStatus);
-
+				this.listenTo(channel, "browser:search:filters:remove:"+this.options.filterName, this.removeIfActive);
 			},
 
 			/**
@@ -79,9 +75,7 @@ define ([
 			},
 
 			/**
-			 * Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by
-			 * the {{#crossLink "BrowserBodyView"}}browser{{/crossLink}}.
-			 * Will destroy both the view and its model.
+			 * Will destroy both the view and its model if it is currently active.
 			 *
 			 * @method removeIfActive
 			 */

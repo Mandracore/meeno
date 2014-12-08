@@ -303,6 +303,28 @@ define ([
 				channel.trigger("browser:search:filters:check-status:noteFilter", noteFilter);
 				expect(browserBodyFilterView.active).toBe(true);
 			});
+
+			it("should kill itself and delete its model if active when asked to do so", function() {
+				spyOn(browserBodyFilterView, 'kill');
+				spyOn(browserBodyFilterView.model, 'destroy');
+				var noteFilter2 = new Filter.Note({text:"TEST"});
+
+				channel.trigger("browser:search:filters:check-status:noteFilter", noteFilter2);
+				channel.trigger("browser:search:filters:remove:noteFilter");
+				expect(browserBodyFilterView.kill).not.toHaveBeenCalled();
+
+				channel.trigger("browser:search:filters:check-status:noteFilter", noteFilter);
+				channel.trigger("browser:search:filters:remove:noteFilter");
+				expect(browserBodyFilterView.kill).toHaveBeenCalled();
+				expect(browserBodyFilterView.model.destroy).toHaveBeenCalled();
+			});
+
+			xit("should react when clicked on (to activate)", function() {
+				// Les spies ne fonctionnent pas sur les méthodes de browserBodyFilterView
+				spyOn(browserBodyFilterView, 'activate');
+				browserBodyFilterView.$el.click();
+				expect(browserBodyFilterView.activate).toHaveBeenCalled();
+			});
 		});
 
 		describe("Body Objects", function() {
