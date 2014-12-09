@@ -1307,7 +1307,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 37,
+            "line": 35,
             "description": "Renders one filter : generates the HTML and appends it to the DOM element of the view",
             "itemtype": "method",
             "name": "render",
@@ -1316,7 +1316,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 50,
+            "line": 47,
             "description": "Called every time the filters of the {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}} \nare updated. Checks if its model is similar to the one in use in the browser and \nhighlights it if it's true.",
             "itemtype": "method",
             "name": "checkStatus",
@@ -1324,7 +1324,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 67,
+            "line": 64,
             "description": "Called when the user clicks on the view.\nUpdates the right {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}}'s \nfilter to clone the view's model properties and highlights it.",
             "itemtype": "method",
             "name": "activate",
@@ -1332,8 +1332,8 @@
         },
         {
             "file": "public/javascripts/views/browser-body-filter.js",
-            "line": 82,
-            "description": "Listens to the event `browser:filters:[this.options.filterName]:remove-active` triggered by\nthe {{#crossLink \"BrowserBodyView\"}}browser{{/crossLink}}.\nWill destroy both the view and its model.",
+            "line": 77,
+            "description": "Will destroy both the view and its model if it is currently active.",
             "itemtype": "method",
             "name": "removeIfActive",
             "class": "BrowserBodyFilterView"
@@ -1381,14 +1381,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 31,
+            "line": 32,
             "itemtype": "method",
             "name": "initialize",
             "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 38,
+            "line": 39,
             "description": "This method aims at rendering the HTML elements for a given task model.\nOnce it is appended to the DOM, some event bindings are also done.\nIn particular, we control the events occuring when the ENTER key is pressed,\nso that the browser does not try to submit the form by faking a click event on\nthe closest button (which triggers unwanted behaviours).",
             "itemtype": "method",
             "name": "render",
@@ -1397,14 +1397,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 89,
+            "line": 90,
             "itemtype": "method",
             "name": "edit",
             "class": "BrowserBodyTaskView"
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 98,
+            "line": 99,
             "description": "Updates the view after the user modified the tags related to the task",
             "itemtype": "method",
             "name": "renderTagUpdate",
@@ -1412,7 +1412,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 110,
+            "line": 111,
             "description": "When the user tries to link the task to a new tag, this method will create the desired tag \nand link it to the view's model.",
             "itemtype": "method",
             "name": "addNewTag",
@@ -1420,7 +1420,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 145,
+            "line": 146,
             "description": "Should initialize the task's tag autocomplete input and allow for linking existing tags\nto the task.\nTo be called only when a task is being edited, and deleted when its form is closed",
             "itemtype": "method",
             "name": "initAutocomplete",
@@ -1428,7 +1428,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 180,
+            "line": 181,
             "description": "Saves the changes made into the database",
             "itemtype": "method",
             "name": "update",
@@ -1436,7 +1436,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 193,
+            "line": 194,
             "description": "Should unlink the clicked tag from the task",
             "itemtype": "method",
             "name": "unlink",
@@ -1444,7 +1444,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 208,
+            "line": 209,
             "description": "Will reset the model to the value stored in DB and re-render the view accordingly.",
             "itemtype": "method",
             "name": "reset",
@@ -1452,7 +1452,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 222,
+            "line": 223,
             "description": "To remove the view's model from database and kill the view.",
             "itemtype": "method",
             "name": "delete",
@@ -1460,7 +1460,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body-task.js",
-            "line": 232,
+            "line": 233,
             "description": "To close the task form",
             "itemtype": "method",
             "name": "close",
@@ -1468,7 +1468,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 113,
+            "line": 124,
             "description": "Makes the browser visible",
             "itemtype": "method",
             "name": "toggle",
@@ -1476,7 +1476,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 127,
+            "line": 138,
             "description": "Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks\non the right button (class `.filter li`).",
             "itemtype": "method",
             "name": "toggleObject",
@@ -1491,7 +1491,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 153,
+            "line": 164,
             "description": "Manages the buttons \"select all\" and \"unselect all\". Will be called every time an object\nis selected or unseleted to make sure that the right buttons are displayed",
             "itemtype": "method",
             "name": "actionSelectorsUpdate",
@@ -1499,7 +1499,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 178,
+            "line": 189,
             "description": "Should select all objects",
             "itemtype": "method",
             "name": "actionSelectAll",
@@ -1507,7 +1507,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 191,
+            "line": 202,
             "description": "Should unselect all objects",
             "itemtype": "method",
             "name": "actionUnSelectAll",
@@ -1515,7 +1515,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 204,
+            "line": 215,
             "description": "Displays or hides the controls necessary to select/unselect all objects, delete them,...\nThrows an event to make subviews display their checkboxes",
             "itemtype": "method",
             "name": "actionDeleteToggle",
@@ -1523,7 +1523,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 220,
+            "line": 231,
             "description": "To make objects subviews show/hide their checkbox.",
             "itemtype": "event",
             "name": "browser:actions:toggle-checkboxes:[collName]",
@@ -1531,7 +1531,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 231,
+            "line": 242,
             "description": "Triggers an event, which will be heard by sub-views that will actually execute the action",
             "itemtype": "method",
             "name": "actionDeleteExecute",
@@ -1539,7 +1539,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 241,
+            "line": 252,
             "description": "To make objects subviews kill themselves and destroy their model if they are selected.",
             "itemtype": "event",
             "name": "browser:actions:delete:[collName]",
@@ -1547,7 +1547,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 258,
+            "line": 269,
             "description": "Checks whether the user is currently using a search input and if so tells which collection is visible",
             "itemtype": "method",
             "name": "searchGetFocus",
@@ -1559,7 +1559,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 277,
+            "line": 287,
             "description": "Will prepare and open an autocomplete input.\nIt should help the user selecting objects from collection named `sColl2` (example : `tags`) \nthat will then be used to filter the objects from collection named `sColl1`",
             "itemtype": "method",
             "name": "searchOpenAutocomplete",
@@ -1573,16 +1573,181 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 398,
-            "description": "Event triggered on channel after the user decides to delete the saved tag\nthat is currently active. This event is listened by the views of \nthe class {{#crossLink \"BrowserBodyFilterView\"}}{{/crossLink}}. The\none view related to a model with the right filter name will delete its model.",
-            "itemtype": "event",
-            "name": "browser:filters:[filter-name]:remove-active",
+            "line": 338,
+            "description": "Controls what happens when the user tries to close the autocomplete",
+            "itemtype": "method",
+            "name": "searchCloseAutocomplete",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "the keyboard event"
+                }
+            ],
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 516,
+            "line": 356,
+            "description": "Allows to remove from current filter the object that has been clicked on",
+            "itemtype": "method",
+            "name": "searchObjectRemove",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "the click event"
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 371,
+            "description": "Updates current filter with the text typed in by the user",
+            "itemtype": "method",
+            "name": "searchText",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "the keyboard event"
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 386,
+            "description": "Should update the controls to save/delete filters\nIf temp contains a filter similar to the one that is currently applied, we propose to delete it\nIf not, we propose to save the currently applied one",
+            "itemtype": "method",
+            "name": "searchFiltersCtrlUpd",
+            "params": [
+                {
+                    "name": "collName",
+                    "description": "the name of the collection (example : `tags`)",
+                    "type": "String"
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 410,
+            "description": "Displays the controls necessary to save a filter",
+            "itemtype": "method",
+            "name": "searchFilterSave1",
+            "params": [
+                {
+                    "name": "event",
+                    "description": ""
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 423,
+            "description": "Saves the new filter with the chosen name and hides the controls",
+            "itemtype": "method",
+            "name": "searchFilterSave2",
+            "params": [
+                {
+                    "name": "event",
+                    "description": ""
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 443,
+            "description": "Sends an event to make the filter view holding the active filter destroy its model",
+            "itemtype": "method",
+            "name": "searchFilterDelete",
+            "params": [
+                {
+                    "name": "event",
+                    "description": ""
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 452,
+            "description": "Will make the view holding the active filter destroy its model",
+            "itemtype": "event",
+            "name": "browser:search:filters:remove:[filter-name]",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 459,
+            "description": "Renders all the filters stored in the temp storage.",
+            "itemtype": "method",
+            "name": "searchRenderFilters",
+            "params": [
+                {
+                    "name": "filtersCollName",
+                    "description": ""
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 489,
+            "description": "Forces the view's current filter to match the one clicked by the user",
+            "itemtype": "method",
+            "name": "searchRenderFilterSuper",
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "the model held by the filter view clicked on by the user"
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 532,
+            "description": "Forces the view's current filter to match the one clicked by the user",
+            "itemtype": "method",
+            "name": "searchFilterActivate",
+            "params": [
+                {
+                    "name": "filter",
+                    "description": "the model held by the filter view clicked on by the user"
+                }
+            ],
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 543,
+            "description": "This event is listened by filter views to make them check\nif they are active",
+            "itemtype": "event",
+            "name": "browser:search:filters:check-status:[filter-name]",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 555,
+            "itemtype": "method",
+            "name": "render",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 564,
+            "itemtype": "method",
+            "name": "renderCollection",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 605,
             "description": "This methods aims at saving the new positions of the objects",
+            "itemtype": "method",
+            "name": "sortableUpdate",
             "params": [
                 {
                     "name": "event",
@@ -1595,10 +1760,6 @@
                     "type": "JQuery ui"
                 }
             ],
-            "return": {
-                "description": "nothing to return",
-                "type": "Void"
-            },
             "class": "BrowserBodyView"
         },
         {
@@ -1891,10 +2052,6 @@
         {
             "message": "Missing item type\nBackbone localStorage Adapter\nhttps://github.com/jeromegn/Backbone.localStorage\n/(function(){function n(){return((1+Math.random())*65536|0).toString(16).substring(1)}function r(){return n()+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+\"-\"+n()+n()+n()}var e=this._,t=this.Backbone;t.LocalStorage=window.Store=function(e){this.name=e;var t=this.localStorage().getItem(this.name);this.records=t&&t.split(\",\")||[]},e.extend(t.LocalStorage.prototype,{save:function(){this.localStorage().setItem(this.name,this.records.join(\",\"))},create:function(e){return e.id||(e.id=r(),e.set(e.idAttribute,e.id)),this.localStorage().setItem(this.name+\"-\"+e.id,JSON.stringify(e)),this.records.push(e.id.toString()),this.save(),e.toJSON()},update:function(t){return this.localStorage().setItem(this.name+\"-\"+t.id,JSON.stringify(t)),e.include(this.records,t.id.toString())||this.records.push(t.id.toString()),this.save(),t.toJSON()},find:function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e.id))},findAll:function(){return e(this.records).chain().map(function(e){return JSON.parse(this.localStorage().getItem(this.name+\"-\"+e))},this).compact().value()},destroy:function(t){return this.localStorage().removeItem(this.name+\"-\"+t.id),this.records=e.reject(this.records,function(e){return e==t.id.toString()}),this.save(),t},localStorage:function(){return localStorage}}),t.LocalStorage.sync=window.Store.sync=t.localSync=function(e,t,n,r){var i=t.localStorage||t.collection.localStorage;typeof n==\"function\"&&(n={success:n,error:r});var s,o=$.Deferred&&$.Deferred();switch(e){case\"read\":s=t.id!=undefined?i.find(t):i.findAll();break;case\"create\":s=i.create(t);break;case\"update\":s=i.update(t);break;case\"delete\":s=i.destroy(t)}return s?(n.success(s),o&&o.resolve()):(n.error(\"Record not found\"),o&&o.reject()),o&&o.promise()},t.ajaxSync=t.sync,t.getSyncMethod=function(e){return e.localStorage||e.collection&&e.collection.localStorage?t.LocalStorage.sync:t.ajaxSync},t.sync=function(e,n,r,i){return t.getSyncMethod(n).apply(this,[e,n,r,i])}})();",
             "line": " public/javascripts/lib/backbone.localStorage-min.js:1"
-        },
-        {
-            "message": "Missing item type\nThis methods aims at saving the new positions of the objects",
-            "line": " public/javascripts/views/browser-body.js:516"
         },
         {
             "message": "Missing item type\nFilters the keyboard events to pass only ENTER and TAB to the lock() method",

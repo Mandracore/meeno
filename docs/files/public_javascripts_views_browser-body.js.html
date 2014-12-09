@@ -179,9 +179,9 @@ define ([
 				&#x27;click .filter li&#x27;                                 : &#x27;toggleObject&#x27;,
 				&#x27;keyup .search&#x27;                                    : &#x27;searchText&#x27;,
 				&#x27;click .objectButtons span&#x27;                        : &#x27;searchObjectRemove&#x27;,
-				&#x27;click .filter-editor button.save&#x27;                 : &#x27;filterSaveStep1&#x27;,
-				&#x27;click .filter-editor button.saveConfirm&#x27;          : &#x27;filterSaveStep2&#x27;,
-				&#x27;click .filter-editor button.delete&#x27;               : &#x27;filterDelete&#x27;,
+				&#x27;click .filter-editor button.save&#x27;                 : &#x27;searchFilterSave1&#x27;,
+				&#x27;click .filter-editor button.saveConfirm&#x27;          : &#x27;searchFilterSave2&#x27;,
+				&#x27;click .filter-editor button.delete&#x27;               : &#x27;searchFilterDelete&#x27;,
 				// Action-related events
 				&#x27;click .actions-contextual .delete&#x27;                : &#x27;actionDeleteToggle&#x27;,
 				&#x27;click .actions-contextual-selection .select-all&#x27;  : &#x27;actionSelectAll&#x27;,
@@ -216,25 +216,28 @@ define ([
 					this.renderCollection(&quot;tags&quot;);});
 				this.listenTo(temp.coll.tasks, &#x27;add remove change:label&#x27;, function () {this.renderCollection(&quot;tasks&quot;);});
 
-				this.listenTo(temp.coll.noteFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;noteFilters&quot;);});
-				this.listenTo(temp.coll.taskFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;taskFilters&quot;);});
-				this.listenTo(temp.coll.tagFilters, &#x27;reset add remove&#x27;, function () {this.renderFilterCollection(&quot;tagFilters&quot;);});
-				this.listenTo(temp.coll.noteFilters, &#x27;change add remove&#x27;, function () {this.refreshFilterControls(&quot;note&quot;);});
-				this.listenTo(temp.coll.taskFilters, &#x27;change add remove&#x27;, function () {this.refreshFilterControls(&quot;task&quot;);});
-				this.listenTo(temp.coll.tagFilters, &#x27;change add remove&#x27;, function () {this.refreshFilterControls(&quot;tag&quot;);});
+				this.listenTo(temp.coll.noteFilters, &#x27;reset add remove&#x27;, function () {this.searchRenderFilters(&quot;noteFilters&quot;);});
+				this.listenTo(temp.coll.taskFilters, &#x27;reset add remove&#x27;, function () {this.searchRenderFilters(&quot;taskFilters&quot;);});
+				this.listenTo(temp.coll.tagFilters, &#x27;reset add remove&#x27;, function () {this.searchRenderFilters(&quot;tagFilters&quot;);});
+				this.listenTo(temp.coll.noteFilters, &#x27;change add remove&#x27;, function () {this.searchFiltersCtrlUpd(&quot;note&quot;);});
+				this.listenTo(temp.coll.taskFilters, &#x27;change add remove&#x27;, function () {this.searchFiltersCtrlUpd(&quot;task&quot;);});
+				this.listenTo(temp.coll.tagFilters, &#x27;change add remove&#x27;, function () {this.searchFiltersCtrlUpd(&quot;tag&quot;);});
 
 				this.listenTo(this.filters.noteFilter, &#x27;change add:tags remove:tags add:tasks remove:tasks&#x27;, function () {
+					channel.trigger(&quot;browser:search:filters:check-status:noteFilter&quot;, this.filters.noteFilter);
 					this.renderCollection(&quot;notes&quot;);
-					this.refreshFilterControls(&quot;note&quot;);
-					this.renderFilterInSuperInput(&quot;noteFilter&quot;); });
+					this.searchFiltersCtrlUpd(&quot;note&quot;);
+					this.searchRenderFilterSuper(&quot;noteFilter&quot;); });
 				this.listenTo(this.filters.taskFilter, &#x27;change add:tags remove:tags&#x27;, function () {
+					channel.trigger(&quot;browser:search:filters:check-status:taskFilter&quot;, this.filters.taskFilter);
 					this.renderCollection(&quot;tasks&quot;);
-					this.refreshFilterControls(&quot;task&quot;);
-					this.renderFilterInSuperInput(&quot;taskFilter&quot;);});
+					this.searchFiltersCtrlUpd(&quot;task&quot;);
+					this.searchRenderFilterSuper(&quot;taskFilter&quot;);});
 				this.listenTo(this.filters.tagFilter, &#x27;change&#x27;, function () {
+					channel.trigger(&quot;browser:search:filters:check-status:tagFilter&quot;, this.filters.tagFilter);
 					this.renderCollection(&quot;tags&quot;);
-					this.refreshFilterControls(&quot;tag&quot;);
-					this.renderFilterInSuperInput(&quot;tagFilter&quot;);});
+					this.searchFiltersCtrlUpd(&quot;tag&quot;);
+					this.searchRenderFilterSuper(&quot;tagFilter&quot;);});
 
 				this.listenTo(channel, &#x27;keyboard:tag&#x27;, function () {this.searchOpenAutocomplete(&quot;tags&quot;);});
 				this.listenTo(channel, &#x27;keyboard:task&#x27;, function () {this.searchOpenAutocomplete(&quot;tasks&quot;);});
@@ -243,9 +246,17 @@ define ([
 				this.listenTo(channel, &#x27;keyboard:backspace&#x27;, function () {this.searchCloseAutocomplete(&quot;backspace&quot;);});
 
 				// Deactivated for testing purposes only
-				this.refreshFilterControls(&quot;note&quot;);
-				this.refreshFilterControls(&quot;task&quot;);
-				this.refreshFilterControls(&quot;tag&quot;);
+				this.searchFiltersCtrlUpd(&quot;note&quot;);
+				this.searchFiltersCtrlUpd(&quot;task&quot;);
+				this.searchFiltersCtrlUpd(&quot;tag&quot;);
+
+				this.listenTo(channel, &quot;browser:search:filters:activate&quot;, this.searchFilterActivate);
+
+
+				// Actions management
+				this.listenTo(channel, &#x27;browser:actions:update-selectors:notes&#x27;, function () {this.actionSelectorsUpdate(&quot;notes&quot;);});
+				this.listenTo(channel, &#x27;browser:actions:update-selectors:tasks&#x27;, function () {this.actionSelectorsUpdate(&quot;tasks&quot;);});
+				this.listenTo(channel, &#x27;browser:actions:update-selectors:tags&#x27;, function () {this.actionSelectorsUpdate(&quot;tags&quot;);});
 			},
 
 			// Navigation in the browser
@@ -405,15 +416,14 @@ define ([
 			 */
 			searchGetFocus: function () {
 				var $listObjects;
-				var sColl1;
+				var sColl1 = false;
 				this.$(&quot;.super-input&quot;).find(&#x27;input&#x27;).each(function(idx,el) {
 					if ($(el).is(&quot;:focus&quot;)) {
 						$listObjects = $(el).closest(&#x27;.listobjects&#x27;);
 						sColl1 = $listObjects.hasClass(&#x27;notes&#x27;) ? &#x27;notes&#x27; : ($listObjects.hasClass(&#x27;tags&#x27;) ? &#x27;tags&#x27; : &#x27;tasks&#x27;); //common
-						return sColl1;
 					}
 				});
-				return false;
+				return sColl1;
 			},
 
 			/**
@@ -438,10 +448,10 @@ define ([
 					source: function (request, response) {
 						// request.term : data typed in by the user (&quot;new yor&quot;)
 						// response : native callback that must be called with the data to suggest to the user
-						var oColl2Filter = (sColl2 == &quot;tasks&quot;) ? new TaskFilter ({text: request.term}) : new TagFilter ({text: request.term});
+						var oColl2Filter = (sColl2 == &quot;tasks&quot;) ? new Filter.Task ({text: request.term}) : new Filter.Tag ({text: request.term});
 
 						response (
-							self.options.collections[sColl2].search(oColl2Filter).map(function (model, key, list) {
+							temp.coll[sColl2].search(oColl2Filter).map(function (model, key, list) {
 								return {
 									label: model.get(&quot;label&quot;),
 									value: model.cid
@@ -467,6 +477,12 @@ define ([
 				}).attr(&quot;placeholder&quot;,&quot;filter by related &quot;+sColl2).val(&#x27;&#x27;).show().focus(); 
 			},
 
+			/**
+			 * Controls what happens when the user tries to close the autocomplete
+			 *
+			 * @method searchCloseAutocomplete
+			 * @param event the keyboard event
+			 */
 			searchCloseAutocomplete: function (event) {
 				// Check focus before taking action
 				var browserActiveView = this.searchGetFocus(); // the kind of object we are looking for
@@ -474,12 +490,17 @@ define ([
 				var $listObjects = this.$(&quot;.listobjects.&quot;+browserActiveView);
 				// Listening to &quot;backspace&quot; &amp; &quot;escape&quot; events triggered by mousetrap
 				if ( event == &quot;escape&quot; || (event == &quot;backspace&quot; &amp;&amp; $listObjects.find(&quot;.search-wrapper .autocomplete&quot;).val() == &#x27;&#x27;) ) {
-					console.log(&quot;Closing autocomplete&quot;);
 					$listObjects.find(&quot;.search-wrapper .autocomplete&quot;).hide();
 					$listObjects.find(&quot;.search-wrapper .search&quot;).focus();
 				}
 			},
 
+			/**
+			 * Allows to remove from current filter the object that has been clicked on
+			 *
+			 * @method searchObjectRemove
+			 * @param event the click event
+			 */
 			searchObjectRemove: function (event) {
 				var $objectButton          = $(event.target);
 				var $listObjects           = $objectButton.closest(&#x27;.listobjects&#x27;);
@@ -489,16 +510,30 @@ define ([
 				this.filters[filteredCollFilterName].get($objectButton.attr(&#x27;data-class&#x27;)).remove(object); // Removing model from Filter
 			},
 
+			/**
+			 * Updates current filter with the text typed in by the user
+			 *
+			 * @method searchText
+			 * @param event the keyboard event
+			 */
 			searchText: function (event) {
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
 				var filterName   = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
 				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
 				this.filters[filterName].set(&#x27;text&#x27;, $(event.target).val());
 				this.renderCollection(collName);
-				this.refreshFilterControls(collName.replace(/(s)$/, function($1){ return &quot;&quot;; }));
+				this.searchFiltersCtrlUpd(collName.replace(/(s)$/, function($1){ return &quot;&quot;; }));
 			},
 
-			refreshFilterControls: function (collName) { //note
+			/**
+			 * Should update the controls to save/delete filters
+			 * If temp contains a filter similar to the one that is currently applied, we propose to delete it
+			 * If not, we propose to save the currently applied one
+			 *
+			 * @method searchFiltersCtrlUpd
+			 * @param {string} collName the name of the collection (example : &#x60;tags&#x60;)
+			 */
+			searchFiltersCtrlUpd: function (collName) { //note
 				var $listObjects    = this.$(&quot;.listobjects.&quot;+collName+&quot;s&quot;);
 				var filtersCollName = collName+&quot;Filters&quot;;
 				var filterName      = collName+&quot;Filter&quot;;
@@ -514,17 +549,29 @@ define ([
 				}
 			},
 
-			filterSaveStep1: function (event) {
+			/**
+			 * Displays the controls necessary to save a filter
+			 *
+			 * @method searchFilterSave1
+			 * @param event
+			 */
+			searchFilterSave1: function (event) {
 				var $listObjects    = $(event.target).closest(&quot;.listobjects&quot;);
 				$listObjects.find(&quot;.filter-editor input&quot;).show().focus();
 				$listObjects.find(&#x27;.filter-editor .action.saveConfirm&#x27;).show();
 				$listObjects.find(&#x27;.filter-editor .action.save&#x27;).hide();
 			},
 
-			filterSaveStep2: function (event) {
-				var $listObjects    = $(event.target).closest(&quot;.listobjects&quot;);
-				var filterName      = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
-				var filtersCollName = filterName + &quot;s&quot;;
+			/**
+			 * Saves the new filter with the chosen name and hides the controls
+			 *
+			 * @method searchFilterSave2
+			 * @param event
+			 */
+			searchFilterSave2: function (event) {
+				var $listObjects      = $(event.target).closest(&quot;.listobjects&quot;);
+				var filterName        = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
+				var filtersCollName   = filterName + &quot;s&quot;;
 				var $inputFilterLabel = $listObjects.find(&quot;.filter-editor input&quot;);
 				this.filters[filterName].set(&#x27;label&#x27;, $inputFilterLabel.val());
 				$listObjects.find(&#x27;.filter-editor .action.saveConfirm&#x27;).hide();
@@ -532,22 +579,32 @@ define ([
 				var cloneFilter = this.filters[filterName].superClone();
 				temp.coll[filtersCollName].add(cloneFilter);
 				cloneFilter.save();
+				channel.trigger(&quot;browser:search:filters:check-status:&quot;+filterName, this.filters[filterName]);
 			},
 
-			filterDelete: function (event) {
+			/**
+			 * Sends an event to make the filter view holding the active filter destroy its model
+			 *
+			 * @method searchFilterDelete
+			 * @param event
+			 */
+			searchFilterDelete: function (event) {
 				var $listObjects = $(event.target).closest(&quot;.listobjects&quot;);
 				var filterName   = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
 				/**
-				* Event triggered on channel after the user decides to delete the saved tag
-				* that is currently active. This event is listened by the views of 
-				* the class {{#crossLink &quot;BrowserBodyFilterView&quot;}}{{/crossLink}}. The
-				* one view related to a model with the right filter name will delete its model.
-				* @event browser:filters:[filter-name]:remove-active
+				* Will make the view holding the active filter destroy its model
+				* @event browser:search:filters:remove:[filter-name]
 				*/
-				channel.trigger(&quot;browser:filters:&quot;+filterName+&quot;:remove-active&quot;);
+				channel.trigger(&quot;browser:search:filters:remove:&quot;+filterName);
 			},
 
-			renderFilterCollection: function (filtersCollName) {
+			/**
+			 * Renders all the filters stored in the temp storage.
+			 *
+			 * @method searchRenderFilters
+			 * @param filtersCollName
+			 */
+			searchRenderFilters: function (filtersCollName) {
 				var self         = this;
 				var filteredColl = filtersCollName.replace(/(Filters)$/, function($1){ return &quot;s&quot;; }); // noteFilters =&gt; notes
 				var filterName   = filtersCollName.replace(/(s)$/, function($1){ return &quot;&quot;; }); // noteFilters =&gt; noteFilter
@@ -570,7 +627,14 @@ define ([
 				}, this);
 			},
 
-			renderFilterInSuperInput: function (filterName) {
+
+			/**
+			 * Forces the view&#x27;s current filter to match the one clicked by the user
+			 *
+			 * @method searchRenderFilterSuper
+			 * @param filter the model held by the filter view clicked on by the user
+			 */
+			searchRenderFilterSuper: function (filterName) {
 				var self         = this;
 				var filter       = this.filters[filterName];
 				var filteredColl = filterName.replace(/(Filter)$/, function($1){ return &quot;s&quot;; }); // noteFilter =&gt; notes
@@ -607,16 +671,41 @@ define ([
 				}
 			},
 
+			/**
+			 * Forces the view&#x27;s current filter to match the one clicked by the user
+			 *
+			 * @method searchFilterActivate
+			 * @param filter the model held by the filter view clicked on by the user
+			 */
+			searchFilterActivate: function (filter) {
+				var filterSubClass = filter.get(&#x27;subClass&#x27;); // NoteFilter
+				var filterName     = filterSubClass.charAt(0).toLowerCase() + filterSubClass.slice(1); // noteFilter
+				this.filters[filterName].makeItMatch(filter);
+				this.filters[filterName].trigger(&#x27;change&#x27;);
+				/**
+				* This event is listened by filter views to make them check
+				* if they are active
+				* @event browser:search:filters:check-status:[filter-name]
+				*/
+				channel.trigger(&quot;browser:search:filters:check-status:&quot;+filterName, this.filters[filterName]);
+			},
 
 			//=================================================================================
 			// Render business objects&#x27; sub views 
 			//=================================================================================
+
+			/**
+			 * @method render
+			 */
 			render: function (event) {
 				this.renderCollection(&#x27;notes&#x27;);
 				this.renderCollection(&#x27;tags&#x27;);
 				this.renderCollection(&#x27;tasks&#x27;);
 			},
 
+			/**
+			 * @method renderCollection
+			 */
 			renderCollection: function (collName) {
 				var self = this;
 				var filterName = collName == &quot;notes&quot; ? &quot;noteFilter&quot; : (collName == &quot;tasks&quot; ? &quot;taskFilter&quot; : &quot;tagFilter&quot;);
@@ -657,13 +746,12 @@ define ([
 
 			/**
 			 * This methods aims at saving the new positions of the objects
+			 * 
+			 * @method sortableUpdate
 			 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
-			 * @return {void} nothing to return
 			 */
 			sortableUpdate: function (event, ui) {
-				console.log(&quot;sortable update&quot;);
-
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr(&#x27;data-cid&#x27;));
 				// 2. Find out in which scenario we are

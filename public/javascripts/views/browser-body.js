@@ -37,8 +37,8 @@ define ([
 				'click .filter li'                                 : 'toggleObject',
 				'keyup .search'                                    : 'searchText',
 				'click .objectButtons span'                        : 'searchObjectRemove',
-				'click .filter-editor button.save'                 : 'filterSaveStep1',
-				'click .filter-editor button.saveConfirm'          : 'filterSaveStep2',
+				'click .filter-editor button.save'                 : 'searchFilterSave1',
+				'click .filter-editor button.saveConfirm'          : 'searchFilterSave2',
 				'click .filter-editor button.delete'               : 'searchFilterDelete',
 				// Action-related events
 				'click .actions-contextual .delete'                : 'actionDeleteToggle',
@@ -74,9 +74,9 @@ define ([
 					this.renderCollection("tags");});
 				this.listenTo(temp.coll.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
 
-				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.renderFilterCollection("noteFilters");});
-				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.renderFilterCollection("taskFilters");});
-				this.listenTo(temp.coll.tagFilters, 'reset add remove', function () {this.renderFilterCollection("tagFilters");});
+				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
+				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});
+				this.listenTo(temp.coll.tagFilters, 'reset add remove', function () {this.searchRenderFilters("tagFilters");});
 				this.listenTo(temp.coll.noteFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("note");});
 				this.listenTo(temp.coll.taskFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("task");});
 				this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("tag");});
@@ -85,17 +85,17 @@ define ([
 					channel.trigger("browser:search:filters:check-status:noteFilter", this.filters.noteFilter);
 					this.renderCollection("notes");
 					this.searchFiltersCtrlUpd("note");
-					this.renderFilterInSuperInput("noteFilter"); });
+					this.searchRenderFilterSuper("noteFilter"); });
 				this.listenTo(this.filters.taskFilter, 'change add:tags remove:tags', function () {
 					channel.trigger("browser:search:filters:check-status:taskFilter", this.filters.taskFilter);
 					this.renderCollection("tasks");
 					this.searchFiltersCtrlUpd("task");
-					this.renderFilterInSuperInput("taskFilter");});
+					this.searchRenderFilterSuper("taskFilter");});
 				this.listenTo(this.filters.tagFilter, 'change', function () {
 					channel.trigger("browser:search:filters:check-status:tagFilter", this.filters.tagFilter);
 					this.renderCollection("tags");
 					this.searchFiltersCtrlUpd("tag");
-					this.renderFilterInSuperInput("tagFilter");});
+					this.searchRenderFilterSuper("tagFilter");});
 
 				this.listenTo(channel, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
 				this.listenTo(channel, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
@@ -335,6 +335,12 @@ define ([
 				}).attr("placeholder","filter by related "+sColl2).val('').show().focus(); 
 			},
 
+			/**
+			 * Controls what happens when the user tries to close the autocomplete
+			 *
+			 * @method searchCloseAutocomplete
+			 * @param event the keyboard event
+			 */
 			searchCloseAutocomplete: function (event) {
 				// Check focus before taking action
 				var browserActiveView = this.searchGetFocus(); // the kind of object we are looking for
@@ -347,6 +353,12 @@ define ([
 				}
 			},
 
+			/**
+			 * Allows to remove from current filter the object that has been clicked on
+			 *
+			 * @method searchObjectRemove
+			 * @param event the click event
+			 */
 			searchObjectRemove: function (event) {
 				var $objectButton          = $(event.target);
 				var $listObjects           = $objectButton.closest('.listobjects');
@@ -356,6 +368,12 @@ define ([
 				this.filters[filteredCollFilterName].get($objectButton.attr('data-class')).remove(object); // Removing model from Filter
 			},
 
+			/**
+			 * Updates current filter with the text typed in by the user
+			 *
+			 * @method searchText
+			 * @param event the keyboard event
+			 */
 			searchText: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
 				var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
@@ -371,7 +389,7 @@ define ([
 			 * If not, we propose to save the currently applied one
 			 *
 			 * @method searchFiltersCtrlUpd
-			 * @param collName the name of the collection (example : `tags`)
+			 * @param {string} collName the name of the collection (example : `tags`)
 			 */
 			searchFiltersCtrlUpd: function (collName) { //note
 				var $listObjects    = this.$(".listobjects."+collName+"s");
@@ -389,14 +407,26 @@ define ([
 				}
 			},
 
-			filterSaveStep1: function (event) {
+			/**
+			 * Displays the controls necessary to save a filter
+			 *
+			 * @method searchFilterSave1
+			 * @param event
+			 */
+			searchFilterSave1: function (event) {
 				var $listObjects    = $(event.target).closest(".listobjects");
 				$listObjects.find(".filter-editor input").show().focus();
 				$listObjects.find('.filter-editor .action.saveConfirm').show();
 				$listObjects.find('.filter-editor .action.save').hide();
 			},
 
-			filterSaveStep2: function (event) {
+			/**
+			 * Saves the new filter with the chosen name and hides the controls
+			 *
+			 * @method searchFilterSave2
+			 * @param event
+			 */
+			searchFilterSave2: function (event) {
 				var $listObjects      = $(event.target).closest(".listobjects");
 				var filterName        = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
 				var filtersCollName   = filterName + "s";
@@ -426,7 +456,13 @@ define ([
 				channel.trigger("browser:search:filters:remove:"+filterName);
 			},
 
-			renderFilterCollection: function (filtersCollName) {
+			/**
+			 * Renders all the filters stored in the temp storage.
+			 *
+			 * @method searchRenderFilters
+			 * @param filtersCollName
+			 */
+			searchRenderFilters: function (filtersCollName) {
 				var self         = this;
 				var filteredColl = filtersCollName.replace(/(Filters)$/, function($1){ return "s"; }); // noteFilters => notes
 				var filterName   = filtersCollName.replace(/(s)$/, function($1){ return ""; }); // noteFilters => noteFilter
@@ -449,7 +485,14 @@ define ([
 				}, this);
 			},
 
-			renderFilterInSuperInput: function (filterName) {
+
+			/**
+			 * Forces the view's current filter to match the one clicked by the user
+			 *
+			 * @method searchRenderFilterSuper
+			 * @param filter the model held by the filter view clicked on by the user
+			 */
+			searchRenderFilterSuper: function (filterName) {
 				var self         = this;
 				var filter       = this.filters[filterName];
 				var filteredColl = filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
@@ -508,12 +551,19 @@ define ([
 			//=================================================================================
 			// Render business objects' sub views 
 			//=================================================================================
+
+			/**
+			 * @method render
+			 */
 			render: function (event) {
 				this.renderCollection('notes');
 				this.renderCollection('tags');
 				this.renderCollection('tasks');
 			},
 
+			/**
+			 * @method renderCollection
+			 */
 			renderCollection: function (collName) {
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
@@ -554,13 +604,12 @@ define ([
 
 			/**
 			 * This methods aims at saving the new positions of the objects
+			 * 
+			 * @method sortableUpdate
 			 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
-			 * @return {void} nothing to return
 			 */
 			sortableUpdate: function (event, ui) {
-				console.log("sortable update");
-
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 				// 2. Find out in which scenario we are

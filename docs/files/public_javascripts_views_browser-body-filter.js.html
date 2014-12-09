@@ -170,10 +170,8 @@ define ([
 			initialize: function(options) {
 				this.options = options;
 				this.active  = false;
-				this.listenTo(this.options.parent.filters[this.options.filterName], &#x27;change add:tags remove:tags add:tasks remove:tasks&#x27;, function () {this.checkStatus()});
-				this.listenTo(this.options.parent.filters[this.options.filterName], &#x27;change add:tags remove:tags add:tasks remove:tasks&#x27;, function () {this.checkStatus()});
-				this.listenTo(channel, &quot;browser:filters:&quot;+this.options.filterName+&quot;:remove-active&quot;, function () {this.removeIfActive();});
-
+				this.listenTo(channel, &quot;browser:search:filters:check-status:&quot;+this.options.filterName, this.checkStatus);
+				this.listenTo(channel, &quot;browser:search:filters:remove:&quot;+this.options.filterName, this.removeIfActive);
 			},
 
 			/**
@@ -185,7 +183,6 @@ define ([
 			render: function() {
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (this.model.toJSON()));
-				this.checkStatus();
 				return this;
 			},
 
@@ -196,8 +193,8 @@ define ([
 			 *
 			 * @method checkStatus
 			 */
-			checkStatus: function () {
-				if (this.options.parent.filters[this.options.filterName].isSimilar(this.model)) {
+			checkStatus: function (currentFilter) {
+				if (currentFilter.isSimilar(this.model)) {
 					this.$el.addClass(&#x27;active&#x27;);
 					this.active = true;
 				} else {
@@ -215,16 +212,12 @@ define ([
 			 */
 			activate: function() {
 				if (!this.active) {
-					console.log(&quot;activate&quot;);
-					this.options.parent.filters[this.options.filterName].makeItMatch(this.model);
-					this.options.parent.filters[this.options.filterName].trigger(&#x27;change&#x27;);
+					channel.trigger(&quot;browser:search:filters:activate&quot;, this.model);
 				}
 			},
 
 			/**
-			 * Listens to the event &#x60;browser:filters:[this.options.filterName]:remove-active&#x60; triggered by
-			 * the {{#crossLink &quot;BrowserBodyView&quot;}}browser{{/crossLink}}.
-			 * Will destroy both the view and its model.
+			 * Will destroy both the view and its model if it is currently active.
 			 *
 			 * @method removeIfActive
 			 */

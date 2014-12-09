@@ -159,6 +159,12 @@ define ([
 
 			template : &#x27;#browser-body-note-template&#x27;,
 
+			events: function(){
+				return _.extend({},BrowserBodyObjectView.prototype.events,{
+					&#x27;click .edit&#x27;           : &#x27;edit&#x27;,
+				});
+			},
+
 			initialize: function(options){
 				BrowserBodyObjectView.prototype.initialize.apply(this, [options])
 				this.options = options;
