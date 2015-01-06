@@ -138,7 +138,7 @@ define ([
 					// Reminder : it's not possible to update filters, we just create new ones
 					var count = 0;
 
-					spyOn(browserBody, 'renderFilterCollection').andCallFake(function() {
+					spyOn(browserBody, 'searchRenderFilters').andCallFake(function() {
 						count++;
 					});
 
@@ -149,9 +149,9 @@ define ([
 					temp.coll.taskFilters.remove(taskFilter);
 					temp.coll.tagFilters.remove(tagFilter);
 
-					expect(browserBody.renderFilterCollection).toHaveBeenCalledWith('noteFilters');
-					expect(browserBody.renderFilterCollection).toHaveBeenCalledWith('taskFilters');
-					expect(browserBody.renderFilterCollection).toHaveBeenCalledWith('tagFilters');
+					expect(browserBody.searchRenderFilters).toHaveBeenCalledWith('noteFilters');
+					expect(browserBody.searchRenderFilters).toHaveBeenCalledWith('taskFilters');
+					expect(browserBody.searchRenderFilters).toHaveBeenCalledWith('tagFilters');
 					expect(count).toEqual(6);
 				});
 			});
