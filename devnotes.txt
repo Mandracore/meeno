@@ -391,3 +391,6 @@ je n'ai même pas à modifier mes specs.
 
 14/11==============================================
 Valider que app.js fonctionne bien avec backbone.custom.js
+
+06/01/2015==============================================
+Now starting to retest the Editor - refactoring all specs

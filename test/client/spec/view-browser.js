@@ -16,7 +16,6 @@ define ([
 		'views/browser-body',
 		'views/browser-body-note',
 		'views/browser-body-filter',
-	// ], function ($, _, Backbone, temp, channel, Note, Task, Tag, Notes, Tasks, Tags, Filter, Filters) {
 	], function ($, _, Backbone, temp, channel, Note, Task, Tag, Notes, Tasks, Tags, Filter, Filters, BrowserView, BrowserBodyView, BrowserBodyNoteView, BrowserBodyFilterView) {
 
 	return describe("Browser", function() {
@@ -282,11 +281,6 @@ define ([
 				});
 			});
 		});
-//=====================================================
-//=====================================================
-//=====================================================
-//=====================================================
-//=====================================================
 
 		describe("Body Filters", function() {
 			var browserBodyFilterView;
@@ -317,13 +311,6 @@ define ([
 				channel.trigger("browser:search:filters:remove:noteFilter");
 				expect(browserBodyFilterView.kill).toHaveBeenCalled();
 				expect(browserBodyFilterView.model.destroy).toHaveBeenCalled();
-			});
-
-			xit("should react when clicked on (to activate)", function() {
-				// Les spies ne fonctionnent pas sur les méthodes de browserBodyFilterView
-				spyOn(browserBodyFilterView, 'activate');
-				browserBodyFilterView.$el.click();
-				expect(browserBodyFilterView.activate).toHaveBeenCalled();
 			});
 		});
 
