@@ -31,28 +31,18 @@ html
 	width 100%
 	height 100%
 	overflow hidden
-	background-color #999
+	background-color #777
 
-@css{
-	html{
-		background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: linear-gradient(left, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(left, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-size: 13px, 29px, 37px, 53px;
-	}
-}
 body
 	margin 0 auto
-	width 90%
+	width 100%
 	height 100%
 	position relative
 	background none
 
 #main
 	height 100%
-	padding 1em 0 1em 15em
+	padding 0
 	position relative
 
 header
@@ -61,23 +51,6 @@ header
 	font-size 1em
 	position relative
 	top 0
-	margin-top 1em
-	a
-		float left
-		display inline-block
-		position relative
-		color inherit
-		text-decoration none
-		&:before
-			fSize = 2.35
-			content attr(title)
-			position absolute
-			left (-15/fSize)em
-			width (15/fSize)em
-			top -.2em
-			font-size  fSize * 1em;
-			color rgba(255,255,255,.7)
-			text-align center
 	h1
 		padding .5em
 		margin 0
@@ -96,10 +69,6 @@ header
 				background-color #FFF
 				color black
 				cursor pointer
-	.organisation
-		color rgba(255,255,255,.5)
-		&:after
-			content "\00A0"
 
 .actions-main,.actions-contextual
 	width 15em
@@ -130,9 +99,6 @@ header
 			background-color #FFF
 
 .actions-contextual
-	position absolute
-	top 14em
-	left 0
 	z-index 2
 	li
 		background-color #FFF
@@ -174,12 +140,10 @@ nav
 		overflow: ellipsis;
 
 #tabs
-	background-color #FFF
-	padding 1em
-	height 74%
-	height '-moz-calc(%s - %s)' % (100% 13em)
-	height '-webkit-calc(%s - %s)' % (100% 13em)
-	height 'calc(%s - %s)' % (100% 13em)
+	background-color grey
+	height '-moz-calc(%s - %s)' % (100% 2em)
+	height '-webkit-calc(%s - %s)' % (100% 2em)
+	height 'calc(%s - %s)' % (100% 2em)
 
 .tab
 	display none

@@ -38,8 +38,11 @@ define ([
 				if (temp.count.openedEditors < 6 && !this.model.isInEditor) {
 					temp.count.openedEditors++;
 					this.model.isInEditor = true;
-					$("#nav").append(this.children.tab.render().el);
-					$("#tabs").append(this.children.body.render().el);
+					
+					// $("#nav").append(this.children.tab.render().el);
+					// Plus besoin d'avoir un bouton de nav pour l'afficher, tout le bloc doit toujours être
+					// affiché
+					$("#editors").append(this.children.body.render().el);
 					return this;
 				} else {
 					channel.trigger('tab:toggle:browser');

@@ -53,25 +53,18 @@ block content
 				button#tologin Go log in
 
 	// Application skeleton
-	ul.actions-main
-		li.note New Note
-		li.task New Task
-		li.report New Report
 
 	div#main
 		header
-			a(href="/",title="meeno")
-				h1
-					span.organisation mandracore
-					| meeno v0.2
-			ul
-				li export base
-				li déconnexion
-		nav
-			ul#nav
-				li.help Help
-				li.browse.selected Browse
-				//li.object.note Comité de Pilotage 5
+			nav
+				// Commands to navigate between the different tabs
+				ul#nav
+					li.help Help
+					li.browse.notes Browse notes
+					li.browse.tasks.selected Browse tasks
+					li.browse.tags Browse tags
+					//li.admin Manage
+			div#sync-status
 		div#tabs
 			div.tab.help
 				article
@@ -82,83 +75,88 @@ block content
 						h1 Rechercher du contenu
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
 			div.tab.browse.selected
-				div.filter
-					ul
-						li.notes.selected.icon-book Notes
-						li.tasks.icon-tasks Tasks
-						li.tags.icon-tags Tags
-				div.listobjects.notes.selected
-					div.search-wrapper
-						div.super-input
-							span.objectButtons
-							span
-								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
-							input.mousetrap.search(type="text", autofocus, placeholder="search notes")
-						div.filter-editor
-							ul
-							input(style="display:none", type="text", placeholder="type a name for this new filter")
-							button.action.delete(style="display:none") Delete active filter
-							button.action.save(style="display:none") Save current filter
-							button.action.saveConfirm(style="display:none") Save filter under this name
-					div.actions-contextual-selection
-						button.select-all Tout sélectionner
-						button.unselect-all Tout déselectionner
-					div.actions-contextual-trigger
-						button.delete Supprimer
-					ul.actions-contextual
-						li.delete
-							span.action Delete notes
-							span.cancel Cancel
-					// Hereafeter will be displayed the objects
-					ul.objects.notes
-				div.listobjects.tasks
-					div.search-wrapper
-						div.super-input
-							span.objectButtons
-							span
-								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
-							input.mousetrap.search(type="text", autofocus, placeholder="search tasks")
-						div.filter-editor
-							ul
-							input(style="display:none", type="text", placeholder="type a name for this new filter")
-							button.action.delete(style="display:none") Delete active filter
-							button.action.save(style="display:none") Save current filter
-							button.action.saveConfirm(style="display:none") Save filter under this name
-					div.actions-contextual-selection
-						button.select-all Tout sélectionner
-						button.unselect-all Tout déselectionner
-					div.actions-contextual-trigger
-						button.delete Supprimer
-					ul.actions-contextual
-						li.delete
-							span.action Delete tasks
-							span.cancel Cancel
-					// Hereafeter will be displayed the objects
-					ul.objects.tasks
+				div.listobjects.notes
+					div.col1.dropzone
+					// empty
+					div.col2
+						div.search-wrapper
+							div.super-input
+								span.objectButtons
+								span
+									input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
+								input.mousetrap.search(type="text", autofocus, placeholder="search notes")
+							div.filter-editor
+								ul
+								input(style="display:none", type="text", placeholder="type a name for this new filter")
+								button.action.delete(style="display:none") Delete active filter
+								button.action.save(style="display:none") Save current filter
+								button.action.saveConfirm(style="display:none") Save filter under this name
+						div.actions-contextual-selection
+							button.select-all Tout sélectionner
+							button.unselect-all Tout déselectionner
+						div.actions-contextual-trigger
+							button.delete Supprimer
+						ul.actions-contextual
+							li.delete
+								span.action Delete notes
+								span.cancel Cancel
+						// Hereafeter will be displayed the objects
+						ul.objects.notes
+					div.col3.saved-filters
+				div.listobjects.tasks.selected
+					div.col1.dropzone
+					div.col2
+						div.search-wrapper
+							div.super-input
+								span.objectButtons
+								span
+									input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
+								input.mousetrap.search(type="text", autofocus, placeholder="search tasks")
+							div.filter-editor
+								ul
+								input(style="display:none", type="text", placeholder="type a name for this new filter")
+								button.action.delete(style="display:none") Delete active filter
+								button.action.save(style="display:none") Save current filter
+								button.action.saveConfirm(style="display:none") Save filter under this name
+						div.actions-contextual-selection
+							button.select-all Tout sélectionner
+							button.unselect-all Tout déselectionner
+						div.actions-contextual-trigger
+							button.delete Supprimer
+						ul.actions-contextual
+							li.delete
+								span.action Delete tasks
+								span.cancel Cancel
+						// Hereafeter will be displayed the objects
+						ul.objects.tasks
+					div.col3.saved-filters
 				div.listobjects.tags
-					div.search-wrapper
-						div.super-input
-							span.objectButtons
-							span
-								input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
-							input.mousetrap.search(type="text", autofocus, placeholder="search tags")
-						div.filter-editor
-							ul
-							input(style="display:none", type="text", placeholder="type a name for this new filter")
-							button.action.delete(style="display:none") Delete active filter
-							button.action.save(style="display:none") Save current filter
-							button.action.saveConfirm(style="display:none") Save filter under this name
-					div.actions-contextual-selection
-						button.select-all Tout sélectionner
-						button.unselect-all Tout déselectionner
-					div.actions-contextual-trigger
-						button.delete Supprimer
-					ul.actions-contextual
-						li.delete
-							span.action Delete tags
-							span.cancel Cancel
-					// Hereafeter will be displayed the objects
-					ul.objects.tags
-		div#footer
-			p.current-action Saving...
-			p.sync-status Sync. Status : In Progress...
+					div.col1.dropzone
+					// empty
+					div.col2
+						div.search-wrapper
+							div.super-input
+								span.objectButtons
+								span
+									input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
+								input.mousetrap.search(type="text", autofocus, placeholder="search tags")
+							div.filter-editor
+								ul
+								input(style="display:none", type="text", placeholder="type a name for this new filter")
+								button.action.delete(style="display:none") Delete active filter
+								button.action.save(style="display:none") Save current filter
+								button.action.saveConfirm(style="display:none") Save filter under this name
+						div.actions-contextual-selection
+							button.select-all Tout sélectionner
+							button.unselect-all Tout déselectionner
+						div.actions-contextual-trigger
+							button.delete Supprimer
+						ul.actions-contextual
+							li.delete
+								span.action Delete tags
+								span.cancel Cancel
+						// Hereafeter will be displayed the objects
+						ul.objects.tags
+					div.col3.saved-filters
+					// empty
+		div#editors
