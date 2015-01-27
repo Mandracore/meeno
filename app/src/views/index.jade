@@ -56,6 +56,7 @@ block content
 
 	div#main
 		header
+			h1 meeno
 			nav
 				// Commands to navigate between the different tabs
 				ul#nav
@@ -105,6 +106,13 @@ block content
 					div.col3.saved-filters
 				div.listobjects.tasks.selected
 					div.col1.dropzone
+						.title dropzone
+						.subtitle Drag tasks and drop them below to postpone them
+						ul.zones
+							li Today
+							li Tomorrow
+							li Next week
+							li Next month
 					div.col2
 						div.search-wrapper
 							div.super-input
@@ -130,6 +138,8 @@ block content
 						// Hereafeter will be displayed the objects
 						ul.objects.tasks
 					div.col3.saved-filters
+						.title saved filters
+						.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
 				div.listobjects.tags
 					div.col1.dropzone
 					// empty

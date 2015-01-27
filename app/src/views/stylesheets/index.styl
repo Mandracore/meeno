@@ -1,5 +1,22 @@
 @import 'nib'
 
+
+
+cBgGrey        = lighten(#000000, 20%)
+cTextSec       = lighten(#000000, 50%)
+cTextSecActive = lighten(#000000, 70%)
+
+cTxtGrey          = lighten(#000000, 50%) // grey non clickable
+cTxtBtnGrey0      = lighten(#000000, 40%) // grey activable
+cTxtBtnGrey1      = lighten(#000000, 70%) // grey activable active
+cTxtBtnHeadWhite0 = lighten(#000000, 50%) // header white clickable
+cTxtBtnHeadWhite1 = lighten(#000000, 90%) // header white clickable active
+cTxtWhite         = lighten(#000000, 90%) // important white texte
+cTxtBtnBlue0      = #348bcd // blue clickable
+cTxtBtnBlue1      = darken(cTxtBtnBlue0, 50%) // blue clickable active
+
+
+
 cText         = #434343
 cTextFaded    = lighten(#535353, 40%)
 cTextRev      = #dddddd
@@ -32,6 +49,21 @@ html
 	height 100%
 	overflow hidden
 	background-color #777
+	font-size 16px
+	
+
+// FONT SIZES
+.col1, .col3
+	font-size 0.95rem
+.col2
+	font-size 1rem
+header, body:before
+	font-size 1.1rem
+
+rFontSize = 1.5
+
+
+
 
 body
 	margin 0 auto
@@ -39,36 +71,108 @@ body
 	height 100%
 	position relative
 	background none
+	&:before
+		content ""
+		margin-top rFontSize * 2em
+		width 100%
+		box-shadow 0 0 0.5em black
+		position absolute
+		height calc(100% - 2em)
+		display block
+
 
 #main
 	height 100%
 	padding 0
 	position relative
 
+	max-width 1280px
+	margin 0 auto
+
 header
 	clearfix()
 	color #FFF
-	font-size 1em
 	position relative
 	top 0
 	h1
+		font-size rFontSize * 1em
+		float left
 		padding .5em
 		margin 0
-		font-size 1em
+		width 8em
+				
+nav
+	float left
 	ul
-		float right
+		clearfix()
 		list-style none
-		margin 0
 		padding 0
-		display inline-block
+		margin 0
 		li
-			display inline-block
-			vertical-align middle
-			padding .5em
+			float left
+			// padding .5em
+			padding (((rFontSize * 2) - 1) / 2) * 1em //revoir formule de calcul
 			&.selected,&:hover,&:active
 				background-color #FFF
-				color black
 				cursor pointer
+				color black
+	.object
+		max-width: 7em;
+		overflow: ellipsis;
+		
+
+
+#tabs
+	background-color cBgGrey
+	height '-moz-calc(%s - %s)' % (100% rFontSize * 2em)
+	height '-webkit-calc(%s - %s)' % (100% rFontSize * 2em)
+	height 'calc(%s - %s)' % (100% rFontSize * 2em)
+	max-width 1280px
+	margin auto 0
+
+.listobjects
+	height 100%
+	overflow-y hidden
+	.col2
+		height 100%
+
+
+
+
+
+
+// Preparing BROWSER grid
+.listobjects
+	.col1, .col2, .col3
+		float:left
+	.col1, .col3
+		width 20%
+	.col2
+		width 60%
+		
+// Styling BROWSER fonts
+.listobjects
+	font-family 'Arial'
+	.col1, .col3
+		color cTextSec
+		.title
+			margin 0 1em 0.3em 1em
+		.subtitle
+			margin 0 1em 1em
+		.zones
+			margin 0 1em
+	.zones li
+		border 1px solid cTextSec
+		border-radius 5px
+		padding 20px
+		margin-bottom 0.5em
+		&:hover
+			color cTextSecActive
+			border 1px solid cTextSecActive
+		
+	
+
+
 
 .actions-main,.actions-contextual
 	width 15em
@@ -121,29 +225,7 @@ header
 .tab.object.note .actions-contextual li
 	display list-item
 
-nav
-	background-color rgba(255,255,255,.35);
-	ul
-		list-style none
-		padding 0
-		margin 0
-		display inline-block
-		li
-			display inline-block
-			padding .5em
-			vertical-align middle
-			&.selected,&:hover,&:active
-				background-color #FFF
-				cursor pointer
-	.object
-		max-width: 7em;
-		overflow: ellipsis;
 
-#tabs
-	background-color grey
-	height '-moz-calc(%s - %s)' % (100% 2em)
-	height '-webkit-calc(%s - %s)' % (100% 2em)
-	height 'calc(%s - %s)' % (100% 2em)
 
 .tab
 	display none
@@ -180,13 +262,9 @@ nav
 
 .listobjects
 	display none
-	height 89%
-	height '-moz-calc(%s - %s)' % (100% 4em)
-	height '-webkit-calc(%s - %s)' % (100% 4em)
-	height 'calc(%s - %s)' % (100% 4em)
+
 	&.selected
 		display block
-		overflow-y scroll
 	.super-input
 			border 1px solid grey
 			padding 6px 5px
@@ -215,6 +293,9 @@ nav
 				opacity 0.6
 				margin-right 0.5em
 	ul.objects
+		overflow-y: scroll;
+		height: calc(100% - 6em);
+		// NEW BEFORE !!!
 		list-style-type none
 		margin 1em 0 0
 		padding 0
