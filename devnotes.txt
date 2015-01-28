@@ -394,3 +394,9 @@ Valider que app.js fonctionne bien avec backbone.custom.js
 
 06/01/2015==============================================
 Now starting to retest the Editor - refactoring all specs
+
+
+26/01/2015==============================================
+Je dois faire un render complet de toutes les tasks qd je fais checked
+Puis mettre le bouton de sélection de filtrage todo/done
+Je dois ensuite faire le filtrage de la vue, afficher todo seulement

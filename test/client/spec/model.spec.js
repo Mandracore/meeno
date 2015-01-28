@@ -46,7 +46,7 @@ define ([
 							expect(self.timerNote).toBeGreaterThan(9);
 							expect(self.timerTask).toBeGreaterThan(9);
 							expect(self.timerTag).toBeGreaterThan(9);
-							done();
+							// done();
 						}, 10); // wait 100ms then run function ()
 					});
 				});
@@ -94,9 +94,18 @@ define ([
 						it("should have a default description attribute", function() {
 							expect(this.task.get('description')).toBe('Description of your task...');
 						});
-						// Impossible to test here (DB connexion required)
 						it("should have a default position attribute set to 0", function() {
 							expect(this.task.get('position')).toBe(0);
+						});
+						it("should have a default completed attribute set to false", function() {
+							expect(this.task.get('completed')).toBe(false);
+						});
+						it("should have a default due_at attribute set to today", function() {
+							var now = new Date();
+							var due = this.task.get('due_at');
+							expect(due.getYear()).toEqual(now.getYear());
+							expect(due.getMonth()).toEqual(now.getMonth());
+							expect(due.getDate()).toEqual(now.getDate());
 						});
 					});
 				});

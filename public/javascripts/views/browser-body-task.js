@@ -21,6 +21,7 @@ define ([
 			events: function(){
 				return _.extend({},BrowserBodyObjectView.prototype.events,{
 					'click .edit'             : 'edit',
+					'click span.label'        : 'check',
 					'click .delete'           : 'delete',
 					'click .close'            : 'close',
 					'click .update'           : 'update',
@@ -60,6 +61,13 @@ define ([
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (json));
 				this.$el.attr("data-cid",this.model.cid);
+
+				if (this.model.get("completed") === true) {
+					this.$el.addClass('completed');
+				} else {
+					this.$el.removeClass('completed');
+				}
+
 				channel.trigger("browser:tasks:reSyncSelectors");
 
 				// Control the behaviour when ENTER key is keyed down
@@ -135,8 +143,8 @@ define ([
 								self.renderTagUpdate();
 								return false;
 							},
-						});
-						return false;
+						})
+;						return false;
 					}
 				}
 				return false;
@@ -204,6 +212,19 @@ define ([
 
 				this.model.get('tagLinks').remove(tagLink);
 				this.renderTagUpdate();
+			},
+
+			/**
+			 * Will update the model (complete the task) and relaunch rendering.
+			 * It can also uncheck task.
+			 * 
+			 * @method check
+			 */
+			check: function() {
+				var self = this;
+				this.model.set("completed",!(this.model.get("completed")));
+				this.model.save();
+				this.render();
 			},
 
 			/**

@@ -28,6 +28,7 @@ module.exports = function(mas, securityProxy){
 			task.label       = req.body.label;
 			task.description = req.body.description;
 			task.position    = req.body.position;
+			task.completed   = req.body.completed;
 			task.noteLinks   = req.body.noteLinks;
 			task.tagLinks    = req.body.tagLinks;
 
@@ -53,6 +54,7 @@ module.exports = function(mas, securityProxy){
 			label      : req.body.label,
 			description: req.body.description,
 			position   : req.body.position,
+			completed  : req.body.completed,
 			noteLinks  : req.body.noteLinks,
 			tagLinks   : req.body.tagLinks,
 		});

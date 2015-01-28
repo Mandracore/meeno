@@ -52,6 +52,7 @@ module.exports = function(mas, mongoose){
 		label      : { type: String, required: true},
 		description: String,
 		position   : Number,
+		completed  : Boolean,
 		tagLinks   : [msLinkTaskTag],
 	});
 	var msNoteFilter = new mongoose.Schema({

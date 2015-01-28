@@ -15,8 +15,9 @@ define ([
 		'views/browser',
 		'views/browser-body',
 		'views/browser-body-note',
+		'views/browser-body-task',
 		'views/browser-body-filter',
-	], function ($, _, Backbone, temp, channel, Note, Task, Tag, Notes, Tasks, Tags, Filter, Filters, BrowserView, BrowserBodyView, BrowserBodyNoteView, BrowserBodyFilterView) {
+	], function ($, _, Backbone, temp, channel, Note, Task, Tag, Notes, Tasks, Tags, Filter, Filters, BrowserView, BrowserBodyView, BrowserBodyNoteView, BrowserBodyTaskView, BrowserBodyFilterView) {
 
 	return describe("Browser", function() {
 		var browserBody, note, tag, task, noteFilter, taskFilter, tagFilter;
@@ -68,7 +69,6 @@ define ([
 			it("should refresh the selectors when an object is checked", function() {
 				spyOn(browserBody, 'actionSelectorsUpdate');
 				channel.trigger("browser:actions:update-selectors:notes"); // Fake checking an object
-				
 			});
 
 			describe("when a collection is updated", function() {
@@ -314,7 +314,7 @@ define ([
 			});
 		});
 
-		describe("Body Objects", function() {
+		describe("All Body Objects", function() {
 			var browserBodyNoteView;
 
 			beforeEach(function () {
@@ -363,6 +363,22 @@ define ([
 				expect(browserBodyNoteView.actionToggleCheckbox).toHaveBeenCalled();
 			});
 		});
+
+		describe("Tasks in the browser", function() {
+			var browserBodyTaskView;
+
+			beforeEach(function () {
+				loadFixtures('clientSideTemplates.html'); // Inserting the client side templates into the fixtures area of the DOM
+				browserBodyTaskView = new BrowserBodyTaskView({ collName:"tasks", model: task }); // Initialize object view
+				$("#jasmine-fixtures").append(browserBodyTaskView.render().el); // Render object and append to DOM
+			});
+
+			it("should trigger an event when checked", function() {
+				expect(browserBodyTaskView.$el).not.toHaveClass("completed");
+				browserBodyTaskView.$("span.label").click(); // Fake attempt to check a task
+				expect(browserBodyTaskView.model.get('completed')).toBe(true);
+				expect(browserBodyTaskView.$el).toHaveClass("completed");
+			});
+		});
 	});
 });
-
