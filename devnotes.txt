@@ -400,3 +400,20 @@ Now starting to retest the Editor - refactoring all specs
 Je dois faire un render complet de toutes les tasks qd je fais checked
 Puis mettre le bouton de sélection de filtrage todo/done
 Je dois ensuite faire le filtrage de la vue, afficher todo seulement
+
+
+31/01====================================================
+Voir comment appliquer le filtre todo/done/both seulement au filtre utilisé par le browser pour
+son affichage. Il faut que les fonctions clone ne modifient pas ce paramètre au changement de filtre prédéfini !
+Fonctionnement :
+1. La personne choisit un filtre prédéfini NCD
+2. Elle choisit d'afficher les terminés seulement
+3. Elle change pour NAOS
+4. Ca doit toujours afficher les terminés uniquement
+A priori, il faut juste stocker le paramètre dans this.filters.
+Sauf que les filters a priori n'ont pas ce paramètre non ?
+
+Le filtrage par "completed" fonctionne bien mais dans le browser, il ne se passe rien si on modifie 
+this.filters.taskfilter....
+En fait c'est plus compliqué : le filtrage dans le browser est fonctionnel quand je change la valeur par défaut...
+mais pas quand j'update et refiltre... Pourquoi ???

@@ -146,6 +146,7 @@ define ([
 					subClass  : 'TaskFilter',
 					label     : 'New filter',
 					text      : '',
+					completed : 0,
 					created_at: new Date(),
 					updated_at: new Date()
 				};

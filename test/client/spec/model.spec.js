@@ -84,7 +84,6 @@ define ([
 					});
 				});
 
-
 				describe("Task", function() {
 
 					describe("when creating a new task", function() {
@@ -186,6 +185,9 @@ define ([
 				this.tag2        = new Tag({label:"My test tag 2"});
 				this.task        = new Task({label:"My test task"});
 				this.task2       = new Task({label:"My test task 2"});
+				this.tasks       = new Tasks();
+				this.tasks.add(this.task);
+				this.tasks.add(this.task2);
 			});
 
 			it("NoteFilter can be related to a tag and a task through a link", function() {
@@ -197,6 +199,22 @@ define ([
 			it("TaskFilter can be related to a tag through a link", function() {
 				this.taskFilter.get('tags').add(this.tag2);
 				expect(this.taskFilter.get('tags').at(0).get('label')).toEqual("My test tag 2");
+			});
+
+			it("TaskFilter should allow to filter done/todo/both", function() {
+				this.task.set("completed",0);
+				this.task2.set("completed",1);
+
+				// Test default value : todo only (0)
+				expect(this.tasks.search(this.taskFilter).length).toEqual(1); 
+				expect(this.tasks.search(this.taskFilter).at(0).get('label')).toEqual("My test task");
+				// Test done only
+				this.taskFilter.set("completed",1); 
+				expect(this.tasks.search(this.taskFilter).length).toEqual(1); 
+				expect(this.tasks.search(this.taskFilter).at(0).get('label')).toEqual("My test task 2");
+				// Test done only
+				this.taskFilter.set("completed",2); 
+				expect(this.tasks.search(this.taskFilter).length).toEqual(2);
 			});
 
 			it("NoteFilter can be compared to another note filter", function() {

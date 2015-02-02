@@ -1,3 +1,4 @@
+
 define ([
 	// path aliases preconfigured in ../main.js
 		'jquery',
@@ -19,7 +20,8 @@ define ([
 
 			/**
 			 * Allows to search through a collection of tasks with a complex filter based on full-text search (in label)
-			 * and on tags related or not to the models
+			 * and on tags related or not to the models. The filtering of tasks can also take into account the "completed"
+			 * attribute.
 			 * 
 			 * @method search
 			 * @param  {TaskFilter} filter the filter used to search the collection
@@ -27,11 +29,21 @@ define ([
 			 * @chainable
 			 */
 			search: function (filter) {
-				if(filter.get('text') === "" && filter.get('tags').length == 0) return this;
+				if(
+					filter.get('text') === "" &&
+					filter.get('completed') == 2 &&
+					filter.get('tags').length == 0
+					) return this;
 				// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 				var pattern = new RegExp(filter.get('text'),"i");
-
+				
 				return new Tasks (this.filter(function(model) {
+					// Testing 'completed' attribute
+					if (filter.get('completed') != 2) {
+						if (model.get('completed') != filter.get('completed')) {
+							return false;
+						}
+					}
 					// Full text search
 					if (false === (pattern.test(model.get("label")))) {
 						return false;

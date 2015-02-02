@@ -40,6 +40,7 @@ define ([
 				'click .filter-editor button.save'                 : 'searchFilterSave1',
 				'click .filter-editor button.saveConfirm'          : 'searchFilterSave2',
 				'click .filter-editor button.delete'               : 'searchFilterDelete',
+				'click .filter-checked'                            : 'toggleTasks',
 				// Action-related events
 				'click .actions-contextual .delete'                : 'actionDeleteToggle',
 				'click .actions-contextual-selection .select-all'  : 'actionSelectAll',
@@ -72,7 +73,7 @@ define ([
 				this.listenTo(temp.coll.tags, 'add remove change:label', function () {
 					this.renderCollection("notes");
 					this.renderCollection("tags");});
-				this.listenTo(temp.coll.tasks, 'add remove change:label', function () {this.renderCollection("tasks");});
+				this.listenTo(temp.coll.tasks, 'add remove change:label change:completed', function () {this.renderCollection("tasks");});
 
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
 				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});
@@ -266,6 +267,23 @@ define ([
 			// Search business objets in database
 			// =============================================================================
 
+
+			/**
+			 * @method toggleTasks
+			 */
+			toggleTasks: function(event) {
+				var $button = $(event.target);
+				var step = $button.attr('data-step');
+				var sequence = {
+					0 : 1,
+					1 : 2,
+					2 : 0,
+				}
+
+				this.filters["taskFilter"].set('completed', sequence[step]);
+				$button.hide().parent().find("[data-step="+sequence[step]+"]").show();
+			},
+
 			/**
 			 * Checks whether the user is currently using a search input and if so tells which collection is visible
 			 * 
@@ -379,7 +397,6 @@ define ([
 				var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
 				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 				this.filters[filterName].set('text', $(event.target).val());
-				this.renderCollection(collName);
 				this.searchFiltersCtrlUpd(collName.replace(/(s)$/, function($1){ return ""; }));
 			},
 
@@ -564,7 +581,7 @@ define ([
 			/**
 			 * @method renderCollection
 			 */
-			renderCollection: function (collName) {
+			renderCollection: function (collName) { console.log('rendering...'+collName)
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
 

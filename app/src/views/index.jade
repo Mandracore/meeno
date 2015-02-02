@@ -136,9 +136,9 @@ block content
 								span.action Delete tasks
 								span.cancel Cancel
 						span
-							button Show both todo and done
-							button(style="display:none") Show done only
-							button(style="display:none") Show todo only
+							button.filter-checked(data-step="0") Now showing todo only
+							button.filter-checked(data-step="1", style="display:none") Now showing done only
+							button.filter-checked(data-step="2", style="display:none") Now showing both
 						// Hereafeter will be displayed the objects
 						ul.objects.tasks
 					div.col3.saved-filters
