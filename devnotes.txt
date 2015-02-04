@@ -417,3 +417,10 @@ Le filtrage par "completed" fonctionne bien mais dans le browser, il ne se passe
 this.filters.taskfilter....
 En fait c'est plus compliqué : le filtrage dans le browser est fonctionnel quand je change la valeur par défaut...
 mais pas quand j'update et refiltre... Pourquoi ???
+
+03/02====================================================
+Pour le mode offline, backbone.dualStorage permet bien la synchronisation différenciée au niveau collection+model
+Première version : 100% offline avec synchro online.
+Pré-requis :
+	- mettre en place un cookie de connexion ? ==> NON
+	- faire de l'uglify pour regrouper mes fichiers ? Voir grunt et brunch
