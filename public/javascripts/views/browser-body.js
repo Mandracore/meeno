@@ -640,7 +640,61 @@ define ([
 				sortedModel.save();
 				// 3. Shift all the following models
 				temp.coll.tasks.shiftDown(sortedModel);
-			}
+			},
+
+			/**
+			 * This methods aims at preparing the rendering of the tasks with the milestones at the right place
+			 * It can be used only with tasks sorted by due date
+			 * 
+			 * @method insertMilestones
+			 * @param  {Array} list The list of tasks
+			 * @param  {Array} milestones The milestones list to be inserted within the tasks
+			 * @param  {Array} result The final list of objects that should be rendered
+			 */
+			insertMilestones: function (list, milestones, result) {
+				// Both are empty
+				//---------------------------------
+				if (list.length === 0 && milestones.length === 0) {
+					return result;
+
+				// Only milestones is empty
+				//---------------------------------
+				} else if (milestones.length === 0) {
+					result[] = list.shift(); // remove first task from list but store it in the final result
+					return insertMilestones(list, milestones, result);
+
+				// Only list is empty
+				//---------------------------------
+				} else if (list.length === 0) {
+					result[] = milestones.shift(); // remove first milestone from milestones but store it in the final result
+					return insertMilestones(list, milestones, result);
+
+				// Both still contain some information
+				//---------------------------------
+				} else {
+
+					// Case 1 < 2 < X
+					//---------------------------------
+					if (milestones[0]['due_dat'] > list[0].get('due_at') && milestones[0]['due_dat'] > list[1].get('due_at')) {
+						result[] = list.shift(); // remove first task from list but store it in the final result
+						return insertMilestones(list, milestones, result);
+
+					// Case 1 < X <= 2
+					//---------------------------------
+					} else if (milestones[0]['due_dat'] > list[0].get('due_at') && milestones[0]['due_dat'] <= list[1].get('due_at')) {
+						result[] = list.shift(); // remove first task from list but store it in the final result
+						result[] = milestones.shift(); // remove first milestone from milestones but store it in the final result
+						return insertMilestones(list, milestones, result);
+
+					// Case X <= 1 < 2
+					//---------------------------------
+					} else {
+						result[] = milestones.shift(); // remove first milestone from milestones but store it in the final result
+						return insertMilestones(list, milestones, result);
+					}
+				}
+			},
+
 		});
 
 		return BrowserBodyView;

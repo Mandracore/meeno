@@ -424,3 +424,37 @@ Première version : 100% offline avec synchro online.
 Pré-requis :
 	- mettre en place un cookie de connexion ? ==> NON
 	- faire de l'uglify pour regrouper mes fichiers ? Voir grunt et brunch
+
+04/02====================================================
+Pour les due_dates :
+1. Mise en place calendrier
+2. "Intercalaires" qui s'affichent même si vides ==> plus pratique pour positionner les tasks rendered
+	si date > X et < Y => append sur box XY
+	si date > T et < U => append sur box TU
+	...
+	Les intercalaires ne peuvent pas être un autre div, il faut que ce soient des <li> un peu particuliers
+		data-start-date (>=)
+		data-end-date (<)
+	Le plus rapide serait de faire le render des tasks en premier, puis seulement après de placer les intercalaires
+
+Loop 1 : tasks, Loop 2 : intercalaires
+
+$inter = Today / Tomorrow / Next week / Later this month / Next Month (voir ce qu'il se passe si 2 points coïncident)
+
+Today = mercredi 4 février
+
+02/02 /// data-start > 02/02 && data-start > 03/02 == true ==> pas d'insert
+03/02 /// data-start > 03/02 && data-start > 05/02 == false ===> OK, 03/02.after(Today)
+>Today [04/12]
+>Tomorrow [05/12]
+05/02
+06/02
+06/02
+09/02
+10/02
+
+///// FAIRE TOUTES CES MANIPULATIONS HORS DU DOM AVANT LE RENDER DES TASKS !!!
+/// Copier les tasks sorted dans un simple array peut-être, qu'on rallonge ensuite
+
+var result = [];
+
