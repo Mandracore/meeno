@@ -458,3 +458,12 @@ Today = mercredi 4 février
 
 var result = [];
 
+06/02====================================================
+La gestion des dates est améliorée.
+Reste à faire 
+	1. paramétrer le nouveau comparateur / sort
+	2. update model ?
+	3. paramétrer le rendu des milestones
+	4. paramétrer le plugin sortable
+
+

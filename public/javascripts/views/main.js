@@ -64,18 +64,20 @@ define ([
 			fetchData: function() {
 				var self = this;
 				temp.coll.tags.fetch({
+					silent:true,
 					success: function (collection, xhr, options) {
-						temp.coll.tasks.fetch({})
-						temp.coll.notes.fetch({})
-						temp.coll.noteFilters.fetch({});
-						temp.coll.taskFilters.fetch({});
-						temp.coll.tagFilters.fetch({});
 						// Initialize mandatory static tabs
 						new HelperView();
 						new BrowserView();
+						// End data retrieval
+						temp.coll.tasks.fetch({silent: true});
+						temp.coll.notes.fetch({silent: true});
+						temp.coll.noteFilters.fetch({silent: true});
+						temp.coll.taskFilters.fetch({silent: true});
+						temp.coll.tagFilters.fetch({silent: true});
 					},
 					error: function (collection, xhr, options) {
-						console.log ("Fetching tasks failed // Server response status : "+xhr.status);
+						console.log ("Fetching failed // Server response status : "+xhr.status);
 						if (xhr.status == 401) {
 							console.log ("Unauthorized, displaying user authentification form");
 							self.toggleAuth();

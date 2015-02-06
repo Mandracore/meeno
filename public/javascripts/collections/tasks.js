@@ -16,7 +16,20 @@ define ([
 		var Tasks = Backbone.Collection.extend({
 			model: Task,
 			url: '/api/tasks',
-			comparator: 'position',
+			comparator: function (task1, task2) {
+				/* 	Guidelines for building a "sort"-like backbone comparator :
+						return -1 if the first model should come before the second
+						return 0 if they are of the same rank
+						return 1 if the first model should come after
+				*/
+				if(task1.get('position') < task2.get('position')) {
+					return -1;
+				} else if (task1.get('postion') === task2.get('position')) {
+					return 0;
+				} else {
+					return 1;
+				}
+			},
 
 			/**
 			 * Allows to search through a collection of tasks with a complex filter based on full-text search (in label)

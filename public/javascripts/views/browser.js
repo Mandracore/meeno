@@ -21,11 +21,7 @@ define ([
 				this.children = {
 					tab  : new BrowserTabView({ el: $("#nav .browse") }),
 					body : new BrowserBodyView({ el: $("#tabs .browse") })
-					// tab  : new BrowserTabView({ el: $("#nav .browse"), parent: this }),
-					// body : new BrowserBodyView({ el: $("#tabs .browse"), parent: this })
 				};
-
-				this.children.body.render();
 			},
 
 			toggle: function() {

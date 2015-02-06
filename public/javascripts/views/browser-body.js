@@ -69,11 +69,11 @@ define ([
 					"tagFilter" : new Filter.Tag()
 				};
 
-				this.listenTo(temp.coll.notes, 'add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
-				this.listenTo(temp.coll.tags, 'add remove change:label', function () {
+				this.listenTo(temp.coll.notes, 'sync add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+				this.listenTo(temp.coll.tags, 'sync add remove change:label', function () {
 					this.renderCollection("notes");
 					this.renderCollection("tags");});
-				this.listenTo(temp.coll.tasks, 'add remove change:label change:completed', function () {this.renderCollection("tasks");});
+				this.listenTo(temp.coll.tasks, 'sync add remove change:label change:completed', function () {this.renderCollection("tasks");});
 
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
 				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});
@@ -278,9 +278,9 @@ define ([
 					0 : 1,
 					1 : 2,
 					2 : 0,
-				}
+				};
 
-				this.filters["taskFilter"].set('completed', sequence[step]);
+				this.filters.taskFilter.set('completed', sequence[step]);
 				$button.hide().parent().find("[data-step="+sequence[step]+"]").show();
 			},
 
@@ -382,7 +382,7 @@ define ([
 				var $listObjects           = $objectButton.closest('.listobjects');
 				var filteredColl           = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
 				var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return ""; })+"Filter";
-				var object                 = temp.coll[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'))
+				var object                 = temp.coll[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'));
 				this.filters[filteredCollFilterName].get($objectButton.attr('data-class')).remove(object); // Removing model from Filter
 			},
 
@@ -581,7 +581,8 @@ define ([
 			/**
 			 * @method renderCollection
 			 */
-			renderCollection: function (collName) { console.log('rendering...'+collName)
+			renderCollection: function (collName) {
+				console.log('rendering...'+collName);
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
 
@@ -605,7 +606,9 @@ define ([
 				results.each(function (element) {
 					if (collName == "notes") { newView = new BrowserBodyNoteView({ collName:"notes", model: element }); }
 					if (collName == "tags") { newView = new BrowserBodyTagView({ collName:"tags", model: element }); }
-					if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); }
+					if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); 
+						console.log(element.get('created_at')+'|'+element.get('due_at')+'|'+element.get('updated_at'));
+					}
 					self.children[collName].push (newView);
 					$list.append(newView.render().el);
 				}, this);
@@ -660,13 +663,13 @@ define ([
 				// Only milestones is empty
 				//---------------------------------
 				} else if (milestones.length === 0) {
-					result[] = list.shift(); // remove first task from list but store it in the final result
+					result.push(list.shift()); // remove first task from list but store it in the final result
 					return insertMilestones(list, milestones, result);
 
 				// Only list is empty
 				//---------------------------------
 				} else if (list.length === 0) {
-					result[] = milestones.shift(); // remove first milestone from milestones but store it in the final result
+					result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
 					return insertMilestones(list, milestones, result);
 
 				// Both still contain some information
@@ -675,21 +678,21 @@ define ([
 
 					// Case 1 < 2 < X
 					//---------------------------------
-					if (milestones[0]['due_dat'] > list[0].get('due_at') && milestones[0]['due_dat'] > list[1].get('due_at')) {
-						result[] = list.shift(); // remove first task from list but store it in the final result
+					if (milestones[0].due_at > list[0].get('due_at') && milestones[0].due_at > list[1].get('due_at')) {
+						result.push(list.shift()); // remove first task from list but store it in the final result
 						return insertMilestones(list, milestones, result);
 
 					// Case 1 < X <= 2
 					//---------------------------------
-					} else if (milestones[0]['due_dat'] > list[0].get('due_at') && milestones[0]['due_dat'] <= list[1].get('due_at')) {
-						result[] = list.shift(); // remove first task from list but store it in the final result
-						result[] = milestones.shift(); // remove first milestone from milestones but store it in the final result
+					} else if (milestones[0].due_at > list[0].get('due_at') && milestones[0].due_at <= list[1].get('due_at')) {
+						result.push(list.shift()); // remove first task from list but store it in the final result
+						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
 						return insertMilestones(list, milestones, result);
 
 					// Case X <= 1 < 2
 					//---------------------------------
 					} else {
-						result[] = milestones.shift(); // remove first milestone from milestones but store it in the final result
+						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
 						return insertMilestones(list, milestones, result);
 					}
 				}

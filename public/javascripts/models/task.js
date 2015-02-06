@@ -46,11 +46,12 @@ define ([
 
 			initialize: function() {
 				var self = this;
-				this.listenTo(this,'change', this.updated);
+				this.listenTo(this,'change:label change:position change:completed change:due_at', this.updated);
 			},
 
 			updated: function() {
 				this.set('updated_at', new Date());
+				this.save();
 			},
 
 			defaults: function() {
