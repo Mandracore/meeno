@@ -320,6 +320,13 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
                             </li>
                         
                             <li class="index-item method">
+                                <a href="#method_insertMilestones">insertMilestones</a>
+
+                                
+                                
+                            </li>
+                        
+                            <li class="index-item method">
                                 <a href="#method_render">render</a>
 
                                 
@@ -438,6 +445,13 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
                                 
                             </li>
                         
+                            <li class="index-item method">
+                                <a href="#method_toggleTasks">toggleTasks</a>
+
+                                
+                                
+                            </li>
+                        
                     </ul>
                 </div>
             
@@ -522,7 +536,7 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l242"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:242</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l243"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:243</code></a>
         
         </p>
 
@@ -577,7 +591,7 @@ It controls the creation of several subviews, like <a href="../classes/BrowserBo
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l215"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:215</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l216"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:216</code></a>
         
         </p>
 
@@ -633,7 +647,7 @@ Throws an event to make subviews display their checkboxes</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l189"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:189</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l190"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:190</code></a>
         
         </p>
 
@@ -688,7 +702,7 @@ Throws an event to make subviews display their checkboxes</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l164"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:164</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l165"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:165</code></a>
         
         </p>
 
@@ -744,7 +758,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l202"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:202</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l203"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:203</code></a>
         
         </p>
 
@@ -759,6 +773,140 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
 
     </div>
 
+    
+
+    
+
+    
+</div>
+
+                
+                    <div id="method_insertMilestones" class="method item">
+    <h3 class="name"><code>insertMilestones</code></h3>
+
+    
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+            
+                <li class="arg">
+                    
+                        <code>list</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>milestones</code>
+                    
+                </li>
+            
+                <li class="arg">
+                    
+                        <code>result</code>
+                    
+                </li>
+            
+            </ul><span class="paren">)</span>
+        </div>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l646"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:646</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        <p>This methods aims at preparing the rendering of the tasks with the milestones at the right place
+It can be used only with tasks sorted by due date</p>
+
+    </div>
+
+    
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+            
+                <li class="param">
+                    
+                        <code class="param-name">list</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The list of tasks</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">milestones</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The milestones list to be inserted within the tasks</p>
+
+                    </div>
+
+                    
+                </li>
+            
+                <li class="param">
+                    
+                        <code class="param-name">result</code>
+                        <span class="type"><a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array" class="crosslink external" target="_blank">Array</a></span>
+                    
+
+                    
+
+                    <div class="param-description">
+                        <p>The final list of objects that should be rendered</p>
+
+                    </div>
+
+                    
+                </li>
+            
+            </ul>
+        </div>
     
 
     
@@ -799,7 +947,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l555"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:555</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l572"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:572</code></a>
         
         </p>
 
@@ -853,7 +1001,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l564"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:564</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l581"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:581</code></a>
         
         </p>
 
@@ -917,7 +1065,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l338"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:338</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l356"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:356</code></a>
         
         </p>
 
@@ -1006,7 +1154,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l532"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:532</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l549"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:549</code></a>
         
         </p>
 
@@ -1095,7 +1243,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l443"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:443</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l460"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:460</code></a>
         
         </p>
 
@@ -1183,7 +1331,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l410"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:410</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l427"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:427</code></a>
         
         </p>
 
@@ -1271,7 +1419,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l423"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:423</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l440"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:440</code></a>
         
         </p>
 
@@ -1359,7 +1507,7 @@ is selected or unseleted to make sure that the right buttons are displayed</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l386"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:386</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l403"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:403</code></a>
         
         </p>
 
@@ -1444,7 +1592,7 @@ If not, we propose to save the currently applied one</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l269"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:269</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l287"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:287</code></a>
         
         </p>
 
@@ -1523,7 +1671,7 @@ If not, we propose to save the currently applied one</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l356"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:356</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l374"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:374</code></a>
         
         </p>
 
@@ -1612,7 +1760,7 @@ If not, we propose to save the currently applied one</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l287"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:287</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l305"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:305</code></a>
         
         </p>
 
@@ -1703,7 +1851,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l459"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:459</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l476"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:476</code></a>
         
         </p>
 
@@ -1791,7 +1939,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l489"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:489</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l506"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:506</code></a>
         
         </p>
 
@@ -1880,7 +2028,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l371"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:371</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l389"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:389</code></a>
         
         </p>
 
@@ -1975,7 +2123,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l605"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:605</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l623"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:623</code></a>
         
         </p>
 
@@ -2070,7 +2218,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l124"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:124</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l125"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:125</code></a>
         
         </p>
 
@@ -2135,7 +2283,7 @@ that will then be used to filter the objects from collection named <code>sColl1<
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l138"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:138</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l139"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:139</code></a>
         
         </p>
 
@@ -2183,6 +2331,60 @@ on the right button (class <code>.filter li</code>).</p>
 </div>
 
                 
+                    <div id="method_toggleTasks" class="method item">
+    <h3 class="name"><code>toggleTasks</code></h3>
+
+    
+        <span class="paren">()</span>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <div class="meta">
+        
+            
+                
+                <p>
+                
+                Defined in
+                
+            
+        
+        
+        <a href="../files/public_javascripts_views_browser-body.js.html#l271"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:271</code></a>
+        
+        </p>
+
+
+        
+
+        
+    </div>
+
+    <div class="description">
+        
+    </div>
+
+    
+
+    
+
+    
+</div>
+
+                
             </div>
         
 
@@ -2218,7 +2420,7 @@ on the right button (class <code>.filter li</code>).</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l252"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:252</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l253"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:253</code></a>
         
         </p>
 
@@ -2262,7 +2464,7 @@ on the right button (class <code>.filter li</code>).</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l231"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:231</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l232"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:232</code></a>
         
         </p>
 
@@ -2306,7 +2508,7 @@ on the right button (class <code>.filter li</code>).</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l543"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:543</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l560"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:560</code></a>
         
         </p>
 
@@ -2351,7 +2553,7 @@ if they are active</p>
             
         
         
-        <a href="../files/public_javascripts_views_browser-body.js.html#l452"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:452</code></a>
+        <a href="../files/public_javascripts_views_browser-body.js.html#l469"><code>public&#x2F;javascripts&#x2F;views&#x2F;browser-body.js:469</code></a>
         
         </p>
 

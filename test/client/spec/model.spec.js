@@ -99,6 +99,13 @@ define ([
 						it("should have a default completed attribute set to false", function() {
 							expect(this.task.get('completed')).toBe(false);
 						});
+						it("should have a default todo_at attribute set to today", function() {
+							var now = new Date();
+							var due = this.task.get('todo_at');
+							expect(due.getYear()).toEqual(now.getYear());
+							expect(due.getMonth()).toEqual(now.getMonth());
+							expect(due.getDate()).toEqual(now.getDate());
+						});
 						it("should have a default due_at attribute set to today", function() {
 							var now = new Date();
 							var due = this.task.get('due_at');

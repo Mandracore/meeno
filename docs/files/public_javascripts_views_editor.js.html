@@ -180,8 +180,11 @@ define ([
 				if (temp.count.openedEditors &lt; 6 &amp;&amp; !this.model.isInEditor) {
 					temp.count.openedEditors++;
 					this.model.isInEditor = true;
-					$(&quot;#nav&quot;).append(this.children.tab.render().el);
-					$(&quot;#tabs&quot;).append(this.children.body.render().el);
+					
+					// $(&quot;#nav&quot;).append(this.children.tab.render().el);
+					// Plus besoin d&#x27;avoir un bouton de nav pour l&#x27;afficher, tout le bloc doit toujours être
+					// affiché
+					$(&quot;#editors&quot;).append(this.children.body.render().el);
 					return this;
 				} else {
 					channel.trigger(&#x27;tab:toggle:browser&#x27;);

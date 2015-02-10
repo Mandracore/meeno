@@ -60,6 +60,7 @@ define ([
 					description: 'Description of your task...',
 					position   : 0,
 					completed  : false,
+					todo_at    : new Date(),
 					due_at     : new Date(),
 					created_at : new Date(),
 					updated_at : new Date(),

@@ -9,7 +9,12 @@
 </script>
 <script type="text/template" id="browser-body-task-template" style="display: none;">
 	<span style="display: none;" class="checkbox icon-check-empty"></span>
+	<span class="attribute"><%= task.created_at %> **** created</span></br>
+	<span class="attribute"><%= task.todo_at %> **** todo</span></br>
+	<span class="attribute"><%= task.due_at %> **** due</span></br>
+	<span class="attribute"><%= task.updated_at %> **** updated</span></br>
 	<span class="check label attribute"><%= task.label %></span>
+	
 	<span>[<%= task.position %>]</span>
 	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag.label %>]</span><% }); %></span>
 	<span class="edit">Edit</span><span class="delete">Delete</span>

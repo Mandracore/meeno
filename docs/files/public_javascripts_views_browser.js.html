@@ -163,11 +163,7 @@ define ([
 				this.children = {
 					tab  : new BrowserTabView({ el: $(&quot;#nav .browse&quot;) }),
 					body : new BrowserBodyView({ el: $(&quot;#tabs .browse&quot;) })
-					// tab  : new BrowserTabView({ el: $(&quot;#nav .browse&quot;), parent: this }),
-					// body : new BrowserBodyView({ el: $(&quot;#tabs .browse&quot;), parent: this })
 				};
-
-				this.children.body.render();
 			},
 
 			toggle: function() {

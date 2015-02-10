@@ -182,6 +182,7 @@ define ([
 				&#x27;click .filter-editor button.save&#x27;                 : &#x27;searchFilterSave1&#x27;,
 				&#x27;click .filter-editor button.saveConfirm&#x27;          : &#x27;searchFilterSave2&#x27;,
 				&#x27;click .filter-editor button.delete&#x27;               : &#x27;searchFilterDelete&#x27;,
+				&#x27;click .filter-checked&#x27;                            : &#x27;toggleTasks&#x27;,
 				// Action-related events
 				&#x27;click .actions-contextual .delete&#x27;                : &#x27;actionDeleteToggle&#x27;,
 				&#x27;click .actions-contextual-selection .select-all&#x27;  : &#x27;actionSelectAll&#x27;,
@@ -210,11 +211,11 @@ define ([
 					&quot;tagFilter&quot; : new Filter.Tag()
 				};
 
-				this.listenTo(temp.coll.notes, &#x27;add remove change:title add:tagLinks&#x27;, function () {this.renderCollection(&quot;notes&quot;);});
-				this.listenTo(temp.coll.tags, &#x27;add remove change:label&#x27;, function () {
+				this.listenTo(temp.coll.notes, &#x27;sync add remove change:title add:tagLinks&#x27;, function () {this.renderCollection(&quot;notes&quot;);});
+				this.listenTo(temp.coll.tags, &#x27;sync add remove change:label&#x27;, function () {
 					this.renderCollection(&quot;notes&quot;);
 					this.renderCollection(&quot;tags&quot;);});
-				this.listenTo(temp.coll.tasks, &#x27;add remove change:label&#x27;, function () {this.renderCollection(&quot;tasks&quot;);});
+				this.listenTo(temp.coll.tasks, &#x27;sync add remove change:label change:completed&#x27;, function () {this.renderCollection(&quot;tasks&quot;);});
 
 				this.listenTo(temp.coll.noteFilters, &#x27;reset add remove&#x27;, function () {this.searchRenderFilters(&quot;noteFilters&quot;);});
 				this.listenTo(temp.coll.taskFilters, &#x27;reset add remove&#x27;, function () {this.searchRenderFilters(&quot;taskFilters&quot;);});
@@ -408,6 +409,23 @@ define ([
 			// Search business objets in database
 			// =============================================================================
 
+
+			/**
+			 * @method toggleTasks
+			 */
+			toggleTasks: function(event) {
+				var $button = $(event.target);
+				var step = $button.attr(&#x27;data-step&#x27;);
+				var sequence = {
+					0 : 1,
+					1 : 2,
+					2 : 0,
+				};
+
+				this.filters.taskFilter.set(&#x27;completed&#x27;, sequence[step]);
+				$button.hide().parent().find(&quot;[data-step=&quot;+sequence[step]+&quot;]&quot;).show();
+			},
+
 			/**
 			 * Checks whether the user is currently using a search input and if so tells which collection is visible
 			 * 
@@ -506,7 +524,7 @@ define ([
 				var $listObjects           = $objectButton.closest(&#x27;.listobjects&#x27;);
 				var filteredColl           = $listObjects.hasClass(&#x27;notes&#x27;) ? &#x27;notes&#x27; : ($listObjects.hasClass(&#x27;tags&#x27;) ? &#x27;tags&#x27; : &#x27;tasks&#x27;);
 				var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return &quot;&quot;; })+&quot;Filter&quot;;
-				var object                 = temp.coll[$objectButton.attr(&#x27;data-class&#x27;)].get($objectButton.attr(&#x27;data-cid&#x27;))
+				var object                 = temp.coll[$objectButton.attr(&#x27;data-class&#x27;)].get($objectButton.attr(&#x27;data-cid&#x27;));
 				this.filters[filteredCollFilterName].get($objectButton.attr(&#x27;data-class&#x27;)).remove(object); // Removing model from Filter
 			},
 
@@ -521,7 +539,6 @@ define ([
 				var filterName   = $listObjects.hasClass(&quot;notes&quot;) ? &quot;noteFilter&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tagFilter&quot; : &quot;taskFilter&quot;);
 				var collName     = $listObjects.hasClass(&quot;notes&quot;) ? &quot;notes&quot; : ($listObjects.hasClass(&quot;tags&quot;) ? &quot;tags&quot; : &quot;tasks&quot;);
 				this.filters[filterName].set(&#x27;text&#x27;, $(event.target).val());
-				this.renderCollection(collName);
 				this.searchFiltersCtrlUpd(collName.replace(/(s)$/, function($1){ return &quot;&quot;; }));
 			},
 
@@ -707,6 +724,7 @@ define ([
 			 * @method renderCollection
 			 */
 			renderCollection: function (collName) {
+				console.log(&#x27;rendering...&#x27;+collName);
 				var self = this;
 				var filterName = collName == &quot;notes&quot; ? &quot;noteFilter&quot; : (collName == &quot;tasks&quot; ? &quot;taskFilter&quot; : &quot;tagFilter&quot;);
 
@@ -765,7 +783,61 @@ define ([
 				sortedModel.save();
 				// 3. Shift all the following models
 				temp.coll.tasks.shiftDown(sortedModel);
-			}
+			},
+
+			/**
+			 * This methods aims at preparing the rendering of the tasks with the milestones at the right place
+			 * It can be used only with tasks sorted by due date
+			 * 
+			 * @method insertMilestones
+			 * @param  {Array} list The list of tasks
+			 * @param  {Array} milestones The milestones list to be inserted within the tasks
+			 * @param  {Array} result The final list of objects that should be rendered
+			 */
+			insertMilestones: function (list, milestones, result) {
+				// Both are empty
+				//---------------------------------
+				if (list.length === 0 &amp;&amp; milestones.length === 0) {
+					return result;
+
+				// Only milestones is empty
+				//---------------------------------
+				} else if (milestones.length === 0) {
+					result.push(list.shift()); // remove first task from list but store it in the final result
+					return insertMilestones(list, milestones, result);
+
+				// Only list is empty
+				//---------------------------------
+				} else if (list.length === 0) {
+					result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
+					return insertMilestones(list, milestones, result);
+
+				// Both still contain some information
+				//---------------------------------
+				} else {
+
+					// Case 1 &lt; 2 &lt; X
+					//---------------------------------
+					if (milestones[0].todo_at &gt; list[0].get(&#x27;todo_at&#x27;) &amp;&amp; milestones[0].todo_at &gt; list[1].get(&#x27;todo_at&#x27;)) {
+						result.push(list.shift()); // remove first task from list but store it in the final result
+						return insertMilestones(list, milestones, result);
+
+					// Case 1 &lt; X &lt;= 2
+					//---------------------------------
+					} else if (milestones[0].todo_at &gt; list[0].get(&#x27;todo_at&#x27;) &amp;&amp; milestones[0].todo_at &lt;= list[1].get(&#x27;todo_at&#x27;)) {
+						result.push(list.shift()); // remove first task from list but store it in the final result
+						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
+						return insertMilestones(list, milestones, result);
+
+					// Case X &lt;= 1 &lt; 2
+					//---------------------------------
+					} else {
+						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
+						return insertMilestones(list, milestones, result);
+					}
+				}
+			},
+
 		});
 
 		return BrowserBodyView;

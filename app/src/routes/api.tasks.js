@@ -24,6 +24,7 @@ module.exports = function(mas, securityProxy){
 
 			task.created_at  = req.body.created_at;
 			task.updated_at  = req.body.updated_at;
+			task.todo_at     = req.body.todo_at;
 			task.due_at      = req.body.due_at;
 			task.label       = req.body.label;
 			task.description = req.body.description;
@@ -50,6 +51,7 @@ module.exports = function(mas, securityProxy){
 			_creator   : req.session.user._id,
 			created_at : req.body.created_at,
 			updated_at : req.body.updated_at,
+			todo_at    : req.body.todo_at,
 			due_at     : req.body.due_at,
 			label      : req.body.label,
 			description: req.body.description,

@@ -188,11 +188,12 @@ define ([
 
 			initialize: function() {
 				var self = this;
-				this.listenTo(this,&#x27;change&#x27;, this.updated);
+				this.listenTo(this,&#x27;change:label change:position change:completed change:due_at&#x27;, this.updated);
 			},
 
 			updated: function() {
 				this.set(&#x27;updated_at&#x27;, new Date());
+				this.save();
 			},
 
 			defaults: function() {
@@ -200,6 +201,8 @@ define ([
 					label      : &#x27;New Task&#x27;,
 					description: &#x27;Description of your task...&#x27;,
 					position   : 0,
+					completed  : false,
+					todo_at    : new Date(),
 					due_at     : new Date(),
 					created_at : new Date(),
 					updated_at : new Date(),

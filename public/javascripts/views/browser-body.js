@@ -606,9 +606,7 @@ define ([
 				results.each(function (element) {
 					if (collName == "notes") { newView = new BrowserBodyNoteView({ collName:"notes", model: element }); }
 					if (collName == "tags") { newView = new BrowserBodyTagView({ collName:"tags", model: element }); }
-					if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); 
-						console.log(element.get('created_at')+'|'+element.get('due_at')+'|'+element.get('updated_at'));
-					}
+					if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); }
 					self.children[collName].push (newView);
 					$list.append(newView.render().el);
 				}, this);
@@ -678,13 +676,13 @@ define ([
 
 					// Case 1 < 2 < X
 					//---------------------------------
-					if (milestones[0].due_at > list[0].get('due_at') && milestones[0].due_at > list[1].get('due_at')) {
+					if (milestones[0].todo_at > list[0].get('todo_at') && milestones[0].todo_at > list[1].get('todo_at')) {
 						result.push(list.shift()); // remove first task from list but store it in the final result
 						return insertMilestones(list, milestones, result);
 
 					// Case 1 < X <= 2
 					//---------------------------------
-					} else if (milestones[0].due_at > list[0].get('due_at') && milestones[0].due_at <= list[1].get('due_at')) {
+					} else if (milestones[0].todo_at > list[0].get('todo_at') && milestones[0].todo_at <= list[1].get('todo_at')) {
 						result.push(list.shift()); // remove first task from list but store it in the final result
 						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
 						return insertMilestones(list, milestones, result);

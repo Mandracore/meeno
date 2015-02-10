@@ -467,3 +467,6 @@ Reste à faire
 	4. paramétrer le plugin sortable
 
 
+08/02====================================================
+Due date non visible , sert juste à l'organisation des tâches. Ré attribuée avec le sortable.
+Commitment date visible, non influencée par l'organisation

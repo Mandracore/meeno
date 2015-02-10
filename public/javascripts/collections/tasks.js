@@ -22,10 +22,21 @@ define ([
 						return 0 if they are of the same rank
 						return 1 if the first model should come after
 				*/
-				if(task1.get('position') < task2.get('position')) {
+				var date1 = task1.get('todo_at')//.setHours(0,0,0,0);
+				var date2 = task2.get('todo_at')//.setHours(0,0,0,0);
+				// voir pourquoi la fn setHours ne peut être appliquée aux tasks alors qu'elles
+				// contiennent bienune date. Pnbm de typage vraisemblablement
+
+				if(date1 < date1) {
 					return -1;
-				} else if (task1.get('postion') === task2.get('position')) {
-					return 0;
+				} else if (date1 === date2) {
+					if(task1.get('position') < task2.get('position')) {
+						return -1;
+					} else if (task1.get('position') === task2.get('position')) {
+						return 0;
+					} else {
+						return 1;
+					}
 				} else {
 					return 1;
 				}

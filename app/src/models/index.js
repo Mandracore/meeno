@@ -24,31 +24,32 @@ module.exports = function(mas, mongoose){
 
 	var msNote = new mongoose.Schema({
 		_creator   : String,
-		created_at : { type: Date, default: function () { return Date.now(); } },
-		updated_at : { type: Date, default: function () { return Date.now(); } },
+		created_at : { type: Date },
+		updated_at : { type: Date },
 		title      : String,
 		content    : String,
 		tagLinks   : [msLinkNoteTag],
 		taskLinks  : [msLinkNoteTask]
 	});
 	var msUser = new mongoose.Schema({
-		created_at : { type: Date, default: function () { return Date.now(); } },
-		updated_at : { type: Date, default: function () { return Date.now(); } },
+		created_at : { type: Date },
+		updated_at : { type: Date },
 		email      : { type: String, required: true, unique: true },
 		password   : { type: String, required: true },
 		role       : { type: String, default: "user" }
 	});
 	var msTag = new mongoose.Schema({
 		_creator  : String,
-		created_at: { type: Date, default: function () { return Date.now(); } },
-		updated_at: { type: Date, default: function () { return Date.now(); } },
+		created_at: { type: Date },
+		updated_at: { type: Date },
 		label     : { type: String, required: true}
 	});
 	var msTask = new mongoose.Schema({
 		_creator   : String,
-		created_at : { type: Date, default: function () { return Date.now(); } },
-		updated_at : { type: Date, default: function () { return Date.now(); } },
-		due_at     : { type: Date, default: function () { return Date.now(); } },
+		created_at : { type: Date },
+		updated_at : { type: Date },
+		todo_at    : { type: Date },
+		due_at     : { type: Date },
 		label      : { type: String, required: true},
 		description: String,
 		position   : Number,

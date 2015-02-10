@@ -140,6 +140,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+
 define ([
 	// path aliases preconfigured in ../main.js
 		&#x27;jquery&#x27;,
@@ -157,11 +158,36 @@ define ([
 		var Tasks = Backbone.Collection.extend({
 			model: Task,
 			url: &#x27;/api/tasks&#x27;,
-			comparator: &#x27;position&#x27;,
+			comparator: function (task1, task2) {
+				/* 	Guidelines for building a &quot;sort&quot;-like backbone comparator :
+						return -1 if the first model should come before the second
+						return 0 if they are of the same rank
+						return 1 if the first model should come after
+				*/
+				var date1 = task1.get(&#x27;todo_at&#x27;)//.setHours(0,0,0,0);
+				var date2 = task2.get(&#x27;todo_at&#x27;)//.setHours(0,0,0,0);
+				// voir pourquoi la fn setHours ne peut être appliquée aux tasks alors qu&#x27;elles
+				// contiennent bienune date. Pnbm de typage vraisemblablement
+
+				if(date1 &lt; date1) {
+					return -1;
+				} else if (date1 === date2) {
+					if(task1.get(&#x27;position&#x27;) &lt; task2.get(&#x27;position&#x27;)) {
+						return -1;
+					} else if (task1.get(&#x27;position&#x27;) === task2.get(&#x27;position&#x27;)) {
+						return 0;
+					} else {
+						return 1;
+					}
+				} else {
+					return 1;
+				}
+			},
 
 			/**
 			 * Allows to search through a collection of tasks with a complex filter based on full-text search (in label)
-			 * and on tags related or not to the models
+			 * and on tags related or not to the models. The filtering of tasks can also take into account the &quot;completed&quot;
+			 * attribute.
 			 * 
 			 * @method search
 			 * @param  {TaskFilter} filter the filter used to search the collection
@@ -169,11 +195,21 @@ define ([
 			 * @chainable
 			 */
 			search: function (filter) {
-				if(filter.get(&#x27;text&#x27;) === &quot;&quot; &amp;&amp; filter.get(&#x27;tags&#x27;).length == 0) return this;
+				if(
+					filter.get(&#x27;text&#x27;) === &quot;&quot; &amp;&amp;
+					filter.get(&#x27;completed&#x27;) == 2 &amp;&amp;
+					filter.get(&#x27;tags&#x27;).length == 0
+					) return this;
 				// var letters = $.ui.autocomplete.escapeRegex(filter.get(&#x27;text&#x27;));
 				var pattern = new RegExp(filter.get(&#x27;text&#x27;),&quot;i&quot;);
-
+				
 				return new Tasks (this.filter(function(model) {
+					// Testing &#x27;completed&#x27; attribute
+					if (filter.get(&#x27;completed&#x27;) != 2) {
+						if (model.get(&#x27;completed&#x27;) != filter.get(&#x27;completed&#x27;)) {
+							return false;
+						}
+					}
 					// Full text search
 					if (false === (pattern.test(model.get(&quot;label&quot;)))) {
 						return false;
