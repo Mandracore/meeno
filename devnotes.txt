@@ -470,3 +470,15 @@ Reste à faire
 08/02====================================================
 Due date non visible , sert juste à l'organisation des tâches. Ré attribuée avec le sortable.
 Commitment date visible, non influencée par l'organisation
+
+11/02====================================================
+Pattern : quand je met dans une dropzone, j'applique la date de début de la zone et le place à la position 0. Puis je shifte toute les suivantes, même si elles n'appartiennent pas à la même zone (leurs positions relatives restent donc inchangées). Il faudra dans ce cas utiliser shiftDown() sans anchor (position 0, on pousse tout)
+Pour le sort, il faut donc absolument tenir compte de la date
+
+1. je le mets à today
+2. le lendemain j'en mets une nouvelle à today mais en fait même en la posant à 0 elle arrivera après
+Ca marche pas avec les dates dans le passé
+
+Todo :
+1. Fix de la model.spec.js (problème de gestion des formats de date)
+2. Mis à jour de sortableUpdate : voir déjà comment faire cohabiter le sortable avec les dropzone

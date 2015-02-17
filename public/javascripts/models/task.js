@@ -51,7 +51,7 @@ define ([
 
 			updated: function() {
 				this.set('updated_at', new Date());
-				this.save();
+				// this.save(); // Commented for now as it poses problems with unit testing
 			},
 
 			defaults: function() {

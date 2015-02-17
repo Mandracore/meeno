@@ -22,14 +22,17 @@ define ([
 						return 0 if they are of the same rank
 						return 1 if the first model should come after
 				*/
-				var date1 = task1.get('todo_at')//.setHours(0,0,0,0);
-				var date2 = task2.get('todo_at')//.setHours(0,0,0,0);
-				// voir pourquoi la fn setHours ne peut être appliquée aux tasks alors qu'elles
-				// contiennent bienune date. Pnbm de typage vraisemblablement
+				
+				var date1 = task1.get('todo_at');
+				var date2 = task2.get('todo_at');
+				date1.setHours(0,0,0,0);
+				date2.setHours(0,0,0,0);
+				var time1 = date1.getTime();
+				var time2 = date2.getTime();
 
-				if(date1 < date1) {
+				if(time1 < time1) {
 					return -1;
-				} else if (date1 === date2) {
+				} else if (time1 === time2) { 
 					if(task1.get('position') < task2.get('position')) {
 						return -1;
 					} else if (task1.get('position') === task2.get('position')) {
@@ -90,7 +93,7 @@ define ([
 			 * Also needs to be called when a new task is appended to a collection.
 			 * 
 			 * @method shiftDown
-			 * @param  {Task} anchor the task that was moved, point of reference 
+			 * @param  {Task} anchor the task that was moved, point of reference.
 			 */
 			shiftDown: function (anchor) {
 				this.each (function (model) {

@@ -428,16 +428,76 @@ define ([
 				});
 
 				it("should be SORTable by position", function() {
+					// First test : all tasks with same "todo_at" (== now() per default)
 					this.tasks.sort();
 					expect(this.tasks.at(0).get('label')).toEqual('My test task 1');
 					expect(this.tasks.at(1).get('label')).toEqual('My test task 2');
 					expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
+
 					this.task.set('position',15);
 					this.task7.set('position',1);
 					this.tasks.sort();
 					expect(this.tasks.at(0).get('label')).toEqual('My test task 7');
 					expect(this.tasks.at(1).get('label')).toEqual('My test task 2');
 					expect(this.tasks.at(2).get('label')).toEqual('My test task 3');
+
+					// Second test : with different todo_at dates
+					var today = new Date(); // target : 11/02
+					today.setDate(11); // 11th
+					today.setMonth(1); // Feb.
+					today.setFullYear(2015); // 2015
+					var someday9 = new Date(); // target : 09/02
+					someday9.setDate(9); // 11th
+					someday9.setMonth(1); // Feb.
+					someday9.setFullYear(2015); // 2015
+					var someday12 = new Date(); // target : 12/02
+					someday12.setDate(12); // 11th
+					someday12.setMonth(1); // Feb.
+					someday12.setFullYear(2015); // 2015
+					var someday17 = new Date(); // target : 17/02
+					someday17.setDate(17); // 11th
+					someday17.setMonth(1); // Feb.
+					someday17.setFullYear(2015); // 2015
+					var someday19 = new Date(); // target : 19/02
+					someday19.setDate(19); // 11th
+					someday19.setMonth(1); // Feb.
+					someday19.setFullYear(2015); // 2015
+
+					/* TEST SCHEMA
+					Today
+					[4][09/02] task 2
+					[5][09/02] task 3
+					[1][11/02] task 8
+					Tomorrow
+					[0][12/02] task 1
+					[6][12/02] task 4
+					[7][12/02] task 5
+					[8][17/02] task 6
+					[9][19/02] task 7
+					*/
+
+					this.task2.set('position',4);
+					this.task3.set('position',5);
+					this.task8.set('position',1);
+					this.task.set('position',0);
+					this.task4.set('position',6);
+					this.task5.set('position',7);
+					this.task6.set('position',8);
+					this.task7.set('position',9);
+
+					this.task2.set('todo_at', someday9);
+					this.task3.set('todo_at', someday9);
+					this.task8.set('todo_at', today);
+					this.task.set('todo_at', someday12);
+					this.task4.set('todo_at', someday12);
+					this.task5.set('todo_at', someday12);
+					this.task6.set('todo_at', someday17);
+					this.task7.set('todo_at', someday19);
+					this.tasks.sort();
+
+					console.log(this.tasks.pluck('label'));
+					console.log(this.tasks.pluck('todo_at'));
+					expect(this.tasks.at(0).get('label')).toEqual('My test task 7');
 				});
 
 				it("should provide a search function using objectFilters", function() {
