@@ -621,6 +621,25 @@ define ([
 			},
 
 			/**
+			 * This methods aims at saving the new todo_at and position values after a task is dropped
+			 * in a dropzone.
+			 * 
+			 * @method droppableUpdate
+			 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
+			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
+			 */
+			droppableUpdate: function (event, ui) {
+				// 1. Find the model corresponding to the sorted DOM node
+				var droppedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
+				// 2. Update the model according to the dropzone
+				var $dropzone = ui.item.parent();
+				droppedModel.set('todo_at',$dropzone.attr('todo_at'));
+				droppedModel.save();
+				// 3. Remove from DOM
+				ui.item.hide(500).remove(); // Hide then remove from DOM
+			},
+
+			/**
 			 * This methods aims at saving the new positions of the objects
 			 * 
 			 * @method sortableUpdate
@@ -628,15 +647,18 @@ define ([
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 			 */
 			sortableUpdate: function (event, ui) {
+
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 				// 2. Find out in which scenario we are
 				if (!ui.item.next().length) { // The moved item is now the last one of the list (than could be filtered)
 					var prevModel = temp.coll.tasks.get(ui.item.prev().attr('data-cid'));
 					sortedModel.set('position', prevModel.get('position')+1);
+					sortedModel.set('todo_at', prevModel.get('todo_at'));
 				} else { // The moved item is somewhere in the list
 					var nextModel = temp.coll.tasks.get(ui.item.next().attr('data-cid'));
 					sortedModel.set('position', nextModel.get('position'));
+					sortedModel.set('todo_at', nextModel.get('todo_at'));
 				}
 				sortedModel.save();
 				// 3. Shift all the following models
