@@ -473,17 +473,17 @@ define ([
 					[6][12/02] task 4
 					[7][12/02] task 5
 					[8][17/02] task 6
-					[9][19/02] task 7
+					[5][19/02] task 7
 					*/
 
 					this.task2.set('position',4);
 					this.task3.set('position',5);
 					this.task8.set('position',1);
 					this.task.set('position',0);
+					this.task7.set('position',5);
 					this.task4.set('position',6);
 					this.task5.set('position',7);
 					this.task6.set('position',8);
-					this.task7.set('position',9);
 
 					this.task2.set('todo_at', someday9);
 					this.task3.set('todo_at', someday9);
@@ -495,9 +495,10 @@ define ([
 					this.task7.set('todo_at', someday19);
 					this.tasks.sort();
 
-					console.log(this.tasks.pluck('label'));
-					console.log(this.tasks.pluck('todo_at'));
-					expect(this.tasks.at(0).get('label')).toEqual('My test task 7');
+					expect(this.tasks.at(0).get('label')).toEqual('My test task 2');
+					expect(this.tasks.at(1).get('label')).toEqual('My test task 3');
+					expect(this.tasks.at(3).get('label')).toEqual('My test task 1');
+					expect(this.tasks.at(7).get('label')).toEqual('My test task 7');
 				});
 
 				it("should provide a search function using objectFilters", function() {

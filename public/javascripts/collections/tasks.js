@@ -22,15 +22,15 @@ define ([
 						return 0 if they are of the same rank
 						return 1 if the first model should come after
 				*/
-				
-				var date1 = task1.get('todo_at');
-				var date2 = task2.get('todo_at');
+
+				var date1 = typeof task1.get('todo_at') == "string" ? new Date (task1.get('todo_at')) : task1.get('todo_at');
+				var date2 = typeof task2.get('todo_at') == "string" ? new Date (task2.get('todo_at')) : task2.get('todo_at');
 				date1.setHours(0,0,0,0);
 				date2.setHours(0,0,0,0);
 				var time1 = date1.getTime();
 				var time2 = date2.getTime();
 
-				if(time1 < time1) {
+				if(time1 < time2) {
 					return -1;
 				} else if (time1 === time2) { 
 					if(task1.get('position') < task2.get('position')) {

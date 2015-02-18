@@ -480,5 +480,5 @@ Pour le sort, il faut donc absolument tenir compte de la date
 Ca marche pas avec les dates dans le passé
 
 Todo :
-1. Fix de la model.spec.js (problème de gestion des formats de date)
+1. [DONE] Fix de la model.spec.js (problème de gestion des formats de date)
 2. Mis à jour de sortableUpdate : voir déjà comment faire cohabiter le sortable avec les dropzone
