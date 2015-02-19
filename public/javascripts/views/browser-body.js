@@ -111,11 +111,28 @@ define ([
 
 				this.listenTo(channel, "browser:search:filters:activate", this.searchFilterActivate);
 
-
 				// Actions management
 				this.listenTo(channel, 'browser:actions:update-selectors:notes', function () {this.actionSelectorsUpdate("notes");});
 				this.listenTo(channel, 'browser:actions:update-selectors:tasks', function () {this.actionSelectorsUpdate("tasks");});
 				this.listenTo(channel, 'browser:actions:update-selectors:tags', function () {this.actionSelectorsUpdate("tags");});
+
+				// Task dropzone management
+				$( "#droppable" ).droppable({
+					accept      : ".draggable li",
+					activeClass : "target",
+					hoverClass  : "target-hover",
+					tolerance: "touch",
+					drop        : function( event, ui ) {
+						ui.draggable.data("dropped", true);
+						console.log($(this).attr("data-todo"));
+						// console.log(ui);
+						// ui.draggable('disable')
+						console.log('DROPPED !!!');
+
+						console.log(ui.draggable.parent()); // reste la liste de tâche même si on le déplace
+						// ui.draggable.remove();
+					}
+				});
 			},
 
 			// Navigation in the browser
@@ -613,6 +630,11 @@ define ([
 
 				if($list.hasClass('tasks')) {
 					$list.sortable({
+						placeholder: "ui-state-highlight",
+						connectWith: '#droppable',
+						receive: function( event, ui ) {
+							return console.log("received !");
+						},
 						update: function( event, ui ) {
 							return self.sortableUpdate(event, ui);
 						}
@@ -647,7 +669,9 @@ define ([
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 			 */
 			sortableUpdate: function (event, ui) {
-
+							console.log("updated 2222!");
+							// console.log(ui.item);
+							console.log(ui.item.data("dropped"));
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 				// 2. Find out in which scenario we are

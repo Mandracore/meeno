@@ -109,10 +109,10 @@ block content
 						.title dropzone
 						.subtitle Drag tasks and drop them below to postpone them
 						ul.zones
-							li Today
-							li Tomorrow
-							li Next week
-							li Next month
+							li#droppable(data-todo="Today") Today
+							li(data-todo="Tomorrow") Tomorrow
+							li(data-todo="Next week") Next week
+							li(data-todo="Next month") Next month
 					div.col2
 						div.search-wrapper
 							div.super-input
@@ -140,7 +140,7 @@ block content
 							button.filter-checked(data-step="1", style="display:none") Now showing done only
 							button.filter-checked(data-step="2", style="display:none") Now showing both
 						// Hereafeter will be displayed the objects
-						ul.objects.tasks
+						ul.objects.tasks.draggable
 					div.col3.saved-filters
 						.title saved filters
 						.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
