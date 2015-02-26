@@ -482,3 +482,38 @@ Ca marche pas avec les dates dans le passé
 Todo :
 1. [DONE] Fix de la model.spec.js (problème de gestion des formats de date)
 2. Mis à jour de sortableUpdate : voir déjà comment faire cohabiter sortable+droppable. Nouveau widget ?
+
+26/02===================================================
+Pour placer au premier jour de la prochaine semaine :
+var myDate = new Date();
+myDate.setDate(myDate.getDate() + 7);
+myDate.setDate(myDate.getDate() - myDate.getDay() + 1);
+
+==> Intercallaires par défaut
+Today
+Tomorrow
+Later this week (Today + 2, mais peut être en conflit avec Next week)
+Next week (Peut porter la même date que Tomorrow et Later this week)
+Later
+Les intercallaires portant sur la même date doivent être supprimés ou modifiés en fonction de la date du jour
+
+Si on est vendredi:
+Today : OK, vendredi
+Tomorrow : OK, samedi
+Later this week : OK, dimanche
+Next week : OK, lundi prochain
+Later : OK, lundi d'après
+
+Si on est samedi: (getDay = 6)
+Today : OK, samedi
+Tomorrow : OK, dimanche
+Later this week : **KO**, rien après dimanche dans cette semaine, intercallaire à retirer
+Next week : OK, lundi prochain
+Later : OK, lundi d'après
+
+Si on est dimanche: (getDay = 0)
+Today : OK, dimanche
+Tomorrow : **KO**, (lundi) car en doublon avec next week, à retirer
+Later this week : **KO**, (dimanche) rien après dimanche dans cette semaine, intercallaire à retirer
+Next week : OK, lundi prochain
+Later : OK, lundi d'après

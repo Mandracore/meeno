@@ -117,20 +117,25 @@ define ([
 				this.listenTo(channel, 'browser:actions:update-selectors:tags', function () {this.actionSelectorsUpdate("tags");});
 
 				// Task dropzone management
-				$( "#droppable" ).droppable({
+				$( ".droppable" ).droppable({
 					accept      : ".draggable li",
 					activeClass : "target",
 					hoverClass  : "target-hover",
-					tolerance: "touch",
+					tolerance   : "pointer",
 					drop        : function( event, ui ) {
-						ui.draggable.data("dropped", true);
-						console.log($(this).attr("data-todo"));
-						// console.log(ui);
-						// ui.draggable('disable')
-						console.log('DROPPED !!!');
+						ui.draggable.data("dropped", true); // ne fonctionne pas pour communiquer
+						// qu'il ne faut pas faire de sort...
+						// trouver un event qu'on peut catcher ?
 
-						console.log(ui.draggable.parent()); // reste la liste de tâche même si on le déplace
+						console.log('DROPPED !!!');
+						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
+
+						sortedModel.set("position",0);
+						sortedModel.set("todo_at",new Date($(this).attr("data-todo")));
+						temp.coll.tasks.shiftDown(sortedModel);
+						sortedModel.save();
 						// ui.draggable.remove();
+
 					}
 				});
 			},
@@ -631,7 +636,7 @@ define ([
 				if($list.hasClass('tasks')) {
 					$list.sortable({
 						placeholder: "ui-state-highlight",
-						connectWith: '#droppable',
+						connectWith: '.droppable',
 						receive: function( event, ui ) {
 							return console.log("received !");
 						},
@@ -669,9 +674,12 @@ define ([
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 			 */
 			sortableUpdate: function (event, ui) {
-							console.log("updated 2222!");
-							// console.log(ui.item);
-							console.log(ui.item.data("dropped"));
+				if(ui.item.data("dropped")) {
+					console.log("sortable not called");
+					return false;
+				}
+
+				console.log('sortable');
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 				// 2. Find out in which scenario we are

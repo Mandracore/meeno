@@ -46,11 +46,11 @@ define ([
 
 			initialize: function() {
 				var self = this;
-				this.listenTo(this,'change:label change:position change:completed change:due_at', this.updated);
+				this.listenTo(this,'change:label change:position change:completed change:due_at change:todo_at', this.updated);
 			},
 
 			updated: function() {
-				this.set('updated_at', new Date());
+				this.set('updated_at', new Date().toISOString());
 				// this.save(); // Commented for now as it poses problems with unit testing
 			},
 

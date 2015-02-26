@@ -60,7 +60,10 @@ define ([
 					filter.get('text') === "" &&
 					filter.get('completed') == 2 &&
 					filter.get('tags').length == 0
-					) return this;
+					) {
+					console.log ("exit case");
+					return this.sort();
+				}
 				// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 				var pattern = new RegExp(filter.get('text'),"i");
 				
