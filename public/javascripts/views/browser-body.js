@@ -34,18 +34,18 @@ define ([
 			// ###Setup the view's DOM events
 			events: {
 				// Search-related events
-				'click .filter li'                                 : 'toggleObject',
-				'keyup .search'                                    : 'searchText',
-				'click .objectButtons span'                        : 'searchObjectRemove',
-				'click .filter-editor button.save'                 : 'searchFilterSave1',
-				'click .filter-editor button.saveConfirm'          : 'searchFilterSave2',
-				'click .filter-editor button.delete'               : 'searchFilterDelete',
-				'click .filter-checked'                            : 'toggleTasks',
+				'click .filter li'                                  : 'toggleObject',
+				'keyup .search'                                     : 'searchText',
+				'click .objectButtons span'                         : 'searchObjectRemove',
+				'click .filter-editor button.save'                  : 'searchFilterSave1',
+				'click .filter-editor button.saveConfirm'           : 'searchFilterSave2',
+				'click .filter-editor button.delete'                : 'searchFilterDelete',
+				'click .filter-checked'                             : 'toggleTasks',
 				// Action-related events
-				'click .actions-contextual .delete'                : 'actionDeleteToggle',
-				'click .actions-contextual-selection .select-all'  : 'actionSelectAll',
-				'click .actions-contextual-selection .unselect-all': 'actionUnSelectAll',
-				'click .actions-contextual-trigger button'         : 'actionDeleteExecute',
+				'click .actions-contextual .delete'                 : 'actionDeleteToggle',
+				'click .actions-contextual-selection .select-all'   : 'actionSelectAll',
+				'click .actions-contextual-selection .unselect-all' : 'actionUnSelectAll',
+				'click .actions-contextual-trigger button'          : 'actionDeleteExecute',
 			},
 
 			// ###Setup the view
@@ -116,13 +116,36 @@ define ([
 				this.listenTo(channel, 'browser:actions:update-selectors:tasks', function () {this.actionSelectorsUpdate("tasks");});
 				this.listenTo(channel, 'browser:actions:update-selectors:tags', function () {this.actionSelectorsUpdate("tags");});
 
+				//------------------------------------------------
 				// Task dropzone management
+
+				// Setup milestones
+				var today    = new Date();
+				var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+				var nextweek = new Date(); nextweek.setDate(nextweek.getDate() + 7 - nextweek.getDay() + 1);
+				var later    = new Date(); later.setDate(later.getDate() + 14 - later.getDay() + 1);
+
+				if (today.getDay() == 0) {
+					$(".droppable.tomorrow").hide();
+				}
+
+				console.log('today='+today);
+				console.log('tomorrow='+tomorrow);
+				console.log('nextweek='+nextweek);
+				console.log('later='+later);
+
+				$(".droppable.today").attr("data-todo", today.toISOString());
+				$(".droppable.tomorrow").attr("data-todo", tomorrow.toISOString());
+				$(".droppable.nextweek").attr("data-todo", nextweek.toISOString());
+				$(".droppable.later").attr("data-todo", later.toISOString());
+
 				$( ".droppable" ).droppable({
 					accept      : ".draggable li",
 					activeClass : "target",
 					hoverClass  : "target-hover",
 					tolerance   : "pointer",
 					drop        : function( event, ui ) {
+
 						ui.draggable.data("dropped", true); // ne fonctionne pas pour communiquer
 						// qu'il ne faut pas faire de sort...
 						// trouver un event qu'on peut catcher ?

@@ -2,9 +2,10 @@
 
 
 
-cBgGrey        = lighten(#000000, 20%)
-cTextSec       = lighten(#000000, 50%)
-cTextSecActive = lighten(#000000, 70%)
+cBgGrey           = lighten(#000000, 20%)
+cTextSec          = lighten(#000000, 50%)
+cTextSecActive    = lighten(#000000, 70%)
+cTextSecActiveRev = lighten(#000000, 20%)
 
 cTxtGrey          = lighten(#000000, 50%) // grey non clickable
 cTxtBtnGrey0      = lighten(#000000, 40%) // grey activable
@@ -166,13 +167,12 @@ nav
 			border-radius 5px
 			padding 20px
 			margin-bottom 0.5em
-			&:hover
-				color cTextSecActive
-				border 1px solid cTextSecActive
 		.target
-			border 1px solid red
+			border 1px solid cTextSecActive
 		.target-hover
-			border 1px solid green
+			color cTextSecActiveRev
+			border 1px solid cTextSecActive
+			background-color cTextSecActive
 
 	
 
