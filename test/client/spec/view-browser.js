@@ -155,6 +155,35 @@ define ([
 				});
 			});
 
+			describe("when displaying tasks", function() {
+				it("should propose the adequate milestones", function() {
+					// Testing with a sunday (no tomorrow, no later this week)
+					var now = new Date ("2015-03-22T00:00:00.000Z"); // Dimanche
+					var milestones = browserBody.setupMilestones(now);
+					console.log(milestones);
+					expect(milestones.length).toEqual(3);
+					expect(milestones[1].label).toEqual("Next week");
+					expect(milestones[2].label).toEqual("Later");
+					// Testing with a saturday (no later this week)
+					now = new Date ("2015-03-21T00:00:00.000Z"); // Samedi
+					milestones = browserBody.setupMilestones(now);
+					console.log(milestones);
+					expect(milestones.length).toEqual(4);
+					expect(milestones[1].label).toEqual("Tomorrow");
+					expect(milestones[2].label).toEqual("Next week");
+					expect(milestones[3].label).toEqual("Later");
+					// Testing with a friday
+					now = new Date ("2015-03-20T00:00:00.000Z"); // Vendredi
+					milestones = browserBody.setupMilestones(now);
+					console.log(milestones);
+					expect(milestones.length).toEqual(5);
+					expect(milestones[1].label).toEqual("Tomorrow");
+					expect(milestones[2].label).toEqual("Later this week");
+					expect(milestones[3].label).toEqual("Next week");
+					expect(milestones[4].label).toEqual("Later");
+				});
+			});
+
 			describe("when using search", function() {
 				// To be tested :
 				// Simple : Notes, Tags, Tasks
@@ -180,7 +209,7 @@ define ([
 					
 					it("should display an autocomplete input (+ hide the other one), set focus and the right placeholder when hitting task combo", function() {
 						// Testing notes+tasks
-						spyOn(browserBody, 'searchOpenAutocomplete').andCallThrough();;
+						spyOn(browserBody, 'searchOpenAutocomplete').andCallThrough();
 						channel.trigger('keyboard:task'); // Simulate a keyboard event (normally listened by mousetrap)
 
 						expect(browserBody.searchOpenAutocomplete).toHaveBeenCalledWith("tasks");
@@ -190,7 +219,7 @@ define ([
 					});
 
 					it("should hide the autocomplete input (+ display the other one) when hitting the ESC key", function() {
-						spyOn(browserBody, 'searchCloseAutocomplete').andCallThrough();;
+						spyOn(browserBody, 'searchCloseAutocomplete').andCallThrough();
 						channel.trigger('keyboard:task'); // Display autocomplete
 
 						expect($autocomplete.is(':visible')).toBe(true); // Check Autocomplete is visible
