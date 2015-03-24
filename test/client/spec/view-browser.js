@@ -160,14 +160,12 @@ define ([
 					// Testing with a sunday (no tomorrow, no later this week)
 					var now = new Date ("2015-03-22T00:00:00.000Z"); // Dimanche
 					var milestones = browserBody.setupMilestones(now);
-					console.log(milestones);
 					expect(milestones.length).toEqual(3);
 					expect(milestones[1].label).toEqual("Next week");
 					expect(milestones[2].label).toEqual("Later");
 					// Testing with a saturday (no later this week)
 					now = new Date ("2015-03-21T00:00:00.000Z"); // Samedi
 					milestones = browserBody.setupMilestones(now);
-					console.log(milestones);
 					expect(milestones.length).toEqual(4);
 					expect(milestones[1].label).toEqual("Tomorrow");
 					expect(milestones[2].label).toEqual("Next week");
@@ -175,12 +173,29 @@ define ([
 					// Testing with a friday
 					now = new Date ("2015-03-20T00:00:00.000Z"); // Vendredi
 					milestones = browserBody.setupMilestones(now);
-					console.log(milestones);
 					expect(milestones.length).toEqual(5);
 					expect(milestones[1].label).toEqual("Tomorrow");
 					expect(milestones[2].label).toEqual("Later this week");
 					expect(milestones[3].label).toEqual("Next week");
 					expect(milestones[4].label).toEqual("Later");
+				});
+				it("should insert the milestones at the right place", function() {
+					// Testing with a friday
+					var now = new Date ("2015-03-20T00:00:00.000Z");
+					var milestones = browserBody.setupMilestones(now);
+					// Faking tasks
+					task1 = new Task(); task1.set('todo_at', (new Date ("2015-03-21T00:00:00.000Z").toISOString())); // 2 days ago
+					task2 = new Task(); task2.set('todo_at', (new Date ("2015-03-22T00:00:00.000Z").toISOString())); // today
+					// Re-initialize storage
+					temp.coll.tasks.reset([task1, task2]);
+					console.log(temp.coll.tasks.pluck("todo_at"));
+
+					var fullList = browserBody.insertMilestones (temp.coll.tasks, milestones);
+					console.log(fullList);
+
+					expect(true).toBe(false);
+
+					// Test with tasks with todo_at BEFORE today
 				});
 			});
 

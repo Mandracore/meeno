@@ -196,6 +196,12 @@ define ([
 				var nextweek      = new Date(); nextweek.setDate(today.getDate()); nextweek.setMonth(today.getMonth());
 				var later         = new Date(); later.setDate(today.getDate()); later.setMonth(today.getMonth());
 
+				today.setHours(0,0,0,0);
+				tomorrow.setHours(0,0,0,0);
+				laterthisweek.setHours(0,0,0,0);
+				nextweek.setHours(0,0,0,0);
+				later.setHours(0,0,0,0);
+
 				// Setup each date starting from today
 				tomorrow.setDate(tomorrow.getDate() + 1);
 				laterthisweek.setDate(laterthisweek.getDate() + 2);
@@ -826,7 +832,8 @@ define ([
 				// Only milestones is empty
 				//---------------------------------
 				} else if (milestones.length === 0) {
-					result.push(list.shift()); // remove first task from list but store it in the final result
+					result.push(list.at(0)); // store first task from the list in the final result
+					list.remove(list.at(0)); // remove first task from list
 					return this.insertMilestones(list, milestones, result);
 
 				// Only list is empty
@@ -838,21 +845,26 @@ define ([
 				// Both still contain some information
 				//---------------------------------
 				} else {
+					mile  = milestones[0].todo_at;
+					task0 = list.at(0).get('todo_at');
+					task1 = !list.at(1) ? task0 : list.at(1).get('todo_at');
 
-					// Case 1 < 2 < X
+					// Case 0 < 1 < X
 					//---------------------------------
-					if (milestones[0].todo_at > list.at(0).get('todo_at') && milestones[0].todo_at > list.at(1).get('todo_at')) {
-						result.push(list.shift()); // remove first task from list but store it in the final result
+					if (mile > task0 && mile > task1) {
+						result.push(list.at(0)); // store first task from the list in the final result
+						list.remove(list.at(0)); // remove first task from list
 						return this.insertMilestones(list, milestones, result);
 
-					// Case 1 < X <= 2
+					// Case 0 < X <= 1
 					//---------------------------------
-					} else if (milestones[0].todo_at > list[0].get('todo_at') && milestones[0].todo_at <= list[1].get('todo_at')) {
-						result.push(list.shift()); // remove first task from list but store it in the final result
+					} else if (mile > task0 && mile <= task1) {
+						result.push(list.at(0)); // store first task from the list in the final result
+						list.remove(list.at(0)); // remove first task from list
 						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
 						return this.insertMilestones(list, milestones, result);
 
-					// Case X <= 1 < 2
+					// Case X <= 0 < 1
 					//---------------------------------
 					} else {
 						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
