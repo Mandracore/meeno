@@ -21,7 +21,7 @@ define ([
 
 	return describe("Browser", function() {
 		var browserBody, note, tag, task, noteFilter, taskFilter, tagFilter;
-		jasmine.getFixtures().fixturesPath = 'fixtures'
+		jasmine.getFixtures().fixturesPath = 'fixtures';
 
 		beforeEach(function() {
 			// Preparing models
@@ -184,18 +184,21 @@ define ([
 					var now = new Date ("2015-03-20T00:00:00.000Z");
 					var milestones = browserBody.setupMilestones(now);
 					// Faking tasks
-					task1 = new Task(); task1.set('todo_at', (new Date ("2015-03-21T00:00:00.000Z").toISOString())); // 2 days ago
-					task2 = new Task(); task2.set('todo_at', (new Date ("2015-03-22T00:00:00.000Z").toISOString())); // today
+					task1 = new Task({label: "task1"}); task1.set('todo_at', (new Date ("2015-03-10T00:00:00.000Z").toISOString())); // 2 days ago
+					task2 = new Task({label: "task2"}); task2.set('todo_at', (new Date ("2015-03-18T00:00:00.000Z").toISOString())); // 2 days ago
+					task3 = new Task({label: "task3"}); task3.set('todo_at', (new Date ("2015-03-21T00:00:00.000Z").toISOString())); // 2 days ago
+					task4 = new Task({label: "task4"}); task4.set('todo_at', (new Date ("2015-03-22T00:00:00.000Z").toISOString())); // today
 					// Re-initialize storage
-					temp.coll.tasks.reset([task1, task2]);
-					console.log(temp.coll.tasks.pluck("todo_at"));
+					temp.coll.tasks.reset([task1, task2, task3, task4]);
+					var results = browserBody.insertMilestones (temp.coll.tasks, milestones);
 
-					var fullList = browserBody.insertMilestones (temp.coll.tasks, milestones);
-					console.log(fullList);
-
-					expect(true).toBe(false);
-
-					// Test with tasks with todo_at BEFORE today
+					expect(results[0].label).toEqual("Today"); // 20/03
+					expect(results[1].get('label')).toEqual("task1"); // 10/03
+					expect(results[2].get('label')).toEqual("task2"); // 18/03
+					expect(results[3].label).toEqual("Tomorrow"); // 21/03
+					expect(results[4].get('label')).toEqual("task3"); // 21/03
+					expect(results[5].label).toEqual("Later this week"); // 22/03
+					expect(results[6].get('label')).toEqual("task4"); // 22/03
 				});
 			});
 

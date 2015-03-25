@@ -849,6 +849,11 @@ define ([
 					task0 = list.at(0).get('todo_at');
 					task1 = !list.at(1) ? task0 : list.at(1).get('todo_at');
 
+					if (milestones[0].label == "Today") {
+						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
+						return this.insertMilestones(list, milestones, result);
+					}
+
 					// Case 0 < 1 < X
 					//---------------------------------
 					if (mile > task0 && mile > task1) {
