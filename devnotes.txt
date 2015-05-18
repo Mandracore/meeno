@@ -517,3 +517,7 @@ Tomorrow : **KO**, (lundi) car en doublon avec next week, à retirer
 Later this week : **KO**, (dimanche) rien après dimanche dans cette semaine, intercallaire à retirer
 Next week : OK, lundi prochain
 Later : OK, lundi d'après
+
+
+19/05===================================================
+Conflit entre drop et sortable, plus multiples re-render. Voir comment gérer tout ça.

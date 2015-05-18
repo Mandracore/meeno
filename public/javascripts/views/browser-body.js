@@ -143,14 +143,12 @@ define ([
 						self.setupDropZones();
 					}
 				} );
-				
+
 				var now = new Date ();
 				self.setupDropZones();
-				self.setupMilestones(now);
 
 				this.lastupdate = {
 					dropzone: new Date(),
-					milestones: new Date(),
 				};
 			},
 
@@ -159,7 +157,7 @@ define ([
 			/**
 			 * Forces the browser-body to update the data attributes of the dropzones so that
 			 * the behavior remains consistent from one day to another even if the page
-			 * is not reloaded
+			 * is not reloaded. It should be using a today date passed as parameter, just like {{setupMilestones}}
 			 *
 			 * @method setupDropZones
 			 */
@@ -188,7 +186,6 @@ define ([
 			 * @method setupMilestones
 			 */
 			setupMilestones: function (today) {
-				console.log('start milestones setup');
 
 				// Initialize with 'today' as point of reference
 				var tomorrow      = new Date(); tomorrow.setDate(today.getDate()); tomorrow.setMonth(today.getMonth());
@@ -703,28 +700,41 @@ define ([
 				// Third, filling the DOM again
 				var newView = {};
 				var results = temp.coll[collName].search(this.filters[filterName]);
-/*
+
 				if (collName === "tasks") {
-//					console.log (results); // collection
+					// Special rendering for tasks
 					var now = new Date ();
-					// Update milestones in case the day changed since last initialization of this view
-					if (now.getDay() != self.lastupdate.milestones.getDay()) {
-						self.setupMilestones(now);
+					self.setupMilestones(now);
+					results = this.insertMilestones(results, this.milestones);
+
+					for (var idx in results) {
+						if (!results[idx].label) {
+							// This is a task
+							newView = new BrowserBodyTaskView({ collName:"tasks", model: results[idx] });
+							self.children[collName].push (newView);
+							$list.append(newView.render().el);
+						} else {
+							// This is a milestone
+							$list.append($('<li>', {
+								id: results[idx].label,
+								class: "milestone",
+								"data-todo": results[idx].todo_at,
+								text: results[idx].label
+							}));
+						}
 					}
-					var results2 = this.insertMilestones(results, this.milestones);
-					// Append the milestones to the results
-					console.log ("####################################");
-					console.log (results2);
 
-				}*/
+				} else {
+					// Normal rendering for notes and tags
+					results.each(function (element) {
+						if (collName == "notes") { newView = new BrowserBodyNoteView({ collName:"notes", model: element }); }
+						if (collName == "tags") { newView = new BrowserBodyTagView({ collName:"tags", model: element }); }
+						// if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); }
+						self.children[collName].push (newView);
+						$list.append(newView.render().el);
+					}, this);
+				}
 
-				results.each(function (element) {
-					if (collName == "notes") { newView = new BrowserBodyNoteView({ collName:"notes", model: element }); }
-					if (collName == "tags") { newView = new BrowserBodyTagView({ collName:"tags", model: element }); }
-					if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); }
-					self.children[collName].push (newView);
-					$list.append(newView.render().el);
-				}, this);
 
 				if($list.hasClass('tasks')) {
 					$list.sortable({
@@ -767,49 +777,36 @@ define ([
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 			 */
 			sortableUpdate: function (event, ui) {
-				if(ui.item.data("dropped")) {
-					console.log("sortable not called");
-					return false;
-				}
-
-				console.log('sortable');
+				// manque les attributs data-todo et data-milestone (ou plutôt une class milestone)
+				console.log('sortable v2');
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
-				
+
 				// 2. Find out in which scenario we are
-				if (!ui.item.next().length) { // The moved item is now the last one of the list (than could be filtered)
-					var domPrev = ui.item.prev();
-					var domPrevPosition, domPrevTodo;
-
-					if (domPrev.attr('data-milestone') == "yes") {
-						domPrevPosition = 0;
-						domPrevTodo     = domPrev.attr('data-todo');
+				var domPrev = ui.item.prev(); // previous sibling
+				if (!domPrev.length) {
+					// There is nothing in the list before this item (it must be placed before the milestone 'Today')
+					newPosition = 0;
+					newTodo     = ui.item.next().attr('data-todo'); // next is "Today", so we can use its todo date
+				} else {
+					// There is something in the list before this item
+					if (domPrev.hasClass('milestone')) {
+						// The previous element is a milestone
+						newPosition = 0;
+						newTodo     = domPrev.attr('data-todo');
 					} else {
-						var prevModel   = temp.coll.tasks.get(domPrev.attr('data-cid'));
-						domPrevPosition = prevModel.get('position');
-						domPrevTodo     = prevModel.get('todo_at');
+						// The previous element is a task
+						var prevModel = temp.coll.tasks.get(domPrev.attr('data-cid'));
+						newPosition   = prevModel.get('position') + 1;
+						newTodo       = prevModel.get('todo_at');
 					}
-					sortedModel.set('position', domPrevPosition+1);
-					sortedModel.set('todo_at', domPrevTodo);
-
-				} else { // The moved item is somewhere in the list
-					var domNext = ui.item.next();
-					var domNextPosition, domNextTodo;
-
-					if (domNext.attr('data-milestone') == "yes") {
-						domNextPosition = 0;
-						domNextTodo     = domNext.attr('data-todo');
-					} else {
-						var nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
-						domNextPosition = nextModel.get('position');
-						domNextTodo     = nextModel.get('todo_at');
-					}
-					sortedModel.set('position', domNextPosition);
-					sortedModel.set('todo_at', domNextTodo);
 				}
+
+				sortedModel.set('position', newPosition);
+				sortedModel.set('todo_at', newTodo);
+
 				temp.coll.tasks.shiftDown(sortedModel);
 				sortedModel.save();
-				// 3. Shift all the following models
 			},
 
 			/**
