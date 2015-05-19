@@ -527,24 +527,6 @@ define ([
 					expect(tf3res.length).toEqual(1);
 					expect(tf3res.contains(this.task6)).toBe(true);
 				});
-				it("should have a shift method updating the position attribute of the tasks that were moved downwards", function() {
-					/* New positions ==> test 1
-					[1] task 1 / NCD
-					[2] task 2 / Neolane
-					[3] task 3 / 6#
-					[4] task 4 / Perso
-					[8] task 8 / Perso // 8 => 5
-					[5] task 5 / Perso / Passeport // 5 => 6
-					[6] task 6 / Perso / Passeport // 6 => 7
-					[7] task 7 / Voyage // 7 => 8
-					*/
-					this.task8.set('position', 5);
-					this.tasks.shiftDown(this.task8);
-					expect(this.task4.get('position')).toEqual(4);		
-					expect(this.task5.get('position')).toEqual(6);		
-					expect(this.task6.get('position')).toEqual(7);		
-					expect(this.task7.get('position')).toEqual(8);		
-				});
 			});
 		});
 

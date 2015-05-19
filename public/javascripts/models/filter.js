@@ -39,12 +39,12 @@ define ([
 					var tasksLargest  = this;
 					var tasksShortest = of;
 					if (this.get('tags').length < of.get('tags').length) {
-						var tagsLargest  = of;
-						var tagsShortest = this;
+						tagsLargest  = of;
+						tagsShortest = this;
 					}
 					if (this.get('tasks').length < of.get('tasks').length) {
-						var tasksLargest  = of;
-						var tasksShortest = this;
+						tasksLargest  = of;
+						tasksShortest = this;
 					}
 
 					// Trying to find one criteria that is not in common. 
@@ -59,8 +59,8 @@ define ([
 						var tagsLargest  = this;
 						var tagsShortest = of;
 						if (this.get('tags').length < of.get('tags').length) {
-							var tagsLargest  = of;
-							var tagsShortest = this;
+							tagsLargest  = of;
+							tagsShortest = this;
 						}
 						// Trying to find one criteria that is not in common. 
 						// _.find() should then be different from undefined and the test should return false (the filters are not equal)

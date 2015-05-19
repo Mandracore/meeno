@@ -128,9 +128,9 @@ define ([
 						console.log("dropped !");
 						ui.draggable.data("dropped", true);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
-						sortedModel.set("position",0);
+						temp.coll.tasks.sort();
+						sortedModel.set("position",temp.coll.tasks.at(0).get('position')-1);
 						sortedModel.set("todo_at",new Date($(this).attr("data-todo")));
-						temp.coll.tasks.shiftDown(sortedModel);
 						sortedModel.save();
 					}
 				});
@@ -373,6 +373,7 @@ define ([
 			toggleTasks: function(event) {
 				var $button = $(event.target);
 				var step = $button.attr('data-step');
+
 				var sequence = {
 					0 : 1,
 					1 : 2,
@@ -752,26 +753,6 @@ define ([
 			},
 
 			/**
-			 * This methods aims at saving the new todo_at and position values after a task is dropped
-			 * in a dropzone.
-			 * 
-			 * @method droppableUpdate
-			 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
-			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
-			 
-			droppableUpdate: function (event, ui) {
-				console.log('droppable');
-				// 1. Find the model corresponding to the sorted DOM node
-				var droppedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
-				// 2. Update the model according to the dropzone
-				var $dropzone = ui.item.parent();
-				droppedModel.set('todo_at',$dropzone.attr('todo_at'));
-				droppedModel.save();
-				// 3. Remove from DOM
-				ui.item.hide(500).remove(); // Hide then remove from DOM
-			},*/
-
-			/**
 			 * This methods aims at saving the new positions of the objects
 			 * 
 			 * @method sortableUpdate
@@ -790,8 +771,8 @@ define ([
 
 				if (!domPrev.length) {
 					// There is nothing in the list before this item (it must be placed before the milestone 'Today')
-					newPosition = 0;
-					//////////////////// A REVOIR
+					temp.coll.tasks.sort();
+					newPosition = temp.coll.tasks.at(0).get('position')-1;
 					newTodo     = ui.item.next().attr('data-todo'); // next is "Today", so we can use its todo date
 				} else {
 					// There is something in the list before this item
@@ -815,7 +796,7 @@ define ([
 						if (domNext.length && !domNext.hasClass('milestone')) {
 							// The next element is a task
 							nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
-							newPosition = 0.5 * (nextModel.get('position') - prevModel.get('position'));
+							newPosition = 0.5 * (nextModel.get('position') + prevModel.get('position'));
 						} else {
 							// There is no next element or it is a milestone
 							newPosition = prevModel.get('position') + 1;
@@ -826,8 +807,6 @@ define ([
 				sortedModel.set('position', newPosition);
 				sortedModel.set('todo_at', newTodo);
 				sortedModel.save();
-
-				// temp.coll.tasks.shiftDown(sortedModel);
 			},
 
 			/**

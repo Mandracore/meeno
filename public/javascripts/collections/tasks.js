@@ -61,8 +61,7 @@ define ([
 					filter.get('completed') == 2 &&
 					filter.get('tags').length == 0
 					) {
-					console.log ("exit case");
-					return this.sort();
+					return new Tasks ( this.toArray() );
 				}
 				// var letters = $.ui.autocomplete.escapeRegex(filter.get('text'));
 				var pattern = new RegExp(filter.get('text'),"i");
@@ -89,22 +88,6 @@ define ([
 						return (false === _.contains(model.get('tagLinks').pluck('tag'), tag)); // Looking for the tag of the filter that is not related to current model
 					}));
 				}));
-			},
-
-			/**
-			 * When moving a task to a new position, shift the following ones down to make some room for it.
-			 * Also needs to be called when a new task is appended to a collection.
-			 * 
-			 * @method shiftDown
-			 * @param  {Task} anchor the task that was moved, point of reference.
-			 */
-			shiftDown: function (anchor) {
-				this.each (function (model) {
-					if (model != anchor && model.get('position') >= anchor.get('position')) {
-						model.set('position',model.get('position')+1);
-						//model.save();
-					}
-				});
 			},
 		});
 
