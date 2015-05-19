@@ -102,7 +102,7 @@ define ([
 				this.each (function (model) {
 					if (model != anchor && model.get('position') >= anchor.get('position')) {
 						model.set('position',model.get('position')+1);
-						model.save();
+						//model.save();
 					}
 				});
 			},

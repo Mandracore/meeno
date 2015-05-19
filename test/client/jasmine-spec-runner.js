@@ -78,7 +78,7 @@ require([
 
 	// Specs to be executed must be defined hereafter
 	// specs.push('spec/app');
-	// specs.push('spec/model.spec');
+	specs.push('spec/model.spec');
 	specs.push('spec/view-browser');
 	// specs.push('spec/view-editor');
 

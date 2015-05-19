@@ -519,5 +519,11 @@ Next week : OK, lundi prochain
 Later : OK, lundi d'après
 
 
-19/05===================================================
+18/05===================================================
 Conflit entre drop et sortable, plus multiples re-render. Voir comment gérer tout ça.
+
+19/05===================================================
+#improvement
+A retenir pour améliorer les perfs : API REST à modifer pour faire le mass update qui se produit quand on réorganise des tâches plûtot que X appels unitaires.
+Autre piste : ne pas modifier toutes les autres tâches pour rien !!
+

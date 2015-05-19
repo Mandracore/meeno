@@ -125,6 +125,7 @@ define ([
 					hoverClass  : "target-hover",
 					tolerance   : "pointer",
 					drop        : function( event, ui ) {
+						console.log("dropped !");
 						ui.draggable.data("dropped", true);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
 						sortedModel.set("position",0);
@@ -162,7 +163,7 @@ define ([
 			 * @method setupDropZones
 			 */
 			setupDropZones: function () {
-				console.log('start setup');
+				console.log('start setupDropZones');
 				// Setup milestones
 				var today    = new Date();
 				var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
@@ -757,8 +758,9 @@ define ([
 			 * @method droppableUpdate
 			 * @param  {jQuery event} event http://api.jqueryui.com/sortable/#event-update the event triggered by jQuery
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
-			 */
+			 
 			droppableUpdate: function (event, ui) {
+				console.log('droppable');
 				// 1. Find the model corresponding to the sorted DOM node
 				var droppedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 				// 2. Update the model according to the dropzone
@@ -767,7 +769,7 @@ define ([
 				droppedModel.save();
 				// 3. Remove from DOM
 				ui.item.hide(500).remove(); // Hide then remove from DOM
-			},
+			},*/
 
 			/**
 			 * This methods aims at saving the new positions of the objects
@@ -784,29 +786,48 @@ define ([
 
 				// 2. Find out in which scenario we are
 				var domPrev = ui.item.prev(); // previous sibling
+				var domNext = ui.item.next(); // next sibling
+
 				if (!domPrev.length) {
 					// There is nothing in the list before this item (it must be placed before the milestone 'Today')
 					newPosition = 0;
+					//////////////////// A REVOIR
 					newTodo     = ui.item.next().attr('data-todo'); // next is "Today", so we can use its todo date
 				} else {
 					// There is something in the list before this item
 					if (domPrev.hasClass('milestone')) {
 						// The previous element is a milestone
-						newPosition = 0;
-						newTodo     = domPrev.attr('data-todo');
+						newTodo = domPrev.attr('data-todo');
+
+						if (domNext.length && !domNext.hasClass('milestone')) {
+							// The next element is a task
+							nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
+							newPosition = nextModel.get('position') - 1;
+						} else {
+							// There is no next element or it is a milestone
+							newPosition = 0;
+						}
 					} else {
 						// The previous element is a task
 						var prevModel = temp.coll.tasks.get(domPrev.attr('data-cid'));
-						newPosition   = prevModel.get('position') + 1;
 						newTodo       = prevModel.get('todo_at');
+
+						if (domNext.length && !domNext.hasClass('milestone')) {
+							// The next element is a task
+							nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
+							newPosition = 0.5 * (nextModel.get('position') - prevModel.get('position'));
+						} else {
+							// There is no next element or it is a milestone
+							newPosition = prevModel.get('position') + 1;
+						}
 					}
 				}
 
 				sortedModel.set('position', newPosition);
 				sortedModel.set('todo_at', newTodo);
-
-				temp.coll.tasks.shiftDown(sortedModel);
 				sortedModel.save();
+
+				// temp.coll.tasks.shiftDown(sortedModel);
 			},
 
 			/**
