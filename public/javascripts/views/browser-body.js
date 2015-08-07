@@ -5,11 +5,12 @@ define ([
 		'temp',
 		'channel',
 		'models/filter',
+		'models/task',
 		'views/browser-body-note',
 		'views/browser-body-task',
 		'views/browser-body-tag',
 		'views/browser-body-filter',
-	], function ($, _, Backbone, temp, channel, Filter, BrowserBodyNoteView, BrowserBodyTaskView, BrowserBodyTagView, BrowserBodyFilterView) {
+	], function ($, _, Backbone, temp, channel, Filter, Task, BrowserBodyNoteView, BrowserBodyTaskView, BrowserBodyTagView, BrowserBodyFilterView) {
 
 		/**
 		 * This class will be used to support the main view of the object browser.
@@ -42,6 +43,7 @@ define ([
 				'click .filter-editor button.delete'                : 'searchFilterDelete',
 				'click .filter-checked'                             : 'toggleTasks',
 				// Action-related events
+				'click .new-task button'                            : 'newTask',
 				'click .actions-contextual .delete'                 : 'actionDeleteToggle',
 				'click .actions-contextual-selection .select-all'   : 'actionSelectAll',
 				'click .actions-contextual-selection .unselect-all' : 'actionUnSelectAll',
@@ -98,11 +100,16 @@ define ([
 					this.searchFiltersCtrlUpd("tag");
 					this.searchRenderFilterSuper("tagFilter");});
 
+				// Keyboard events listeners
+				// Evènvements à revoir : pas de raison que cela fonctionne tout le temps => les faire passer par un proxy
+				// Ex. : on ne peut pas lancer searchOpenAutocomplete si on n'est pas en train de filtrer des notes...
 				this.listenTo(channel, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
 				this.listenTo(channel, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
 				this.listenTo(channel, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
 				this.listenTo(channel, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
 				this.listenTo(channel, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
+				// Première implémentation du proxy, à reporter sur les autres
+				this.listenTo(channel, 'keyboard:enter', function () {this.eventProxy("enter");});
 
 				// Deactivated for testing purposes only
 				this.searchFiltersCtrlUpd("note");
@@ -152,6 +159,22 @@ define ([
 					dropzone: new Date(),
 				};
 			},
+
+
+			// Keyboard event proxy
+			// =============================================================================
+			eventProxy: function (event) {
+				var $newTaskInput = this.$(".new-task input");
+
+				// 1. The user wants to create a new task
+				if ($newTaskInput.is(":focus") && event=="enter") {
+					var task = new Task ({label: $newTaskInput.val()});
+					temp.coll.tasks.add(task);
+					task.save();
+					$newTaskInput.val("").focus();
+				}
+			},
+
 
 			// Dropzones and milestones setup
 			// =============================================================================
@@ -254,6 +277,24 @@ define ([
 					$(child).removeClass("selected");
 				});
 				this.$el.find(".listobjects."+objectClass).addClass('selected');
+			},
+
+			// Add new records
+			// =============================================================================
+			// Find below all the methods meant to create new tasks, tags or notes
+			
+			/**
+			 * Create a new task based on the user's input
+			 * 
+			 * @method newTask
+			 */
+			newTask: function (event) {
+				// console.log($(event.target).prev().val());
+				var $input = $(event.target).prev();
+				var task = new Task ({label: $input.val()});
+				temp.coll.tasks.add(task)
+				task.save();
+				$input.val("").focus();
 			},
 
 			// Mass actions

@@ -135,6 +135,11 @@ block content
 							li.delete
 								span.action Delete tasks
 								span.cancel Cancel
+						div.new-task
+							div.input
+								input.mousetrap(type="text", placeholder="Type here your new task")
+								//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
+								button save task
 						span
 							button.filter-checked(data-step="0") Now showing todo only
 							button.filter-checked(data-step="1", style="display:none") Now showing done only
