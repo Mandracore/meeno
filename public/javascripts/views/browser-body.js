@@ -109,7 +109,7 @@ define ([
 				this.listenTo(channel, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
 				this.listenTo(channel, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
 				// Première implémentation du proxy, à reporter sur les autres
-				this.listenTo(channel, 'keyboard:enter', function () {this.eventProxy("enter");});
+				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 
 				// Deactivated for testing purposes only
 				this.searchFiltersCtrlUpd("note");
@@ -163,15 +163,20 @@ define ([
 
 			// Keyboard event proxy
 			// =============================================================================
-			eventProxy: function (event) {
+
+			/**
+			 * Should become the one proxy for all keyboard events. For now, it is only used for
+			 * task creation.
+			 *
+			 * @method kbEventProxy
+			 */
+			kbEventProxy: function (event) {
 				var $newTaskInput = this.$(".new-task input");
 
 				// 1. The user wants to create a new task
 				if ($newTaskInput.is(":focus") && event=="enter") {
-					var task = new Task ({label: $newTaskInput.val()});
-					temp.coll.tasks.add(task);
-					task.save();
-					$newTaskInput.val("").focus();
+					console.log ("From kb");
+					this.newTaskSub ($newTaskInput);
 				}
 			},
 
@@ -284,14 +289,35 @@ define ([
 			// Find below all the methods meant to create new tasks, tags or notes
 			
 			/**
-			 * Create a new task based on the user's input
+			 * When a user wants to create a new task by clicking on a submit button
 			 * 
 			 * @method newTask
 			 */
 			newTask: function (event) {
-				// console.log($(event.target).prev().val());
+				console.log ("From click");
+
 				var $input = $(event.target).prev();
-				var task = new Task ({label: $input.val()});
+				this.newTaskSub($input);
+			},
+
+			/**
+			 * Child of the method {{#crossLink "BrowserBodyView/newTask:method"}}{{/crossLink}}.
+			 * Allows to have the same behaviour, regardless of how the user validates the creation. So the calling method can be
+			 * either {{#crossLink "BrowserBodyView/newTask:method"}}{{/crossLink}} (creation by click on button) or
+			 * {{#crossLink "BrowserBodyView/kbEventProxy:method"}}{{/crossLink}} (creation by keying ENTER).
+			 * 
+			 * @method newTaskSub
+			 */
+			newTaskSub: function ($input) {
+				temp.coll.tasks.sort();
+
+				var newPosition = (temp.coll.tasks.length > 0) ? (temp.coll.tasks.at(0).get('position')-1) : 0;
+
+				var task = new Task ({
+					label    : $input.val(),
+					position : newPosition
+				});
+
 				temp.coll.tasks.add(task)
 				task.save();
 				$input.val("").focus();
@@ -723,7 +749,6 @@ define ([
 			 * @method renderCollection
 			 */
 			renderCollection: function (collName) {
-				console.log('rendering...'+collName);
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
 
@@ -783,7 +808,7 @@ define ([
 					$list.sortable({
 						placeholder: "ui-state-highlight",
 						connectWith: '.droppable',
-						receive: function( event, ui ) {
+						receive: function( event, ui ) { // Not sure it is useful
 							return console.log("received !");
 						},
 						update: function( event, ui ) {

@@ -219,6 +219,13 @@
             "classes": {},
             "fors": {},
             "namespaces": {}
+        },
+        "test/client/lib/jasmine-1.3.1/jasmine.js": {
+            "name": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
         }
     },
     "modules": {},
@@ -519,7 +526,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "public/javascripts/views/browser-body.js",
-            "line": 14,
+            "line": 15,
             "description": "This class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"BrowserBodyFilterView\"}}{{/crossLink}},...",
             "is_constructor": 1,
             "params": [
@@ -633,7 +640,7 @@
         },
         {
             "file": "public/javascripts/collections/tasks.js",
-            "line": 45,
+            "line": 48,
             "description": "Allows to search through a collection of tasks with a complex filter based on full-text search (in label)\nand on tags related or not to the models. The filtering of tasks can also take into account the \"completed\"\nattribute.",
             "itemtype": "method",
             "name": "search",
@@ -649,21 +656,6 @@
                 "type": "Tasks"
             },
             "chainable": 1,
-            "class": "Tasks"
-        },
-        {
-            "file": "public/javascripts/collections/tasks.js",
-            "line": 88,
-            "description": "When moving a task to a new position, shift the following ones down to make some room for it.\nAlso needs to be called when a new task is appended to a collection.",
-            "itemtype": "method",
-            "name": "shiftDown",
-            "params": [
-                {
-                    "name": "anchor",
-                    "description": "the task that was moved, point of reference",
-                    "type": "Task"
-                }
-            ],
             "class": "Tasks"
         },
         {
@@ -1476,7 +1468,31 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 125,
+            "line": 167,
+            "description": "Should become the one proxy for all keyboard events. For now, it is only used for\ntask creation",
+            "itemtype": "method",
+            "name": "kbEventProxy",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 186,
+            "description": "Forces the browser-body to update the data attributes of the dropzones so that\nthe behavior remains consistent from one day to another even if the page\nis not reloaded. It should be using a today date passed as parameter, just like {{setupMilestones}}",
+            "itemtype": "method",
+            "name": "setupDropZones",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 211,
+            "description": "Forces the browser-body to update the milestones it should render along with the tasks.\nIndeed, the milestones to display will change depending on the day of the week.",
+            "itemtype": "method",
+            "name": "setupMilestones",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 252,
             "description": "Makes the browser visible",
             "itemtype": "method",
             "name": "toggle",
@@ -1484,7 +1500,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 139,
+            "line": 266,
             "description": "Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks\non the right button (class `.filter li`).",
             "itemtype": "method",
             "name": "toggleObject",
@@ -1499,7 +1515,23 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 165,
+            "line": 291,
+            "description": "When a user wants to create a new task by clicking on a submit button",
+            "itemtype": "method",
+            "name": "newTask",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 303,
+            "description": "Child of the method {{#crossLink \"BrowserBodyView/newTask:method\"}}{{/crossLink}}.\nAllows to have the same behaviour, regardless of how the user validates the creation. So the calling method can be\neither {{#crossLink \"BrowserBodyView/newTask:method\"}}{{/crossLink}} (creation by click on button) or\n{{#crossLink \"BrowserBodyView/kbEventProxy:method\"}}{{/crossLink}} (creation by keying ENTER)",
+            "itemtype": "method",
+            "name": "newTaskSub",
+            "class": "BrowserBodyView"
+        },
+        {
+            "file": "public/javascripts/views/browser-body.js",
+            "line": 332,
             "description": "Manages the buttons \"select all\" and \"unselect all\". Will be called every time an object\nis selected or unseleted to make sure that the right buttons are displayed",
             "itemtype": "method",
             "name": "actionSelectorsUpdate",
@@ -1507,7 +1539,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 190,
+            "line": 357,
             "description": "Should select all objects",
             "itemtype": "method",
             "name": "actionSelectAll",
@@ -1515,7 +1547,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 203,
+            "line": 370,
             "description": "Should unselect all objects",
             "itemtype": "method",
             "name": "actionUnSelectAll",
@@ -1523,7 +1555,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 216,
+            "line": 383,
             "description": "Displays or hides the controls necessary to select/unselect all objects, delete them,...\nThrows an event to make subviews display their checkboxes",
             "itemtype": "method",
             "name": "actionDeleteToggle",
@@ -1531,7 +1563,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 232,
+            "line": 399,
             "description": "To make objects subviews show/hide their checkbox.",
             "itemtype": "event",
             "name": "browser:actions:toggle-checkboxes:[collName]",
@@ -1539,7 +1571,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 243,
+            "line": 410,
             "description": "Triggers an event, which will be heard by sub-views that will actually execute the action",
             "itemtype": "method",
             "name": "actionDeleteExecute",
@@ -1547,7 +1579,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 253,
+            "line": 420,
             "description": "To make objects subviews kill themselves and destroy their model if they are selected.",
             "itemtype": "event",
             "name": "browser:actions:delete:[collName]",
@@ -1555,14 +1587,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 271,
+            "line": 438,
             "itemtype": "method",
             "name": "toggleTasks",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 287,
+            "line": 455,
             "description": "Checks whether the user is currently using a search input and if so tells which collection is visible",
             "itemtype": "method",
             "name": "searchGetFocus",
@@ -1574,7 +1606,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 305,
+            "line": 473,
             "description": "Will prepare and open an autocomplete input.\nIt should help the user selecting objects from collection named `sColl2` (example : `tags`) \nthat will then be used to filter the objects from collection named `sColl1`",
             "itemtype": "method",
             "name": "searchOpenAutocomplete",
@@ -1588,7 +1620,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 356,
+            "line": 524,
             "description": "Controls what happens when the user tries to close the autocomplete",
             "itemtype": "method",
             "name": "searchCloseAutocomplete",
@@ -1602,7 +1634,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 374,
+            "line": 542,
             "description": "Allows to remove from current filter the object that has been clicked on",
             "itemtype": "method",
             "name": "searchObjectRemove",
@@ -1616,7 +1648,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 389,
+            "line": 557,
             "description": "Updates current filter with the text typed in by the user",
             "itemtype": "method",
             "name": "searchText",
@@ -1630,7 +1662,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 403,
+            "line": 571,
             "description": "Should update the controls to save/delete filters\nIf temp contains a filter similar to the one that is currently applied, we propose to delete it\nIf not, we propose to save the currently applied one",
             "itemtype": "method",
             "name": "searchFiltersCtrlUpd",
@@ -1645,7 +1677,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 427,
+            "line": 595,
             "description": "Displays the controls necessary to save a filter",
             "itemtype": "method",
             "name": "searchFilterSave1",
@@ -1659,7 +1691,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 440,
+            "line": 608,
             "description": "Saves the new filter with the chosen name and hides the controls",
             "itemtype": "method",
             "name": "searchFilterSave2",
@@ -1673,7 +1705,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 460,
+            "line": 628,
             "description": "Sends an event to make the filter view holding the active filter destroy its model",
             "itemtype": "method",
             "name": "searchFilterDelete",
@@ -1687,7 +1719,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 469,
+            "line": 637,
             "description": "Will make the view holding the active filter destroy its model",
             "itemtype": "event",
             "name": "browser:search:filters:remove:[filter-name]",
@@ -1695,7 +1727,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 476,
+            "line": 644,
             "description": "Renders all the filters stored in the temp storage.",
             "itemtype": "method",
             "name": "searchRenderFilters",
@@ -1709,7 +1741,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 506,
+            "line": 674,
             "description": "Forces the view's current filter to match the one clicked by the user",
             "itemtype": "method",
             "name": "searchRenderFilterSuper",
@@ -1723,7 +1755,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 549,
+            "line": 717,
             "description": "Forces the view's current filter to match the one clicked by the user",
             "itemtype": "method",
             "name": "searchFilterActivate",
@@ -1737,7 +1769,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 560,
+            "line": 728,
             "description": "This event is listened by filter views to make them check\nif they are active",
             "itemtype": "event",
             "name": "browser:search:filters:check-status:[filter-name]",
@@ -1745,21 +1777,21 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 572,
+            "line": 740,
             "itemtype": "method",
             "name": "render",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 581,
+            "line": 749,
             "itemtype": "method",
             "name": "renderCollection",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 623,
+            "line": 822,
             "description": "This methods aims at saving the new positions of the objects",
             "itemtype": "method",
             "name": "sortableUpdate",
@@ -1779,8 +1811,8 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 646,
-            "description": "This methods aims at preparing the rendering of the tasks with the milestones at the right place\nIt can be used only with tasks sorted by due date",
+            "line": 879,
+            "description": "This methods aims at preparing the rendering of the tasks with the milestones at the right place\nIt can be used only with tasks sorted by todo_at date",
             "itemtype": "method",
             "name": "insertMilestones",
             "params": [
@@ -1874,6 +1906,1226 @@
                 "description": "Boolean"
             },
             "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 3,
+            "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 10,
+            "access": "private",
+            "tagname": "",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 17,
+            "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
+            "access": "private",
+            "tagname": "",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 25,
+            "description": "Show diagnostic messages in the console if set to true",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 31,
+            "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 37,
+            "description": "Maximum levels of nesting that will be included when an object is pretty-printed",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 42,
+            "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 47,
+            "description": "By default exceptions thrown in the context of a test are caught by jasmine so that it can run the remaining tests in the suite.\nSet to false to let the exception bubble up in the browser.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 62,
+            "description": "Allows for bound functions to be compared.  Internal use only.",
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "base",
+                    "description": "bound 'this' for the function",
+                    "type": "Object"
+                },
+                {
+                    "name": "name",
+                    "description": "function to find",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 126,
+            "description": "Getter for the Jasmine environment. Ensures one gets created",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 134,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 144,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 154,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 164,
+            "ignore": "",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "typeName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 175,
+            "description": "Pretty printer for expecations.  Takes any object and turns it into a human-readable string.",
+            "params": [
+                {
+                    "name": "value",
+                    "description": "an object to be outputted",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 187,
+            "description": "Returns true if the object is a DOM Node.",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "object to check",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 197,
+            "description": "Returns a matchable 'generic' object of the class type.  For use in expecations of type when values don't matter.",
+            "example": [
+                "\n// don't care about which function is passed in, as long as it's a function\nexpect(mySpy).toHaveBeenCalledWith(jasmine.any(Function));"
+            ],
+            "params": [
+                {
+                    "name": "clazz",
+                    "description": "",
+                    "type": "Class"
+                }
+            ],
+            "return": {
+                "description": "matchable object of the type clazz"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 211,
+            "description": "Returns a matchable subset of a JSON object. For use in expectations when you don't care about all of the\nattributes on the object.",
+            "example": [
+                "\n// don't care about any other attributes than foo.\nexpect(mySpy).toHaveBeenCalledWith(jasmine.objectContaining({foo: \"bar\"});"
+            ],
+            "params": [
+                {
+                    "name": "sample",
+                    "description": "sample",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "matchable object for the sample"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 226,
+            "description": "Jasmine Spies are test doubles that can act as stubs, spies, fakes or when used in an expecation, mocks.\n\nSpies should be created in test setup, before expectations.  They can then be checked, using the standard Jasmine\nexpectation syntax. Spies can be checked if they were called or not and what the calling params were.\n\nA Spy has the following fields: wasCalled, callCount, mostRecentCall, and argsForCall (see docs).\n\nSpies are torn down at the end of every spec.\n\nNote: Do <b>not</b> call new jasmine.Spy() directly - a spy must be created using spyOn, jasmine.createSpy or jasmine.createSpyObj.",
+            "example": [
+                "\n// a stub\nvar myStub = jasmine.createSpy('myStub');  // can be used anywhere\n\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// actual foo.not will not be called, execution stops\nspyOn(foo, 'not');\n\n// foo.not spied upon, execution will continue to implementation\nspyOn(foo, 'not').andCallThrough();\n\n// fake example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\n\n// foo.not(val) will return val\nspyOn(foo, 'not').andCallFake(function(value) {return value;});\n\n// mock example\nfoo.not(7 == 7);\nexpect(foo.not).toHaveBeenCalled();\nexpect(foo.not).toHaveBeenCalledWith(true);"
+            ],
+            "is_constructor": 1,
+            "see": [
+                "spyOn",
+                "jasmine.createSpy",
+                "jasmine.createSpyObj"
+            ],
+            "params": [
+                {
+                    "name": "name",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 271,
+            "description": "The name of the spy, if provided.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 275,
+            "description": "Is this Object a spy?",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 279,
+            "description": "The actual function this spy stubs.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 284,
+            "description": "Tracking of the most recent call to the spy.",
+            "example": [
+                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 293,
+            "description": "Holds arguments for each call to the spy, indexed by call count",
+            "example": [
+                "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 307,
+            "description": "Tells a spy to call through to the actual implemenatation.",
+            "example": [
+                "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 323,
+            "description": "For setting the return value of a spy.",
+            "example": [
+                "\n// defining a spy from scratch: foo() returns 'baz'\nvar foo = jasmine.createSpy('spy on foo').andReturn('baz');\n\n// defining a spy on an existing property: foo.bar() returns 'baz'\nspyOn(foo, 'bar').andReturn('baz');"
+            ],
+            "params": [
+                {
+                    "name": "value",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 342,
+            "description": "For throwing an exception when a spy is called.",
+            "example": [
+                "\n// defining a spy from scratch: foo() throws an exception w/ message 'ouch'\nvar foo = jasmine.createSpy('spy on foo').andThrow('baz');\n\n// defining a spy on an existing property: foo.bar() throws an exception w/ message 'ouch'\nspyOn(foo, 'bar').andThrow('baz');"
+            ],
+            "params": [
+                {
+                    "name": "exceptionMsg",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 361,
+            "description": "Calls an alternate implementation when a spy is called.",
+            "example": [
+                "\nvar baz = function() {\n  // do some stuff, return something\n}\n// defining a spy from scratch: foo() calls the function baz\nvar foo = jasmine.createSpy('spy on foo').andCall(baz);\n\n// defining a spy on an existing property: foo.bar() calls an anonymnous function\nspyOn(foo, 'bar').andCall(function() { return 'baz';} );"
+            ],
+            "params": [
+                {
+                    "name": "fakeFunc",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 381,
+            "description": "Resets all of a spy's the tracking variables so that it can be used again.",
+            "example": [
+                "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 427,
+            "description": "Determines whether an object is a spy.",
+            "params": [
+                {
+                    "name": "putativeSpy",
+                    "description": "",
+                    "type": "jasmine.Spy|Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 437,
+            "description": "Creates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something\nlarge in one call.",
+            "params": [
+                {
+                    "name": "baseName",
+                    "description": "name of spy class",
+                    "type": "String"
+                },
+                {
+                    "name": "methodNames",
+                    "description": "array of names of methods to make spies",
+                    "type": "Array"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 455,
+            "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 465,
+            "description": "Function that installs a spy on an existing object's method name.  Used within a Spec to create a spy.",
+            "example": [
+                "\n// spy example\nvar foo = {\n  not: function(bool) { return !bool; }\n}\nspyOn(foo, 'not'); // actual foo.not will not be called, execution stops"
+            ],
+            "see": [
+                "jasmine.createSpy"
+            ],
+            "params": [
+                {
+                    "name": "obj",
+                    "description": ""
+                },
+                {
+                    "name": "methodName",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "a Jasmine spy that can be chained with all spy methods",
+                "type": "jasmine.Spy"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 485,
+            "description": "Creates a Jasmine spec that will be added to the current suite.\n\n// TODO: pending tests",
+            "example": [
+                "\nit('should be true', function() {\n  expect(true).toEqual(true);\n});"
+            ],
+            "params": [
+                {
+                    "name": "desc",
+                    "description": "description of this specification",
+                    "type": "String"
+                },
+                {
+                    "name": "func",
+                    "description": "defines the preconditions and expectations of the spec",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 503,
+            "description": "Creates a <em>disabled</em> Jasmine spec.\n\nA convenience method that allows existing specs to be disabled temporarily during development.",
+            "params": [
+                {
+                    "name": "desc",
+                    "description": "description of this specification",
+                    "type": "String"
+                },
+                {
+                    "name": "func",
+                    "description": "defines the preconditions and expectations of the spec",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 516,
+            "description": "Starts a chain for a Jasmine expectation.\n\nIt is passed an Object that is the actual value and should chain to one of the many\njasmine.Matchers functions.",
+            "params": [
+                {
+                    "name": "actual",
+                    "description": "Actual value to test against and expected value",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "jasmine.Matchers"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 530,
+            "description": "Defines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.",
+            "params": [
+                {
+                    "name": "func",
+                    "description": "Function that defines part of a jasmine spec.",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 540,
+            "description": "Waits a fixed time period before moving to the next block.",
+            "deprecated": true,
+            "deprecationMessage": "Use waitsFor() instead",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "milliseconds to wait",
+                    "type": "Number"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 551,
+            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
+            "params": [
+                {
+                    "name": "latchFunction",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "optional_timeoutMessage",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "optional_timeout",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 563,
+            "description": "A function that is called before each spec in a suite.\n\nUsed for spec setup, including validating assumptions.",
+            "params": [
+                {
+                    "name": "beforeEachFunction",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 575,
+            "description": "A function that is called after each spec in a suite.\n\nUsed for restoring any state that is hijacked during spec execution.",
+            "params": [
+                {
+                    "name": "afterEachFunction",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 587,
+            "description": "Defines a suite of specifications.\n\nStores the description and all defined specs in the Jasmine environment as one suite of specs. Variables declared\nare accessible by calls to beforeEach, it, and afterEach. Describe blocks can be nested, allowing for specialization\nof setup in some tests.",
+            "example": [
+                "\n// TODO: a simple suite\n\n// TODO: a simple suite with a nested describe block"
+            ],
+            "params": [
+                {
+                    "name": "description",
+                    "description": "A string, usually the class under test.",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "function that defines several specs.",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 607,
+            "description": "Disables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.",
+            "params": [
+                {
+                    "name": "description",
+                    "description": "A string, usually the class under test.",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "function that defines several specs.",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 646,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 651,
+            "description": "Declare that a child class inherit it's prototype from the parent class.",
+            "access": "private",
+            "tagname": "",
+            "params": [
+                {
+                    "name": "childClass",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "parentClass",
+                    "description": "",
+                    "type": "Function"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 659,
+            "access": "private",
+            "tagname": "",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 713,
+            "description": "Environment for Jasmine",
+            "is_constructor": 1,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 751,
+            "return": {
+                "description": "an object containing jasmine version build info, if set."
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 762,
+            "return": {
+                "description": "string containing jasmine version build info, if set."
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 779,
+            "return": {
+                "description": "a sequential integer starting at 0"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 786,
+            "return": {
+                "description": "a sequential integer starting at 0"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 793,
+            "description": "Register a reporter to receive status updates from Jasmine.",
+            "params": [
+                {
+                    "name": "reporter",
+                    "description": "An object which will receive status updates.",
+                    "type": "jasmine.Reporter"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1013,
+            "is_constructor": 1,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1044,
+            "description": "Blocks are functions with executable code that make up a spec.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "func",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "spec",
+                    "description": "",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1071,
+            "is_constructor": 1,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1173,
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "actual",
+                    "description": ""
+                },
+                {
+                    "name": "spec",
+                    "description": "",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1250,
+            "description": "toBe: compares the actual to the expected using ===",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1258,
+            "description": "toNotBe: compares the actual to the expected using !==",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1267,
+            "description": "toEqual: compares the actual to the expected using common sense equality. Handles Objects, Arrays, etc.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1276,
+            "description": "toNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1285,
+            "description": "Matcher that compares the actual to the expected using a regular expression.  Constructs a RegExp, so takes\na pattern or a String.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1295,
+            "description": "Matcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": ""
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1304,
+            "description": "Matcher that compares the actual to jasmine.undefined.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1311,
+            "description": "Matcher that compares the actual to jasmine.undefined.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1318,
+            "description": "Matcher that compares the actual to null.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1325,
+            "description": "Matcher that compares the actual to NaN.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1336,
+            "description": "Matcher that boolean not-nots the actual.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1344,
+            "description": "Matcher that boolean nots the actual.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1352,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1374,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1377,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
+            "deprecated": true,
+            "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1401,
+            "description": "Matcher that checks to see if the actual, a Jasmine spy, was called with a set of parameters.",
+            "example": [
+                "\n"
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1426,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1429,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1446,
+            "description": "Matcher that checks that the expected item is an element in the actual Array.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1455,
+            "description": "Matcher that checks that the expected item is NOT an element in the actual Array.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "deprecated": true,
+            "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1473,
+            "description": "Matcher that checks that the expected item is equal to the actual item\nup to a given level of decimal precision (default 2).",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "Number"
+                },
+                {
+                    "name": "precision,",
+                    "description": "as number of decimal places",
+                    "type": "Number"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1487,
+            "description": "Matcher that checks that the expected exception was thrown by the actual.",
+            "params": [
+                {
+                    "name": "expected",
+                    "description": "",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1664,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1760,
+            "is_constructor": 1,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1795,
+            "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
+            "is_constructor": 1,
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1801,
+            "description": "The total count of results",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1805,
+            "description": "Number of passed results",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1809,
+            "description": "Number of failed results",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1813,
+            "description": "Was this suite/spec skipped?",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1817,
+            "ignore": "",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1823,
+            "description": "Roll up the result counts.",
+            "params": [
+                {
+                    "name": "result",
+                    "description": ""
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1834,
+            "description": "Adds a log message.",
+            "params": [
+                {
+                    "name": "values",
+                    "description": "Array of message parts which will be concatenated later."
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1842,
+            "description": "Getter for the results: message & results.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1849,
+            "description": "Adds a result, tracking counts (total, passed, & failed)",
+            "params": [
+                {
+                    "name": "result",
+                    "description": "",
+                    "type": "jasmine.ExpectationResult|jasmine.NestedResults"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1869,
+            "return": {
+                "description": "True if <b>everything</b> below passed",
+                "type": "Boolean"
+            },
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1875,
+            "description": "Base class for pretty printing for expectation results.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 1882,
+            "description": "Formats a value in a nice, human-readable string.",
+            "params": [
+                {
+                    "name": "value",
+                    "description": ""
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2123,
+            "description": "Runner",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2200,
+            "description": "Internal representation of a Jasmine specification, or test.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "suite",
+                    "description": "",
+                    "type": "jasmine.Suite"
+                },
+                {
+                    "name": "description",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2239,
+            "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2262,
+            "params": [
+                {
+                    "name": "result",
+                    "description": "",
+                    "type": "jasmine.ExpectationResult"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2275,
+            "description": "Waits a fixed time period before moving to the next block.",
+            "deprecated": true,
+            "deprecationMessage": "Use waitsFor() instead",
+            "params": [
+                {
+                    "name": "timeout",
+                    "description": "milliseconds to wait",
+                    "type": "Number"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2287,
+            "description": "Waits for the latchFunction to return true before proceeding to the next block.",
+            "params": [
+                {
+                    "name": "latchFunction",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "optional_timeoutMessage",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "optional_timeout",
+                    "description": "",
+                    "type": "Number"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2443,
+            "description": "Internal representation of a Jasmine suite.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "env",
+                    "description": "",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "description",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "specDefinitions",
+                    "description": "",
+                    "type": "Function"
+                },
+                {
+                    "name": "parentSuite",
+                    "description": "",
+                    "type": "jasmine.Suite"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
+            "line": 2540,
+            "description": "A block which waits for some condition to become true, with timeout.",
+            "is_constructor": 1,
+            "extends": "jasmine.Block",
+            "params": [
+                {
+                    "name": "env",
+                    "description": "The Jasmine environment.",
+                    "type": "jasmine.Env"
+                },
+                {
+                    "name": "timeout",
+                    "description": "The maximum time in milliseconds to wait for the condition to become true.",
+                    "type": "Number"
+                },
+                {
+                    "name": "latchFunction",
+                    "description": "A function which returns true when the desired condition has been met.",
+                    "type": "Function"
+                },
+                {
+                    "name": "message",
+                    "description": "The message to display if the desired condition hasn't been met within the given time period.",
+                    "type": "String"
+                },
+                {
+                    "name": "spec",
+                    "description": "The Jasmine spec.",
+                    "type": "jasmine.Spec"
+                }
+            ],
+            "class": ""
         }
     ],
     "warnings": [
@@ -1888,6 +3140,86 @@
         {
             "message": "replacing incorrect tag: returns with return",
             "line": " public/javascripts/text.js:121"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:62"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:134"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:134"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:144"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:144"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:154"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:154"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:164"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:164"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:175"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:187"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:197"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:211"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:427"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:751"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:762"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:779"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:786"
+        },
+        {
+            "message": "unknown tag: ignore",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1817"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1869"
         },
         {
             "message": "Missing item type\nBackbone-relational.js 0.7.0\n(c) 2011-2013 Paul Uithol\n\nBackbone-relational may be freely distributed under the MIT license; see the accompanying LICENSE.txt.\nFor details and documentation: https://github.com/PaulUithol/Backbone-relational.\nDepends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone.",
@@ -2112,6 +3444,410 @@
         {
             "message": "Missing item type\nIs an URL on another domain. Only works for browser use, returns\nfalse in non-browser environments. Only used to know if an\noptimized .js version of a text resource should be loaded\ninstead.",
             "line": " public/javascripts/text.js:121"
+        },
+        {
+            "message": "Missing item type\nTop level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:3"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:10"
+        },
+        {
+            "message": "Missing item type\nUse <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:17"
+        },
+        {
+            "message": "Missing item type\nShow diagnostic messages in the console if set to true",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:25"
+        },
+        {
+            "message": "Missing item type\nDefault interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:31"
+        },
+        {
+            "message": "Missing item type\nMaximum levels of nesting that will be included when an object is pretty-printed",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:37"
+        },
+        {
+            "message": "Missing item type\nDefault timeout interval in milliseconds for waitsFor() blocks.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:42"
+        },
+        {
+            "message": "Missing item type\nBy default exceptions thrown in the context of a test are caught by jasmine so that it can run the remaining tests in the suite.\nSet to false to let the exception bubble up in the browser.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:47"
+        },
+        {
+            "message": "Missing item type\nAllows for bound functions to be compared.  Internal use only.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:62"
+        },
+        {
+            "message": "Missing item type\nGetter for the Jasmine environment. Ensures one gets created",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:126"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:134"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:144"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:154"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:164"
+        },
+        {
+            "message": "Missing item type\nPretty printer for expecations.  Takes any object and turns it into a human-readable string.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:175"
+        },
+        {
+            "message": "Missing item type\nReturns true if the object is a DOM Node.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:187"
+        },
+        {
+            "message": "Missing item type\nReturns a matchable 'generic' object of the class type.  For use in expecations of type when values don't matter.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:197"
+        },
+        {
+            "message": "Missing item type\nReturns a matchable subset of a JSON object. For use in expectations when you don't care about all of the\nattributes on the object.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:211"
+        },
+        {
+            "message": "Missing item type\nJasmine Spies are test doubles that can act as stubs, spies, fakes or when used in an expecation, mocks.\n\nSpies should be created in test setup, before expectations.  They can then be checked, using the standard Jasmine\nexpectation syntax. Spies can be checked if they were called or not and what the calling params were.\n\nA Spy has the following fields: wasCalled, callCount, mostRecentCall, and argsForCall (see docs).\n\nSpies are torn down at the end of every spec.\n\nNote: Do <b>not</b> call new jasmine.Spy() directly - a spy must be created using spyOn, jasmine.createSpy or jasmine.createSpyObj.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:226"
+        },
+        {
+            "message": "Missing item type\nThe name of the spy, if provided.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:271"
+        },
+        {
+            "message": "Missing item type\nIs this Object a spy?",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:275"
+        },
+        {
+            "message": "Missing item type\nThe actual function this spy stubs.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:279"
+        },
+        {
+            "message": "Missing item type\nTracking of the most recent call to the spy.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:284"
+        },
+        {
+            "message": "Missing item type\nHolds arguments for each call to the spy, indexed by call count",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:293"
+        },
+        {
+            "message": "Missing item type\nTells a spy to call through to the actual implemenatation.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:307"
+        },
+        {
+            "message": "Missing item type\nFor setting the return value of a spy.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:323"
+        },
+        {
+            "message": "Missing item type\nFor throwing an exception when a spy is called.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:342"
+        },
+        {
+            "message": "Missing item type\nCalls an alternate implementation when a spy is called.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:361"
+        },
+        {
+            "message": "Missing item type\nResets all of a spy's the tracking variables so that it can be used again.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:381"
+        },
+        {
+            "message": "Missing item type\nDetermines whether an object is a spy.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:427"
+        },
+        {
+            "message": "Missing item type\nCreates a more complicated spy: an Object that has every property a function that is a spy.  Used for stubbing something\nlarge in one call.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:437"
+        },
+        {
+            "message": "Missing item type\nAll parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:455"
+        },
+        {
+            "message": "Missing item type\nFunction that installs a spy on an existing object's method name.  Used within a Spec to create a spy.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:465"
+        },
+        {
+            "message": "Missing item type\nCreates a Jasmine spec that will be added to the current suite.\n\n// TODO: pending tests",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:485"
+        },
+        {
+            "message": "Missing item type\nCreates a <em>disabled</em> Jasmine spec.\n\nA convenience method that allows existing specs to be disabled temporarily during development.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:503"
+        },
+        {
+            "message": "Missing item type\nStarts a chain for a Jasmine expectation.\n\nIt is passed an Object that is the actual value and should chain to one of the many\njasmine.Matchers functions.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:516"
+        },
+        {
+            "message": "Missing item type\nDefines part of a jasmine spec.  Used in cominbination with waits or waitsFor in asynchrnous specs.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:530"
+        },
+        {
+            "message": "Missing item type\nWaits a fixed time period before moving to the next block.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:540"
+        },
+        {
+            "message": "Missing item type\nWaits for the latchFunction to return true before proceeding to the next block.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:551"
+        },
+        {
+            "message": "Missing item type\nA function that is called before each spec in a suite.\n\nUsed for spec setup, including validating assumptions.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:563"
+        },
+        {
+            "message": "Missing item type\nA function that is called after each spec in a suite.\n\nUsed for restoring any state that is hijacked during spec execution.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:575"
+        },
+        {
+            "message": "Missing item type\nDefines a suite of specifications.\n\nStores the description and all defined specs in the Jasmine environment as one suite of specs. Variables declared\nare accessible by calls to beforeEach, it, and afterEach. Describe blocks can be nested, allowing for specialization\nof setup in some tests.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:587"
+        },
+        {
+            "message": "Missing item type\nDisables a suite of specifications.  Used to disable some suites in a file, or files, temporarily during development.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:607"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:646"
+        },
+        {
+            "message": "Missing item type\nDeclare that a child class inherit it's prototype from the parent class.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:651"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:659"
+        },
+        {
+            "message": "Missing item type\nEnvironment for Jasmine",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:713"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:751"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:762"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:779"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:786"
+        },
+        {
+            "message": "Missing item type\nRegister a reporter to receive status updates from Jasmine.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:793"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1013"
+        },
+        {
+            "message": "Missing item type\nBlocks are functions with executable code that make up a spec.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1044"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1071"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1173"
+        },
+        {
+            "message": "Missing item type\ntoBe: compares the actual to the expected using ===",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1250"
+        },
+        {
+            "message": "Missing item type\ntoNotBe: compares the actual to the expected using !==",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1258"
+        },
+        {
+            "message": "Missing item type\ntoEqual: compares the actual to the expected using common sense equality. Handles Objects, Arrays, etc.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1267"
+        },
+        {
+            "message": "Missing item type\ntoNotEqual: compares the actual to the expected using the ! of jasmine.Matchers.toEqual",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1276"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to the expected using a regular expression.  Constructs a RegExp, so takes\na pattern or a String.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1285"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to the expected using the boolean inverse of jasmine.Matchers.toMatch",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1295"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to jasmine.undefined.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1304"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to jasmine.undefined.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1311"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to null.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1318"
+        },
+        {
+            "message": "Missing item type\nMatcher that compares the actual to NaN.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1325"
+        },
+        {
+            "message": "Missing item type\nMatcher that boolean not-nots the actual.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1336"
+        },
+        {
+            "message": "Missing item type\nMatcher that boolean nots the actual.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1344"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was called.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1352"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1374"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was not called.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1377"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks to see if the actual, a Jasmine spy, was called with a set of parameters.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1401"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1426"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1429"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected item is an element in the actual Array.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1446"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected item is NOT an element in the actual Array.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1455"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected item is equal to the actual item\nup to a given level of decimal precision (default 2).",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1473"
+        },
+        {
+            "message": "Missing item type\nMatcher that checks that the expected exception was thrown by the actual.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1487"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1664"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1760"
+        },
+        {
+            "message": "Missing item type\nHolds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1795"
+        },
+        {
+            "message": "Missing item type\nThe total count of results",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1801"
+        },
+        {
+            "message": "Missing item type\nNumber of passed results",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1805"
+        },
+        {
+            "message": "Missing item type\nNumber of failed results",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1809"
+        },
+        {
+            "message": "Missing item type\nWas this suite/spec skipped?",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1813"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1817"
+        },
+        {
+            "message": "Missing item type\nRoll up the result counts.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1823"
+        },
+        {
+            "message": "Missing item type\nAdds a log message.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1834"
+        },
+        {
+            "message": "Missing item type\nGetter for the results: message & results.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1842"
+        },
+        {
+            "message": "Missing item type\nAdds a result, tracking counts (total, passed, & failed)",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1849"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1869"
+        },
+        {
+            "message": "Missing item type\nBase class for pretty printing for expectation results.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1875"
+        },
+        {
+            "message": "Missing item type\nFormats a value in a nice, human-readable string.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:1882"
+        },
+        {
+            "message": "Missing item type\nRunner",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2123"
+        },
+        {
+            "message": "Missing item type\nInternal representation of a Jasmine specification, or test.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2200"
+        },
+        {
+            "message": "Missing item type\nAll parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2239"
+        },
+        {
+            "message": "Missing item type",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2262"
+        },
+        {
+            "message": "Missing item type\nWaits a fixed time period before moving to the next block.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2275"
+        },
+        {
+            "message": "Missing item type\nWaits for the latchFunction to return true before proceeding to the next block.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2287"
+        },
+        {
+            "message": "Missing item type\nInternal representation of a Jasmine suite.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2443"
+        },
+        {
+            "message": "Missing item type\nA block which waits for some condition to become true, with timeout.",
+            "line": " test/client/lib/jasmine-1.3.1/jasmine.js:2540"
         }
     ]
 }

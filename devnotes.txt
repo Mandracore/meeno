@@ -531,6 +531,11 @@ Autre piste : ne pas modifier toutes les autres tâches pour rien !!
 #bug
 le conflit entre drop et sortable existe toujours.
 
-#bug
+#solved-bug
 problème quand on essaie d'afficher toutes les tâches (completed + todo)
 
+
+
+07/08===================================================
+#bug
+quand on créé plusieurs tâches à la position 0 (au moins 3) on ne peut plus les réorganiser puisque 0 + 0 / 2 = 0
