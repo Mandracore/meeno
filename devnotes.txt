@@ -537,5 +537,12 @@ problème quand on essaie d'afficher toutes les tâches (completed + todo)
 
 
 07/08===================================================
-#bug
+#solved-bug
 quand on créé plusieurs tâches à la position 0 (au moins 3) on ne peut plus les réorganiser puisque 0 + 0 / 2 = 0
+
+#solved-bug
+Impossible to add more than one tag to a task ? TBC
+	add 1 existing tag is OK
+	add 2 existing tag is OK
+	remove 1 existing tag is OK
+	add 1 new existing is KO

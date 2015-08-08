@@ -30,7 +30,21 @@ YUI.add("yuidoc-meta", function(Y) {
         "TaskTag",
         "Tasks"
     ],
-    "modules": [],
-    "allModules": []
+    "modules": [
+        "App",
+        "temp"
+    ],
+    "allModules": [
+        {
+            "displayName": "App",
+            "name": "App",
+            "description": "Meeno application core module"
+        },
+        {
+            "displayName": "temp",
+            "name": "temp",
+            "description": "Temporary business objects storage module: where all tasks, notes and other\nrecords and collections are stored during the application runtime"
+        }
+    ]
 } };
 });

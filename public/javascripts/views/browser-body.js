@@ -327,6 +327,7 @@ define ([
 			// =============================================================================
 			// Series of methods that allow for selecting several objects and operating an 
 			// action on them (delete, tag, move,...)
+			// Not ready yet, for future use.
 
 			/**
 			 * Manages the buttons "select all" and "unselect all". Will be called every time an object

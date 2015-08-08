@@ -213,6 +213,24 @@
             "fors": {},
             "namespaces": {}
         },
+        "public/javascripts/app.js": {
+            "name": "public/javascripts/app.js",
+            "modules": {
+                "App": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "public/javascripts/temp.js": {
+            "name": "public/javascripts/temp.js",
+            "modules": {
+                "temp": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "public/javascripts/text.js": {
             "name": "public/javascripts/text.js",
             "modules": {},
@@ -228,7 +246,59 @@
             "namespaces": {}
         }
     },
-    "modules": {},
+    "modules": {
+        "App": {
+            "name": "App",
+            "submodules": {},
+            "classes": {
+                "ObjectFilters": 1,
+                "NoteFilters": 1,
+                "TagFilters": 1,
+                "TaskFilters": 1,
+                "Notes": 1,
+                "Tags": 1,
+                "Tasks": 1,
+                "ObjectFilter": 1,
+                "TagFilter": 1,
+                "TaskFilter": 1,
+                "NoteFilter": 1,
+                "NoteTask": 1,
+                "NoteTag": 1,
+                "TaskTag": 1,
+                "Note": 1,
+                "Task": 1,
+                "BrowserBodyFilterView": 1,
+                "BrowserBodyNoteView": 1,
+                "BrowserBodyObjectView": 1,
+                "BrowserBodyTagView": 1,
+                "BrowserBodyTaskView": 1,
+                "BrowserBodyView": 1,
+                "BrowserTabView": 1,
+                "BrowserView": 1,
+                "EditorBodyView": 1,
+                "EditorTabView": 1,
+                "EditorView": 1,
+                "MainView": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "public/javascripts/views/main.js",
+            "line": 13,
+            "description": "Meeno application core module"
+        },
+        "temp": {
+            "name": "temp",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "public/javascripts/temp.js",
+            "line": 1,
+            "description": "Temporary business objects storage module: where all tasks, notes and other\nrecords and collections are stored during the application runtime"
+        }
+    },
     "classes": {
         "ObjectFilters": {
             "name": "ObjectFilters",
@@ -238,6 +308,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/collections/filters.js",
             "line": 8,
             "description": "Parent of the classes {{#crossLink \"NoteFilters\"}}{{/crossLink}}, {{#crossLink \"TaskFilters\"}}{{/crossLink}} and {{#crossLink \"TagFilters\"}}{{/crossLink}}.\nIt holds all the common methods necessary to deal with collections of filters.",
@@ -251,6 +322,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/collections/filters.js",
             "line": 25,
             "description": "This class defines a collection of {{#crossLink \"NoteFilter\"}}{{/crossLink}}s.",
@@ -264,6 +336,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/collections/filters.js",
             "line": 36,
             "description": "This class defines a collection of {{#crossLink \"TagFilter\"}}{{/crossLink}}s.",
@@ -277,6 +350,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/collections/filters.js",
             "line": 47,
             "description": "This class defines a collection of {{#crossLink \"TaskFilter\"}}{{/crossLink}}s.",
@@ -290,6 +364,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/collections/notes.js",
             "line": 9,
             "description": "This class holds collections of notes",
@@ -303,6 +378,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/collections/tags.js",
             "line": 8,
             "description": "This class holds collections of tags",
@@ -316,6 +392,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/collections/tasks.js",
             "line": 10,
             "description": "Holds a collection of tasks",
@@ -329,6 +406,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/filter.js",
             "line": 10,
             "description": "Parent of the classes {{#crossLink \"NoteFilter\"}}{{/crossLink}}, {{#crossLink \"TaskFilter\"}}{{/crossLink}} and {{#crossLink \"TagFilter\"}}{{/crossLink}}.\nIt holds all the common methods.",
@@ -342,6 +420,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/filter.js",
             "line": 114,
             "description": "Used to filter collections of {{#crossLink \"Tag\"}}{{/crossLink}}s.",
@@ -355,6 +434,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/filter.js",
             "line": 132,
             "description": "Used to filter collections of {{#crossLink \"Task\"}}{{/crossLink}}s.",
@@ -368,6 +448,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/filter.js",
             "line": 156,
             "description": "Used to filter collections of {{#crossLink \"Note\"}}{{/crossLink}}s.",
@@ -381,6 +462,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/link.js",
             "line": 7,
             "description": "This class holds the model relating one note to one task",
@@ -394,6 +476,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/link.js",
             "line": 17,
             "description": "This class holds the model relating one note to one tag",
@@ -407,6 +490,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/link.js",
             "line": 27,
             "description": "This class holds the model relating one task to one tag",
@@ -420,6 +504,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/note.js",
             "line": 8,
             "description": "This class holds the note model",
@@ -433,6 +518,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/models/task.js",
             "line": 8,
             "description": "Holds the task model"
@@ -445,6 +531,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser-body-filter.js",
             "line": 8,
             "description": "This class holds the view of the filter models that are used to filter the browser's search results.\nThis view can accept models of classes {{#crossLink \"NoteFilter\"}}{{/crossLink}},\n{{#crossLink \"TaskFilter\"}}{{/crossLink}} and {{#crossLink \"TagFilter\"}}{{/crossLink}}.",
@@ -473,6 +560,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser-body-note.js",
             "line": 10,
             "description": "Displays notes in the browser.",
@@ -486,6 +574,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser-body-object.js",
             "line": 9,
             "description": "This class retains all core features for displaying objects views in the browser.\nSeveral classes will inherit from it, one per kind of business object :\n- BrowserBodyNoteView\n- BrowserBodyTaskView\n- BrowserBodyTagView\n- ...",
@@ -499,6 +588,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser-body-tag.js",
             "line": 9,
             "description": "A backbone view to display one tag in the browser",
@@ -512,6 +602,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser-body-task.js",
             "line": 11,
             "description": "Displays a task in the browser",
@@ -525,6 +616,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser-body.js",
             "line": 15,
             "description": "This class will be used to support the main view of the object browser.\nFrom here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.\nIt controls the creation of several subviews, like {{#crossLink \"BrowserBodyTagView\"}}{{/crossLink}},\n{{#crossLink \"BrowserBodyFilterView\"}}{{/crossLink}},...",
@@ -546,6 +638,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser-tab.js",
             "line": 7,
             "description": "This backbone view holds the browser tab (simple button) controlling the display of the body rendered by {{#crossLink \"BrowserBodyView\"}}{{/crossLink}}",
@@ -559,6 +652,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/browser.js",
             "line": 9,
             "description": "This class is mainly a proxy for two subclasses : {{#crossLink \"BrowserTabView\"}}{{/crossLink}} and {{#crossLink \"BrowserBodyView\"}}{{/crossLink}}.\nIt listens to the event tab:toggle:browser and make the two subviews visible.",
@@ -572,6 +666,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/editor-body.js",
             "line": 12,
             "description": "This backbone view holds the body of a note editor (where the note is actually rendered)",
@@ -585,6 +680,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/editor-tab.js",
             "line": 6,
             "description": "This backbone view holds the editor tab (simple button) controlling the display of the body rendered by {{#crossLink \"EditorBodyView\"}}{{/crossLink}}",
@@ -598,6 +694,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/editor.js",
             "line": 12,
             "description": "This backbone view holds the note editor",
@@ -611,6 +708,7 @@
             "extensions": [],
             "plugin_for": [],
             "extension_for": [],
+            "module": "App",
             "file": "public/javascripts/views/main.js",
             "line": 13,
             "description": "This backbone view holds the entire UI.",
@@ -1469,7 +1567,7 @@
         {
             "file": "public/javascripts/views/browser-body.js",
             "line": 167,
-            "description": "Should become the one proxy for all keyboard events. For now, it is only used for\ntask creation",
+            "description": "Should become the one proxy for all keyboard events. For now, it is only used for\ntask creation.",
             "itemtype": "method",
             "name": "kbEventProxy",
             "class": "BrowserBodyView"
@@ -1524,14 +1622,14 @@
         {
             "file": "public/javascripts/views/browser-body.js",
             "line": 303,
-            "description": "Child of the method {{#crossLink \"BrowserBodyView/newTask:method\"}}{{/crossLink}}.\nAllows to have the same behaviour, regardless of how the user validates the creation. So the calling method can be\neither {{#crossLink \"BrowserBodyView/newTask:method\"}}{{/crossLink}} (creation by click on button) or\n{{#crossLink \"BrowserBodyView/kbEventProxy:method\"}}{{/crossLink}} (creation by keying ENTER)",
+            "description": "Child of the method {{#crossLink \"BrowserBodyView/newTask:method\"}}{{/crossLink}}.\nAllows to have the same behaviour, regardless of how the user validates the creation. So the calling method can be\neither {{#crossLink \"BrowserBodyView/newTask:method\"}}{{/crossLink}} (creation by click on button) or\n{{#crossLink \"BrowserBodyView/kbEventProxy:method\"}}{{/crossLink}} (creation by keying ENTER).",
             "itemtype": "method",
             "name": "newTaskSub",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 332,
+            "line": 331,
             "description": "Manages the buttons \"select all\" and \"unselect all\". Will be called every time an object\nis selected or unseleted to make sure that the right buttons are displayed",
             "itemtype": "method",
             "name": "actionSelectorsUpdate",
@@ -1539,7 +1637,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 357,
+            "line": 356,
             "description": "Should select all objects",
             "itemtype": "method",
             "name": "actionSelectAll",
@@ -1547,7 +1645,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 370,
+            "line": 369,
             "description": "Should unselect all objects",
             "itemtype": "method",
             "name": "actionUnSelectAll",
@@ -1555,7 +1653,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 383,
+            "line": 382,
             "description": "Displays or hides the controls necessary to select/unselect all objects, delete them,...\nThrows an event to make subviews display their checkboxes",
             "itemtype": "method",
             "name": "actionDeleteToggle",
@@ -1563,7 +1661,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 399,
+            "line": 398,
             "description": "To make objects subviews show/hide their checkbox.",
             "itemtype": "event",
             "name": "browser:actions:toggle-checkboxes:[collName]",
@@ -1571,7 +1669,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 410,
+            "line": 409,
             "description": "Triggers an event, which will be heard by sub-views that will actually execute the action",
             "itemtype": "method",
             "name": "actionDeleteExecute",
@@ -1579,7 +1677,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 420,
+            "line": 419,
             "description": "To make objects subviews kill themselves and destroy their model if they are selected.",
             "itemtype": "event",
             "name": "browser:actions:delete:[collName]",
@@ -1587,14 +1685,14 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 438,
+            "line": 437,
             "itemtype": "method",
             "name": "toggleTasks",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 455,
+            "line": 454,
             "description": "Checks whether the user is currently using a search input and if so tells which collection is visible",
             "itemtype": "method",
             "name": "searchGetFocus",
@@ -1606,7 +1704,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 473,
+            "line": 472,
             "description": "Will prepare and open an autocomplete input.\nIt should help the user selecting objects from collection named `sColl2` (example : `tags`) \nthat will then be used to filter the objects from collection named `sColl1`",
             "itemtype": "method",
             "name": "searchOpenAutocomplete",
@@ -1620,7 +1718,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 524,
+            "line": 523,
             "description": "Controls what happens when the user tries to close the autocomplete",
             "itemtype": "method",
             "name": "searchCloseAutocomplete",
@@ -1634,7 +1732,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 542,
+            "line": 541,
             "description": "Allows to remove from current filter the object that has been clicked on",
             "itemtype": "method",
             "name": "searchObjectRemove",
@@ -1648,7 +1746,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 557,
+            "line": 556,
             "description": "Updates current filter with the text typed in by the user",
             "itemtype": "method",
             "name": "searchText",
@@ -1662,7 +1760,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 571,
+            "line": 570,
             "description": "Should update the controls to save/delete filters\nIf temp contains a filter similar to the one that is currently applied, we propose to delete it\nIf not, we propose to save the currently applied one",
             "itemtype": "method",
             "name": "searchFiltersCtrlUpd",
@@ -1677,7 +1775,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 595,
+            "line": 594,
             "description": "Displays the controls necessary to save a filter",
             "itemtype": "method",
             "name": "searchFilterSave1",
@@ -1691,7 +1789,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 608,
+            "line": 607,
             "description": "Saves the new filter with the chosen name and hides the controls",
             "itemtype": "method",
             "name": "searchFilterSave2",
@@ -1705,7 +1803,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 628,
+            "line": 627,
             "description": "Sends an event to make the filter view holding the active filter destroy its model",
             "itemtype": "method",
             "name": "searchFilterDelete",
@@ -1719,7 +1817,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 637,
+            "line": 636,
             "description": "Will make the view holding the active filter destroy its model",
             "itemtype": "event",
             "name": "browser:search:filters:remove:[filter-name]",
@@ -1727,7 +1825,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 644,
+            "line": 643,
             "description": "Renders all the filters stored in the temp storage.",
             "itemtype": "method",
             "name": "searchRenderFilters",
@@ -1741,7 +1839,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 674,
+            "line": 673,
             "description": "Forces the view's current filter to match the one clicked by the user",
             "itemtype": "method",
             "name": "searchRenderFilterSuper",
@@ -1755,7 +1853,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 717,
+            "line": 716,
             "description": "Forces the view's current filter to match the one clicked by the user",
             "itemtype": "method",
             "name": "searchFilterActivate",
@@ -1769,7 +1867,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 728,
+            "line": 727,
             "description": "This event is listened by filter views to make them check\nif they are active",
             "itemtype": "event",
             "name": "browser:search:filters:check-status:[filter-name]",
@@ -1777,21 +1875,21 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 740,
+            "line": 739,
             "itemtype": "method",
             "name": "render",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 749,
+            "line": 748,
             "itemtype": "method",
             "name": "renderCollection",
             "class": "BrowserBodyView"
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 822,
+            "line": 821,
             "description": "This methods aims at saving the new positions of the objects",
             "itemtype": "method",
             "name": "sortableUpdate",
@@ -1811,7 +1909,7 @@
         },
         {
             "file": "public/javascripts/views/browser-body.js",
-            "line": 879,
+            "line": 878,
             "description": "This methods aims at preparing the rendering of the tasks with the milestones at the right place\nIt can be used only with tasks sorted by todo_at date",
             "itemtype": "method",
             "name": "insertMilestones",
@@ -1872,7 +1970,8 @@
             "file": "public/javascripts/text.js",
             "line": 1,
             "license": "RequireJS text 2.0.12 Copyright (c) 2010-2014, The Dojo Foundation All Rights Reserved.\nAvailable via the MIT or new BSD license.\nsee: http://github.com/requirejs/text for details",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "public/javascripts/text.js",
@@ -1889,7 +1988,8 @@
                 "description": "with properties \"moduleName\", \"ext\" and \"strip\"\nwhere strip is a boolean.",
                 "type": "Object"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "public/javascripts/text.js",
@@ -1905,20 +2005,23 @@
             "return": {
                 "description": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 3,
             "description": "Top level namespace for Jasmine, a lightweight JavaScript BDD/spec/testing framework.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 10,
             "access": "private",
             "tagname": "",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -1926,37 +2029,43 @@
             "description": "Use <code>jasmine.undefined</code> instead of <code>undefined</code>, since <code>undefined</code> is just\na plain old variable and may be redefined by somebody else.",
             "access": "private",
             "tagname": "",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 25,
             "description": "Show diagnostic messages in the console if set to true",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 31,
             "description": "Default interval in milliseconds for event loop yields (e.g. to allow network activity or to refresh the screen with the HTML-based runner). Small values here may result in slow test running. Zero means no updates until all tests have completed.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 37,
             "description": "Maximum levels of nesting that will be included when an object is pretty-printed",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 42,
             "description": "Default timeout interval in milliseconds for waitsFor() blocks.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 47,
             "description": "By default exceptions thrown in the context of a test are caught by jasmine so that it can run the remaining tests in the suite.\nSet to false to let the exception bubble up in the browser.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -1977,13 +2086,15 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 126,
             "description": "Getter for the Jasmine environment. Ensures one gets created",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2001,7 +2112,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2019,7 +2131,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2037,7 +2150,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2060,7 +2174,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2077,7 +2192,8 @@
                 "description": "",
                 "type": "String"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2094,7 +2210,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2113,7 +2230,8 @@
             "return": {
                 "description": "matchable object of the type clazz"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2132,7 +2250,8 @@
             "return": {
                 "description": "matchable object for the sample"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2154,25 +2273,29 @@
                     "type": "String"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 271,
             "description": "The name of the spy, if provided.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 275,
             "description": "Is this Object a spy?",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 279,
             "description": "The actual function this spy stubs.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2181,7 +2304,8 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy.mostRecentCall.args = [1, 2];"
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2190,7 +2314,8 @@
             "example": [
                 "\nvar mySpy = jasmine.createSpy('foo');\nmySpy(1, 2);\nmySpy(7, 8);\nmySpy.mostRecentCall.args = [7, 8];\nmySpy.argsForCall[0] = [1, 2];\nmySpy.argsForCall[1] = [7, 8];"
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2199,7 +2324,8 @@
             "example": [
                 "\nvar foo = {\n  bar: function() { // do some stuff }\n}\n\n// defining a spy on an existing property: foo.bar\nspyOn(foo, 'bar').andCallThrough();"
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2215,7 +2341,8 @@
                     "type": "Object"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2231,7 +2358,8 @@
                     "type": "String"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2247,7 +2375,8 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2256,7 +2385,8 @@
             "example": [
                 "\nspyOn(foo, 'bar');\n\nfoo.bar();\n\nexpect(foo.bar.callCount).toEqual(1);\n\nfoo.bar.reset();\n\nexpect(foo.bar.callCount).toEqual(0);"
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2273,7 +2403,8 @@
                 "description": "",
                 "type": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2291,13 +2422,15 @@
                     "type": "Array"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 455,
             "description": "All parameters are pretty-printed and concatenated together, then written to the current spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2323,7 +2456,8 @@
                 "description": "a Jasmine spy that can be chained with all spy methods",
                 "type": "jasmine.Spy"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2344,7 +2478,8 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2362,7 +2497,8 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2379,7 +2515,8 @@
                 "description": "",
                 "type": "jasmine.Matchers"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2392,7 +2529,8 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2407,7 +2545,8 @@
                     "type": "Number"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2430,7 +2569,8 @@
                     "type": "Number"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2443,7 +2583,8 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2456,7 +2597,8 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2477,7 +2619,8 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2495,12 +2638,14 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 646,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2520,21 +2665,24 @@
                     "type": "Function"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 659,
             "access": "private",
             "tagname": "",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 713,
             "description": "Environment for Jasmine",
             "is_constructor": 1,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2542,7 +2690,8 @@
             "return": {
                 "description": "an object containing jasmine version build info, if set."
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2550,7 +2699,8 @@
             "return": {
                 "description": "string containing jasmine version build info, if set."
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2558,7 +2708,8 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2566,7 +2717,8 @@
             "return": {
                 "description": "a sequential integer starting at 0"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2579,13 +2731,15 @@
                     "type": "jasmine.Reporter"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1013,
             "is_constructor": 1,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2609,13 +2763,15 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1071,
             "is_constructor": 1,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2637,7 +2793,8 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2649,7 +2806,8 @@
                     "description": ""
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2663,7 +2821,8 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toBe() instead.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2675,7 +2834,8 @@
                     "description": ""
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2689,7 +2849,8 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toEqual() instead.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2701,7 +2862,8 @@
                     "description": ""
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2715,54 +2877,63 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toMatch() instead.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1304,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1311,
             "description": "Matcher that compares the actual to jasmine.undefined.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1318,
             "description": "Matcher that compares the actual to null.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1325,
             "description": "Matcher that compares the actual to NaN.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1336,
             "description": "Matcher that boolean not-nots the actual.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1344,
             "description": "Matcher that boolean nots the actual.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1352,
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was called.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1374,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2770,7 +2941,8 @@
             "description": "Matcher that checks to see if the actual, a Jasmine spy, was not called.",
             "deprecated": true,
             "deprecationMessage": "Use expect(xxx).not.toHaveBeenCalled() instead",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2779,17 +2951,20 @@
             "example": [
                 "\n"
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1426,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1429,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2802,7 +2977,8 @@
                     "type": "Object"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2817,7 +2993,8 @@
             ],
             "deprecated": true,
             "deprecationMessage": "as of 1.0. Use not.toContain() instead.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2835,7 +3012,8 @@
                     "type": "Number"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2849,55 +3027,64 @@
                     "optional": true
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1664,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1760,
             "is_constructor": 1,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1795,
             "description": "Holds results for a set of Jasmine spec. Allows for the results array to hold another jasmine.NestedResults",
             "is_constructor": 1,
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1801,
             "description": "The total count of results",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1805,
             "description": "Number of passed results",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1809,
             "description": "Number of failed results",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1813,
             "description": "Was this suite/spec skipped?",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1817,
             "ignore": "",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2909,7 +3096,8 @@
                     "description": ""
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2921,13 +3109,15 @@
                     "description": "Array of message parts which will be concatenated later."
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1842,
             "description": "Getter for the results: message & results.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2940,7 +3130,8 @@
                     "type": "jasmine.ExpectationResult|jasmine.NestedResults"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2949,13 +3140,15 @@
                 "description": "True if <b>everything</b> below passed",
                 "type": "Boolean"
             },
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 1875,
             "description": "Base class for pretty printing for expectation results.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2967,7 +3160,8 @@
                     "description": ""
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -2981,7 +3175,8 @@
                     "type": "jasmine.Env"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -3005,13 +3200,15 @@
                     "type": "String"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
             "line": 2239,
             "description": "All parameters are pretty-printed and concatenated together, then written to the spec's output.\n\nBe careful not to leave calls to <code>jasmine.log</code> in production code.",
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -3023,7 +3220,8 @@
                     "type": "jasmine.ExpectationResult"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -3038,7 +3236,8 @@
                     "type": "Number"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -3061,7 +3260,8 @@
                     "type": "Number"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -3090,7 +3290,8 @@
                     "type": "jasmine.Suite"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         },
         {
             "file": "test/client/lib/jasmine-1.3.1/jasmine.js",
@@ -3125,7 +3326,8 @@
                     "type": "jasmine.Spec"
                 }
             ],
-            "class": ""
+            "class": "",
+            "module": "temp"
         }
     ],
     "warnings": [

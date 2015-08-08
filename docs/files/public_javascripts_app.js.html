@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Note - Meeno source code documentation</title>
+    <title>public/javascripts/app.js - Meeno source code documentation</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -104,47 +104,54 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1>Note Class</h1>
-<div class="box meta">
+<h1 class="file-heading">File: public/javascripts/app.js</h1>
 
-        <div class="extends">
-            Extends Backbone.RelationalModel
-        </div>
+<div class="file">
+    <pre class="code prettyprint linenums">
+// Define App module&#x27;s dependencies
+// -------------------------------------------------------
 
-        <div class="foundat">
-            Defined in: <a href="../files/public_javascripts_models_note.js.html#l8"><code>public&#x2F;javascripts&#x2F;models&#x2F;note.js:8</code></a>
-        </div>
+/**
+* Meeno application core module
+@module App
+ */
 
-            Module: <a href="../modules/App.html">App</a>
+define ([
+	&#x27;jquery&#x27;,
+	&#x27;underscore&#x27;,
+	&#x27;backbone&#x27;,
+	&#x27;views/main&#x27;,
+	&#x27;routers/router&#x27;,
+	], function ($, _, Backbone, MainView, Router) {
 
-</div>
+		var initialize = function () {
+
+			Backbone.View.prototype.kill = function () {
+				if (this.beforeKill) {
+					this.beforeKill();
+				}
+
+				this.remove();
+				this.off(); // unbind events that are set on this view
+				// remove all models bindings made by this view (do not affect any other observer to this model)
+				if (this.model) {this.model.off( null, null, this );}
+			};
+
+			Backbone.history.start(); // Start Backbone history recording
+
+			new MainView(); // Kick things off by creating the **main view**.
+			new Router(); // Initiate Router
+		};
 
 
-<div class="box intro">
-    <p>This class holds the note model</p>
-
-</div>
-
-
-<div id="classdocs" class="tabview">
-    <ul class="api-class-tabs">
-        <li class="api-class-tab index"><a href="#index">Index</a></li>
-
-    </ul>
-
-    <div>
-        <div id="index" class="api-class-tabpanel index">
-            <h2 class="off-left">Item Index</h2>
-
-
-
-
-        </div>
-
-
-
-
-    </div>
+		// Return what will embody the &quot;App&quot; object
+		// ----------------------------------------
+		return {
+			initialize: initialize,
+		};
+	}
+);
+    </pre>
 </div>
                     </div>
                 </div>

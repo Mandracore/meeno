@@ -69,6 +69,8 @@
                             </ul>
                 
                             <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/App.html">App</a></li>
+                                <li><a href="../modules/temp.html">temp</a></li>
                             </ul>
                         </div>
                     </div>
@@ -274,7 +276,7 @@ define ([
 
 			/**
 			 * Should become the one proxy for all keyboard events. For now, it is only used for
-			 * task creation
+			 * task creation.
 			 *
 			 * @method kbEventProxy
 			 */
@@ -412,15 +414,14 @@ define ([
 			 * Child of the method {{#crossLink &quot;BrowserBodyView/newTask:method&quot;}}{{/crossLink}}.
 			 * Allows to have the same behaviour, regardless of how the user validates the creation. So the calling method can be
 			 * either {{#crossLink &quot;BrowserBodyView/newTask:method&quot;}}{{/crossLink}} (creation by click on button) or
-			 * {{#crossLink &quot;BrowserBodyView/kbEventProxy:method&quot;}}{{/crossLink}} (creation by keying ENTER)
+			 * {{#crossLink &quot;BrowserBodyView/kbEventProxy:method&quot;}}{{/crossLink}} (creation by keying ENTER).
 			 * 
 			 * @method newTaskSub
 			 */
 			newTaskSub: function ($input) {
-
 				temp.coll.tasks.sort();
-				var newPosition = temp.coll.tasks.at(0).get(&#x27;position&#x27;)-15;
-				console.log(&quot;newPosition=&quot;+newPosition);
+
+				var newPosition = (temp.coll.tasks.length &gt; 0) ? (temp.coll.tasks.at(0).get(&#x27;position&#x27;)-1) : 0;
 
 				var task = new Task ({
 					label    : $input.val(),

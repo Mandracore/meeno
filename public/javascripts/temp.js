@@ -1,3 +1,9 @@
+/**
+* Temporary business objects storage module: where all tasks, notes and other
+* records and collections are stored during the application runtime.
+@module temp
+ */
+
 define ([
 		'jquery',
 		'underscore',

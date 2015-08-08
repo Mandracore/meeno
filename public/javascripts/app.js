@@ -1,5 +1,11 @@
 // Define App module's dependencies
 // -------------------------------------------------------
+
+/**
+* Meeno application core module
+@module App
+ */
+
 define ([
 	'jquery',
 	'underscore',

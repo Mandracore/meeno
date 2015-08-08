@@ -4,9 +4,10 @@ define ([
 		'backbone',
 		'temp',
 		'channel',
+		'models/tag',
 		'views/browser-body-object',
 		'models/filter',
-	], function ($, _, Backbone, temp, channel, BrowserBodyObjectView, Filter) {
+	], function ($, _, Backbone, temp, channel, Tag, BrowserBodyObjectView, Filter) {
 
 		/**
 		 * Displays a task in the browser
