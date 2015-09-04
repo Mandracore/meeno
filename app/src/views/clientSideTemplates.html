@@ -9,35 +9,28 @@
 </script>
 <script type="text/template" id="browser-body-task-template" style="display: none;">
 	<span style="display: none;" class="checkbox icon-check-empty"></span>
-	<span class="attribute"><%= task.created_at %> **** created</span></br>
+	<!--span class="attribute"><%= task.created_at %> **** created</span></br>
 	<span class="attribute"><%= task.todo_at %> **** todo</span></br>
 	<span class="attribute"><%= task.due_at %> **** due</span></br>
-	<span class="attribute"><%= task.updated_at %> **** updated</span></br>
-	<span class="check label attribute"><%= task.label %></span>
+	<span class="attribute"><%= task.updated_at %> **** updated</span></br-->
 	
-	<span>[<%= task.position %>]</span>
-	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag.label %>]</span><% }); %></span>
-	<span class="edit">Edit</span><span class="delete">Delete</span>
-	<div class="details" style="display: none;">
-		<p class="status wip" style="display: none;">Update in progress</p>
-		<p class="status done" style="display: none;">Update successful</p>
-		<form onsubmit="return false;">
-			<fieldset>
-				<label for="label">Label</label>
-				<input class="submitOnEnter" type="text" name="label" value="<%= task.label %>"/></br>
-				<label for="description">Description</label>
-				<input class="submitOnEnter" type="text" name="description" value="<%= task.description %>"/></br>
-				<label for="newTag">Tags</label>
-				<span class="tagButtons">
-					<% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %>
-				</span>
-				<input class="mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create a new one"/></br>
-				<button type="button" class="update">Update</button>
-				<button type="button" class="reset">Undo changes</button>
-				<button type="button" class="close">Close</button>
-			</fieldset>
-		</form>
-	</div>
+	<button class="move">=</button>
+	<p>
+		<span class="check label attribute"><%= task.label %></span>
+		<!-- 1. add contentEditable to span when clicking on edit -->
+		<!-- 2. change the style of the whole p (to make it look like an input) -->
+		<!-- 3. update class "label" to "label-edited" in order to deactivate the completion behaviours -->
+		<!-- 4. remove contentEditable from span when finishing edition -->
+
+		<button class="hidden delete">Delete</button>
+		<button class="hidden edit">Edit</button>
+		<button class="edition edit">Update</button>
+	</p>
+	<p>
+		<span class="tags attribute tagButtons"><% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %></span>
+		<button class="hidden add-tag">Add tag</button>
+		<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create a new one"/></br>
+	</p>
 </script>
 <script type="text/template" id="browser-body-filter-template" style="display: none;"><%= label %></script>
 <script type="text/template" id="editor-tab-template" style="display: none;">

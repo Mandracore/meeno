@@ -546,3 +546,14 @@ Impossible to add more than one tag to a task ? TBC
 	add 2 existing tag is OK
 	remove 1 existing tag is OK
 	add 1 new existing is KO
+
+
+10/08===================================================
+#improvement
+Au survol du label : strikethrough (completed) => DONE
+Au survol de toute la tâche :
+	Afficher EDIT sur label
+	Afficher ADD TAG sur tags
+Au click sur un tag : suppression
+Au click sur due-date : mise à jour via calendrier
+

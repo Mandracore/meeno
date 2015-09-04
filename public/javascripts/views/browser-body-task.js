@@ -17,7 +17,8 @@ define ([
 		 */
 		var BrowserBodyTaskView = BrowserBodyObjectView.extend({
 
-			template : '#browser-body-task-template',
+			template  : '#browser-body-task-template',
+			className : 'task',
 
 			events: function(){
 				return _.extend({},BrowserBodyObjectView.prototype.events,{

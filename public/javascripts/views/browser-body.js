@@ -143,6 +143,22 @@ define ([
 				});
 
 				// Launch dropzone setup at initialization and every time the dropzone .today is activated
+
+				this.$( ".col1 .dropzone" ).on( "dropactivate", function( event, ui ) {
+					$(this).fadeIn(200,
+						function () {$(this).siblings().each(function( index, sib ) {
+  							$(sib).hide();
+						});}
+					);
+				} );
+				this.$( ".col1 .dropzone" ).on( "dropdeactivate", function( event, ui ) {
+					$(this).fadeOut(200,
+						function () {$(this).siblings().each(function( index, sib ) {
+  							$(sib).show();
+						});}
+					);
+				} );
+
 				this.$( ".droppable.today" ).on( "dropactivate", function( event, ui ) {
 					// Make sure dropzones are adapted to current situation (an update is
 					// necessary every day)

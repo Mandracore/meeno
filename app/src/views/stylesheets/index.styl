@@ -161,6 +161,8 @@ nav
 			margin 0 1em 1em
 		.zones
 			margin 0 1em
+	.dropzone
+		display none
 	.zones
 		li
 			border 1px solid cTextSec
@@ -303,11 +305,22 @@ nav
 		list-style-type none
 		margin 1em 0 0
 		padding 0
-		li
+		.milestone
+			font-size 1.2em
+			color grey
+		li.task
 			margin 0
 			padding 0.5em
+			.hidden, .edition
+				display none
+			.edition.in-progress
+				display initial
 			&:hover
 				background-color rgba(0,0,0,0.1)
+				.hidden
+					display initial
+			.move:hover
+				color red
 			span.button
 				opacity 0
 				text-shadow 1px 1px 1px white

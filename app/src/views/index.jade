@@ -105,14 +105,19 @@ block content
 						ul.objects.notes
 					div.col3.saved-filters
 				div.listobjects.tasks.selected
-					div.col1.dropzone
-						.title dropzone
-						.subtitle Drag tasks and drop them below to postpone them
-						ul.zones
-							li.droppable.today Today
-							li.droppable.tomorrow Tomorrow
-							li.droppable.nextweek Next week
-							li.droppable.later Later
+					div.col1
+						div.dropzone
+							.title dropzone
+							.subtitle Drag tasks and drop them below to postpone them
+							ul.zones
+								li.droppable.today Today
+								li.droppable.tomorrow Tomorrow
+								li.droppable.nextweek Next week
+								li.droppable.later Later
+						div.actions
+							div.saved-filters
+								.title saved filters
+								.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
 					div.col2
 						div.search-wrapper
 							div.super-input
@@ -146,9 +151,10 @@ block content
 							button.filter-checked(data-step="2", style="display:none") Now showing both
 						// Hereafeter will be displayed the objects
 						ul.objects.tasks.draggable
-					div.col3.saved-filters
-						.title saved filters
-						.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
+					div.col3
+						div.saved-filters
+							.title saved filters
+							.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
 				div.listobjects.tags
 					div.col1.dropzone
 					// empty
