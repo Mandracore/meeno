@@ -114,9 +114,10 @@ define ([
 		&#x27;backbone&#x27;,
 		&#x27;temp&#x27;,
 		&#x27;channel&#x27;,
+		&#x27;models/tag&#x27;,
 		&#x27;views/browser-body-object&#x27;,
 		&#x27;models/filter&#x27;,
-	], function ($, _, Backbone, temp, channel, BrowserBodyObjectView, Filter) {
+	], function ($, _, Backbone, temp, channel, Tag, BrowserBodyObjectView, Filter) {
 
 		/**
 		 * Displays a task in the browser
@@ -126,17 +127,20 @@ define ([
 		 */
 		var BrowserBodyTaskView = BrowserBodyObjectView.extend({
 
-			template : &#x27;#browser-body-task-template&#x27;,
+			template  : &#x27;#browser-body-task-template&#x27;,
+			className : &#x27;task&#x27;,
 
 			events: function(){
 				return _.extend({},BrowserBodyObjectView.prototype.events,{
-					&#x27;click .edit&#x27;             : &#x27;edit&#x27;,
-					&#x27;click span.label&#x27;        : &#x27;check&#x27;,
-					&#x27;click .delete&#x27;           : &#x27;delete&#x27;,
-					&#x27;click .close&#x27;            : &#x27;close&#x27;,
-					&#x27;click .update&#x27;           : &#x27;update&#x27;,
-					&#x27;click .reset&#x27;            : &#x27;reset&#x27;,
-					&#x27;click .tagButtons button&#x27;: &#x27;unlink&#x27;,
+					&#x27;click .label .edit&#x27;          : &#x27;editLabel&#x27;,
+					&#x27;click .label .cancel&#x27;        : &#x27;editLabelCancel&#x27;,
+					&#x27;click .label .save&#x27;          : &#x27;editLabelSave&#x27;,
+					&#x27;click .tags .edit&#x27;           : &#x27;editTags&#x27;,
+					&#x27;click .tags .cancel&#x27;         : &#x27;editTagsCancel&#x27;,
+					&#x27;click .tags .save&#x27;           : &#x27;editTagsSave&#x27;,
+					&#x27;click .label .attribute&#x27;     : &#x27;check&#x27;,
+					&#x27;click .delete&#x27;               : &#x27;delete&#x27;,
+					&#x27;click .tags .buttons button&#x27; : &#x27;editTagsRemove&#x27;,
 				});
 			},
 
@@ -144,7 +148,8 @@ define ([
 			 * @method initialize
 			 */
 			initialize: function() {
-				//this.options.hasSelectedTag = false;
+				// To catch keyboard events and dispatch them to a proxy
+				this.listenTo(channel, &#x27;keyboard:enter&#x27;, function () {this.kbEventProxy(&quot;enter&quot;);});
 			},
 
 			/**
@@ -180,95 +185,113 @@ define ([
 
 				channel.trigger(&quot;browser:tasks:reSyncSelectors&quot;);
 
-				// Control the behaviour when ENTER key is keyed down
-				self.$(&quot;input&quot;).not(&#x27;.autocomplete&#x27;).on(&quot;keydown&quot;, function(event) {
-					// track enter key
-					var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
-					if (keycode == 13) { // keycode for enter key
-						self.$(&quot;.update&quot;).click();
-						return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
-					} else  {
-						return true;
-					}
-				});
-				self.$(&quot;input.autocomplete&quot;).on(&quot;keydown&quot;, function(event) {
-					// track enter key
-					var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
-					if (keycode == 13) { // keycode for enter key
-						self.addNewTag();
-						return false; // To prevent the browser to try to submit the form by itself (by faking a click on an unwanted button)
-					} else  {
-						return true;
-					}
-				});
-
 				return this;
 			},
 
-			/**
-			 * @method edit
-			 */
-			edit: function() {
-				this.$(&quot;.details&quot;).slideDown();
-				this.$(&quot;input[name=&#x27;label&#x27;]&quot;).focus().select();
-				this.initAutocomplete();
-			},
+
+//================================================
+// TO BE REFITTED
+//================================================
+
+
+
+
+			// Keyboard event proxy
+			// =============================================================================
 
 			/**
-			 * Updates the view after the user modified the tags related to the task
-			 * 
-			 * @method renderTagUpdate
+			 * Should become the one proxy for all keyboard events. For now, it is only used for
+			 * task creation. #Performance issue : there is one listener per task, so if 200 tasks are
+			 * rendered, there is 200 proxies that will receive the same event and do a similar check.
+			 * #enhancement In the future, it could be interesting to think about something more efficient.
+			 *
+			 * @method kbEventProxy
 			 */
-			renderTagUpdate: function() {
-				this.render();
-				this.$(&quot;.details&quot;).show();
-				this.initAutocomplete();
-				this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(&quot;&quot;).focus();
-			},
+			kbEventProxy: function (event) {
+				var $inputEditLabel = this.$(&quot;.label input&quot;);
+				var $inputEditTags  = this.$(&quot;.tags input&quot;);
 
-			/**
-			 * When the user tries to link the task to a new tag, this method will create the desired tag 
-			 * and link it to the view&#x27;s model.
-			 * 
-			 * @method addNewTag
-			 */
-			addNewTag: function() {
-				var self = this;
-				if (self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).is(&quot;:focus&quot;) &amp;&amp; self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val().length &gt; 1) {
-
-					// Check that the value set by the user corresponds to a new tag
-					// get all tags having exactly the label value = input value
-					var selection = temp.coll.tags.where({label: self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
-					if (selection.length == 0) {
-						// The user wants a new tag
-						// 1. create a new tag
-						var newTag = new Tag ({
-							label : self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(),
-						});
-						temp.coll.tags.add(newTag); // We add it to the collection so that we can save it
-						newTag.save({}, {
-							success: function () {
-						// 2. link the new tag
-								self.model.get(&#x27;tagLinks&#x27;).add({ tag: newTag });
-								self.renderTagUpdate();
-								return false;
-							},
-						})
-;						return false;
-					}
+				// 1. The user wants to create a new task
+				if ($inputEditLabel.is(&quot;:focus&quot;) &amp;&amp; event == &quot;enter&quot;) {
+					this.editLabelSave ();
 				}
-				return false;
+
+				// 2. The user wants to link a tag that doesn&#x27;t exist to the current task
+				// Will handle what happens if the user keyes in ENTER in the input, which bypasses the autocomplete, 
+				// whether the autocomplete provided a match or not
+				if ($inputEditTags.is(&quot;:focus&quot;) &amp;&amp; event == &quot;enter&quot;) {
+					this.editTagsReturnKey ();
+				}
 			},
 
+			//============================================================
+			// LABEL EDITION
+			//============================================================
+
+			/**
+			 * To handle label edition. Globally works as follows : the user clicks on &quot;edit&quot;, then we hide this button
+			 * by add the class &quot;inactive&quot; to the parent span &quot;default&quot;. 
+			 * 
+			 * @method editLabel
+			 */
+			editLabel: function() {
+				this.$(&quot;.default&quot;).addClass(&quot;inactive&quot;);
+				this.$(&quot;.label .edition&quot;).addClass(&quot;active&quot;);
+				this.$(&quot;input[name=&#x27;label&#x27;]&quot;).focus().select();
+			},
+
+			/**
+			 * Saving label update
+			 * 
+			 @method editLabelSave
+			 */
+			editLabelSave: function() {
+				this.model.set({
+					label : this.$(&quot;input[name=&#x27;label&#x27;]&quot;).val(),
+				}).save();
+				this.$(&quot;.default&quot;).removeClass(&quot;inactive&quot;);
+				this.$(&quot;.label .edition&quot;).removeClass(&quot;active&quot;);
+			},
+
+			/**
+			 * Cancelling label update
+			 * 
+			 * @method editLabelCancel
+			 */
+			editLabelCancel: function() {
+				this.$(&quot;input[name=&#x27;label&#x27;]&quot;).val(this.model.get(&quot;label&quot;))
+				this.$(&quot;.default&quot;).removeClass(&quot;inactive&quot;);
+				this.$(&quot;.label .edition&quot;).removeClass(&quot;active&quot;);
+			},
+
+			//============================================================
+			// TAGS EDITION
+			//============================================================
+
+			/**
+			 * To link new tags to the current task
+			 * 
+			 * @method editTags
+			 */
+			editTags: function() {
+				this.editTagsAutocompleteInit();
+				
+				this.$(&quot;.label .default button&quot;).addClass(&quot;inactive&quot;);
+				this.$(&quot;.tags .default&quot;).addClass(&quot;inactive&quot;);
+				this.$(&quot;.tags .edition&quot;).addClass(&quot;active&quot;);
+				this.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).focus().select();
+
+				//this.editLabelCancel(); // To close the label editor in cas it&#x27;s open
+			},
 
 			/**
 			 * Should initialize the task&#x27;s tag autocomplete input and allow for linking existing tags
 			 * to the task.
-			 * To be called only when a task is being edited, and deleted when its form is closed
+			 * To be called only when the user wants to add a new tag, and closed afterwards
 			 * 
-			 * @method initAutocomplete
+			 * @method editTagsAutocompleteInit
 			 */
-			initAutocomplete: function() {
+			editTagsAutocompleteInit: function() {
 				var self = this;
 				this.$(&quot;.autocomplete&quot;).autocomplete({
 					source: function (request, response) {
@@ -290,39 +313,102 @@ define ([
 					},
 					select: function(event, ui) {
 						var selection = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
-						self.model.get(&#x27;tagLinks&#x27;).add({ tag: selection });
-						self.renderTagUpdate();
+						self.model.get(&#x27;tagLinks&#x27;).add({ tag: selection }); // adding the tag to the model
+						// Re-rendering the task but re-opening the editTag form to go quicker if the user wants to go on
+						self.model.save();
+						self.editTagsAutocompleteKill();
+						self.render();
 					}
 				});
 			},
 
 			/**
-			 * Saves the changes made into the database
+			 * Used to destroy the autocomplete widget. It is necessary when :
+			 * 1. The user successfully links a tag to the task
+			 * 2. The user gives up its tag modification
 			 * 
-			 * @method update
+			 * @method editTagsAutocompleteKill
 			 */
-			update: function() {
-				this.model.set({
-					label : this.$(&quot;input[name=&#x27;label&#x27;]&quot;).val(),
-					description : this.$(&quot;input[name=&#x27;description&#x27;]&quot;).val(),
-				}).save();
-				this.close();
+			editTagsAutocompleteKill: function() {
+				this.$(&quot;.autocomplete&quot;).autocomplete(&quot;destroy&quot;);
 			},
 
 			/**
-			 * Should unlink the clicked tag from the task
+			 * Cancelling tags edition
 			 * 
-			 * @method unlink
+			 * @method editTagsCancel
 			 */
-			unlink: function(event) {
+			editTagsCancel: function() {
+				this.$(&quot;.label .default button&quot;).removeClass(&quot;inactive&quot;);
+				this.$(&quot;.tags .default&quot;).removeClass(&quot;inactive&quot;);
+				this.$(&quot;.tags .edition&quot;).removeClass(&quot;active&quot;);
+
+				this.$(&quot;input[name=&#x27;tags&#x27;]&quot;).val(&quot;&quot;);
+				this.editTagsAutocompleteKill();
+			},
+
+			/**
+			 * To be called when the user keyes ENTER in and the autcomplete has not the focus (just the input)
+			 * Two cases are possible :
+			 * 1. The tag keyed in already exists (link only)
+			 * 2. The tag keyed in does not exist (create and link)
+			 * 
+			 * @method editTagsReturnKey
+			 */
+			editTagsReturnKey: function() {
+				var self = this;
+				if (self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).is(&quot;:focus&quot;) &amp;&amp; self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val().length &gt; 1) {
+				// Check that the value set by the user corresponds to a new tag
+				// get all tags having exactly the label value = input value
+					var selection = temp.coll.tags.where({label: self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val()});
+					if (selection.length == 0) {
+						// The user wants a new tag
+						// 1. create a new tag
+						var newTag = new Tag ({
+							label : self.$(&quot;input[name=&#x27;newTag&#x27;]&quot;).val(),
+						});
+						temp.coll.tags.add(newTag); // We add it to the collection so that we can save it
+						newTag.save({}, {
+							success: function () {
+						// 2. link the new tag
+								self.model.get(&#x27;tagLinks&#x27;).add({ tag: newTag });
+								self.model.save();
+								self.editTagsAutocompleteKill();
+								self.render();
+								return false;
+							},
+						});
+						return false;
+					} else {
+						// The user wants to link an existing tag
+						self.model.get(&#x27;tagLinks&#x27;).add({ tag: selection[0] });
+						self.model.save();
+						self.editTagsAutocompleteKill();
+						self.render();
+					}
+				}
+				return false;
+			},
+
+			/**
+			 * Should remove the clicked tag from the task
+			 * 
+			 * @method editTagsRemove
+			 */
+			editTagsRemove: function(event) {
 				var tag = temp.coll.tags.get($(event.target).attr(&#x27;data-cid&#x27;));
 				var tagLink = this.model.get(&#x27;tagLinks&#x27;).find(
 					function (tagLink) {return tagLink.get(&quot;tag&quot;) == tag; }
 				);
-
 				this.model.get(&#x27;tagLinks&#x27;).remove(tagLink);
-				this.renderTagUpdate();
+
+				this.model.save();
+				this.render();
 			},
+
+			//============================================================
+			// COMPLETION EDITION
+			//============================================================
 
 			/**
 			 * Will update the model (complete the task) and relaunch rendering.
@@ -337,19 +423,9 @@ define ([
 				this.render();
 			},
 
-			/**
-			 * Will reset the model to the value stored in DB and re-render the view accordingly.
-			 * 
-			 * @method reset
-			 */
-			reset: function() {
-				var self = this;
-				this.model.fetch({success: function(model, response) {
-					self.render();
-					self.$(&quot;.details&quot;).show();
-					self.initAutocomplete();
-				}});
-			},
+			//============================================================
+			// DELETE TASK
+			//============================================================
 
 			/**
 			 * To remove the view&#x27;s model from database and kill the view.
@@ -361,15 +437,6 @@ define ([
 				this.remove();
 			},
 
-			/**
-			 * To close the task form
-			 * 
-			 * @method close
-			 */
-			close: function() {
-				this.$(&quot;.autocomplete&quot;).autocomplete(&quot;destroy&quot;);
-				this.$(&quot;.details&quot;).slideUp();
-			}
 		});
 
 		return BrowserBodyTaskView;

@@ -253,6 +253,22 @@ define ([
 				});
 
 				// Launch dropzone setup at initialization and every time the dropzone .today is activated
+
+				this.$( &quot;.col1 .dropzone&quot; ).on( &quot;dropactivate&quot;, function( event, ui ) {
+					$(this).fadeIn(200,
+						function () {$(this).siblings().each(function( index, sib ) {
+  							$(sib).hide();
+						});}
+					);
+				} );
+				this.$( &quot;.col1 .dropzone&quot; ).on( &quot;dropdeactivate&quot;, function( event, ui ) {
+					$(this).fadeOut(200,
+						function () {$(this).siblings().each(function( index, sib ) {
+  							$(sib).show();
+						});}
+					);
+				} );
+
 				this.$( &quot;.droppable.today&quot; ).on( &quot;dropactivate&quot;, function( event, ui ) {
 					// Make sure dropzones are adapted to current situation (an update is
 					// necessary every day)
@@ -285,7 +301,6 @@ define ([
 
 				// 1. The user wants to create a new task
 				if ($newTaskInput.is(&quot;:focus&quot;) &amp;&amp; event==&quot;enter&quot;) {
-					console.log (&quot;From kb&quot;);
 					this.newTaskSub ($newTaskInput);
 				}
 			},
@@ -404,8 +419,6 @@ define ([
 			 * @method newTask
 			 */
 			newTask: function (event) {
-				console.log (&quot;From click&quot;);
-
 				var $input = $(event.target).prev();
 				this.newTaskSub($input);
 			},
@@ -437,6 +450,7 @@ define ([
 			// =============================================================================
 			// Series of methods that allow for selecting several objects and operating an 
 			// action on them (delete, tag, move,...)
+			// Not ready yet, for future use.
 
 			/**
 			 * Manages the buttons &quot;select all&quot; and &quot;unselect all&quot;. Will be called every time an object

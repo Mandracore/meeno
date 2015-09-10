@@ -191,7 +191,6 @@ define ([
 
 				// 1. The user wants to create a new task
 				if ($newTaskInput.is(":focus") && event=="enter") {
-					console.log ("From kb");
 					this.newTaskSub ($newTaskInput);
 				}
 			},
@@ -310,8 +309,6 @@ define ([
 			 * @method newTask
 			 */
 			newTask: function (event) {
-				console.log ("From click");
-
 				var $input = $(event.target).prev();
 				this.newTaskSub($input);
 			},

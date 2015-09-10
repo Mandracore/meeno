@@ -43,7 +43,7 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "temp",
             "name": "temp",
-            "description": "Temporary business objects storage module: where all tasks, notes and other\nrecords and collections are stored during the application runtime"
+            "description": "Temporary business objects storage module: where all tasks, notes and other\nrecords and collections are stored during the application runtime."
         }
     ]
 } };
