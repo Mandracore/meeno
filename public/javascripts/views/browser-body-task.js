@@ -22,13 +22,15 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserBodyObjectView.prototype.events,{
-					'click .edit'             : 'edit',
-					'click span.label'        : 'check',
-					'click .delete'           : 'delete',
-					'click .close'            : 'close',
-					'click .update'           : 'update',
-					'click .reset'            : 'reset',
-					'click .tagButtons button': 'unlink',
+					'click .label .edit'       : 'editLabel',
+					'click .label .cancel'     : 'editLabelCancel',
+					'click .label .save'       : 'editLabelSave',
+					'click .tags .edit'        : 'editTags',
+					'click .tags .cancel'      : 'editTagsCancel',
+					'click .tags .save'        : 'editTagsSave',
+					'click .label .attribute'  : 'check',
+					'click .delete'            : 'delete',
+					'click .tagButtons button' : 'unlink',
 				});
 			},
 
@@ -36,7 +38,8 @@ define ([
 			 * @method initialize
 			 */
 			initialize: function() {
-				//this.options.hasSelectedTag = false;
+				// To catch keyboard events and dispatch them to a proxy
+				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 			},
 
 			/**
@@ -72,6 +75,11 @@ define ([
 
 				channel.trigger("browser:tasks:reSyncSelectors");
 
+				//===============================================================================
+				// DEPRECATED ==> TO BE REDESIGNED USING A MOUSETRAP LISTENER AND A KEY PROXY
+				//===============================================================================
+
+/*
 				// Control the behaviour when ENTER key is keyed down
 				self.$("input").not('.autocomplete').on("keydown", function(event) {
 					// track enter key
@@ -94,16 +102,112 @@ define ([
 					}
 				});
 
+
+*/
+
 				return this;
 			},
 
+
+//================================================
+// TO BE REFITTED
+//================================================
+			// Keyboard event proxy
+			// =============================================================================
+
 			/**
-			 * @method edit
+			 * Should become the one proxy for all keyboard events. For now, it is only used for
+			 * task creation.
+			 *
+			 * @method kbEventProxy
 			 */
-			edit: function() {
-				this.$(".details").slideDown();
+			kbEventProxy: function (event) { console.log("heard")
+				var $inputEditLabel = this.$(".label input");
+				var $inputEditTags  = this.$(".tags input");
+
+				// 1. The user wants to create a new task
+				if ($inputEditLabel.is(":focus") && event == "enter") {
+					console.log ("Save label !! From kb");
+					this.editLabelSave ();
+				}
+			},
+
+
+
+
+
+
+			//============================================================
+			// LABEL EDITION
+			//============================================================
+
+			/**
+			 * To handle label edition. Globally works as follows : the user clicks on "edit", then we hide this button
+			 * by add the class "inactive" to the parent span "default". 
+			 * 
+			 * @method editLabel
+			 */
+			editLabel: function() {
+				this.$(".default").addClass("inactive");
+				this.$(".label .edition").addClass("active");
 				this.$("input[name='label']").focus().select();
-				this.initAutocomplete();
+			},
+
+			/**
+			 * Saving label update
+			 * 
+			 * @method editLabelSave
+			 */
+			editLabelSave: function() {
+				this.model.set({
+					label : this.$("input[name='label']").val(),
+				}).save();
+				this.$(".default").removeClass("inactive");
+				this.$(".label .edition").removeClass("active");
+			},
+
+			/**
+			 * Cancelling label update
+			 * 
+			 * @method editLabelCancel
+			 */
+			editLabelCancel: function() {
+				this.$("input[name='label']").val(this.model.get("label"))
+				this.$(".default").removeClass("inactive");
+				this.$(".label .edition").removeClass("active");
+			},
+
+			//============================================================
+			// TAGS EDITION
+			//============================================================
+
+			/**
+			 * To link new tags to the current task
+			 * 
+			 * @method editTags
+			 */
+			editTags: function() {
+				//this.initAutocomplete(); // To be moved somewhere
+				
+				this.$(".label .default button").addClass("inactive");
+				this.$(".tags .default").addClass("inactive");
+				this.$(".tags .edition").addClass("active");
+				this.$("input[name='newTag']").focus().select();
+
+				//this.editLabelCancel(); // To close the label editor in cas it's open
+			},
+
+			/**
+			 * Cancelling tags edition
+			 * 
+			 * @method editTagsCancel
+			 */
+			editTagsCancel: function() {
+				this.$(".label .default button").removeClass("inactive");
+				this.$(".tags .default").removeClass("inactive");
+				this.$(".tags .edition").removeClass("active");
+
+				this.$("input[name='tags']").val("")
 			},
 
 			/**
@@ -188,18 +292,16 @@ define ([
 				});
 			},
 
-			/**
-			 * Saves the changes made into the database
-			 * 
-			 * @method update
-			 */
+			/** DEPRECATED
+
+			 *
 			update: function() {
 				this.model.set({
 					label : this.$("input[name='label']").val(),
 					description : this.$("input[name='description']").val(),
 				}).save();
 				this.close();
-			},
+			},*/
 
 			/**
 			 * Should unlink the clicked tag from the task
@@ -216,6 +318,10 @@ define ([
 				this.renderTagUpdate();
 			},
 
+			//============================================================
+			// COMPLETION EDITION
+			//============================================================
+
 			/**
 			 * Will update the model (complete the task) and relaunch rendering.
 			 * It can also uncheck task.
@@ -229,11 +335,10 @@ define ([
 				this.render();
 			},
 
-			/**
+			/** DEPRECATED
 			 * Will reset the model to the value stored in DB and re-render the view accordingly.
 			 * 
-			 * @method reset
-			 */
+			 *
 			reset: function() {
 				var self = this;
 				this.model.fetch({success: function(model, response) {
@@ -241,7 +346,11 @@ define ([
 					self.$(".details").show();
 					self.initAutocomplete();
 				}});
-			},
+			},*/
+
+			//============================================================
+			// DELETE TASK
+			//============================================================
 
 			/**
 			 * To remove the view's model from database and kill the view.
@@ -253,15 +362,14 @@ define ([
 				this.remove();
 			},
 
-			/**
+			/** DEPRECATED
 			 * To close the task form
 			 * 
-			 * @method close
-			 */
+			 *
 			close: function() {
 				this.$(".autocomplete").autocomplete("destroy");
 				this.$(".details").slideUp();
-			}
+			}*/
 		});
 
 		return BrowserBodyTaskView;

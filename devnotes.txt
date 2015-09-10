@@ -557,3 +557,7 @@ Au survol de toute la tâche :
 Au click sur un tag : suppression
 Au click sur due-date : mise à jour via calendrier
 
+09/09======================================================
+Reprendre le rendering des tâches : il doit tirer profit de mousetrap et d'un proxy keyboard.
+Ensuite valider que le ENter est bien détecté dans le label et dans le add tag
+Puis seulement commencer le dev

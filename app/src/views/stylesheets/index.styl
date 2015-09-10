@@ -311,14 +311,18 @@ nav
 		li.task
 			margin 0
 			padding 0.5em
-			.hidden, .edition
+			.default button, .edition
 				display none
-			.edition.in-progress
+			.default.inactive
+				display none
+			.edition.active
 				display initial
 			&:hover
 				background-color rgba(0,0,0,0.1)
-				.hidden
+				.default button
 					display initial
+				.default button.inactive
+					display none
 			.move:hover
 				color red
 			span.button
@@ -337,9 +341,9 @@ nav
 					opacity 1
 					cursor pointer
 			&.completed
-				span.label
+				.label .attribute
 					text-decoration underline
-			span.label:hover
+			.label .attribute:hover
 				text-decoration underline
 	.checkbox
 		margin 0 8px 0 0

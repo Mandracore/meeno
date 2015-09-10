@@ -103,7 +103,7 @@ block content
 								span.cancel Cancel
 						// Hereafeter will be displayed the objects
 						ul.objects.notes
-					div.col3.saved-filters
+					div.col3
 				div.listobjects.tasks.selected
 					div.col1
 						div.dropzone
@@ -115,9 +115,12 @@ block content
 								li.droppable.nextweek Next week
 								li.droppable.later Later
 						div.actions
-							div.saved-filters
-								.title saved filters
-								.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
+							div.new-task
+								.title NEW TASK
+								.subtitle Type here the content of a new task you would like to create. 
+								input.mousetrap(type="text", placeholder="Describe here your new task")
+								//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
+								button save task
 					div.col2
 						div.search-wrapper
 							div.super-input
@@ -140,11 +143,6 @@ block content
 							li.delete
 								span.action Delete tasks
 								span.cancel Cancel
-						div.new-task
-							div.input
-								input.mousetrap(type="text", placeholder="Type here your new task")
-								//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
-								button save task
 						span
 							button.filter-checked(data-step="0") Now showing todo only
 							button.filter-checked(data-step="1", style="display:none") Now showing done only
@@ -152,7 +150,7 @@ block content
 						// Hereafeter will be displayed the objects
 						ul.objects.tasks.draggable
 					div.col3
-						div.saved-filters
+						//div.saved-filters
 							.title saved filters
 							.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
 				div.listobjects.tags
