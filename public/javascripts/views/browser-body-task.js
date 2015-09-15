@@ -168,7 +168,7 @@ define ([
 				
 				this.$(".label .default button").addClass("inactive");
 				this.$(".tags .default").addClass("inactive");
-				this.$(".tags .edition").addClass("active");
+				this.$(".tags").addClass("active");
 				this.$("input[name='newTag']").focus().select();
 
 				//this.editLabelCancel(); // To close the label editor in cas it's open
@@ -231,7 +231,7 @@ define ([
 			editTagsCancel: function() {
 				this.$(".label .default button").removeClass("inactive");
 				this.$(".tags .default").removeClass("inactive");
-				this.$(".tags .edition").removeClass("active");
+				this.$(".tags").removeClass("active");
 
 				this.$("input[name='tags']").val("");
 				this.editTagsAutocompleteKill();
@@ -248,6 +248,50 @@ define ([
 			editTagsReturnKey: function() {
 				var self = this;
 				if (self.$("input[name='newTag']").is(":focus") && self.$("input[name='newTag']").val().length > 1) {
+				// Check that the value set by the user corresponds to a new tag
+				// get all tags having exactly the label value = input value
+					var selection = temp.coll.tags.where({label: self.$("input[name='newTag']").val()});
+					if (selection.length == 0) {
+						// The user wants a new tag
+						// 1. create a new tag
+						var newTag = new Tag ({
+							label : self.$("input[name='newTag']").val(),
+						});
+						temp.coll.tags.add(newTag); // We add it to the collection so that we can save it
+						newTag.save({}, {
+							success: function () {
+						// 2. link the new tag
+								self.model.get('tagLinks').add({ tag: newTag });
+								self.model.save();
+								self.editTagsAutocompleteKill();
+								self.render();
+								return false;
+							},
+						});
+						return false;
+					} else {
+						// The user wants to link an existing tag
+						self.model.get('tagLinks').add({ tag: selection[0] });
+						self.model.save();
+						self.editTagsAutocompleteKill();
+						self.render();
+					}
+				}
+				return false;
+			},
+
+
+			/**
+			 * To be called when the user clicks on the "Link tag" button
+			 * Two cases are possible :
+			 * 1. The tag keyed in already exists (link only)
+			 * 2. The tag keyed in does not exist (create and link)
+			 * 
+			 * @method editTagsReturnKey
+			 */
+			editTagsSave: function() {
+				var self = this;
+				if (self.$("input[name='newTag']").val().length > 1) {
 				// Check that the value set by the user corresponds to a new tag
 				// get all tags having exactly the label value = input value
 					var selection = temp.coll.tags.where({label: self.$("input[name='newTag']").val()});

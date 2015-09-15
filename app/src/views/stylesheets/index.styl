@@ -3,6 +3,7 @@
 
 
 cBgGrey           = lighten(#000000, 20%)
+cBgBrowserInputs  = lighten(#000000, 15%)
 cTextSec          = lighten(#000000, 50%)
 cTextSecActive    = lighten(#000000, 70%)
 cTextSecActiveRev = lighten(#000000, 20%)
@@ -12,31 +13,29 @@ cTxtBtnGrey0      = lighten(#000000, 40%) // grey activable
 cTxtBtnGrey1      = lighten(#000000, 70%) // grey activable active
 cTxtBtnHeadWhite0 = lighten(#000000, 50%) // header white clickable
 cTxtBtnHeadWhite1 = lighten(#000000, 90%) // header white clickable active
-cTxtWhite         = lighten(#000000, 90%) // important white texte
+cTxtRead          = lighten(#000000, 90%) // main body of text, for easy reading
 cTxtBtnBlue0      = #348bcd // blue clickable
-cTxtBtnBlue1      = darken(cTxtBtnBlue0, 50%) // blue clickable active
+cTxtBtnBlue1      = lighten(cTxtBtnBlue0, 40%) // blue clickable active
 
-
-
-cText         = #434343
-cTextFaded    = lighten(#535353, 40%)
-cTextRev      = #dddddd
-cTextRevFaded = darken(#dddddd, 40%)
-cDarkGrey     = lighten(#000000, 30%)
-cLightGrey    = lighten(#000000, 90%)
-cBlueLine     = lighten(#5e939f, 40%)
-wApp          = 1200px
-wRightCol     = 850px
-wLeftCol      = wApp - wRightCol
-wLeftColPad   = 35px
-wRightColPad  = 50px
-zLiner        = 5
-pyLiner       = 80px
-pHeadersV     = 40px
-pWrappPadV    = pyLiner - pHeadersV
-hTabs         = 40px
-hControls     = 30px
-hFadeOut      = 100px
+cText             = #434343
+cTextFaded        = lighten(#535353, 40%)
+cTextRev          = #dddddd
+cTextRevFaded     = darken(#dddddd, 40%)
+cDarkGrey         = lighten(#000000, 30%)
+cLightGrey        = lighten(#000000, 90%)
+cBlueLine         = lighten(#5e939f, 40%)
+wApp              = 1200px
+wRightCol         = 850px
+wLeftCol          = wApp - wRightCol
+wLeftColPad       = 35px
+wRightColPad      = 50px
+zLiner            = 5
+pyLiner           = 80px
+pHeadersV         = 40px
+pWrappPadV        = pyLiner - pHeadersV
+hTabs             = 40px
+hControls         = 30px
+hFadeOut          = 100px
 
 global-reset()
 reset-html5()
@@ -266,6 +265,10 @@ nav
 					margin-right 10px
 					font-size .9em
 
+//======================================
+// BROWSER OBJECTS
+//======================================
+
 .listobjects
 	display none
 
@@ -301,7 +304,6 @@ nav
 	ul.objects
 		overflow-y: scroll;
 		height: calc(100% - 6em);
-		// NEW BEFORE !!!
 		list-style-type none
 		margin 1em 0 0
 		padding 0
@@ -309,42 +311,103 @@ nav
 			font-size 1.2em
 			color grey
 		li.task
+			color cTxtRead
+			font-size 0.9em
 			margin 0
 			padding 0.5em
-			.default button, .edition
+			.default button, .default.inactive, .edition
 				display none
-			.default.inactive
-				display none
-			.edition.active
-				display initial
 			&:hover
-				background-color rgba(0,0,0,0.1)
 				.default button
 					display initial
+					color cTxtBtnBlue0
+					border 0
+					padding 0
+					background-color transparent
+					&:hover
+						color cTxtBtnBlue1
+						cursor pointer
 				.default button.inactive
 					display none
-			.move:hover
-				color red
-			span.button
-				opacity 0
-				text-shadow 1px 1px 1px white
-				margin 0 0 0 10px
-				font-size 0.9em
-			&:hover span.button
-				opacity 0.5
-				&:before
-					font-family 'modernpics'
-					position relative
-					font-size 1.3em
-					margin 0 5px 0
-				&:hover
-					opacity 1
-					cursor pointer
 			&.completed
 				.label .attribute
-					text-decoration underline
-			.label .attribute:hover
-				text-decoration underline
+					text-decoration line-through
+			.label
+				display block
+				.attribute:hover
+					text-decoration line-through
+				input
+					border none
+					background-color transparent
+					color cTxtRead
+					padding 0
+				.edition.active
+					background-color cBgBrowserInputs
+					display block
+					padding 0.3em
+					button			
+						background-color cBgBrowserInputs
+						float right
+						position relative
+						display initial
+						color cTxtBtnBlue0
+						border 0
+						margin 0 0 0 1em
+						background-color transparent
+						&:hover
+							color cTxtBtnBlue1
+							cursor pointer
+			.tags
+				display block
+				margin 0.2em 0 0 0
+				padding 0.1em
+				height 20px
+				.edition button
+					font-size 0.9em
+					float right
+					position relative
+					display initial
+					color cTxtBtnBlue0
+					border 0
+					margin 0 0 0 1em
+					background-color transparent
+					&:hover
+						color cTxtBtnBlue1
+						cursor pointer
+				.buttons
+					padding 0
+					margin 0
+					button
+						font-size 0.9em
+						padding 0
+						margin 0 0.5em 0 0
+						background-color transparent
+						border 0
+						color cTxtRead
+						&:hover
+							cursor pointer
+							text-decoration line-through
+						&:before
+							display inline-block
+							content ""
+							margin 0 0.5em 0 0
+							padding 0
+							width 0.5em
+							height 0.5em
+							border solid 1px white;
+							background-color black
+							color white
+				&.active
+					background-color cBgBrowserInputs
+					input
+						font-size 0.9em
+						border none
+						margin 0
+						background-color transparent
+						color cTxtRead
+					.edition
+						display initial
+						background-color cBgBrowserInputs
 	.checkbox
 		margin 0 8px 0 0
 	

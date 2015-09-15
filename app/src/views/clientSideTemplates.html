@@ -16,7 +16,6 @@
 	<span class="attribute"><%= task.updated_at %> **** updated</span></br
 	/////////////////-->
 	
-	<button class="move">=</button>
 	<span class="label">
 		<span class="default">
 			<span class="attribute"><%= task.label %></span>
@@ -25,8 +24,8 @@
 		</span>
 		<span class="edition">
 			<input type="text" class="mousetrap" name="label" value="<%= task.label %>"/>
+			<button class="save">Update</button>
 			<button class="cancel">Cancel</button>
-			<button class="save">Save Changes</button>
 		</span>
 	</span>
 	<span class="tags">
@@ -35,9 +34,7 @@
 			<button class="hidden edit">Add tag</button>
 		</span>
 		<span class="edition">
-			<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create a new one"/></br>
-			<button class="cancel">Cancel</button>
-			<button class="save">Link tag</button>
+			<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create one"/><button class="save">Add</button><button class="cancel">Cancel</button>
 		</span>
 	</span>
 </script>
