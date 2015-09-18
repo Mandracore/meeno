@@ -63,7 +63,7 @@ define ([
 					"taskFilters": []
 				};
 
-				// this.filters stores the filters that actually filter the displayed collections
+				// this.filters stores the filters that currently filter the displayed collections
 				// they can be cloned for saving
 				this.filters = {
 					"noteFilter": new Filter.Note(),
@@ -174,6 +174,7 @@ define ([
 				this.lastupdate = {
 					dropzone: new Date(),
 				};
+
 			},
 
 
@@ -597,6 +598,7 @@ define ([
 				$listObjects.find('.filter-editor .action').hide(); // No action controls should be displayed
 
 				if (!this.filters[filterName].isEmpty()) { // The user has set a filter set in the super-input
+					console.log("il y a bien un filtre d'actif")
 					if (temp.coll[filtersCollName].containsSimilar(this.filters[filterName]) === false) {
 						$listObjects.find('.filter-editor .action.save').show(); // "Save" button is displayed
 					} else {

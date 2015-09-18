@@ -557,7 +557,15 @@ Au survol de toute la tâche :
 Au click sur un tag : suppression
 Au click sur due-date : mise à jour via calendrier
 
-09/09======================================================
+09/09===================================================
 Reprendre le rendering des tâches : il doit tirer profit de mousetrap et d'un proxy keyboard.
 Ensuite valider que le ENter est bien détecté dans le label et dans le add tag
 Puis seulement commencer le dev
+
+
+17/9====================================================
+#solved-bug
+taskFilters : au moment de la sauvegarde les tags ne sont pas pris.
+	avant la sauvegarde le filtre fonctionne (tant qu'il est en filtre actif)
+	le filtre casse pendant/après la sauvegarde
+	Vérifier si c'est pas le clonage qui disjoncte => non ça fonctionne le test passe.

@@ -70,7 +70,7 @@ module.exports = function(mas, securityProxy){
 				filter.tags  = req.body.tags;
 				filter.tasks = req.body.tasks;
 				break;
-			case "tasks" :
+			case "task" :
 				filter.tags  = req.body.tags;
 				break;
 		}

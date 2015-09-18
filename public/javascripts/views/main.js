@@ -72,9 +72,9 @@ define ([
 						// End data retrieval
 						temp.coll.tasks.fetch({silent: true});
 						temp.coll.notes.fetch({silent: true});
-						temp.coll.noteFilters.fetch({silent: true});
-						temp.coll.taskFilters.fetch({silent: true});
-						temp.coll.tagFilters.fetch({silent: true});
+						temp.coll.noteFilters.fetch({silent: false});
+						temp.coll.taskFilters.fetch({silent: false});
+						temp.coll.tagFilters.fetch({silent: false});
 					},
 					error: function (collection, xhr, options) {
 						console.log ("Fetching failed // Server response status : "+xhr.status);

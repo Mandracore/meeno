@@ -60,14 +60,14 @@ module.exports = function(mas, mongoose){
 		_creator : String,
 		label    : { type: String, required: true},
 		text     : { type: String },
-		tags      : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
-		tasks     : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }], // Linked document is Task
+		tags     : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
+		tasks    : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }], // Linked document is Task
 	});
 	var msTaskFilter = new mongoose.Schema({
 		_creator : String,
 		label    : { type: String, required: true},
 		text     : { type: String },
-		tags      : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
+		tags     : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
 	});
 	var msTagFilter = new mongoose.Schema({
 		_creator : String,
