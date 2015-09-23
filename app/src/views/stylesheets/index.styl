@@ -275,36 +275,84 @@ nav
 	&.selected
 		display block
 	.super-input
-			border 1px solid grey
-			padding 6px 5px
-			margin 0 10px 0 0
+			border-radius 4px
+			margin 10px 0 0 0
+			padding 9px 6px
+			background-color cBgBrowserInputs
+			color cTxtRead
 		.objectButtons span
-			background lightgrey
+			background transparent
 			padding 2px 5px
 			margin 0 5px 0 0
-		input.search
-			border none
-		input.autocomplete
-			border 1px dotted grey
-			margin 0 5px
-	.filter-editor
-		border-bottom 1px solid grey
-		li
-			display inline-block
-			opacity 0.6
-			padding 0.3em
-			margin 0 0.5em 0 0
-			font-size 0.9em
-			&.active, &:hover
-				position relative
-				top 1px
-				border-bottom 1px solid cTxtBtnBlue0
-				opacity 1
+			font-size 0.8em
+			border 1px solid grey
+			border-radius 2px
+			opacity 0.7
 			&:hover
 				cursor pointer
-			&:before
+				opacity 1
+				text-decoration line-through
+		input.search
+			color cTxtRead
+			border none
+			background-color transparent
+		input.autocomplete
+			color cTxtRead
+			border 1px dotted grey
+			background-color transparent
+			margin 0 5px 0 0
+			padding 2px 5px
+			font-size 0.8em
+			border-radius 2px
+	.filter-editor
+		border-bottom 1px solid rgba(255, 255, 255, 0.1)
+		.checked button
+			border none
+			opacity 0.5
+			background-color: rgba(255, 255, 255, 0.1);
+			border-radius 2px
+			padding 2px
+			margin 1px 10px 0px 0px
+			font-size 0.6em
+			vertical-align middle
+			text-transform uppercase
+			color cTextFaded
+			&:hover
+				opacity 1
+				color cTxtBtnHeadWhite1
+				cursor pointer
+		button.action
+			float right
+			color cTxtBtnBlue0
+			border none
+			padding 6px
+			margin 0
+			background-color transparent
+			&:hover
+				color cTxtBtnBlue1
+				cursor pointer
+		button.action, ul li
+			padding 6px
+			font-size 0.9em
+			position relative
+			top 1px
+			padding 5px 0px 6px
+		ul
+			display inline-block
+			li
+				display inline-block
+				margin 0 0.5em 0 0
 				opacity 0.6
-				margin-right 0.5em
+				border-bottom 1px solid transparent
+				color cTxtBtnBlue0
+				&.active, &:hover
+					border-bottom 1px solid cTxtBtnBlue0
+					opacity 1
+				&:hover
+					cursor pointer
+				&:before
+					opacity 0.6
+					margin-right 0.5em
 	ul.objects
 		overflow-y: scroll;
 		height: calc(100% - 6em);

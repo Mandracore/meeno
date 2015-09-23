@@ -598,7 +598,6 @@ define ([
 				$listObjects.find('.filter-editor .action').hide(); // No action controls should be displayed
 
 				if (!this.filters[filterName].isEmpty()) { // The user has set a filter set in the super-input
-					console.log("il y a bien un filtre d'actif")
 					if (temp.coll[filtersCollName].containsSimilar(this.filters[filterName]) === false) {
 						$listObjects.find('.filter-editor .action.save').show(); // "Save" button is displayed
 					} else {

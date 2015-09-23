@@ -129,11 +129,16 @@ block content
 									input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 								input.mousetrap.search(type="text", autofocus, placeholder="search tasks")
 							div.filter-editor
+								span.checked
+									button.filter-checked(data-step="0") Todo
+									button.filter-checked(data-step="1", style="display:none") Done
+									button.filter-checked(data-step="2", style="display:none") Both
 								ul
 								input(style="display:none", type="text", placeholder="type a name for this new filter")
-								button.action.delete(style="display:none") Delete active filter
-								button.action.save(style="display:none") Save current filter
-								button.action.saveConfirm(style="display:none") Save filter under this name
+								span
+									button.action.delete(style="display:none") Delete active filter
+									button.action.save(style="display:none") Save current filter
+									button.action.saveConfirm(style="display:none") Save filter under this name
 						//div.actions-contextual-selection
 							button.select-all Tout sélectionner
 							button.unselect-all Tout déselectionner
@@ -143,10 +148,6 @@ block content
 							li.delete
 								span.action Delete tasks
 								span.cancel Cancel
-						span
-							button.filter-checked(data-step="0") Now showing todo only
-							button.filter-checked(data-step="1", style="display:none") Now showing done only
-							button.filter-checked(data-step="2", style="display:none") Now showing both
 						// Hereafeter will be displayed the objects
 						ul.objects.tasks.draggable
 					div.col3
