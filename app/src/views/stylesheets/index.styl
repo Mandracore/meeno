@@ -1,6 +1,10 @@
 @import 'nib'
 
-
+// J : tag
+// T : croix
+// I : poubelle
+// V : editer
+// r : editer
 
 cBgGrey           = lighten(#000000, 20%)
 cBgBrowserInputs  = lighten(#000000, 15%)
@@ -149,36 +153,6 @@ nav
 	.col2
 		width 60%
 		
-// Styling BROWSER fonts
-.listobjects
-	font-family 'Arial'
-	.col1, .col3
-		color cTextSec
-		.title
-			margin 0 1em 0.3em 1em
-		.subtitle
-			margin 0 1em 1em
-		.zones
-			margin 0 1em
-	.dropzone
-		display none
-	.zones
-		li
-			border 1px solid cTextSec
-			border-radius 5px
-			padding 20px
-			margin-bottom 0.5em
-		.target
-			border 1px solid cTextSecActive
-		.target-hover
-			color cTextSecActiveRev
-			border 1px solid cTextSecActive
-			background-color cTextSecActive
-
-	
-
-
-
 .actions-main,.actions-contextual
 	width 15em
 	list-style none
@@ -240,30 +214,6 @@ nav
 	&.help, &.object
 		overflow-y scroll
 
-.browse
-	.filter
-		input
-			width 100%
-		ul
-			list-style none
-			padding 0
-			margin 0
-			display block
-			border-top 1px cDarkGrey solid
-			li
-				border-top 3px transparent solid
-				color cDarkGrey
-				display inline-block
-				padding .5em
-				vertical-align middle
-				opacity .7
-				&.selected,&:hover,&:active
-					border-top-color cDarkGrey
-					opacity 1
-					cursor pointer
-				&:before
-					margin-right 10px
-					font-size .9em
 
 //======================================
 // BROWSER OBJECTS
@@ -271,9 +221,58 @@ nav
 
 .listobjects
 	display none
-
+	font-family 'Arial'
 	&.selected
 		display block
+
+	// Left/Right actions bar (add, dropzones,...)
+	//--------------------------------------------------
+	.col1, .col3
+		color cTextSec
+		.title
+			margin 1em 1em 0.3em 1em
+		.subtitle
+			margin 0 1em 1em
+		.zones, .form
+			margin 0 1em
+	.dropzone
+		display none
+	.zones
+		li
+			border 1px solid cTextSec
+			border-radius 5px
+			padding 20px
+			margin-bottom 0.5em
+		.target
+			border 1px solid cTextSecActive
+		.target-hover
+			color cTextSecActiveRev
+			border 1px solid cTextSecActive
+			background-color cTextSecActive
+
+	.col1 .actions
+		.form
+			padding 0.3em 0.2em
+			background-color cBgBrowserInputs
+			input
+				background-color transparent
+				color cTxtRead
+				border none
+				width 100%
+		button
+			float right
+			float right
+			color cTxtBtnBlue0
+			border none
+			padding 0
+			margin 0.2em 1.2em
+			background-color transparent
+			&:hover
+				color cTxtBtnBlue1
+				cursor pointer
+
+	// Search bar and filters
+	//--------------------------------------------------
 	.super-input
 			border-radius 4px
 			margin 10px 0 0 0
@@ -312,7 +311,7 @@ nav
 			background-color: rgba(255, 255, 255, 0.1);
 			border-radius 2px
 			padding 2px
-			margin 1px 10px 0px 0px
+			margin 5px 10px 5px 0px
 			font-size 0.6em
 			vertical-align middle
 			text-transform uppercase
@@ -336,7 +335,7 @@ nav
 			font-size 0.9em
 			position relative
 			top 1px
-			padding 5px 0px 6px
+			padding 4px 0px 5px
 		ul
 			display inline-block
 			li
@@ -345,14 +344,17 @@ nav
 				opacity 0.6
 				border-bottom 1px solid transparent
 				color cTxtBtnBlue0
+				&:hover
+					cursor pointer
 				&.active, &:hover
 					border-bottom 1px solid cTxtBtnBlue0
 					opacity 1
-				&:hover
-					cursor pointer
 				&:before
 					opacity 0.6
 					margin-right 0.5em
+
+	// Business objects to be displayed
+	//--------------------------------------------------
 	ul.objects
 		overflow-y: scroll;
 		height: calc(100% - 6em);
@@ -362,11 +364,12 @@ nav
 		.milestone
 			font-size 1.2em
 			color grey
+			margin 0.5em 0 0 0
 		li.task
 			color cTxtRead
 			font-size 0.9em
-			margin 0
-			padding 0.5em
+			margin 0.5em 0 0 0
+			padding 0	
 			.default button, .default.inactive, .edition
 				display none
 			&:hover
@@ -376,18 +379,34 @@ nav
 					border 0
 					padding 0
 					background-color transparent
+					&:before
+						font-family 'modernpics'
+						font-size 1em
+						margin 0 5px 0 2px
 					&:hover
 						color cTxtBtnBlue1
 						cursor pointer
+				.label .default button.edit:before
+					content "V"
+				.label .default button.delete:before
+					content "I"
+				.tags .default button:before
+					content "J"
 				.default button.inactive
 					display none
+			&:before
+				font-family 'modernpics'
+				content ">"
+				font-size 1.5em
+				margin 0 5px 0 0
 			&.completed
 				.label .attribute
 					text-decoration line-through
 			.label
-				display block
+				display inline-block
 				.attribute:hover
 					text-decoration line-through
+					cursor pointer
 				input
 					border none
 					background-color transparent
@@ -404,18 +423,28 @@ nav
 						display initial
 						color cTxtBtnBlue0
 						border 0
-						margin 0 0 0 1em
+						margin 0 0 0 0.5em
+						padding 0
 						background-color transparent
 						&:hover
 							color cTxtBtnBlue1
 							cursor pointer
+			.edition
+				button
+					&:before
+						font-family 'modernpics'
+						margin 0 0.3em 0 0
+					&.save:before
+						content "%"
+					&.cancel:before
+						content "X"
 			.tags
 				display block
-				margin 0.2em 0 0 0
+				margin 0
 				padding 0.1em
 				height 20px
+				font-size 0.8em
 				.edition button
-					font-size 0.9em
 					float right
 					position relative
 					display initial
@@ -430,7 +459,6 @@ nav
 					padding 0
 					margin 0
 					button
-						font-size 0.9em
 						padding 0
 						margin 0 0.5em 0 0
 						background-color transparent
@@ -452,11 +480,11 @@ nav
 				&.active
 					background-color cBgBrowserInputs
 					input
-						font-size 0.9em
 						border none
 						margin 0
 						background-color transparent
 						color cTxtRead
+						font-size 1em
 					.edition
 						display initial
 						background-color cBgBrowserInputs
@@ -464,6 +492,7 @@ nav
 		margin 0 8px 0 0
 	
 	// Contextual actions
+	//--------------------------------------------------
 	.actions-contextual-trigger
 		display none
 		button

@@ -118,8 +118,9 @@ block content
 							div.new-task
 								.title NEW TASK
 								.subtitle Type here the content of a new task you would like to create. 
-								input.mousetrap(type="text", placeholder="Describe here your new task")
-								//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
+								.form
+									input.mousetrap(type="text", placeholder="Describe here your new task")
+									//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
 								button save task
 					div.col2
 						div.search-wrapper
@@ -138,7 +139,7 @@ block content
 								span
 									button.action.delete(style="display:none") Delete active filter
 									button.action.save(style="display:none") Save current filter
-									button.action.saveConfirm(style="display:none") Save filter under this name
+									button.action.saveConfirm(style="display:none") Save
 						//div.actions-contextual-selection
 							button.select-all Tout sélectionner
 							button.unselect-all Tout déselectionner
