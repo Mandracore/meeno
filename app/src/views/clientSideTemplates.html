@@ -15,7 +15,39 @@
 	<span class="attribute"><%= task.due_at %> **** due</span></br>
 	<span class="attribute"><%= task.updated_at %> **** updated</span></br
 	/////////////////-->
-	
+	<span class="moveOrCheck">
+
+	</span>
+		<%
+		var month = {
+			1  :"jan",
+			2  :"fev",
+			3  :"mar",
+			4  :"apr",
+			5  :"may",
+			6  :"jun",
+			7  :"jul",
+			8  :"aug",
+			9  :"sep",
+			10 :"oct",
+			11 :"nov",
+			12 :"dec",
+		}
+
+
+		var now = new Date();
+		var due_at = new Date(task.due_at);
+		var date = due_at.getDate().toString();
+		var day = date.length > 1 ? date : "0"+date;
+		var month = month[due_at.getMonth()];
+		var urgent = now-due_at > 1000*3600*72 || now-due_at < -1000*3600*72 ? "" : "urgent";
+		var urgent = now-due_at > 1000*3600*24 || now-due_at < -1000*3600*24 ? urgent : "veryurgent";
+
+		%>
+	<span class="due <%= urgent %>">
+		<span class="day"><%= day %></span>
+		<span class="month"><%= month %></span>
+	</span>
 	<span class="label">
 		<span class="default">
 			<span class="attribute"><%= task.label %></span>

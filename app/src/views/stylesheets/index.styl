@@ -261,12 +261,16 @@ nav
 				width 100%
 		button
 			float right
-			float right
 			color cTxtBtnBlue0
 			border none
 			padding 0
 			margin 0.2em 1.2em
 			background-color transparent
+			&:after
+				font-family 'modernpics'
+				font-size 1em
+				margin 0 0 0 5px
+				content "%"
 			&:hover
 				color cTxtBtnBlue1
 				cursor pointer
@@ -364,7 +368,7 @@ nav
 		.milestone
 			font-size 1.2em
 			color grey
-			margin 0.5em 0 0 0
+			margin 1em 0 0 0
 		li.task
 			color cTxtRead
 			font-size 0.9em
@@ -381,7 +385,7 @@ nav
 					background-color transparent
 					&:before
 						font-family 'modernpics'
-						font-size 1em
+						font-size .9em
 						margin 0 5px 0 2px
 					&:hover
 						color cTxtBtnBlue1
@@ -394,16 +398,43 @@ nav
 					content "J"
 				.default button.inactive
 					display none
+				&:before
+					color cTxtBtnBlue0
 			&:before
+				position relative
+				float left
 				font-family 'modernpics'
-				content ">"
-				font-size 1.5em
+				content "K"
+				font-size 1.3em
 				margin 0 5px 0 0
+				cursor pointer
 			&.completed
 				.label .attribute
 					text-decoration line-through
+			.due
+				display block
+				position relative
+				float left
+				width 2em
+				text-align center
+				margin 0 0 0 .2em
+				opacity 0.4
+				&.urgent
+					opacity 1
+				&.veryurgent
+					opacity 1
+					color orange
+				.day
+					display block
+					font-size 1.2em
+					font-weight bold
+				.month
+					display block
+					text-transform uppercase
+					font-size 0.8em
 			.label
-				display inline-block
+				display block
+				margin 0 0 0 4em
 				.attribute:hover
 					text-decoration line-through
 					cursor pointer
@@ -440,10 +471,11 @@ nav
 						content "X"
 			.tags
 				display block
-				margin 0
-				padding 0.1em
+				margin 0 0 0 4em
+				padding 0
 				height 20px
-				font-size 0.8em
+				.edition 
+					font-size 0.9em
 				.edition button
 					float right
 					position relative
@@ -458,7 +490,10 @@ nav
 				.buttons
 					padding 0
 					margin 0
+					opacity 0.6
+					font-size 1em
 					button
+						font-size 0.8em
 						padding 0
 						margin 0 0.5em 0 0
 						background-color transparent
@@ -484,7 +519,6 @@ nav
 						margin 0
 						background-color transparent
 						color cTxtRead
-						font-size 1em
 					.edition
 						display initial
 						background-color cBgBrowserInputs
