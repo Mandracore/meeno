@@ -20,31 +20,31 @@
 	</span>
 		<%
 		var month = {
-			1  :"jan",
-			2  :"fev",
-			3  :"mar",
-			4  :"apr",
-			5  :"may",
-			6  :"jun",
-			7  :"jul",
-			8  :"aug",
-			9  :"sep",
-			10 :"oct",
-			11 :"nov",
-			12 :"dec",
+			0  :"jan",
+			1  :"fev",
+			2  :"mar",
+			3  :"apr",
+			4  :"may",
+			5  :"jun",
+			6  :"jul",
+			7  :"aug",
+			8  :"sep",
+			9  :"oct",
+			10 :"nov",
+			11 :"dec",
 		}
-
 
 		var now = new Date();
 		var due_at = new Date(task.due_at);
 		var date = due_at.getDate().toString();
 		var day = date.length > 1 ? date : "0"+date;
 		var month = month[due_at.getMonth()];
-		var urgent = now-due_at > 1000*3600*72 || now-due_at < -1000*3600*72 ? "" : "urgent";
-		var urgent = now-due_at > 1000*3600*24 || now-due_at < -1000*3600*24 ? urgent : "veryurgent";
+		var urgent = due_at-now < 1000*3600*72 ? "urgent" : "";
+		var urgent = due_at-now < 1000*3600*24 ? "veryurgent" : urgent;
 
 		%>
 	<span class="due <%= urgent %>">
+		<input type="hidden" class="datepicker" name="datepicker" value=""/>
 		<span class="day"><%= day %></span>
 		<span class="month"><%= month %></span>
 	</span>

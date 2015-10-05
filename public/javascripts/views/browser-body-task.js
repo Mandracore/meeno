@@ -31,6 +31,7 @@ define ([
 					'click .label .attribute'     : 'check',
 					'click .delete'               : 'delete',
 					'click .tags .buttons button' : 'editTagsRemove',
+					'click .due'                  : 'dueDateShowPicker',
 				});
 			},
 
@@ -73,9 +74,35 @@ define ([
 					this.$el.removeClass('completed');
 				}
 
+				this.$(".datepicker").datepicker({
+					dateFormat : "yy/mm/dd",
+					onSelect   : function (date, dp) {
+						self.dueDateUpdate(date);
+					}
+				});
+
 				channel.trigger("browser:tasks:reSyncSelectors");
 
 				return this;
+			},
+
+			/**
+			 * Since the datepicker is not attached to a visible input, we need a function to display it.
+			 * The following method will display the date picker when clicking on the due date of the task
+			 * 
+			 * @method dueDateShowPicker
+			 */
+			dueDateShowPicker: function() {
+				this.$(".datepicker").datepicker('show');
+			},
+
+			/**
+			 * Once a date is selected by the user, this method updates the related model
+			 * 
+			 * @method dueDateUpdate
+			 */
+			dueDateUpdate: function(date) {
+				this.model.set('due_at',new Date (date).toISOString()).save();
 			},
 
 
