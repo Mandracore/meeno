@@ -47,6 +47,10 @@ reset-html5()
 @font-face
 	font-family "modernpics"
 	src url("../font/modernpics.otf")
+	
+@font-face
+	font-family "dense"
+	src url("../font/Dense-Regular.otf")
 
 html
 	width 100%
@@ -230,13 +234,18 @@ nav
 	.col1, .col3
 		color cTextSec
 		.title
-			margin 1em 1em 0.3em 1em
+			margin 1em 0 0.3em 0
+			font-family dense
+			font-size 1.5em
+			text-transform uppercase
 		.subtitle
-			margin 0 1em 1em
+			margin 0 0 .4em 0
 		.zones, .form
-			margin 0 1em
+			margin 0
 	.dropzone
 		display none
+	.actions
+		padding 0px 1em
 	.zones
 		li
 			border 1px solid cTextSec
@@ -280,21 +289,29 @@ nav
 	.super-input
 			border-radius 4px
 			margin 10px 0 0 0
-			padding 9px 6px
+			padding .5em 0
 			background-color cBgBrowserInputs
 			color cTxtRead
-		.objectButtons span
-			background transparent
-			padding 2px 5px
-			margin 0 5px 0 0
-			font-size 0.8em
-			border 1px solid grey
-			border-radius 2px
-			opacity 0.7
-			&:hover
-				cursor pointer
-				opacity 1
-				text-decoration line-through
+		.objectButtons
+			vertical-align middle			
+			&:before
+				font-family 'modernpics'
+				content "s"
+				opacity .4
+				margin 0 .4em 0 .4em
+				font-size 1.6em
+			span
+				background transparent
+				padding 2px 5px
+				margin 0 5px 0 0
+				font-size 0.8em
+				border 1px solid grey
+				border-radius 2px
+				opacity 0.7
+				&:hover
+					cursor pointer
+					opacity 1
+					text-decoration line-through
 		input.search
 			color cTxtRead
 			border none
@@ -363,17 +380,33 @@ nav
 		overflow-y: scroll;
 		height: calc(100% - 6em);
 		list-style-type none
-		margin 1em 0 0
+		margin 0
 		padding 0
 		.milestone
-			font-size 1.2em
+			font-family dense
+			font-size 1.8em
 			color grey
-			margin 1em 0 0 0
+			margin .8em 0 0 0
 		li.task
 			color cTxtRead
 			font-size 0.9em
 			margin 0.5em 0 0 0
-			padding 0	
+			padding 0
+
+
+			.due, .reorder, .labelandtags
+				box-sizing border-box
+				display table-cell
+				width auto
+			.labelandtags
+				vertical-align top
+			.reorder
+				vertical-align 50%
+				opacity .5
+				&:hover
+					opacity 1
+					cursor move
+
 			.default button, .default.inactive, .edition
 				display none
 			&:hover
@@ -401,23 +434,14 @@ nav
 				&:before
 					color cTxtBtnBlue0
 			&:before
-				position relative
-				float left
-				font-family 'modernpics'
-				content "K"
-				font-size 1.3em
-				margin 0 5px 0 0
 				cursor move
 			&.completed
 				.label .attribute
 					text-decoration line-through
 			.due
-				display block
-				position relative
-				float left
 				width 2em
 				text-align center
-				margin 0 0 0 .2em
+				padding 0 .7em
 				opacity 0.3
 				&:hover
 					cursor pointer
@@ -436,7 +460,6 @@ nav
 					font-size 0.8em
 			.label
 				display block
-				margin 0 0 0 4em
 				.attribute:hover
 					text-decoration line-through
 					cursor pointer
@@ -473,9 +496,7 @@ nav
 						content "X"
 			.tags
 				display block
-				margin 0 0 0 4em
 				padding 0
-				height 20px
 				.edition 
 					font-size 0.9em
 				.edition button

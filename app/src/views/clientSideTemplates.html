@@ -15,58 +15,50 @@
 	<span class="attribute"><%= task.due_at %> **** due</span></br>
 	<span class="attribute"><%= task.updated_at %> **** updated</span></br
 	/////////////////-->
-	<span class="moveOrCheck">
-
+	
+	<span class="reorder">
+		<span class="fa fa-reorder"></span>
 	</span>
-		<%
-		var month = {
-			0  :"jan",
-			1  :"fev",
-			2  :"mar",
-			3  :"apr",
-			4  :"may",
-			5  :"jun",
-			6  :"jul",
-			7  :"aug",
-			8  :"sep",
-			9  :"oct",
-			10 :"nov",
-			11 :"dec",
-		}
+	<%
+	var month = {
+		0  :"jan",1  :"fev",2  :"mar",3  :"apr",4  :"may",5  :"jun",6  :"jul",7  :"aug",8  :"sep",9  :"oct",10 :"nov",11 :"dec",
+	};
 
-		var now = new Date();
-		var due_at = new Date(task.due_at);
-		var date = due_at.getDate().toString();
-		var day = date.length > 1 ? date : "0"+date;
-		var month = month[due_at.getMonth()];
-		var urgent = due_at-now < 1000*3600*72 ? "urgent" : "";
-		var urgent = due_at-now < 1000*3600*24 ? "veryurgent" : urgent;
+	var now    = new Date();
+	var due_at = new Date(task.due_at);
+	var date   = due_at.getDate().toString();
+	var day    = date.length > 1 ? date : "0"+date;
+	var month  = month[due_at.getMonth()];
+	var urgent = due_at-now < 1000*3600*72 ? "urgent" : "";
+	var urgent = due_at-now < 1000*3600*24 ? "veryurgent" : urgent;
 
-		%>
+	%>
 	<span class="due <%= urgent %>">
 		<input type="hidden" class="datepicker" name="datepicker" value=""/>
 		<span class="day"><%= day %></span>
 		<span class="month"><%= month %></span>
 	</span>
-	<span class="label">
-		<span class="default">
-			<span class="attribute"><%= task.label %></span>
-			<button class="hidden edit">Edit</button>
-			<button class="hidden delete">Delete</button>
+	<span class="labelandtags">
+		<span class="label">
+			<span class="default">
+				<span class="attribute"><%= task.label %></span>
+				<button class="hidden edit">Edit</button>
+				<button class="hidden delete">Delete</button>
+			</span>
+			<span class="edition">
+				<input type="text" class="mousetrap" name="label" value="<%= task.label %>"/>
+				<button class="save">Update</button>
+				<button class="cancel">Cancel</button>
+			</span>
 		</span>
-		<span class="edition">
-			<input type="text" class="mousetrap" name="label" value="<%= task.label %>"/>
-			<button class="save">Update</button>
-			<button class="cancel">Cancel</button>
-		</span>
-	</span>
-	<span class="tags">
-		<span class="buttons"><% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %></span>
-		<span class="default">
-			<button class="hidden edit">Add tag</button>
-		</span>
-		<span class="edition">
-			<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create one"/><button class="save">Add</button><button class="cancel">Cancel</button>
+		<span class="tags">
+			<span class="buttons"><% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %></span>
+			<span class="default">
+				<button class="hidden edit">Add tag</button>
+			</span>
+			<span class="edition">
+				<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create one"/><button class="save">Add</button><button class="cancel">Cancel</button>
+			</span>
 		</span>
 	</span>
 </script>
