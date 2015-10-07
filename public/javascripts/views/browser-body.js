@@ -132,13 +132,13 @@ define ([
 					hoverClass  : "target-hover",
 					tolerance   : "pointer",
 					drop        : function( event, ui ) {
-						console.log("dropped !");
-						ui.draggable.data("dropped", true);
+						//console.log("dropped !");
+						//ui.draggable.data("dropped", true);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
-						temp.coll.tasks.sort();
-						sortedModel.set("position",temp.coll.tasks.at(0).get('position')-1);
+						sortedModel.set("position",_.min(temp.coll.tasks.pluck('position'))-1);
 						sortedModel.set("todo_at",new Date($(this).attr("data-todo")));
 						sortedModel.save();
+						temp.coll.tasks.sort();
 					}
 				});
 
@@ -828,7 +828,8 @@ define ([
 						},
 						update: function( event, ui ) {
 							return self.sortableUpdate(event, ui);
-						}
+						},
+						cancel: ".milestone",
 					});
 				}
 			},
