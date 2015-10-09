@@ -531,16 +531,16 @@ Autre piste : ne pas modifier toutes les autres tâches pour rien !!
 #bug
 le conflit entre drop et sortable existe toujours.
 
-#solved-bug
+#fixed-bug
 problème quand on essaie d'afficher toutes les tâches (completed + todo)
 
 
 
 07/08===================================================
-#solved-bug
+#fixed-bug
 quand on créé plusieurs tâches à la position 0 (au moins 3) on ne peut plus les réorganiser puisque 0 + 0 / 2 = 0
 
-#solved-bug
+#fixed-bug
 Impossible to add more than one tag to a task ? TBC
 	add 1 existing tag is OK
 	add 2 existing tag is OK
@@ -564,8 +564,20 @@ Puis seulement commencer le dev
 
 
 17/9====================================================
-#solved-bug
+#fixed-bug
 taskFilters : au moment de la sauvegarde les tags ne sont pas pris.
 	avant la sauvegarde le filtre fonctionne (tant qu'il est en filtre actif)
 	le filtre casse pendant/après la sauvegarde
 	Vérifier si c'est pas le clonage qui disjoncte => non ça fonctionne le test passe.
+
+08/10====================================================
+#fixed-bug
+le classement des tags se fait mal à l'intérieur des milestones qui contiennent plusieurs dates. Ca merde surtout sur Today : 
+il met bien la position la plus basse, seulement il ne vérifie pas la date mini qui correspond à Today...du coup, impossible
+de repasser devant dès qu'un tâche est loin dans le passé. C'est un problème pour les dropzones comme pour le sort.
+Pour le drag :
+	trouver la date mini dans la collection et l'imposer (si drop sur today)
+Pour le sort :
+	Imposer la date du suivant avec position -1. 
+	Si pas de suivant, imposer date du précédent avec position +1 >>
+	Si pas de précédent, imposer la date du milestone précédent avec position 0

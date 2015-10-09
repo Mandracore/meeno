@@ -132,11 +132,15 @@ define ([
 					hoverClass  : "target-hover",
 					tolerance   : "pointer",
 					drop        : function( event, ui ) {
-						//console.log("dropped !");
-						//ui.draggable.data("dropped", true);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
 						sortedModel.set("position",_.min(temp.coll.tasks.pluck('position'))-1);
-						sortedModel.set("todo_at",new Date($(this).attr("data-todo")));
+						if ($(this).hasClass('today')) {
+							sortedModel.set("todo_at",_.min(_.map(temp.coll.tasks.pluck('todo_at'),
+								function (sDate) {return new Date(sDate);})));
+						} else {
+							sortedModel.set("todo_at",new Date($(this).attr("data-todo")));
+						}
+
 						sortedModel.save();
 						temp.coll.tasks.sort();
 					}
@@ -842,8 +846,6 @@ define ([
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 			 */
 			sortableUpdate: function (event, ui) {
-				// manque les attributs data-todo et data-milestone (ou plutôt une class milestone)
-				console.log('sortable v2');
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 
@@ -852,36 +854,28 @@ define ([
 				var domNext = ui.item.next(); // next sibling
 
 				if (!domPrev.length) {
-					// There is nothing in the list before this item (it must be placed before the milestone 'Today')
-					temp.coll.tasks.sort();
-					newPosition = temp.coll.tasks.at(0).get('position')-1;
-					newTodo     = ui.item.next().attr('data-todo'); // next is "Today", so we can use its todo date
+					// Happens when the user tries to put the task before today
+					// There is nothing in the list before this item (it must be placed just after the milestone 'Today')
+					newPosition = _.min(temp.coll.tasks.pluck('position'))-1;
+					newTodo     = _.min(_.map(temp.coll.tasks.pluck('todo_at'),
+						function (sDate) {return new Date(sDate);}));
 				} else {
-					// There is something in the list before this item
-					if (domPrev.hasClass('milestone')) {
-						// The previous element is a milestone
-						newTodo = domPrev.attr('data-todo');
-
-						if (domNext.length && !domNext.hasClass('milestone')) {
-							// The next element is a task
-							nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
-							newPosition = nextModel.get('position') - 1;
-						} else {
-							// There is no next element or it is a milestone
-							newPosition = 0;
-						}
+					// If there is a task after
+					if (domNext.length > 0 && !domNext.hasClass('milestone')) {
+						nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
+						newPosition = nextModel.get('position') - 1;
+						newTodo     = nextModel.get('todo_at');
+					// If there is not task after
 					} else {
-						// The previous element is a task
-						var prevModel = temp.coll.tasks.get(domPrev.attr('data-cid'));
-						newTodo       = prevModel.get('todo_at');
-
-						if (domNext.length && !domNext.hasClass('milestone')) {
-							// The next element is a task
-							nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
-							newPosition = 0.5 * (nextModel.get('position') + prevModel.get('position'));
-						} else {
-							// There is no next element or it is a milestone
+						// If there is a task before
+						if (!domPrev.hasClass('milestone')) {
+							prevModel   = temp.coll.tasks.get(domPrev.attr('data-cid'));
 							newPosition = prevModel.get('position') + 1;
+							newTodo     = prevModel.get('todo_at');
+						// Before, it's a milestone
+						} else {
+							newPosition = _.min(temp.coll.tasks.pluck('position'))-1;
+							newTodo     = domPrev.attr('data-todo');
 						}
 					}
 				}
