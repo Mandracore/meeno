@@ -223,11 +223,27 @@ nav
 // BROWSER OBJECTS
 //======================================
 
+// Special autocomplete setup for listobjects alone
+.ui-autocomplete-category
+	font-weight bold
+	padding .2em .4em
+	margin .8em 0 .2em
+	line-height 1.5
+	font-size .8em
+	font-style italic
+.ui-menu-item
+	-o-text-overflow ellipsis   /* Opera */
+	text-overflow ellipsis   	/* IE, Safari (WebKit) */
+	overflow hidden             /* don't show excess chars */
+	white-space nowrap          /* force single line */
+	width  50px                /* fixed width */
+
 .listobjects
 	display none
 	font-family 'Arial'
 	&.selected
 		display block
+
 
 	// Left/Right actions bar (add, dropzones,...)
 	//--------------------------------------------------
@@ -313,13 +329,15 @@ nav
 					cursor pointer
 					opacity 1
 					text-decoration line-through
+				&:before
+					margin 0 .3em 0 0
 		input.search
 			color cTxtRead
 			border none
 			background-color transparent
 		input.autocomplete
 			color cTxtRead
-			border 1px dotted grey
+			border none
 			background-color transparent
 			margin 0 5px 0 0
 			padding 2px 5px
@@ -356,13 +374,13 @@ nav
 			padding 6px
 			font-size 0.9em
 			position relative
-			top 1px
+			top 2px
 			padding 4px 0px 5px
 		ul
 			display inline-block
 			li
 				display inline-block
-				margin 0 0.5em 0 0
+				margin 0 0.8em 0 0
 				opacity 0.6
 				border-bottom 1px solid transparent
 				color cTxtBtnBlue0

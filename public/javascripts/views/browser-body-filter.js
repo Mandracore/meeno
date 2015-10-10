@@ -18,7 +18,7 @@ define ([
 		 */
 		var BrowserBodyFilterView = Backbone.View.extend({
 			tagName  : "li",
-			className: "icon-filter",
+			className: "fa fa-filter",
 			template : '#browser-body-filter-template',
 
 			events: {

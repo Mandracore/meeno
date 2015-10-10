@@ -50,7 +50,9 @@ define ([
 				'click .actions-contextual-trigger button'          : 'actionDeleteExecute',
 			},
 
-			// ###Setup the view
+			//===========================================================================================
+			// View initialization
+			//===========================================================================================
 			initialize: function() {
 				var self = this;
 
@@ -70,6 +72,10 @@ define ([
 					"taskFilter": new Filter.Task(),
 					"tagFilter" : new Filter.Tag()
 				};
+
+				//------------------------------------------------
+				// Event listeners
+				//------------------------------------------------
 
 				this.listenTo(temp.coll.notes, 'sync add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
 				this.listenTo(temp.coll.tags, 'sync add remove change:label', function () {
@@ -101,14 +107,8 @@ define ([
 					this.searchRenderFilterSuper("tagFilter");});
 
 				// Keyboard events listeners
-				// Evènvements à revoir : pas de raison que cela fonctionne tout le temps => les faire passer par un proxy
-				// Ex. : on ne peut pas lancer searchOpenAutocomplete si on n'est pas en train de filtrer des notes...
-				this.listenTo(channel, 'keyboard:tag', function () {this.searchOpenAutocomplete("tags");});
-				this.listenTo(channel, 'keyboard:task', function () {this.searchOpenAutocomplete("tasks");});
-				this.listenTo(channel, 'keyboard:entity', function () {this.searchOpenAutocomplete("entities");});
-				this.listenTo(channel, 'keyboard:escape', function () {this.searchCloseAutocomplete("escape");});
-				this.listenTo(channel, 'keyboard:backspace', function () {this.searchCloseAutocomplete("backspace");});
-				// Première implémentation du proxy, à reporter sur les autres
+				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
+				this.listenTo(channel, 'keyboard:backspace', function () {this.kbEventProxy("backspace");});
 				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 
 				// Deactivated for testing purposes only
@@ -118,13 +118,16 @@ define ([
 
 				this.listenTo(channel, "browser:search:filters:activate", this.searchFilterActivate);
 
+				/*
 				// Actions management
 				this.listenTo(channel, 'browser:actions:update-selectors:notes', function () {this.actionSelectorsUpdate("notes");});
 				this.listenTo(channel, 'browser:actions:update-selectors:tasks', function () {this.actionSelectorsUpdate("tasks");});
 				this.listenTo(channel, 'browser:actions:update-selectors:tags', function () {this.actionSelectorsUpdate("tags");});
+				*/
 
 				//------------------------------------------------
 				// Task dropzone and milestone management 
+				//------------------------------------------------
 
 				this.$( ".droppable" ).droppable({
 					accept      : ".draggable li",
@@ -179,7 +182,73 @@ define ([
 					dropzone: new Date(),
 				};
 
+				//------------------------------------------------
+				// Initializing autocompletes for object filtering
+				//------------------------------------------------
+
+				// Autocomplete widget update to display categories
+				$.widget( "custom.catcomplete", $.ui.autocomplete, {
+					_create: function() {
+						this._super();
+						this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+					},
+					_renderMenu: function( ul, items ) {
+						var that = this,
+						currentCategory = "";
+						$.each( items, function( index, item ) {
+							var li;
+							if ( item.category != currentCategory ) {
+								ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+								currentCategory = item.category;
+							}
+							li = that._renderItemData( ul, item );
+							if ( item.category ) {
+								li.attr( "aria-label", item.category + " : " + item.label );
+							}
+						});
+					}
+				});
+
+				// Parameter one autocomplete for each nature of objects (except for tags)
+				$(".listobjects:not(.tags) .search-wrapper input.autocomplete").catcomplete({
+					source: function (request, response) {
+						// request.term : data typed in by the user ("new yor")
+						// response : native callback that must be called with the data to suggest to the user
+						var tagFilter = new Filter.Tag ({text: request.term});
+
+						response (
+							// Find tags
+							temp.coll.tags.search(tagFilter).map(function (model, key, list) {
+								return {
+									label    : model.get("label"),
+									value    : model.cid,
+									category : "Relevant tags",
+								};
+							})
+						);
+					},
+					focus: function( event, ui ) {
+						//$(event.target).val(ui.item.label);
+						return false; // to cancel normal behaviour
+					},
+					select: function(event, ui) {
+						collectionFiltered = $(event.target).closest(".listobjects").hasClass("notes") ? "noteFilter" : "taskFilter";
+
+						// Saving input value into the global filter
+						var modelSelected = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
+						if (self.filters[collectionFiltered].get("tags").contains(modelSelected) !== true) { 
+							self.filters[collectionFiltered].get("tags").add(modelSelected);
+						}
+						$(event.target).focus();
+						$(event.target).val("");
+
+						return false; // to cancel normal behaviour
+					}
+				});
 			},
+			//===========================================================================================
+			// End of view initialization
+			//===========================================================================================
 
 
 			// Keyboard event proxy
@@ -192,12 +261,19 @@ define ([
 			 * @method kbEventProxy
 			 */
 			kbEventProxy: function (event) {
-				var $newTaskInput = this.$(".new-task input");
+				var $newTaskInput          = this.$(".new-task input");
+				// var $noteAutocompleteInput = this.$(".listobjects.notes .search-wrapper input.autocomplete");
+				// var $taskAutocompleteInput = this.$(".listobjects.tasks .search-wrapper input.autocomplete");
 
 				// 1. The user wants to create a new task
 				if ($newTaskInput.is(":focus") && event=="enter") {
 					this.newTaskSub ($newTaskInput);
 				}
+/*
+				// 2. The user wants to close an autocomplete
+				if ($taskAutocompleteInput.is(":focus") && event=="escape") {
+					$taskAutocompleteInput
+				}*/
 			},
 
 
@@ -449,9 +525,8 @@ define ([
 			},
 
 
-			// Search business objets in database
+			// Filter tasks by state
 			// =============================================================================
-
 
 			/**
 			 * @method toggleTasks
@@ -470,92 +545,23 @@ define ([
 				$button.hide().parent().find("[data-step="+sequence[step]+"]").show();
 			},
 
-			/**
-			 * Checks whether the user is currently using a search input and if so tells which collection is visible
-			 * 
-			 * @method searchGetFocus
-			 * @return {object} Returns the name of the collection studied (example : `notes`) or `false` if no search input has focus
-			 */
-			searchGetFocus: function () {
-				var $listObjects;
-				var sColl1 = false;
-				this.$(".super-input").find('input').each(function(idx,el) {
-					if ($(el).is(":focus")) {
-						$listObjects = $(el).closest('.listobjects');
-						sColl1 = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks'); //common
-					}
-				});
-				return sColl1;
-			},
 
-			/**
-			 * Will prepare and open an autocomplete input.
-			 * It should help the user selecting objects from collection named `sColl2` (example : `tags`) 
-			 * that will then be used to filter the objects from collection named `sColl1`
-			 *
-			 * @method searchOpenAutocomplete
-			 * @param sColl2 the name of the collection (example : `tags`) used to filter the collection currently displayed in browser
-			 */
-			searchOpenAutocomplete: function (sColl2) {
-				// Check focus before taking action
-				var self = this;
-				var sColl1 = this.searchGetFocus(); // the kind of object we are filtering now
-				if (sColl1 === false) { return; }
-
-				var $listObjects = this.$(".listobjects."+sColl1);
-				var sColl1Filter = sColl1.replace(/(s)$/, function($1){ return ""; })+"Filter";
-
-				// Parameter the autocomplete to propose the right kind of objects
-				$listObjects.find(".search-wrapper .autocomplete").autocomplete({
-					source: function (request, response) {
-						// request.term : data typed in by the user ("new yor")
-						// response : native callback that must be called with the data to suggest to the user
-						var oColl2Filter = (sColl2 == "tasks") ? new Filter.Task ({text: request.term}) : new Filter.Tag ({text: request.term});
-
-						response (
-							temp.coll[sColl2].search(oColl2Filter).map(function (model, key, list) {
-								return {
-									label: model.get("label"),
-									value: model.cid
-								};
-							})
-						);
-					},
-					focus: function( event, ui ) {
-						$(event.target).val(ui.item.label);
-						return false; // to cancel normal behaviour
-					},
-					select: function(event, ui) {
-						$(event.target).hide();
-						$listObjects.find(".search").focus();
-
-						// Saving input value into the global filter
-						var mSelection = temp.coll[sColl2].get(ui.item.value) // ui.item.value == model.cid
-						if (self.filters[sColl1Filter].get(sColl2).contains(mSelection) !== true) { 
-							self.filters[sColl1Filter].get(sColl2).add(mSelection);
-						}
-					}
-				// Change the autocomplete's placeholder, empty it (in case it was used before), display it and focus in
-				}).attr("placeholder","filter by related "+sColl2).val('').show().focus(); 
-			},
+			// Search business objets in database
+			// =============================================================================
 
 			/**
 			 * Controls what happens when the user tries to close the autocomplete
 			 *
 			 * @method searchCloseAutocomplete
 			 * @param event the keyboard event
-			 */
+			 
 			searchCloseAutocomplete: function (event) {
-				// Check focus before taking action
-				var browserActiveView = this.searchGetFocus(); // the kind of object we are looking for
-				if (browserActiveView === false) { return; }
 				var $listObjects = this.$(".listobjects."+browserActiveView);
 				// Listening to "backspace" & "escape" events triggered by mousetrap
 				if ( event == "escape" || (event == "backspace" && $listObjects.find(".search-wrapper .autocomplete").val() == '') ) {
-					$listObjects.find(".search-wrapper .autocomplete").hide();
 					$listObjects.find(".search-wrapper .search").focus();
 				}
-			},
+			},*/
 
 			/**
 			 * Allows to remove from current filter the object that has been clicked on
@@ -722,7 +728,7 @@ define ([
 						break;
 					case 'taskFilter':
 						filter.get('tags').each(function (tag) {
-							var $objectButton = $("<span></span>")
+							var $objectButton = $("<span class='fa fa-tag'></span>")
 								.attr('data-class', "tags") //tags
 								.attr('data-cid', tag.cid)
 								.html(tag.get('label'));

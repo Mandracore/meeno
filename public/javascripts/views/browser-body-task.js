@@ -75,8 +75,14 @@ define ([
 				}
 
 				this.$(".datepicker").datepicker({
-					dateFormat : "yy/mm/dd",
-					onSelect   : function (date, dp) {
+					dateFormat        : "yy/mm/dd",
+					showOtherMonths   : true,
+					selectOtherMonths : true,
+					changeMonth       : true,
+					changeYear        : true,
+					firstDay          : 1,
+					defaultDate       : new Date(self.model.get('due_at')),
+					onSelect          : function (date, dp) {
 						self.dueDateUpdate(date);
 					}
 				});
