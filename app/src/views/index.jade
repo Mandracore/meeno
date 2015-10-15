@@ -60,10 +60,10 @@ block content
 			nav
 				// Commands to navigate between the different tabs
 				ul#nav
-					li.help Help
-					li.browse.notes Browse notes
-					li.browse.tasks.selected Browse tasks
-					li.browse.tags Browse tags
+					li.help HELP
+					li.browse.notes NOTES
+					li.browse.tasks.selected TASKS
+					li.browse.tags TAGS
 					//li.admin Manage
 			div#sync-status
 		div#tabs
@@ -106,6 +106,9 @@ block content
 					div.col3
 				div.listobjects.tasks.selected
 					div.col1
+						div.jumper
+							button JUMP TO
+							span.fa.fa-angle-down
 						div.dropzone
 							.title dropzone
 							.subtitle Drag tasks and drop them below to postpone them
@@ -184,4 +187,7 @@ block content
 						ul.objects.tags
 					div.col3.saved-filters
 					// empty
-		div#editors
+		div#editors.hidden.three
+			div note 1
+			div note 2
+			div note 3

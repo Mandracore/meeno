@@ -56,7 +56,7 @@ html
 	width 100%
 	height 100%
 	overflow hidden
-	background-color #777
+	background-color cBgGrey
 	font-size 16px
 	
 
@@ -79,14 +79,14 @@ body
 	height 100%
 	position relative
 	background none
-	&:before
+	/*&:before
 		content ""
 		margin-top rFontSize * 2em
 		width 100%
 		box-shadow 0 0 0.5em black
 		position absolute
 		height calc(100% - 2em)
-		display block
+		display block*/
 
 
 #main
@@ -110,7 +110,7 @@ header
 		width 8em
 
 nav
-	float left
+	float right
 	ul
 		clearfix()
 		list-style none
@@ -119,11 +119,15 @@ nav
 		li
 			float left
 			// padding .5em
-			padding (((rFontSize * 2) - 1) / 2) * 1em //revoir formule de calcul
+			padding (((((rFontSize * 2) - 1) / 2) * 1em) / 1.5) .6em 0 .6em //revoir formule de calcul
+			color cTxtBtnBlue0
+			font-family Dense
+			font-size 1.5em
 			&.selected,&:hover,&:active
-				background-color #FFF
 				cursor pointer
-				color black
+				color cTxtBtnBlue1
+				border-top .3em solid cTxtBtnBlue1
+				padding-top (((((rFontSize * 2) - 1) / 2) * 1em) / 1.5) - .3em
 	.object
 		max-width: 7em;
 		overflow: ellipsis;
@@ -145,9 +149,6 @@ nav
 		height 100%
 
 
-
-
-
 // Preparing BROWSER grid
 .listobjects
 	.col1, .col2, .col3
@@ -156,7 +157,80 @@ nav
 		width 20%
 	.col2
 		width 60%
-		
+
+
+//##################################
+// TESING AREA
+//##################################
+
+#editors
+	z-index 10
+	position fixed
+	width 100%
+	text-align right
+	overflow hidden
+	&.hidden
+		&.one
+			top calc(100% - 1em)
+			height 1em
+		&.two
+			top calc(100% - 2em)
+			height 2em
+		&.three
+			top calc(100% - 3em)
+			height 3em
+	&.visible
+		top 4em
+		height calc(100% - 4em)
+	div
+		opacity .5
+		background-color white
+		position absolute
+		height 2em
+		&:last-child
+			opacity 1
+		//---------------------
+		// three editors opened
+		&:first-child:nth-last-child(3) // select first
+			color red
+			left 4em
+			width calc(100% - 4em)
+			top 0
+			height 100%
+		&:nth-child(2):nth-last-child(2) // select second
+			color yellow
+			left 2em
+			width calc(100% - 2em)
+			top 1em
+			height calc(100% - 1em)
+		&:nth-child(3):last-child // select third
+			color blue
+			left 0
+			width 100%
+			top 2em
+			height calc(100% - 2em)
+		//---------------------
+		// two editors opened
+		&:first-child:nth-last-child(2) // select first
+			color red
+			left 2em
+			width calc(100% - 2em)
+			top 0
+			height 100%
+		&:nth-child(2):last-child // select last
+			color green
+			left 0
+			width 100%
+			top 1em
+			height calc(100% - 1em)
+		//---------------------
+		// Only one editor opened
+		&:only-child // select first and only
+			color red
+			width 100%
+			top 0
+			left 0
+			height 100%
 .actions-main,.actions-contextual
 	width 15em
 	list-style none
@@ -260,9 +334,9 @@ nav
 			margin 0 0 .4em 0
 	.dropzone
 		display none
-		padding 0px 1em
+		padding 0px 1.5em 0 1em
 	.actions
-		padding 0px 1em
+		padding 0px 1.5em 0 1em
 	.zones
 		li
 			border 1px solid cTextSec
@@ -276,30 +350,59 @@ nav
 			border 1px solid cTextSecActive
 			background-color cTextSecActive
 
-	.col1 .actions
-		.form
-			padding 0.3em 0.2em
-			background-color cBgBrowserInputs
-			input
-				background-color transparent
-				color cTxtRead
-				border none
-				width 100%
-		button
-			float right
-			color cTxtBtnBlue0
-			border none
-			padding 0
-			margin 0.2em 1.2em
-			background-color transparent
-			&:after
-				font-family 'modernpics'
-				font-size 1em
-				margin 0 0 0 5px
-				content "%"
+	.col1
+		.jumper
+			border 1px solid cTextSecActive
+			border-radius 2px
+			height 2.5em
+			margin 10px 1.5em 0 1em
+			opacity .4
 			&:hover
-				color cTxtBtnBlue1
+				opacity .9
 				cursor pointer
+			button
+				font-size 1.2em
+				line-height 2em
+				vertical-align middle
+				display inline-block
+				background none
+				border none
+				font-family dense
+				text-align center
+				margin 0
+				color cTextSecActive
+			span
+				float right
+				vertical-align middle
+				display block
+				margin 0 0.5em 0 0
+				font-size 1em
+				line-height 2.5em
+				color cTextSecActive
+		.actions
+			.form
+				padding 0.3em 0.2em
+				background-color cBgBrowserInputs
+				input
+					background-color transparent
+					color cTxtRead
+					border none
+					width 100%
+			button
+				float right
+				color cTxtBtnBlue0
+				border none
+				padding 0
+				margin 0.2em 0 0 0
+				background-color transparent
+				&:after
+					font-family 'modernpics'
+					font-size 1em
+					margin 0 0 0 5px
+					content "%"
+				&:hover
+					color cTxtBtnBlue1
+					cursor pointer
 
 	// Search bar and filters
 	//--------------------------------------------------

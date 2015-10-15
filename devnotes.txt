@@ -581,3 +581,9 @@ Pour le sort :
 	Imposer la date du suivant avec position -1. 
 	Si pas de suivant, imposer date du précédent avec position +1 >>
 	Si pas de précédent, imposer la date du milestone précédent avec position 0
+
+
+
+Pbms à voir
+- bas de l'écran qui descend trop bas (scroll caché)
+- décalage des textes au survol des tâches

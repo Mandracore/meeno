@@ -34,8 +34,8 @@ define ([
 
 			// ###Setup the view's DOM events
 			events: {
-				// Search-related events
 				'click .filter li'                                  : 'toggleObject',
+				// Search-related events
 				'keyup .search'                                     : 'searchText',
 				'click .objectButtons span'                         : 'searchObjectRemove',
 				'click .filter-editor button.save'                  : 'searchFilterSave1',
@@ -390,7 +390,7 @@ define ([
 			 * @method newTask
 			 */
 			newTask: function (event) {
-				var $input = $(event.target).prev();
+				var $input = $(event.target).prev().find('input');
 				this.newTaskSub($input);
 			},
 
@@ -405,11 +405,19 @@ define ([
 			newTaskSub: function ($input) {
 				temp.coll.tasks.sort();
 
-				var newPosition = (temp.coll.tasks.length > 0) ? (temp.coll.tasks.at(0).get('position')-1) : 0;
+				var position = 0
+				var todo_at  = new Date();
+				if (temp.coll.tasks.length > 0) {
+					position = _.min(temp.coll.tasks.pluck('position'))-1;
+					todo_at  = _.min(_.map(temp.coll.tasks.pluck('todo_at'),
+						function (sDate) {return new Date(sDate);})
+					);
+				}
 
 				var task = new Task ({
 					label    : $input.val(),
-					position : newPosition
+					position : position,
+					todo_at  : todo_at
 				});
 
 				temp.coll.tasks.add(task)
