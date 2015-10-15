@@ -6,9 +6,9 @@ define ([
 		'channel',
 		'temp',
 		'views/helper',
-		'views/browser',
+		'views/browser-body',
 		'views/editor',
-	], function ($, _, Backbone, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
+	], function ($, _, Backbone, Mousetrap, channel, temp, HelperView, BrowserBodyView, EditorView) {
 
 		/**
 		 * This backbone view holds the entire UI.
@@ -23,12 +23,13 @@ define ([
 			el: '#meenoApp',
 
 			events: {
-				'click .actions-main .note'   : 'newNote', // Create new note and open it in a new tab
-				// 'click .actions-main .tag' : 'newTag', // Create a new tag in a popup window
-				'submit #login'               : 'login',
-				'submit #register'            : 'register',
-				'click #toregister'           : 'toggleLR',
-				'click #tologin'              : 'toggleLR'
+				'submit #login'           : 'login',
+				'submit #register'        : 'register',
+				'click #toregister'       : 'toggleLR',
+				'click #tologin'          : 'toggleLR',
+				'click nav .browse.notes' : 'browseNotes',
+				'click nav .browse.tasks' : 'browseTasks',
+				'click nav .browse.tags'  : 'browseTags',
 			},
 
 			initialize: function() {
@@ -68,7 +69,8 @@ define ([
 					success: function (collection, xhr, options) {
 						// Initialize mandatory static tabs
 						new HelperView();
-						new BrowserView();
+						//new BrowserView();
+						new BrowserBodyView({ el: $("#tabs .browse") })
 						// End data retrieval
 						temp.coll.tasks.fetch({silent: true});
 						temp.coll.notes.fetch({silent: true});
@@ -179,12 +181,39 @@ define ([
 				});
 				return false;
 			},
-
+/*
 			newNote: function() {
 				var newNote   = temp.coll.notes.create({silent:true});
 				var newEditor = new EditorView ({ model: newNote });
 				newEditor.render();
 				newEditor.toggle();
+			},*/
+
+			browseNotes: function (event) {
+				if (!($(event.target).hasClass('selected'))) {
+					$(event.target).siblings().removeClass('selected');
+					$(event.target).addClass('selected');
+					this.$('#tabs .listobjects.notes').siblings().removeClass('selected');
+					this.$('#tabs .listobjects.notes').addClass('selected');
+				}
+			},
+
+			browseTasks: function (event) {
+				if (!($(event.target).hasClass('selected'))) {
+					$(event.target).siblings().removeClass('selected');
+					$(event.target).addClass('selected');
+					this.$('#tabs .listobjects.tasks').siblings().removeClass('selected');
+					this.$('#tabs .listobjects.tasks').addClass('selected');
+				}
+			},
+
+			browseTags: function (event) {
+				if (!($(event.target).hasClass('selected'))) {
+					$(event.target).siblings().removeClass('selected');
+					$(event.target).addClass('selected');
+					this.$('#tabs .listobjects.tags').siblings().removeClass('selected');
+					this.$('#tabs .listobjects.tags').addClass('selected');
+				}
 			},
 		});
 
