@@ -1,40 +1,68 @@
-<script type="text/template" id="browser-body-note-template" style="display: none;">
-	<span class="checkbox icon-check-empty"></span>
+<script type="text/template" id="browser-note-template" style="display: none;">
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<span class="edit title attribute"><%= note.title %></span>
 	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag %>]</span><% }); %></span>
 </script>
-<script type="text/template" id="browser-body-tag-template" style="display: none;">
-	<span class="checkbox icon-check-empty"></span>
+<script type="text/template" id="browser-tag-template" style="display: none;">
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<span class="edit label attribute"><%= label %></span>
 </script>
-<script type="text/template" id="browser-body-task-template" style="display: none;">
-	<span class="checkbox icon-check-empty"></span>
-	<span class="check label attribute"><%= task.label %></span>
-	<span>[<%= task.position %>]</span>
-	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag.label %>]</span><% }); %></span>
-	<span class="edit">Edit</span><span class="delete">Delete</span>
-	<div class="details" style="display: none;">
-		<p class="status wip" style="display: none;">Update in progress</p>
-		<p class="status done" style="display: none;">Update successful</p>
-		<form onsubmit="return false;">
-			<fieldset>
-				<label for="label">Label</label>
-				<input type="text" name="label" value="<%= task.label %>"/></br>
-				<label for="description">Description</label>
-				<input type="text" name="description" value="<%= task.description %>"/></br>
-				<label for="newTag">Tags</label>
-				<span class="tagButtons">
-					<% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %>
-				</span>
-				<input class="mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create a new one"/></br>
-				<button type="button" class="update">Update</button>
-				<button type="button" class="reset">Undo changes</button>
-				<button type="button" class="close">Close</button>
-			</fieldset>
-		</form>
-	</div>
+<script type="text/template" id="browser-task-template" style="display: none;">
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
+	<!-- //////////// Dates display, for debug purposes only
+	span class="attribute"><%= task.created_at %> **** created</span></br>
+	<span class="attribute"><%= task.todo_at %> **** todo</span></br>
+	<span class="attribute"><%= task.due_at %> **** due</span></br>
+	<span class="attribute"><%= task.updated_at %> **** updated</span></br
+	/////////////////-->
+	
+	<span class="reorder">
+		<span class="fa fa-reorder"></span>
+	</span>
+	<%
+	var month = {
+		0  :"jan",1  :"fev",2  :"mar",3  :"apr",4  :"may",5  :"jun",6  :"jul",7  :"aug",8  :"sep",9  :"oct",10 :"nov",11 :"dec",
+	};
+
+	var now    = new Date();
+	var due_at = new Date(task.due_at);
+	var date   = due_at.getDate().toString();
+	var day    = date.length > 1 ? date : "0"+date;
+	var month  = month[due_at.getMonth()];
+	var urgent = due_at-now < 1000*3600*72 ? "urgent" : "";
+	var urgent = due_at-now < 1000*3600*24 ? "veryurgent" : urgent;
+
+	%>
+	<span class="due <%= urgent %>">
+		<input type="hidden" class="datepicker" name="datepicker" value=""/>
+		<span class="day"><%= day %></span>
+		<span class="month"><%= month %></span>
+	</span>
+	<span class="labelandtags">
+		<span class="label">
+			<span class="default">
+				<span class="attribute"><%= task.label %></span>
+				<button class="hidden edit">Edit</button>
+				<button class="hidden delete">Delete</button>
+			</span>
+			<span class="edition">
+				<input type="text" class="mousetrap" name="label" value="<%= task.label %>"/>
+				<button class="save">Update</button>
+				<button class="cancel">Cancel</button>
+			</span>
+		</span>
+		<span class="tags">
+			<span class="buttons"><% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %></span>
+			<span class="default">
+				<button class="hidden edit">Add tag</button>
+			</span>
+			<span class="edition">
+				<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create one"/><button class="save">Add</button><button class="cancel">Cancel</button>
+			</span>
+		</span>
+	</span>
 </script>
-<script type="text/template" id="browser-body-filter-template" style="display: none;"><%= label %></script>
+<script type="text/template" id="browser-filter-template" style="display: none;"><%= label %></script>
 <script type="text/template" id="editor-tab-template" style="display: none;">
 	<%= title %>
 </script>

@@ -6,9 +6,9 @@ define ([
 		'channel',
 		'temp',
 		'views/helper',
-		'views/browser-body',
+		'views/browser',
 		'views/editor',
-	], function ($, _, Backbone, Mousetrap, channel, temp, HelperView, BrowserBodyView, EditorView) {
+	], function ($, _, Backbone, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
 
 		/**
 		 * This backbone view holds the entire UI.
@@ -70,7 +70,7 @@ define ([
 						// Initialize mandatory static tabs
 						new HelperView();
 						//new BrowserView();
-						new BrowserBodyView({ el: $("#tabs .browse") })
+						new BrowserView({ el: $("#tabs .browse") })
 						// End data retrieval
 						temp.coll.tasks.fetch({silent: true});
 						temp.coll.notes.fetch({silent: true});

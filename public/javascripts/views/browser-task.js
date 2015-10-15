@@ -5,23 +5,23 @@ define ([
 		'temp',
 		'channel',
 		'models/tag',
-		'views/browser-body-object',
+		'views/browser-object',
 		'models/filter',
-	], function ($, _, Backbone, temp, channel, Tag, BrowserBodyObjectView, Filter) {
+	], function ($, _, Backbone, temp, channel, Tag, BrowserObjectView, Filter) {
 
 		/**
 		 * Displays a task in the browser
 		 * 
-		 * @class BrowserBodyTaskView
-		 * @extends {BrowserBodyObjectView}
+		 * @class BrowserTaskView
+		 * @extends {BrowserObjectView}
 		 */
-		var BrowserBodyTaskView = BrowserBodyObjectView.extend({
+		var BrowserTaskView = BrowserObjectView.extend({
 
-			template  : '#browser-body-task-template',
+			template  : '#browser-task-template',
 			className : 'task',
 
 			events: function(){
-				return _.extend({},BrowserBodyObjectView.prototype.events,{
+				return _.extend({},BrowserObjectView.prototype.events,{
 					'click .label .edit'          : 'editLabel',
 					'click .label .cancel'        : 'editLabelCancel',
 					'click .label .save'          : 'editLabelSave',
@@ -406,6 +406,6 @@ define ([
 
 		});
 
-		return BrowserBodyTaskView;
+		return BrowserTaskView;
 	}
 );

@@ -9,15 +9,15 @@ define ([
 		/**
 		 * This class retains all core features for displaying objects views in the browser.
 		 * Several classes will inherit from it, one per kind of business object :
-		 * - BrowserBodyNoteView
-		 * - BrowserBodyTaskView
-		 * - BrowserBodyTagView
+		 * - BrowserNoteView
+		 * - BrowserTaskView
+		 * - BrowserTagView
 		 * - ...
 		 * 
-		 * @class BrowserBodyObjectView
+		 * @class BrowserObjectView
 		 * @extends Backbone.View
 		 */
-		var BrowserBodyObjectView = Backbone.View.extend({
+		var BrowserObjectView = Backbone.View.extend({
 			tagName  : 'li',
 
 			// The DOM events specific to an item.
@@ -67,6 +67,6 @@ define ([
 			},
 		});
 
-		return BrowserBodyObjectView;
+		return BrowserObjectView;
 	}
 );

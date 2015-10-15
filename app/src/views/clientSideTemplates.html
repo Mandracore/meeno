@@ -1,13 +1,13 @@
-<script type="text/template" id="browser-body-note-template" style="display: none;">
+<script type="text/template" id="browser-note-template" style="display: none;">
 	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<span class="edit title attribute"><%= note.title %></span>
 	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag %>]</span><% }); %></span>
 </script>
-<script type="text/template" id="browser-body-tag-template" style="display: none;">
+<script type="text/template" id="browser-tag-template" style="display: none;">
 	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<span class="edit label attribute"><%= label %></span>
 </script>
-<script type="text/template" id="browser-body-task-template" style="display: none;">
+<script type="text/template" id="browser-task-template" style="display: none;">
 	<span style="display: none;" class="checkbox icon-check-empty"></span>
 	<!-- //////////// Dates display, for debug purposes only
 	span class="attribute"><%= task.created_at %> **** created</span></br>
@@ -62,7 +62,7 @@
 		</span>
 	</span>
 </script>
-<script type="text/template" id="browser-body-filter-template" style="display: none;"><%= label %></script>
+<script type="text/template" id="browser-filter-template" style="display: none;"><%= label %></script>
 <script type="text/template" id="editor-tab-template" style="display: none;">
 	<%= title %>
 </script>

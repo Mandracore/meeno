@@ -12,7 +12,7 @@ mee.l18n.EditorBodyView = {
 		'ctrl+alt+shift+t': 'newTask'
 	}
 };
-mee.l18n.BrowserBodyView = {
+mee.l18n.BrowserView = {
 	keyboardEvents: {
 		// some issue with mousetrap on chrome
 		// '#': 'newTag',

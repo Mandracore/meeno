@@ -10,16 +10,16 @@ define ([
 		 * This view can accept models of classes {{#crossLink "NoteFilter"}}{{/crossLink}},
 		 * {{#crossLink "TaskFilter"}}{{/crossLink}} and {{#crossLink "TagFilter"}}{{/crossLink}}.
 		 * 
-		 * @class BrowserBodyFilterView
+		 * @class BrowserFilterView
 		 * @extends Backbone.View
 		 * @constructor
 		 * @param {Object} options Holds all the options of the view.
 		 * @param {Object} options.filterName Must be passed to initialize the view's model name.
 		 */
-		var BrowserBodyFilterView = Backbone.View.extend({
+		var BrowserFilterView = Backbone.View.extend({
 			tagName  : "li",
 			className: "fa fa-filter",
-			template : '#browser-body-filter-template',
+			template : '#browser-filter-template',
 
 			events: {
 				'click': 'activate'
@@ -45,7 +45,7 @@ define ([
 			},
 
 			/**
-			 * Called every time the filters of the {{#crossLink "BrowserBodyView"}}browser{{/crossLink}} 
+			 * Called every time the filters of the {{#crossLink "BrowserView"}}browser{{/crossLink}} 
 			 * are updated. Checks if its model is similar to the one in use in the browser and 
 			 * highlights it if it's true.
 			 *
@@ -63,7 +63,7 @@ define ([
 
 			/**
 			 * Called when the user clicks on the view.
-			 * Updates the right {{#crossLink "BrowserBodyView"}}browser{{/crossLink}}'s 
+			 * Updates the right {{#crossLink "BrowserView"}}browser{{/crossLink}}'s 
 			 * filter to clone the view's model properties and highlights it.
 			 *
 			 * @method activate
@@ -88,6 +88,6 @@ define ([
 
 		});
 
-		return BrowserBodyFilterView;
+		return BrowserFilterView;
 	}
 );

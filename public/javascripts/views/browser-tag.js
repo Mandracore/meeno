@@ -3,21 +3,21 @@ define ([
 		'underscore',
 		'backbone',
 		'channel',
-		'views/browser-body-object',
-	], function ($, _, Backbone, channel, BrowserBodyObjectView) {
+		'views/browser-object',
+	], function ($, _, Backbone, channel, BrowserObjectView) {
 
 		/**
 		 * A backbone view to display one tag in the browser
 		 * 
-		 * @class BrowserBodyTagView
-		 * @extends BrowserBodyObjectView
+		 * @class BrowserTagView
+		 * @extends BrowserObjectView
 		 */
-		var BrowserBodyTagView = BrowserBodyObjectView.extend({
+		var BrowserTagView = BrowserObjectView.extend({
 
-			template : '#browser-body-tag-template',
+			template : '#browser-tag-template',
 
 			events: function(){
-				return _.extend({},BrowserBodyObjectView.prototype.events,{
+				return _.extend({},BrowserObjectView.prototype.events,{
 					'click .edit'    : 'edit',
 					'click .delete'  : 'delete',
 					'blur .label'    : 'save'
@@ -86,6 +86,6 @@ define ([
 			},
 		});
 
-		return BrowserBodyTagView;
+		return BrowserTagView;
 	}
 );

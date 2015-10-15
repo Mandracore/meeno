@@ -2,7 +2,7 @@ var mee  = mee || {};
 mee.l18n = mee.l18n || {};
 /*
 // shortcuts for people speaking French in France
-mee.l18n.BrowserBodyView = {
+mee.l18n.BrowserView = {
 	keyboardEvents: {
 		// some issue with mousetrap on chrome
 		// '#': 'newTag',

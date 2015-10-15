@@ -6,24 +6,24 @@ define ([
 		'channel',
 		'models/filter',
 		'models/task',
-		'views/browser-body-note',
-		'views/browser-body-task',
-		'views/browser-body-tag',
-		'views/browser-body-filter',
-	], function ($, _, Backbone, temp, channel, Filter, Task, BrowserBodyNoteView, BrowserBodyTaskView, BrowserBodyTagView, BrowserBodyFilterView) {
+		'views/browser-note',
+		'views/browser-task',
+		'views/browser-tag',
+		'views/browser-filter',
+	], function ($, _, Backbone, temp, channel, Filter, Task, BrowserNoteView, BrowserTaskView, BrowserTagView, BrowserFilterView) {
 
 		/**
 		 * This class will be used to support the main view of the object browser.
 		 * From here, the user will be able to browse notes, tags and tasks, using filters and sorting out results.
-		 * It controls the creation of several subviews, like {{#crossLink "BrowserBodyTagView"}}{{/crossLink}},
-		 * {{#crossLink "BrowserBodyFilterView"}}{{/crossLink}},...
+		 * It controls the creation of several subviews, like {{#crossLink "BrowserTagView"}}{{/crossLink}},
+		 * {{#crossLink "BrowserFilterView"}}{{/crossLink}},...
 		 * 
-		 * @class BrowserBodyView
+		 * @class BrowserView
 		 * @constructor
 		 * @param {Object} parent Holds a reference to the mother browser view
 		 * @extends Backbone.View
 		 */
-		var BrowserBodyView = Backbone.View.extend ({
+		var BrowserView = Backbone.View.extend ({
 
 			// Initialize the view
 			// =============================================================================
@@ -280,7 +280,7 @@ define ([
 			// Dropzones and milestones setup
 			// =============================================================================
 			/**
-			 * Forces the browser-body to update the data attributes of the dropzones so that
+			 * Forces the browser to update the data attributes of the dropzones so that
 			 * the behavior remains consistent from one day to another even if the page
 			 * is not reloaded. It should be using a today date passed as parameter, just like {{setupMilestones}}
 			 *
@@ -305,7 +305,7 @@ define ([
 			},
 
 			/**
-			 * Forces the browser-body to update the milestones it should render along with the tasks.
+			 * Forces the browser to update the milestones it should render along with the tasks.
 			 * Indeed, the milestones to display will change depending on the day of the week.
 			 *
 			 * @method setupMilestones
@@ -395,10 +395,10 @@ define ([
 			},
 
 			/**
-			 * Child of the method {{#crossLink "BrowserBodyView/newTask:method"}}{{/crossLink}}.
+			 * Child of the method {{#crossLink "BrowserView/newTask:method"}}{{/crossLink}}.
 			 * Allows to have the same behaviour, regardless of how the user validates the creation. So the calling method can be
-			 * either {{#crossLink "BrowserBodyView/newTask:method"}}{{/crossLink}} (creation by click on button) or
-			 * {{#crossLink "BrowserBodyView/kbEventProxy:method"}}{{/crossLink}} (creation by keying ENTER).
+			 * either {{#crossLink "BrowserView/newTask:method"}}{{/crossLink}} (creation by click on button) or
+			 * {{#crossLink "BrowserView/kbEventProxy:method"}}{{/crossLink}} (creation by keying ENTER).
 			 * 
 			 * @method newTaskSub
 			 */
@@ -696,7 +696,7 @@ define ([
 
 				// Third, filling the DOM again
 				temp.coll[filtersCollName].each(function (element) {
-					var newView = new BrowserBodyFilterView({ filterName: filterName, model: element, parent: self });
+					var newView = new BrowserFilterView({ filterName: filterName, model: element, parent: self });
 					self.children[filtersCollName].push (newView);
 					$list.append(newView.render().el);
 				}, this);
@@ -811,7 +811,7 @@ define ([
 					for (var idx in results) {
 						if (!results[idx].label) {
 							// This is a task
-							newView = new BrowserBodyTaskView({ collName:"tasks", model: results[idx] });
+							newView = new BrowserTaskView({ collName:"tasks", model: results[idx] });
 							self.children[collName].push (newView);
 							$list.append(newView.render().el);
 						} else {
@@ -828,9 +828,9 @@ define ([
 				} else {
 					// Normal rendering for notes and tags
 					results.each(function (element) {
-						if (collName == "notes") { newView = new BrowserBodyNoteView({ collName:"notes", model: element }); }
-						if (collName == "tags") { newView = new BrowserBodyTagView({ collName:"tags", model: element }); }
-						// if (collName == "tasks") { newView = new BrowserBodyTaskView({ collName:"tasks", model: element }); }
+						if (collName == "notes") { newView = new BrowserNoteView({ collName:"notes", model: element }); }
+						if (collName == "tags") { newView = new BrowserTagView({ collName:"tags", model: element }); }
+						// if (collName == "tasks") { newView = new BrowserTaskView({ collName:"tasks", model: element }); }
 						self.children[collName].push (newView);
 						$list.append(newView.render().el);
 					}, this);
@@ -967,6 +967,6 @@ define ([
 
 		});
 
-		return BrowserBodyView;
+		return BrowserView;
 	}
 );

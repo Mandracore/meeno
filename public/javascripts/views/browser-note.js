@@ -3,28 +3,28 @@ define ([
 		'underscore',
 		'backbone',
 		'channel',
-		'views/browser-body-object',
+		'views/browser-object',
 		'views/editor',
-	], function ($, _, Backbone, channel, BrowserBodyObjectView, EditorView) {
+	], function ($, _, Backbone, channel, BrowserObjectView, EditorView) {
 
 		/**
 		 * Displays notes in the browser.
 		 * 
-		 * @class BrowserBodyNoteView
-		 * @extends BrowserBodyObjectView
+		 * @class BrowserNoteView
+		 * @extends BrowserObjectView
 		 */
-		var BrowserBodyNoteView = BrowserBodyObjectView.extend({
+		var BrowserNoteView = BrowserObjectView.extend({
 
-			template : '#browser-body-note-template',
+			template : '#browser-note-template',
 
 			events: function(){
-				return _.extend({},BrowserBodyObjectView.prototype.events,{
+				return _.extend({},BrowserObjectView.prototype.events,{
 					'click .edit'           : 'edit',
 				});
 			},
 
 			initialize: function(options){
-				BrowserBodyObjectView.prototype.initialize.apply(this, [options])
+				BrowserObjectView.prototype.initialize.apply(this, [options])
 				this.options = options;
 				this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
 				this.listenTo(this.model, 'change:title change:position', this.render);
@@ -51,6 +51,6 @@ define ([
 			}
 		});
 
-		return BrowserBodyNoteView;
+		return BrowserNoteView;
 	}
 );
