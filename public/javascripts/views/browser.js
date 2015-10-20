@@ -378,6 +378,10 @@ define ([
 					$(child).removeClass("selected");
 				});
 				this.$el.find(".listobjects."+objectClass).addClass('selected');
+				// Finally, minimize the editors if necessary
+				var $editors = $('#editors');
+				$$editors.addClass('hidden');
+				$$editors.removeClass('visible',1000);
 			},
 
 			// Add new records

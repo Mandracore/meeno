@@ -4,7 +4,7 @@ define ([
 		'backbone',
 		'channel',
 		'views/browser-object',
-		'views/editor',
+		'views/editor-body',
 	], function ($, _, Backbone, channel, BrowserObjectView, EditorView) {
 
 		/**
@@ -46,8 +46,10 @@ define ([
 
 			edit: function() {
 				var newEditor = new EditorView ({ model: this.model });
-				newEditor.render();
-				newEditor.toggle();
+				$("#editors").append(newEditor.render().el);
+				newEditor.show();
+				newEditor.updateEditorsClass();
+				this.model.set('isOpened',true);
 			}
 		});
 

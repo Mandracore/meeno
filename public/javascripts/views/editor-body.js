@@ -18,51 +18,41 @@ define ([
 		var EditorBodyView = Backbone.View.extend({
 
 			tagName          : 'div',
-			className        : 'tab object note',
+			className        : 'editor object note',
 			template         : '#editor-body-template',
 			numberOfEdit     : 0,
 			limitNumberOfEdit: 5,
 
 			// The DOM events specific to an item.
 			events: {
-				'click .close'         : 'delegatedKill',
-				'click .delete'        : 'delete',
-				'click .clone'         : 'clone',
-				'keypress'             : 'trySave',
-				'blur .edit-content'   : 'save',
-				'blur .edit-title'     : 'save'
+				'click .close'       : 'close',
+				'click .minimize'    : 'minimize',
+				'click .title'       : 'show',
+				'click .delete'      : 'delete',
+				'click .clone'       : 'clone',
+				'keypress'           : 'trySave',
+				'blur .edit-content' : 'save',
+				'blur .edit-title'   : 'save'
 			},
 
+			//=================================================
+			// V2 FUNC
+			//=================================================
+			/**
+			 * The user wants to open a note editor :
+			 * 1. Deploy #editors
+			 * 2. Ensure this note editor is in front of the others
+			 *
+			 * @method initialize
+			 */
 			initialize: function(options) {
-				this.options = options;
-				Backbone.View.prototype.initialize.apply(this, arguments);
+				//this.options = options;
+				//Backbone.View.prototype.initialize.apply(this, arguments);
 				this.children = [];
 
 				this.listenTo(channel, 'keyboard:tag', function () {this.newObject("tag");});
 				this.listenTo(channel, 'keyboard:task', function () {this.newObject("task");});
 				this.listenTo(channel, 'keyboard:entity', function () {this.newObject("entity");});
-			},
-
-			delegatedKill: function() {
-				this.save();
-				_.map (this.children, function(child) {return child.kill();});
-				this.options.parent.kill();
-			},
-
-			delete: function() {
-				this.model.destroy({
-					success: function() {console.log("Object successfully deleted.");},
-					error  : function() {console.log("Deleting failed.");}
-				});
-				this.options.parent.kill();
-			},
-
-			clone: function() {
-				this.save();
-				var cloneModel = this.model.clone();
-				mee.Notes.add(cloneModel);
-				var newEditor = new EditorView ({ model: cloneModel });
-				newEditor.toggle();
 			},
 
 			render: function() {
@@ -96,6 +86,100 @@ define ([
 				});
 				return this;
 			},
+
+			/**
+			 * The user wants to see a note already opened (inserted in #editors). We should only :
+			 * 1. Deploy #editors
+			 * 2. Ensure this note editor is in front of the others if it's not the case
+			 *
+			 * @method show
+			 */
+			show: function() {
+				var $editors = this.$el.parent();
+				var $editor  = this.$el.detach(); // Detach from DOM without removing attached jQuery objects and properties
+				$editor.appendTo($editors); // insert to the end
+				$editors.addClass('visible');
+				$editors.removeClass('hidden',1000); // maximize the #editors
+			},
+
+			/**
+			 * The user wants to maximize the #editors wrapper and show
+			 *
+			 * @method minimize
+			 */
+			minimize: function() {
+				var $editors = this.$el.parent();
+				$editors.switchClass("visible", "hidden", 1000);
+			},
+
+			/**
+			 * The user wants to close a note already opened. We should only :
+			 * 1. Remove the editor from #editors
+			 * 2. If #editors is now empty, close it (delegated to {{#crossLink "updateEditorsClass:method"}}{{/crossLink}}.)
+			 *
+			 * @method close
+			 */
+			close: function() {
+				var $editors = this.$el.parent();
+
+				$editors.switchClass("visible", "hidden", 1000);
+
+				this.$el.remove(); // Remove from DOM
+				this.model.set('isOpened',false);
+				this.updateEditorsClass(); // update the class of the editors' wrapper
+				_.map (this.children, function(child) {return child.kill();}); // destroy objects in editor (mainly tasks)
+				this.kill (); // destroy the view
+			},
+
+			/**
+			 * This method should update the class of #editors in the following cases :
+			 * 1. a new editor is opened
+			 * 2. a opened editor is closed
+			 * This allows to apply the correct styling to the editors' wrapper. Also, the editors's wrapper
+			 * should be automatically minimized (which means apply the class `hidden`) when it's empty
+			 * 
+			 * @method updateEditorsClass
+			 */
+			updateEditorsClass: function () {
+				var $editors             = this.$el.parent();
+				var editorsChildrenCount = $editors.children().length;
+				var editorsClass         = "children-count-" + editorsChildrenCount;
+
+				// Testing
+				$editors.removeClass("children-count-0");
+				$editors.removeClass("children-count-1");
+				$editors.removeClass("children-count-2");
+				$editors.removeClass("children-count-3");
+				$editors.removeClass("children-count-4");
+				$editors.removeClass("children-count-5");
+				$editors.addClass(editorsClass);
+			},
+
+
+
+			/*
+			delegatedKill: function() {
+				this.save();
+				_.map (this.children, function(child) {return child.kill();});
+				this.options.parent.kill();
+			},
+
+			delete: function() {
+				this.model.destroy({
+					success: function() {console.log("Object successfully deleted.");},
+					error  : function() {console.log("Deleting failed.");}
+				});
+				this.options.parent.kill();
+			},
+
+			clone: function() {
+				this.save();
+				var cloneModel = this.model.clone();
+				mee.Notes.add(cloneModel);
+				var newEditor = new EditorView ({ model: cloneModel });
+				newEditor.toggle();
+			},
+
 
 			checkFocus: function () {
 				var $caretsNode = $(tools.getCaretsNode());
@@ -165,7 +249,7 @@ define ([
 				});
 				// Then activate this one
 				this.$el.addClass('selected');
-			}
+			}*/
 		});
 
 		//_.extend(EditorBodyView.prototype, mee.l18n.EditorBodyView);

@@ -142,26 +142,19 @@ nav
 	max-width 1280px
 	margin auto 0
 
-.listobjects
-	height 100%
-	overflow-y hidden
-	.col2
+
+
+.tab
+	display none
+	&.selected
+		display block
 		height 100%
+	&.help, &.object
+		overflow-y scroll
 
-
-// Preparing BROWSER grid
-.listobjects
-	.col1, .col2, .col3
-		float:left
-	.col1, .col3
-		width 20%
-	.col2
-		width 60%
-
-
-//##################################
-// TESING AREA
-//##################################
+//======================================
+// EDITORS
+//======================================
 
 #editors
 	z-index 10
@@ -170,21 +163,22 @@ nav
 	text-align right
 	overflow hidden
 	&.hidden
-		&.one
+		&.children-count-0
+			display none
+		&.children-count-1
 			top calc(100% - 1em)
 			height 1em
-		&.two
+		&.children-count-2
 			top calc(100% - 2em)
 			height 2em
-		&.three
+		&.children-count-3
 			top calc(100% - 3em)
 			height 3em
 	&.visible
 		top 4em
 		height calc(100% - 4em)
-	div
+	.editor
 		opacity .5
-		background-color white
 		position absolute
 		height 2em
 		&:last-child
@@ -231,6 +225,68 @@ nav
 			top 0
 			left 0
 			height 100%
+		
+		//---------------------
+		// Styling once opened
+		.col1
+			float left
+			background-color transparent
+			width 10em
+			display none
+			color white
+			.actions-contextual
+				li
+					opacity .5
+					margin 1em
+					text-transform uppercase
+					font-family Dense
+					font-size 1.2em
+					text-align center
+					&:hover
+						opacity 1
+						cursor pointer
+					span
+						font-size 1.9em
+						display block
+						width 100%
+						margin 0px 0px 0.2em
+		&:last-child .col1
+			display initial
+		.col2
+			float left
+			position absolute
+			left 10em
+			width calc(100% - 9.5em)
+			height 100%
+			text-align left
+			background-color white
+			border-top-left-radius .5em
+			article
+				padding 1em
+				line-height 1.3em
+				font-size .9em
+				font-family Arial
+
+		.col2 > div
+			padding 0.5em 1em
+			ul.windows-control
+				display block
+				width 100%
+				height 1em
+				li
+					float left
+					margin 0 0.5em 0 0
+				li.title
+					font-size .8em
+					line-height 1.25em
+					font-family Arial
+				li.minimize, li.close
+					opacity .5
+					&:hover
+						opacity 1
+						cursor pointer
+
+/*
 .actions-main,.actions-contextual
 	width 15em
 	list-style none
@@ -283,19 +339,27 @@ nav
 	display list-item
 
 
+*/
 
-.tab
-	display none
-	&.selected
-		display block
+
+//======================================
+// BROWSER
+//======================================
+
+.listobjects
+	height 100%
+	overflow-y hidden
+	.col2
 		height 100%
-	&.help, &.object
-		overflow-y scroll
 
-
-//======================================
-// BROWSER OBJECTS
-//======================================
+// Preparing BROWSER grid
+.listobjects
+	.col1, .col2, .col3
+		float:left
+	.col1, .col3
+		width 20%
+	.col2
+		width 60%
 
 // Special autocomplete setup for listobjects alone
 .ui-autocomplete-category

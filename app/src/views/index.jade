@@ -77,32 +77,29 @@ block content
 						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
 			div.tab.browse.selected
 				div.listobjects.notes
-					div.col1.dropzone
-					// empty
+					div.col1
+						div.actions
+							div.new-note
+								.title NEW NOTE
+								.subtitle Type here the title of a new note you would like to create.
+								.form
+									input.mousetrap(type="text", placeholder="Name here your new note")
+									//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
+								button open a new note
 					div.col2
 						div.search-wrapper
 							div.super-input
 								span.objectButtons
-								//span
-									input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 								input.mousetrap.autocomplete.search(type="text", autofocus, placeholder="search notes")
 							div.filter-editor
 								ul
 								input(style="display:none", type="text", placeholder="type a name for this new filter")
-								button.action.delete(style="display:none") Delete active filter
-								button.action.save(style="display:none") Save current filter
-								button.action.saveConfirm(style="display:none") Save filter under this name
-						//div.actions-contextual-selection
-							button.select-all Tout sélectionner
-							button.unselect-all Tout déselectionner
-						//div.actions-contextual-trigger
-							button.delete Supprimer
-						//ul.actions-contextual
-							li.delete
-								span.action Delete notes
-								span.cancel Cancel
+								span
+									button.action.delete(style="display:none") Delete active filter
+									button.action.save(style="display:none") Save current filter
+									button.action.saveConfirm(style="display:none") Save
 						// Hereafeter will be displayed the objects
-						ul.objects.notes
+						ul.objects.notes.draggable
 					div.col3
 				div.listobjects.tasks.selected
 					div.col1
@@ -159,35 +156,30 @@ block content
 							.title saved filters
 							.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
 				div.listobjects.tags
-					div.col1.dropzone
-					// empty
+					div.col1
+						div.actions
+							div.new-tag
+								.title NEW TAG
+								.subtitle Type here the label of a new tag you would like to create. 
+								.form
+									input.mousetrap(type="text", placeholder="Describe here your new task")
+									//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
+								button save tag
 					div.col2
 						div.search-wrapper
 							div.super-input
 								span.objectButtons
-								//span
-									input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
 								input.mousetrap.autocomplete.search(type="text", autofocus, placeholder="search tags")
 							div.filter-editor
 								ul
 								input(style="display:none", type="text", placeholder="type a name for this new filter")
-								button.action.delete(style="display:none") Delete active filter
-								button.action.save(style="display:none") Save current filter
-								button.action.saveConfirm(style="display:none") Save filter under this name
-						//div.actions-contextual-selection
-							button.select-all Tout sélectionner
-							button.unselect-all Tout déselectionner
-						//div.actions-contextual-trigger
-							button.delete Supprimer
-						//ul.actions-contextual
-							li.delete
-								span.action Delete tags
-								span.cancel Cancel
-						// Hereafeter will be displayed the objects
-						ul.objects.tags
-					div.col3.saved-filters
-					// empty
-		div#editors.hidden.three
-			div note 1
-			div note 2
-			div note 3
+								span
+									button.action.delete(style="display:none") Delete active filter
+									button.action.save(style="display:none") Save current filter
+									button.action.saveConfirm(style="display:none") Save
+						ul.objects.tags.draggable
+					div.col3
+		div#editors.hidden.children-count-0
+			//div.editor note 1
+			//div.editor note 2
+			//div.editor note 3
