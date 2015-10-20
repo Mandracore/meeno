@@ -4,7 +4,7 @@ define ([
 		'backbone',
 		'channel',
 		'views/browser-object',
-		'views/editor-body',
+		'views/editor',
 	], function ($, _, Backbone, channel, BrowserObjectView, EditorView) {
 
 		/**

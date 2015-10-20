@@ -189,7 +189,14 @@ define ([
 				newEditor.toggle();
 			},*/
 
+			/**
+			 * To open the browser in position notes
+			 *
+			 * @method browseNotes
+			 * @param {event} event Backbone event
+			 */
 			browseNotes: function (event) {
+				this.minEditors();
 				if (!($(event.target).hasClass('selected'))) {
 					$(event.target).siblings().removeClass('selected');
 					$(event.target).addClass('selected');
@@ -198,7 +205,14 @@ define ([
 				}
 			},
 
+			/**
+			 * To open the browser in position tasks
+			 *
+			 * @method browseTasks
+			 * @param {event} event Backbone event
+			 */
 			browseTasks: function (event) {
+				this.minEditors();
 				if (!($(event.target).hasClass('selected'))) {
 					$(event.target).siblings().removeClass('selected');
 					$(event.target).addClass('selected');
@@ -207,7 +221,14 @@ define ([
 				}
 			},
 
+			/**
+			 * To open the browser in position tags
+			 *
+			 * @method browseTags
+			 * @param {event} event Backbone event
+			 */
 			browseTags: function (event) {
+				this.minEditors();
 				if (!($(event.target).hasClass('selected'))) {
 					$(event.target).siblings().removeClass('selected');
 					$(event.target).addClass('selected');
@@ -215,6 +236,19 @@ define ([
 					this.$('#tabs .listobjects.tags').addClass('selected');
 				}
 			},
+
+			/**
+			 * To minimize the editors
+			 * 
+			 * @method minEditors
+			 * @param {event} event Backbone event
+			 */
+			minEditors: function () {
+				var $editors = $('#editors');
+				$editors.addClass('hidden',500);
+				$editors.removeClass('visible');
+			},
+
 		});
 
 		return MainView; // The module returns the class

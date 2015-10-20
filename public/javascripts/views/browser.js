@@ -34,7 +34,6 @@ define ([
 
 			// ###Setup the view's DOM events
 			events: {
-				'click .filter li'                                  : 'toggleObject',
 				// Search-related events
 				'keyup .search'                                     : 'searchText',
 				'click .objectButtons span'                         : 'searchObjectRemove',
@@ -357,31 +356,6 @@ define ([
 				});
 				// Then activate this one
 				this.$el.addClass('selected');
-			},
-
-			/**
-			 * Displays the adequate subsection of the browser (notes, tags or tasks) when the user clicks
-			 * on the right button (class `.filter li`).
-			 *
-			 * @method toggleObject
-			 * @param {event} event Backbone event
-			 */
-			toggleObject : function (event) {
-				var objectClass = $(event.target).hasClass("notes") ? "notes" : ($(event.target).hasClass("tags") ? "tags" : "tasks");
-				// First, the command
-				this.$el.find(".filter ul").children().each(function(i,child){
-					$(child).removeClass("selected");
-				});
-				this.$el.find(".filter li."+objectClass).addClass('selected');
-				// Then, the contents
-				this.$el.children(".listobjects").each(function(i,child){
-					$(child).removeClass("selected");
-				});
-				this.$el.find(".listobjects."+objectClass).addClass('selected');
-				// Finally, minimize the editors if necessary
-				var $editors = $('#editors');
-				$$editors.addClass('hidden');
-				$$editors.removeClass('visible',1000);
 			},
 
 			// Add new records
