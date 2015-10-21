@@ -245,8 +245,7 @@ define ([
 			 */
 			minEditors: function () {
 				var $editors = $('#editors');
-				$editors.addClass('hidden',500);
-				$editors.removeClass('visible');
+				$editors.removeClass('visible',500);
 			},
 
 		});

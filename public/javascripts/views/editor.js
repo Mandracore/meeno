@@ -98,8 +98,8 @@ define ([
 				var $editors = this.$el.parent();
 				var $editor  = this.$el.detach(); // Detach from DOM without removing attached jQuery objects and properties
 				$editor.appendTo($editors); // insert to the end
-				$editors.addClass('visible');
-				$editors.removeClass('hidden',500); // maximize the #editors
+				$editors.addClass('visible',500); // maximize the #editors
+				//$editors.removeClass('hidden',500); // maximize the #editors
 			},
 
 			/**
@@ -109,7 +109,7 @@ define ([
 			 */
 			minimize: function() {
 				var $editors = this.$el.parent();
-				$editors.switchClass("visible", "hidden", 1000);
+				$editors.removeClass("visible", 1000, "easeOutExpo");
 			},
 
 			/**
@@ -122,7 +122,8 @@ define ([
 			close: function() {
 				var $editors = this.$el.parent();
 
-				$editors.switchClass("visible", "hidden", 1000);
+				$editors.removeClass("visible", 1000);
+				//$editors.switchClass("visible", "hidden", 1000);
 
 				this.$el.remove(); // Remove from DOM
 				this.model.set('isOpened',false);
@@ -140,7 +141,7 @@ define ([
 			 * 
 			 * @method updateEditorsClass
 			 */
-			updateEditorsClass: function () {
+			updateEditorsClass: function (callback) {
 				var $editors             = this.$el.parent();
 				var editorsChildrenCount = $editors.children().length;
 				var editorsClass         = "children-count-" + editorsChildrenCount;
@@ -152,7 +153,7 @@ define ([
 				$editors.removeClass("children-count-3");
 				$editors.removeClass("children-count-4");
 				$editors.removeClass("children-count-5");
-				$editors.addClass(editorsClass);
+				$editors.addClass(editorsClass, 100, "easeOutExpo", callback());
 			},
 
 

@@ -21,25 +21,26 @@ cTxtRead          = lighten(#000000, 90%) // main body of text, for easy reading
 cTxtBtnBlue0      = #348bcd // blue clickable
 cTxtBtnBlue1      = lighten(cTxtBtnBlue0, 40%) // blue clickable active
 
-cText             = #434343
-cTextFaded        = lighten(#535353, 40%)
-cTextRev          = #dddddd
-cTextRevFaded     = darken(#dddddd, 40%)
-cDarkGrey         = lighten(#000000, 30%)
-cLightGrey        = lighten(#000000, 90%)
-cBlueLine         = lighten(#5e939f, 40%)
-wApp              = 1200px
-wRightCol         = 850px
-wLeftCol          = wApp - wRightCol
-wLeftColPad       = 35px
-wRightColPad      = 50px
-zLiner            = 5
-pyLiner           = 80px
-pHeadersV         = 40px
-pWrappPadV        = pyLiner - pHeadersV
-hTabs             = 40px
-hControls         = 30px
-hFadeOut          = 100px
+cText         = #434343
+cTextFaded    = lighten(#535353, 40%)
+cTextRev      = #dddddd
+cTextRevFaded = darken(#dddddd, 40%)
+cDarkGrey     = lighten(#000000, 30%)
+cMidGrey      = lighten(#000000, 50%)
+cLightGrey    = lighten(#000000, 90%)
+cBlueLine     = lighten(#5e939f, 40%)
+wApp          = 1200px
+wRightCol     = 850px
+wLeftCol      = wApp - wRightCol
+wLeftColPad   = 35px
+wRightColPad  = 50px
+zLiner        = 5
+pyLiner       = 80px
+pHeadersV     = 40px
+pWrappPadV    = pyLiner - pHeadersV
+hTabs         = 40px
+hControls     = 30px
+hFadeOut      = 100px
 
 global-reset()
 reset-html5()
@@ -103,11 +104,14 @@ header
 	position relative
 	top 0
 	h1
-		font-size rFontSize * 1em
+		font-size rFontSize * 1.75em
 		float left
-		padding .5em
+		padding 0 0 (.5em / 1.75) .3em
 		margin 0
 		width 8em
+		font-family Dense
+		text-shadow 1px 1px 1px black
+		color grey
 
 nav
 	float right
@@ -162,18 +166,17 @@ nav
 	width 100%
 	text-align right
 	overflow hidden
-	&.hidden
-		&.children-count-0
-			display none
-		&.children-count-1
-			top calc(100% - 1em)
-			height 1em
-		&.children-count-2
-			top calc(100% - 2em)
-			height 2em
-		&.children-count-3
-			top calc(100% - 3em)
-			height 3em
+	&.children-count-0
+		display none
+	&.children-count-1
+		top calc(100% - 1em)
+		height 1em
+	&.children-count-2
+		top calc(100% - 2em)
+		height 2em
+	&.children-count-3
+		top calc(100% - 3em)
+		height 3em
 	&.visible
 		top 4em
 		height calc(100% - 4em)
@@ -186,19 +189,16 @@ nav
 		//---------------------
 		// three editors opened
 		&:first-child:nth-last-child(3) // select first
-			color red
 			left 4em
 			width calc(100% - 4em)
 			top 0
 			height 100%
 		&:nth-child(2):nth-last-child(2) // select second
-			color yellow
 			left 2em
 			width calc(100% - 2em)
 			top 1em
 			height calc(100% - 1em)
 		&:nth-child(3):last-child // select third
-			color blue
 			left 0
 			width 100%
 			top 2em
@@ -206,13 +206,11 @@ nav
 		//---------------------
 		// two editors opened
 		&:first-child:nth-last-child(2) // select first
-			color red
 			left 2em
 			width calc(100% - 2em)
 			top 0
 			height 100%
 		&:nth-child(2):last-child // select last
-			color green
 			left 0
 			width 100%
 			top 1em
@@ -220,7 +218,6 @@ nav
 		//---------------------
 		// Only one editor opened
 		&:only-child // select first and only
-			color red
 			width 100%
 			top 0
 			left 0
@@ -262,10 +259,18 @@ nav
 			background-color white
 			border-top-left-radius .5em
 			article
-				padding 1em
+				padding 3em
 				line-height 1.3em
 				font-size .9em
 				font-family Arial
+				section.attributes
+				section.left
+					float left
+					width calc(50% - 2em)
+				section.right
+					float left
+					width 50%
+					margin 0 0 0 2em
 
 		.col2 > div
 			padding 0.5em 1em
@@ -276,10 +281,19 @@ nav
 				li
 					float left
 					margin 0 0.5em 0 0
-				li.title
+				li.title, li.date
 					font-size .8em
 					line-height 1.25em
 					font-family Arial
+				li.date
+					float right
+					font-size 0.8em
+					line-height 1.25em
+					font-family Arial
+					color cDarkGrey
+					text-transform lowercase
+					span.fieldname
+						color cMidGrey
 				li.minimize, li.close
 					opacity .5
 					&:hover

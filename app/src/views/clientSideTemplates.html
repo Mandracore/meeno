@@ -74,19 +74,19 @@
 		</ul>
 	</div>
 	<div class="col2">
-		<div>
+		<div class="maximize">
 			<ul class="windows-control">
 				<li class="close fa fa-close"></li>
 				<li class="minimize fa fa-minus"></li>
 				<li class="title" contentEditable><%= title %></li>
+				<li class="date updated_at"><span class="fieldname">last update </span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></li>
 			</ul>
 		</div>
 		<article>
 			<section class="attributes">
-				<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
-				<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
 			</section>
-			<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
+			<section contentEditable class="edit-content editable mousetrap left"><%= content %></section>
+			<section contentEditable class="edit-content editable mousetrap right"><%= content %></section>
 		</article>
 	</div>
 </script>

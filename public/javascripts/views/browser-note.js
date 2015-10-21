@@ -47,8 +47,9 @@ define ([
 			edit: function() {
 				var newEditor = new EditorView ({ model: this.model });
 				$("#editors").append(newEditor.render().el);
-				newEditor.show();
-				newEditor.updateEditorsClass();
+				newEditor.updateEditorsClass(function () {
+					newEditor.show();	
+				});
 				this.model.set('isOpened',true);
 			}
 		});
