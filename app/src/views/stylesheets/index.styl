@@ -568,19 +568,19 @@ nav
 	.filter-editor
 		border-bottom 1px solid rgba(255, 255, 255, 0.1)
 		.checked button
-			border none
+			border 1px solid rgba(255,255,255,.5)
+			background-color transparent
 			opacity 0.5
-			background-color: rgba(255, 255, 255, 0.1);
-			border-radius 2px
-			padding 2px
+			border-radius 10px
+			padding .2em .7em
 			margin 5px 10px 5px 0px
 			font-size 0.6em
 			vertical-align middle
 			text-transform uppercase
-			color cTextFaded
+			color rgba(255,255,255,.6)
 			&:hover
+				background-color rgba(255, 255, 255, 0.1)
 				opacity 1
-				color cTxtBtnHeadWhite1
 				cursor pointer
 		button.action
 			float right
@@ -631,15 +631,21 @@ nav
 		li.task
 			color cTxtRead
 			font-size 0.9em
-			margin 0.5em 0 0 0
-			padding 0
+			padding .5em
+			border-left 1px solid rgba(255,255,255,0.2)
+			border-right 1px solid rgba(255,255,255,0.2)
+			border-bottom 1px solid rgba(255,255,255,0.2)
+			&:first-child
+				border-top 1px solid rgba(255,255,255,0.2)
+			&:hover
+				background-color rgba(255,255,255,0.1)
 
 			.due, .reorder, .labelandtags
 				box-sizing border-box
 				display table-cell
 				width auto
 			.labelandtags
-				vertical-align top
+				vertical-align middle
 			.reorder
 				vertical-align 50%
 				opacity .3
@@ -681,8 +687,10 @@ nav
 			.due
 				width 2em
 				text-align center
-				padding 0 .7em
+				padding 0 1em 0 .2em
 				opacity 0.3
+				vertical-align middle
+				font-size 0.8em
 				&:hover
 					cursor pointer
 				&.urgent
@@ -699,7 +707,7 @@ nav
 					text-transform uppercase
 					font-size 0.8em
 			.label
-				display block
+				display inline-block
 				.attribute:hover
 					text-decoration line-through
 					cursor pointer
@@ -735,7 +743,7 @@ nav
 					&.cancel:before
 						content "X"
 			.tags
-				display block
+				display inline-block
 				padding 0
 				.edition 
 					font-size 0.9em
