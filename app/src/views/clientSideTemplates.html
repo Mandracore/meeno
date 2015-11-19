@@ -77,16 +77,15 @@
 		<div class="maximize">
 			<ul class="windows-control">
 				<li class="close fa fa-close"></li>
-				<li class="minimize fa fa-minus"></li>
-				<li class="title" contentEditable><%= title %></li>
-				<li class="date updated_at"><span class="fieldname">last update </span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></li>
+				<li class="title edit-title" contentEditable><%= title %></li>
 			</ul>
 		</div>
 		<article>
-			<section class="attributes">
-			</section>
+			<!--section class="attributes date">
+				<span class="fieldname">last update </span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %>
+			</section-->
 			<section contentEditable class="edit-content editable mousetrap left"><%= content %></section>
-			<section contentEditable class="edit-content editable mousetrap right"><%= content %></section>
+			<section contentEditable class="edit-content-sec editable mousetrap right"><%= content_sec %></section>
 		</article>
 	</div>
 </script>

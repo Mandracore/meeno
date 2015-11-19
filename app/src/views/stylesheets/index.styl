@@ -7,6 +7,7 @@
 // r : editer
 
 cBgGrey           = lighten(#000000, 20%)
+cBgLightGrey      = #fefefe
 cBgBrowserInputs  = lighten(#000000, 15%)
 cTextSec          = lighten(#000000, 50%)
 cTextSecActive    = lighten(#000000, 70%)
@@ -169,19 +170,19 @@ nav
 	&.children-count-0
 		display none
 	&.children-count-1
-		top calc(100% - 1em)
-		height 1em
-	&.children-count-2
 		top calc(100% - 2em)
 		height 2em
-	&.children-count-3
+	&.children-count-2
 		top calc(100% - 3em)
 		height 3em
+	&.children-count-3
+		top calc(100% - 4em)
+		height 4em
 	&.visible
-		top 4em
-		height calc(100% - 4em)
+		top 2em
+		height calc(100% - 2em)
 	.editor
-		opacity .5
+		opacity .3
 		position absolute
 		height 2em
 		&:last-child
@@ -257,35 +258,14 @@ nav
 			height 100%
 			text-align left
 			background-color white
-			border-top-left-radius .5em
+			border-top-left-radius 0.3em
 			article
-				padding 3em
 				line-height 1.3em
 				font-size .9em
 				font-family Arial
-				section.attributes
-				section.left
-					float left
-					width calc(50% - 2em)
-				section.right
-					float left
-					width 50%
-					margin 0 0 0 2em
-
-		.col2 > div
-			padding 0.5em 1em
-			ul.windows-control
-				display block
-				width 100%
-				height 1em
-				li
-					float left
-					margin 0 0.5em 0 0
-				li.title, li.date
-					font-size .8em
-					line-height 1.25em
-					font-family Arial
-				li.date
+				background-color cBgLightGrey
+				height 100%
+				section.date
 					float right
 					font-size 0.8em
 					line-height 1.25em
@@ -294,8 +274,69 @@ nav
 					text-transform lowercase
 					span.fieldname
 						color cMidGrey
-				li.minimize, li.close
+				section.left, section.right
+					font-family Georgia
+					overflow-x hidden
+					overflow-y auto
+					h1, h2, h3, h4
+						font-family Arial
+					h1
+						font-size 4em
+					h2
+						font-size 3em
+					h3
+						font-size 2em
+					h4
+						font-weight bold
+						
+				section.left
+					padding .5em .5em 3em 3em
+					float left
+					width calc(50% - 3.5em)
+				section.right
+					padding 3em 3em 3em .5em
+					float left
+					width calc(50% - 3.5em)
+
+		.col2 > div
+			padding .5em 1em .5em .9em
+			/* // to generate an inside round corner
+			&:after
+				content ''
+				display block
+				position absolute
+				height 50%
+				width 1em
+				bottom -5px
+				right -1em
+				border-left 5px cBgLightGrey solid
+				border-bottom 5px cBgLightGrey solid
+				border-bottom-left-radius .6em
+			// to generate triangle
+			&:after
+				content ''
+				display block
+				position absolute
+				height 50%
+				width 1em
+				bottom -5px
+				right -1em
+				border-left 5px cBgLightGrey solid
+				border-bottom 5px cBgLightGrey solid
+				border-bottom-left-radius .6em
+			*/
+			ul.windows-control
+				li
+					display inline-block
+					margin 0 0.5em 0 0
+				li.title
+					font-family Arial
+					font-size 0.8em
+					vertical-align top
+					line-height 2em
+				li.close
 					opacity .5
+					font-size 1.5em
 					&:hover
 						opacity 1
 						cursor pointer

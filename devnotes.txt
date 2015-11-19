@@ -587,3 +587,8 @@ Pour le sort :
 Pbms à voir
 - bas de l'écran qui descend trop bas (scroll caché)
 - décalage des textes au survol des tâches
+
+28/10====================================================
+#bug probable lié à editor-object : apparemment c'est la dernière vue qui se déclenche avant le bug de sauvegarde.
+Serait-ce parce qu'il essaie de sauver un objet dans la note qui n'existe plus ? Apparemment il y a avait des
+sauvegardes et maintenant plus du tout. C'est problabement parceque j'ai détruit un embedded-object.

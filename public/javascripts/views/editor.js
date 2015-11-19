@@ -26,7 +26,6 @@ define ([
 			// The DOM events specific to an item.
 			events: {
 				'click .close'       : 'close',
-				'click .minimize'    : 'minimize',
 				'click .title'       : 'show',
 				'click .delete'      : 'delete',
 				'click .clone'       : 'clone',
@@ -156,7 +155,37 @@ define ([
 				$editors.addClass(editorsClass, 100, "easeOutExpo", callback());
 			},
 
+			/**
+			 * Simple method to trigger note saving every 5 keypress
+			 * 
+			 * @method trySave
+			 */
+			trySave: function() {
+				this.numberOfEdit++;
+				if(this.numberOfEdit == this.limitNumberOfEdit){
+					this.save();
+					this.numberOfEdit=0;
+				}
+			},
 
+			/**
+			 * To update the model following the content of the contenteditables
+			 * 
+			 * @method save
+			 */
+			save: function() {
+				this.model.set({
+					title  :this.$(".edit-title").html(),
+					content:this.$(".edit-content1").html()
+				}).save({},{
+					success: function() {
+						console.log('Note successfully saved');
+					},
+					error  : function() {
+						console.log('Saving note modifications failed');
+					}
+				});
+			},
 
 			/*
 			delegatedKill: function() {
@@ -219,28 +248,6 @@ define ([
 				this.save();
 
 				return false;
-			},
-
-			trySave: function() {
-				this.numberOfEdit++;
-				if(this.numberOfEdit == this.limitNumberOfEdit){
-					this.save();
-					this.numberOfEdit=0;
-				}
-			},
-
-			save: function() {
-				this.model.set({
-					title  :this.$(".edit-title").html(),
-					content:this.$(".edit-content").html()
-				}).save({},{
-					success: function() {
-						console.log('Note successfully saved');
-					},
-					error  : function() {
-						console.log('Saving note modifications failed');
-					}
-				});
 			},
 
 			toggle: function() {

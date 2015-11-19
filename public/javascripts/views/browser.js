@@ -808,7 +808,7 @@ define ([
 					results.each(function (element) {
 						if (collName == "notes") { newView = new BrowserNoteView({ collName:"notes", model: element }); }
 						if (collName == "tags") { newView = new BrowserTagView({ collName:"tags", model: element }); }
-						// if (collName == "tasks") { newView = new BrowserTaskView({ collName:"tasks", model: element }); }
+
 						self.children[collName].push (newView);
 						$list.append(newView.render().el);
 					}, this);

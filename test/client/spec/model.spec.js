@@ -66,6 +66,9 @@ define ([
 						it("should have a default content attribute", function() {
 							expect(this.note.get('content')).toBe('Saisissez ici le contenu de votre note...');
 						});
+						it("should have a default secondary content attribute", function() {
+							expect(this.note.get('content_sec')).toBe('Vous pouvez également saisir vos notes ici...');
+						});
 					});
 				});
 

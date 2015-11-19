@@ -23,13 +23,14 @@ module.exports = function(mas, mongoose){
 	});
 
 	var msNote = new mongoose.Schema({
-		_creator   : String,
-		created_at : { type: Date },
-		updated_at : { type: Date },
-		title      : String,
-		content    : String,
-		tagLinks   : [msLinkNoteTag],
-		taskLinks  : [msLinkNoteTask]
+		_creator    : String,
+		created_at  : { type: Date },
+		updated_at  : { type: Date },
+		title       : String,
+		content     : String,
+		content_sec : String,
+		tagLinks    : [msLinkNoteTag],
+		taskLinks   : [msLinkNoteTask]
 	});
 	var msUser = new mongoose.Schema({
 		created_at : { type: Date },

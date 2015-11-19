@@ -43,10 +43,11 @@ define ([
 
 			defaults: function() {
 				return {
-					title     : 'Nouvelle note',
-					content   : 'Saisissez ici le contenu de votre note...',
-					created_at: new Date(),
-					updated_at: new Date()
+					title       : 'Nouvelle note',
+					content     : 'Saisissez ici le contenu de votre note...',
+					content_sec : 'Vous pouvez également saisir vos notes ici...',
+					created_at  : new Date(),
+					updated_at  : new Date()
 				};
 			}
 		});

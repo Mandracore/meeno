@@ -22,12 +22,13 @@ module.exports = function(mas, securityProxy){
 		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
 			if (!note) {return res.send(403,"Forbidden");}
 
-			note.created_at = req.body.created_at;
-			note.updated_at = req.body.updated_at;
-			note.title      = req.body.title;
-			note.content    = req.body.content;
-			note.tagLinks   = req.body.tagLinks;
-			note.taskLinks  = req.body.taskLinks;
+			note.created_at  = req.body.created_at;
+			note.updated_at  = req.body.updated_at;
+			note.title       = req.body.title;
+			note.content     = req.body.content;
+			note.content_sec = req.body.content_sec;
+			note.tagLinks    = req.body.tagLinks;
+			note.taskLinks   = req.body.taskLinks;
 
 			console.log(note);
 
@@ -44,13 +45,14 @@ module.exports = function(mas, securityProxy){
 	});
 	mas.post("/api/notes", mas.security.proxy("user"), function (req, res) {
 		var note = new mas.Models.Note ({
-			_creator  : req.session.user._id,
-			created_at: req.body.created_at,
-			updated_at: req.body.updated_at,
-			title     : req.body.title,
-			content   : req.body.content,
-			tagLinks  : req.body.tagLinks,
-			taskLinks : req.body.taskLinks,
+			_creator    : req.session.user._id,
+			created_at  : req.body.created_at,
+			updated_at  : req.body.updated_at,
+			title       : req.body.title,
+			content     : req.body.content,
+			content_sec : req.body.content_sec,
+			tagLinks    : req.body.tagLinks,
+			taskLinks   : req.body.taskLinks,
 		});
 
 		console.log(req.body);
