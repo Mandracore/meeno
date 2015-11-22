@@ -13,7 +13,9 @@ reset-html5()
 cBgGrey        = lighten(#000000, 20%)
 cButtonBorder0 = rgba(255, 255, 255, .3)
 cButtonBorder1 = rgba(255, 255, 255, .6)
+cButtonBorder1 = rgba(255, 255, 255, .7)
 cButtonBg1     = rgba(255, 255, 255, .1)
+cButtonBg2     = rgba(255, 255, 255, .2)
 
 @font-face
 	font-family "modernpics"
@@ -120,19 +122,11 @@ body
 		height calc(100% - 1em)
 		overflow auto
 		li
-			padding 1em
 			border-left 1px solid cButtonBorder0
 			border-right 1px solid cButtonBorder0
 			border-bottom 1px solid cButtonBorder0
 			&:first-child
 				border-top 1px solid cButtonBorder0
-			&:hover
-				background-color cButtonBg1
-				border-left 1px solid cButtonBorder1
-				border-right 1px solid cButtonBorder1
-				border-bottom 1px solid cButtonBorder1
-				&:first-child
-					border-top 1px solid cButtonBorder1
 			.due
 				display inline-block
 				width 2em
@@ -159,9 +153,55 @@ body
 			.labelandtags
 				display inline-block
 				width calc(100% - 3.2em)
+				height 100%
+				line-height 3em
 				.tags
 					text-align right
 				.label
 					text-overflow ellipsis
 					overflow hidden
 					white-space nowrap
+				.expand
+					display none
+			.actions
+				display none
+			&:hover, &.active
+				background-color cButtonBg1
+				border-left 1px solid cButtonBorder1
+				border-right 1px solid cButtonBorder1
+				border-bottom 1px solid cButtonBorder1
+				&:first-child
+					border-top 1px solid cButtonBorder1
+				.actions
+					display inline-block
+					height 100%
+					line-height 3em
+					float right
+					width 3em
+					border-left 1px solid cButtonBorder1
+					&:hover
+						background-color cButtonBg2
+					button
+						border none
+						background-color transparent
+						margin 0 auto
+						display block
+						height 3em
+						width 100%
+						padding 0
+				.content
+					display inline-block
+					width calc(100% - 3em - 2px)
+					.labelandtags
+						.tags
+							display none
+						.label
+							width calc(100% - 3em)
+							background-color yellow
+						.expand
+							display inline-block
+							float right
+							width 3em
+							background-color white
+					&:hover
+						background-color cButtonBg2
