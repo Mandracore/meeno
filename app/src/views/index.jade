@@ -53,20 +53,72 @@ block content
 				button#tologin Go log in
 
 	// Application skeleton
+	div#main.grid-container
+		div.navigation.grid-25.red.grid-parent
+			div.command.hide-on-desktop
+				button.open.fa.fa-navicon
+				button.close.fa.fa-close
+			div
+				h1 meeno
+				nav
+					// Commands to navigate between the different tabs
+					ul#nav
+						li.help HELP
+						li.browse.notes NOTES
+						li.browse.tasks.selected TASKS
+						li.browse.tags TAGS
+						//li.admin Manage
+		div.content.grid-75.green.grid-parent
+			div.browser.red
+				div.tab.tasks
+					div.search-box.white.fa.fa-search
+						|my search box for tasks
+					div.listobjects.selected
+						ul.nav
+							li Today
+							li Tomorrow
+							li Next week
+						ul.objects
+							li
+								.due
+									.day 28
+									.month JAN
+								.labelandtags.grid-container.grid-parent
+									.label.grid-66.red Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+									.tags.grid-33.green.hide-on-mobile tag1 tag2
+							li
+								.due
+									.day 28
+									.month JAN
+								.labelandtags.grid-container.grid-parent
+									.label.grid-66.red label
+									.tags.grid-33.green.hide-on-mobile tag1 tag2
+							li
+								.due
+									.day 28
+									.month JAN
+								.labelandtags.grid-container.grid-parent
+									.label.grid-66.red label
+									.tags.grid-33.green.hide-on-mobile tag1 tag2
+							li
+								.due
+									.day 28
+									.month JAN
+								.labelandtags.grid-container.grid-parent
+									.label.grid-66.red label
+									.tags.grid-33.green.hide-on-mobile tag1 tag2
+							li
+								.due
+									.day 28
+									.month JAN
+								.labelandtags.grid-container.grid-parent
+									.label.grid-66.red label
+									.tags.grid-33.green.hide-on-mobile tag1 tag2
 
-	div#main
-		header
-			h1 meeno
-			nav
-				// Commands to navigate between the different tabs
-				ul#nav
-					li.help HELP
-					li.browse.notes NOTES
-					li.browse.tasks.selected TASKS
-					li.browse.tags TAGS
-					//li.admin Manage
-			div#sync-status
-		div#tabs
+
+
+
+		//div#tabs
 			div.tab.help
 				article
 					section
@@ -179,7 +231,7 @@ block content
 									button.action.saveConfirm(style="display:none") Save
 						ul.objects.tags.draggable
 					div.col3
-		div#editors.children-count-0
+		//div#editors.children-count-0
 			//div.editor note 1
 			//div.editor note 2
 			//div.editor note 3
