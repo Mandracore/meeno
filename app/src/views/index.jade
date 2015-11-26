@@ -68,18 +68,22 @@ block content
 						li.browse.tasks.selected TASKS
 						li.browse.tags TAGS
 						//li.admin Manage
-		div.content.grid-75.green.grid-parent
-			div.browser.red
+		div.content.grid-75.grid-parent
+			div.browser
 				div.tab.tasks
 					div.search-box.white.fa.fa-search
 						|my search box for tasks
 					div.listobjects.selected
-						ul.nav
-							li Today
-							li Tomorrow
-							li Next week
+						div.nav.grid-container.grid-parent
+							ul.milestones.grid-90.grid-parent
+								li.active Today
+								li Tomorrow
+								li Next week
+							div.filter-checked.grid-10.grid-parent
+								button.active(data-step="0") Todo
+								button(data-step="1") Done
+								button(data-step="2") Both
 						ul.objects
-							//li.active
 							li
 								.content
 									.due
@@ -87,9 +91,9 @@ block content
 										.month JAN
 									.labelandtags.grid-container.grid-parent
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-										.tags.grid-33.green.hide-on-mobile tag1 tag2
+										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-angle-down
+											button.fa.fa-arrow-down
 								.actions
 									button.fa.fa-check
 							li
@@ -99,9 +103,9 @@ block content
 										.month JAN
 									.labelandtags.grid-container.grid-parent
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-										.tags.grid-33.green.hide-on-mobile tag1 tag2
+										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-angle-down
+											button.fa.fa-arrow-down
 								.actions
 									button.fa.fa-check
 							li
@@ -111,9 +115,9 @@ block content
 										.month JAN
 									.labelandtags.grid-container.grid-parent
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-										.tags.grid-33.green.hide-on-mobile tag1 tag2
+										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-angle-down
+											button.fa.fa-arrow-down
 								.actions
 									button.fa.fa-check
 							li
@@ -123,9 +127,9 @@ block content
 										.month JAN
 									.labelandtags.grid-container.grid-parent
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-										.tags.grid-33.green.hide-on-mobile tag1 tag2
+										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-angle-down
+											button.fa.fa-arrow-down
 								.actions
 									button.fa.fa-check
 
