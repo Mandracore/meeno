@@ -11,11 +11,16 @@ global-reset()
 reset-html5()
 
 cBgGrey            = lighten(#000000, 20%)
+cObjectBorder0     = rgba(255, 255, 255, .3)
+cObjectBorder1     = rgba(255, 255, 255, .4)
+cObjectBg1         = rgba(255, 255, 255, .08)
+cObjectBg2         = rgba(255, 255, 255, .06)
 cButtonBorder0     = rgba(255, 255, 255, .3)
-cButtonBorder1     = rgba(255, 255, 255, .4)
-cButtonBg1         = rgba(255, 255, 255, .08)
-cButtonBg2         = rgba(255, 255, 255, .06)
-cButton            = rgba(255, 255, 255, .5)
+cButtonBorder1     = rgba(255, 255, 255, .6)
+cButtonBorder2     = rgba(255, 255, 255, .8)
+cButtonBg1         = rgba(255, 255, 255, .1)
+cButtonBg2         = rgba(255, 255, 255, .3)
+cButtonIcon        = rgba(255, 255, 255, .5)
 cButtonActive      = rgba(255, 255, 255, 1)
 cButtonMilestone0  = rgba(255, 255, 255, .1);
 cButtonMilestone05 = rgba(255, 255, 255, .5);
@@ -42,6 +47,9 @@ body
 	height 100%
 	position relative
 	background none
+
+body 
+	background-image url('../images/bg.jpg')
 
 .red
 	background-color red
@@ -110,12 +118,15 @@ body
 			&:hover
 				.label
 					float left
-				
+
 
 // For other displays
 .search-box
 	width 100%
 	height 3em
+	background-color rgba(0, 0, 0, 0.2)
+	color rgba(255, 255, 255, 0.5)
+	margin 1em 0px 0.5em
 	
 .listobjects
 	display none
@@ -126,6 +137,10 @@ body
 		display block
 		height 3em
 		padding .5em 0
+		text-overflow ellipsis
+		overflow hidden
+		white-space nowrap
+		
 		li
 			display inline-block
 			color cButtonMilestone0
@@ -139,31 +154,41 @@ body
 			&:active, &.active
 				color cButtonMilestone1
 	.filter-checked
-		padding 1em 0
+		padding .8em 0
 		button
+			float right
 			display none
 			&.active
 				display block
 				padding 0.1em 0.8em
 				font-size 0.7em
-				border 1px solid rgba(255, 255, 255, 0.2)
+				border 1px solid cButtonBorder0
 				border-radius 1em
 				background-color transparent
 				color rgba(255, 255, 255, 0.5)
 				text-transform uppercase
+			&:hover
+				border 1px solid cButtonBorder1
+				background-color cButtonBg1
+				cursor pointer
+			&:active
+				border 1px solid cButtonBorder2
+				background-color cButtonBg2
+				color white
 
 	.objects
 		display block
 		height calc(100% - 1em)
 		overflow auto
 		li
+			font-family Helvetica
 			color white
 			height 3em
-			border-left 1px solid cButtonBorder0
-			border-right 1px solid cButtonBorder0
-			border-bottom 1px solid cButtonBorder0
+			border-left 1px solid cObjectBorder0
+			border-right 1px solid cObjectBorder0
+			border-bottom 1px solid cObjectBorder0
 			&:first-child
-				border-top 1px solid cButtonBorder0
+				border-top 1px solid cObjectBorder0
 			.content
 				cursor pointer
 				width 100%
@@ -174,6 +199,7 @@ body
 					padding .7em 0 .7em .7em
 					width 2em
 					opacity 0.3
+					text-align center
 					&:hover
 						cursor pointer
 					&.urgent
@@ -206,21 +232,21 @@ body
 				display none
 				cursor pointer
 			&:hover, &.active
-				background-color cButtonBg1
-				border-left 1px solid cButtonBorder1
-				border-right 1px solid cButtonBorder1
-				border-bottom 1px solid cButtonBorder1
+				background-color cObjectBg1
+				border-left 1px solid cObjectBorder1
+				border-right 1px solid cObjectBorder1
+				border-bottom 1px solid cObjectBorder1
 				&:first-child
-					border-top 1px solid cButtonBorder1
+					border-top 1px solid cObjectBorder1
 				.actions
 					display inline-block
 					height 100%
 					line-height 3em
 					float right
 					width 3em
-					border-left 1px solid cButtonBorder1
+					border-left 1px solid cObjectBorder1
 					&:hover
-						background-color cButtonBg2
+						background-color cObjectBg2
 					button
 						border none
 						background-color transparent
@@ -229,7 +255,7 @@ body
 						height 3em
 						width 100%
 						padding 0
-						color cButton
+						color cButtonIcon
 						&:hover
 							cursor pointer
 						&:active
@@ -254,10 +280,10 @@ body
 								height 100%
 								display block
 								background-color transparent
-								color cButton
+								color cButtonIcon
 								&:hover
 									cursor pointer
 								&:active
 									color cButtonActive
 					&:hover
-						background-color cButtonBg2
+						background-color cObjectBg2

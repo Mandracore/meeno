@@ -53,7 +53,7 @@ block content
 				button#tologin Go log in
 
 	// Application skeleton
-	div#main.grid-container
+	div#main.grid-container.grid-parent
 		div.navigation.grid-25.red.grid-parent
 			div.command.hide-on-desktop
 				button.open.fa.fa-navicon
@@ -68,18 +68,18 @@ block content
 						li.browse.tasks.selected TASKS
 						li.browse.tags TAGS
 						//li.admin Manage
-		div.content.grid-75.grid-parent
+		div.content.grid-75
 			div.browser
 				div.tab.tasks
-					div.search-box.white.fa.fa-search
+					div.search-box.fa.fa-search
 						|my search box for tasks
 					div.listobjects.selected
 						div.nav.grid-container.grid-parent
-							ul.milestones.grid-90.grid-parent
+							ul.milestones.grid-90.mobile-grid-90.grid-parent
 								li.active Today
 								li Tomorrow
 								li Next week
-							div.filter-checked.grid-10.grid-parent
+							div.filter-checked.grid-10.mobile-grid-10.grid-parent
 								button.active(data-step="0") Todo
 								button(data-step="1") Done
 								button(data-step="2") Both
