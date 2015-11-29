@@ -54,9 +54,10 @@ block content
 
 	// Application skeleton
 	div#main.grid-container.grid-parent
-		div.navigation.grid-25.red.grid-parent
+		div.navigation.grid-25.grid-parent
 			div.command.hide-on-desktop
-				button.open.fa.fa-navicon
+				button.open
+					span.fa.fa-navicon
 				button.close.fa.fa-close
 			div
 				h1 meeno
@@ -71,8 +72,18 @@ block content
 		div.content.grid-75
 			div.browser
 				div.tab.tasks
-					div.search-box.fa.fa-search
-						|my search box for tasks
+					div.search-box
+						div.looking-glass
+							span.fa.fa-search
+						div.tags.nostretch
+							button tag1
+							button tag2
+						div.input
+							input(placeholder="Type here keywords")
+						div.reset
+							button
+								| clear
+								span.fa.fa-remove
 					div.listobjects.selected
 						div.nav.grid-container.grid-parent
 							ul.milestones.grid-90.mobile-grid-90.grid-parent
@@ -84,6 +95,18 @@ block content
 								button(data-step="1") Done
 								button(data-step="2") Both
 						ul.objects
+							li.add
+								div
+									span.fa.fa-plus
+								div.input
+									input(placeholder="Type here your new task")
+								div.buttons
+									button.save
+										| save
+										span.fa.fa-save
+									button.cancel.hide-on-mobile
+										| cancel
+										span.fa.fa-remove
 							li
 								.content
 									.due
@@ -93,7 +116,7 @@ block content
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-arrow-down
+											button.fa.fa-chevron-circle-down
 								.actions
 									button.fa.fa-check
 							li
@@ -105,7 +128,7 @@ block content
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-arrow-down
+											button.fa.fa-chevron-circle-down
 								.actions
 									button.fa.fa-check
 							li
@@ -117,7 +140,7 @@ block content
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-arrow-down
+											button.fa.fa-chevron-circle-down
 								.actions
 									button.fa.fa-check
 							li
@@ -129,7 +152,7 @@ block content
 										.label.grid-66 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 										.tags.grid-33.hide-on-mobile tag1 tag2
 										.expand
-											button.fa.fa-arrow-down
+											button.fa.fa-chevron-circle-down
 								.actions
 									button.fa.fa-check
 

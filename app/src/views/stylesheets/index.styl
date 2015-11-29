@@ -15,16 +15,23 @@ cObjectBorder0     = rgba(255, 255, 255, .3)
 cObjectBorder1     = rgba(255, 255, 255, .4)
 cObjectBg1         = rgba(255, 255, 255, .08)
 cObjectBg2         = rgba(255, 255, 255, .06)
+cButtonColor       = rgba(255, 255, 255, 0.5)
+cButtonColorO      = rgba(255, 255, 255, 0.4)
+cButtonColor1      = rgba(255, 255, 255, 0.8)
 cButtonBorder0     = rgba(255, 255, 255, .3)
 cButtonBorder1     = rgba(255, 255, 255, .6)
 cButtonBorder2     = rgba(255, 255, 255, .8)
 cButtonBg1         = rgba(255, 255, 255, .1)
 cButtonBg2         = rgba(255, 255, 255, .3)
-cButtonIcon        = rgba(255, 255, 255, .5)
+cButtonIcon0       = rgba(255, 255, 255, .5)
+cButtonIcon1       = rgba(255, 255, 255, .7)
+cButtonIcon2       = rgba(255, 255, 255, .9)
 cButtonActive      = rgba(255, 255, 255, 1)
 cButtonMilestone0  = rgba(255, 255, 255, .1);
 cButtonMilestone05 = rgba(255, 255, 255, .5);
 cButtonMilestone1  = rgba(255, 255, 255, 1);
+cInputBg0          = rgba(0, 0, 0, 0.2);
+cInputBg1          = rgba(0, 0, 0, 0.3);
 
 @font-face
 	font-family "modernpics"
@@ -76,7 +83,6 @@ body
 		width 3em
 		height 3em
 		overflow hidden
-		background-color blue
 		.command
 			margin auto
 			.close
@@ -85,6 +91,11 @@ body
 				display block
 				height 3em
 				width 3em
+				background-color cInputBg0
+				border none
+				font-size 1em
+				span
+					font-size 1.5em
 		&.active
 			width 75%
 			z-index 1
@@ -105,29 +116,64 @@ body
 ------- BROWSER DESIGN --------------------------------------------------------------
 =====================================================================================*/
 
-// Hacks for mobile design
-@media screen and (max-width: 768px) // to detect mobile phones
-	.search-box
-		position relative
-		top -3em
-		left 3em
-	.listobjects
-		position relative
-		top -3em
-		li
-			&:hover
-				.label
-					float left
-
-
-// For other displays
+// For classic displays
 .search-box
+	display table
 	width 100%
 	height 3em
-	background-color rgba(0, 0, 0, 0.2)
+	background-color cInputBg0
 	color rgba(255, 255, 255, 0.5)
 	margin 1em 0px 0.5em
-	
+	& > div
+		display table-cell
+		vertical-align middle		
+	.looking-glass
+		width 1.7em
+		padding 0 0 .2em .7em
+		font-size 1.2em
+	.tags
+		width 1%
+		white-space nowrap
+		button
+			border-radius 20px
+			border 1px solid cButtonBorder0
+			background-color transparent
+			cursor pointer
+			margin 0 .4em 0 0
+			padding .2em .7em
+			color cButtonColor
+			&:hover
+				background-color cButtonBg1
+				cursor pointer
+				text-decoration	line-through
+				border 1px solid cButtonBorder1
+			&:active
+				border 1px solid cButtonBorder2
+				background-color cButtonBg2
+				color white
+	.input
+		input
+			width 100%
+			background-color transparent
+			border none
+			color white
+	.reset
+		width 5em
+		button
+			padding 0px
+			margin 0px
+			width 100%
+			text-align right
+			background-color transparent
+			border medium none
+			color cButtonColor
+			span
+				margin 0 1em 0 .6em
+			&:hover
+				cursor pointer
+				color cButtonColor1
+			&:active
+				color white
 .listobjects
 	display none
 	&.selected
@@ -140,7 +186,6 @@ body
 		text-overflow ellipsis
 		overflow hidden
 		white-space nowrap
-		
 		li
 			display inline-block
 			color cButtonMilestone0
@@ -165,7 +210,7 @@ body
 				border 1px solid cButtonBorder0
 				border-radius 1em
 				background-color transparent
-				color rgba(255, 255, 255, 0.5)
+				color cButtonColor
 				text-transform uppercase
 			&:hover
 				border 1px solid cButtonBorder1
@@ -175,11 +220,44 @@ body
 				border 1px solid cButtonBorder2
 				background-color cButtonBg2
 				color white
-
 	.objects
 		display block
 		height calc(100% - 1em)
 		overflow auto
+		li.add
+			display table
+			& > div
+				display table-cell
+				vertical-align middle
+			& > div:first-child
+				width 1%
+				white-space nowrap
+				span
+					margin 0 .6em 0 1em
+					opacity .5
+			.buttons
+				width 1%
+				white-space nowrap
+				button
+					border none
+					background-color transparent
+					color cButtonColorO
+					margin 0 1em 0 0
+					padding 0
+					span
+						margin 0 0 0 .6em
+					&:hover
+						cursor pointer
+						color cButtonColor1
+					&:active
+						color white
+						
+			.input
+				input
+					width 100%
+					background-color transparent
+					border none
+					color white
 		li
 			font-family Helvetica
 			color white
@@ -187,8 +265,14 @@ body
 			border-left 1px solid cObjectBorder0
 			border-right 1px solid cObjectBorder0
 			border-bottom 1px solid cObjectBorder0
-			&:first-child
+			&:nth-child(2)
 				border-top 1px solid cObjectBorder0
+			&.add
+				border none
+				background-color cInputBg0
+				&:hover
+					border none
+					background-color cInputBg1
 			.content
 				cursor pointer
 				width 100%
@@ -236,7 +320,7 @@ body
 				border-left 1px solid cObjectBorder1
 				border-right 1px solid cObjectBorder1
 				border-bottom 1px solid cObjectBorder1
-				&:first-child
+				&:nth-child(2)
 					border-top 1px solid cObjectBorder1
 				.actions
 					display inline-block
@@ -255,7 +339,7 @@ body
 						height 3em
 						width 100%
 						padding 0
-						color cButtonIcon
+						color cButtonIcon0
 						&:hover
 							cursor pointer
 						&:active
@@ -280,10 +364,26 @@ body
 								height 100%
 								display block
 								background-color transparent
-								color cButtonIcon
+								color cButtonIcon0
 								&:hover
 									cursor pointer
 								&:active
 									color cButtonActive
 					&:hover
 						background-color cObjectBg2
+						
+//--------------------------------------------------------------------------
+// Hacks for mobile design
+@media screen and (max-width: 768px) // to detect mobile phones
+	.search-box
+		width calc(100% - 3em + 20px)
+		position relative
+		top -4em
+		left calc(3em - 10px)
+	.listobjects
+		position relative
+		top -3em
+		li
+			&:hover
+				.label
+					float left
