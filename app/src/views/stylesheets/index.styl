@@ -14,7 +14,7 @@ cBgGrey            = lighten(#000000, 20%)
 cObjectBorder0     = rgba(255, 255, 255, .3)
 cObjectBorder1     = rgba(255, 255, 255, .4)
 cObjectBg1         = rgba(255, 255, 255, .08)
-cObjectBg2         = rgba(255, 255, 255, .06)
+cObjectBg2         = rgba(255, 255, 255, .11)
 cButtonColor       = rgba(255, 255, 255, 0.5)
 cButtonColorO      = rgba(255, 255, 255, 0.4)
 cButtonColor1      = rgba(255, 255, 255, 0.8)
@@ -70,8 +70,10 @@ body
 	background-color white
 	opacity .8
 	
-#main, #main > .content, #main > .content > .browser, , #main > .content > .browser > .tab
+#main, #main > .content > .browser, #main > .content > .browser > .tab
 	height 100%
+	& > .content
+		height calc(100% - 3em)
 
 /*===================================================================================
 ------- MAIN NAVIGATION --------------------------------------------------------------
@@ -138,7 +140,6 @@ body
 			border-radius 20px
 			border 1px solid cButtonBorder0
 			background-color transparent
-			cursor pointer
 			margin 0 .4em 0 0
 			padding .2em .7em
 			color cButtonColor
@@ -259,28 +260,30 @@ body
 					border none
 					color white
 		li
-			font-family Helvetica
-			color white
 			height 3em
-			border-left 1px solid cObjectBorder0
-			border-right 1px solid cObjectBorder0
-			border-bottom 1px solid cObjectBorder0
-			&:nth-child(2)
-				border-top 1px solid cObjectBorder0
+			color white
+			font-family Helvetica
 			&.add
 				border none
 				background-color cInputBg0
 				&:hover
 					border none
 					background-color cInputBg1
+			&.task
+				border-left 1px solid cObjectBorder0
+				border-right 1px solid cObjectBorder0
+				border-bottom 1px solid cObjectBorder0
+			&:nth-child(2)
+				border-top 1px solid cObjectBorder0
 			.content
-				cursor pointer
+				display table
 				width 100%
-				height 3em
+				height 100%
+				& > div
+					display table-cell
+					vertical-align middle
 				.due
-					height 1.6em
-					float left
-					padding .7em 0 .7em .7em
+					padding 0 .5em
 					width 2em
 					opacity 0.3
 					text-align center
@@ -299,6 +302,97 @@ body
 						display block
 						text-transform uppercase
 						font-size 0.7em
+				.label
+					max-width 1em
+					.text
+						overflow hidden
+						white-space nowrap
+						text-overflow ellipsis
+				.tags
+					width 1%
+					white-space nowrap
+					padding 0 .8em
+					button
+						color white
+						background-color transparent
+						border none
+						padding 0 0 0 .5em
+						span
+							display inline-block
+							opacity .5
+							width .8em
+							height .8em
+							border 1px solid white
+							margin 0 .5em 0 0
+							border-radius 1em
+						&:hover
+							text-decoration line-through
+							cursor pointer
+							span
+								opacity .8
+						&:active
+							span
+								opacity 1							
+				.expand
+					display none
+			&:hover, &.active
+				position relative
+				background-color cObjectBg1
+				.content
+					width calc(100% - 3em)
+					margin 0 0 0 3em
+					.due
+						display none
+					.label
+						padding 0 0 0 1em
+					.expand
+						display table-cell
+						width 3em
+						text-align center
+						button
+							border none
+							background-color transparent
+							color white
+					.tags
+						display none
+					&:hover
+						background-color cObjectBg1
+						cursor pointer
+					&:active
+						background-color cObjectBg2
+				.check
+					display block
+					position absolute
+					top 0
+					left 0
+					width 3em
+					height 3em
+					text-align center
+					border-right 1px solid cObjectBorder0
+					&:hover
+						cursor pointer
+						background-color cObjectBg1
+					&:active
+						background-color cObjectBg2
+					button
+						display block
+						height 100%
+						width 100%
+						border none
+						background-color transparent
+						color white
+						&:hover
+							cursor pointer
+			.check
+				display none
+			/*&:hover
+				.check
+					display initial*/
+
+/*
+		li
+			.content
+				height 3em
 				.labelandtags
 					display inline-block
 					width calc(100% - 2.7em) // 2.3 = padding + width of block "due"
@@ -315,7 +409,7 @@ body
 			.actions
 				display none
 				cursor pointer
-			&:hover, &.active
+			&:hover, &.active // active is just a testing trick
 				background-color cObjectBg1
 				border-left 1px solid cObjectBorder1
 				border-right 1px solid cObjectBorder1
@@ -372,9 +466,15 @@ body
 					&:hover
 						background-color cObjectBg2
 						
+*/
+
 //--------------------------------------------------------------------------
 // Hacks for mobile design
 @media screen and (max-width: 768px) // to detect mobile phones
+	#main
+		height 100%
+		& > .content
+			height calc(100% - 3em)
 	.search-box
 		width calc(100% - 3em + 20px)
 		position relative
@@ -383,7 +483,3 @@ body
 	.listobjects
 		position relative
 		top -3em
-		li
-			&:hover
-				.label
-					float left
