@@ -225,56 +225,61 @@ body
 		display block
 		height calc(100% - 1em)
 		overflow auto
-		li.add
-			display table
-			& > div
-				display table-cell
-				vertical-align middle
-			& > div:first-child
-				width 1%
-				white-space nowrap
-				span
-					margin 0 .6em 0 1em
-					opacity .5
-			.buttons
-				width 1%
-				white-space nowrap
-				button
-					border none
-					background-color transparent
-					color cButtonColorO
-					margin 0 1em 0 0
-					padding 0
-					span
-						margin 0 0 0 .6em
-					&:hover
-						cursor pointer
-						color cButtonColor1
-					&:active
-						color white
-						
-			.input
-				input
-					width 100%
-					background-color transparent
-					border none
-					color white
 		li
 			height 3em
 			color white
 			font-family Helvetica
+			//-------------------------------------------------------
+			// Input to add new objects
 			&.add
+				display table
 				border none
 				background-color cInputBg0
 				&:hover
 					border none
 					background-color cInputBg1
+				& > div
+					display table-cell
+					vertical-align middle
+				& > div:first-child
+					width 1%
+					white-space nowrap
+					span
+						margin 0 .6em 0 1em
+						opacity .5
+				.buttons
+					width 1%
+					white-space nowrap
+					button
+						border none
+						background-color transparent
+						color cButtonColorO
+						margin 0 1em 0 0
+						padding 0
+						span
+							margin 0 0 0 .6em
+						&:hover
+							cursor pointer
+							color cButtonColor1
+						&:active
+							color white
+							
+				.input
+					input
+						width 100%
+						background-color transparent
+						border none
+						color white
+			//-------------------------------------------------------
+			// Tasks objects
+			&:nth-child(2) // The second item of the list (the first is the input to add new records)
+				border-top 1px solid cObjectBorder0
 			&.task
 				border-left 1px solid cObjectBorder0
 				border-right 1px solid cObjectBorder0
 				border-bottom 1px solid cObjectBorder0
-			&:nth-child(2)
-				border-top 1px solid cObjectBorder0
+			.check
+				display none
 			.content
 				display table
 				width 100%
@@ -302,13 +307,13 @@ body
 						display block
 						text-transform uppercase
 						font-size 0.7em
-				.label
+				& > .label
 					max-width 1em
 					.text
 						overflow hidden
 						white-space nowrap
 						text-overflow ellipsis
-				.tags
+				& > .tags
 					width 1%
 					white-space nowrap
 					padding 0 .8em
@@ -335,7 +340,7 @@ body
 								opacity 1							
 				.expand
 					display none
-			&:hover, &.active
+			&:hover:not(.expanded), &.active
 				position relative
 				background-color cObjectBg1
 				.content
@@ -383,90 +388,98 @@ body
 						color white
 						&:hover
 							cursor pointer
-			.check
-				display none
-			/*&:hover
-				.check
-					display initial*/
-
-/*
-		li
-			.content
-				height 3em
-				.labelandtags
-					display inline-block
-					width calc(100% - 2.7em) // 2.3 = padding + width of block "due"
-					height 100%
-					line-height 3em
-					.tags
-						text-align right
-					.label
-						text-overflow ellipsis
-						overflow hidden
-						white-space nowrap
-					.expand
-						display none
-			.actions
-				display none
-				cursor pointer
-			&:hover, &.active // active is just a testing trick
-				background-color cObjectBg1
-				border-left 1px solid cObjectBorder1
-				border-right 1px solid cObjectBorder1
-				border-bottom 1px solid cObjectBorder1
-				&:nth-child(2)
-					border-top 1px solid cObjectBorder1
-				.actions
-					display inline-block
-					height 100%
-					line-height 3em
-					float right
-					width 3em
-					border-left 1px solid cObjectBorder1
-					&:hover
-						background-color cObjectBg2
-					button
-						border none
-						background-color transparent
-						margin 0 auto
-						display block
-						height 3em
-						width 100%
-						padding 0
-						color cButtonIcon0
-						&:hover
-							cursor pointer
-						&:active
-							color cButtonActive
+			&.expanded
+				height auto
 				.content
-					display inline-block
-					width calc(100% - 3em - 2px)
-					.labelandtags
-						.tags
-							display none
+					.due
+						vertical-align top
+						padding-top 0.5em
+					& > .label, & > .tags
+						display none
+					.form
+						& > div
+							display table
+							width calc(100% - 1em)
+							border-bottom 1px solid cObjectBorder0
+							& > div
+								display table-cell
+								vertical-align middle
+								padding .6em 0
+						.description
+							border none
+							.actions
+								vertical-align top
 						.label
-							width calc(100% - 3em)
-						.expand
-							display inline-block
-							float right
-							width 3em
-							text-align center
-							height 100%
+							.input
+								white-space nowrap
+								text-overflow ellipsis
+								overflow hidden
+								max-width 1em
+							.actions
+								white-space nowrap
+								width 9em
+								text-align right
 							button
-								border none
-								width 100%
-								height 100%
-								display block
-								background-color transparent
-								color cButtonIcon0
-								&:hover
-									cursor pointer
-								&:active
-									color cButtonActive
-					&:hover
-						background-color cObjectBg2
-						
-*/
+								&.delete
+									width 7em
+								&.edit
+									margin 0 .5em 0 0
+									width 5em
+						.tags
+							.buttons
+								white-space nowrap
+								width 1%
+								padding-right .5em
+							.input
+								input
+									width 100%
+									border none
+									background none
+									color white
+							.actions
+								width 6em
+								text-align right
+						// Commons action buttons
+						.actions button
+							padding 0.1em 0.8em
+							font-size 0.7em
+							border 1px solid cButtonBorder0
+							border-radius 1em
+							background-color transparent
+							color cButtonColor
+							text-transform uppercase
+							span
+								margin 0 0 0 .6em
+							&:hover
+								border 1px solid cButtonBorder1
+								background-color cButtonBg1
+								cursor pointer
+							&:active
+								border 1px solid cButtonBorder2
+								background-color cButtonBg2
+								color white
+						button.tag
+							color white
+							background-color transparent
+							border none
+							padding 0 0 0 .5em
+							span
+								display inline-block
+								opacity .5
+								width .8em
+								height .8em
+								border 1px solid white
+								margin 0 .5em 0 0
+								border-radius 1em
+							&:hover
+								text-decoration line-through
+								cursor pointer
+								span
+									opacity .8
+							&:active
+								span
+									opacity 1
+				
 
 //--------------------------------------------------------------------------
 // Hacks for mobile design
