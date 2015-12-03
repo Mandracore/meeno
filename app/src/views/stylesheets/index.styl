@@ -70,10 +70,10 @@ body
 	background-color white
 	opacity .8
 	
-#main, #main > .content > .browser, #main > .content > .browser > .tab
+#main, #main > .content, #main > .content > .browser, #main > .content > .browser > .tab
 	height 100%
-	& > .content
-		height calc(100% - 3em)
+//	& > .content
+//		height calc(100% - 3em)
 
 /*===================================================================================
 ------- MAIN NAVIGATION --------------------------------------------------------------
@@ -113,19 +113,105 @@ body
 
 // For other displays
 
+@media screen and (min-width: 769px)
+	.navigation
+		height 100%
+		position relative
+		h2
+			text-align right
+			color white
+			font-weight bold
+			font-family Helvetica
+			padding 1em calc(1em + 10px) 0 0
+			text-transform uppercase
+			opacity 0.5
+			span
+				margin 0 0 0 1em
+		.browse
+			#nav
+				color white
+				font-family Dense
+				text-align right
+				padding 1em 2em 0 0
+				li
+					opacity .4
+					font-size 2.5em
+					padding 0 calc(.3em + 10px) 0 0
+					background-color rgba(255, 255, 255, 0.1)
+					margin .1em 0
+					&.selected
+						opacity .8
+						padding 0 .3em 0 0
+						border-right 10px solid #0093FF
+					&:hover:not(.selected)
+						cursor pointer
+						padding 0 .3em 0 0
+						border-right 10px solid rgba(255, 255, 255, .5)
+					&:active
+						opacity .8
+						padding 0 .3em 0 0
+						border-right 10px solid #0093FF
+			#editors-tabs
+				color #FFF
+				font-family Helvetica, Arial
+				text-align right
+				padding .5em 2em 0 0
+				li
+					display table
+					width calc(100% - 2em - 10px)
+					font-size 1em
+					letter-spacing -.05em
+					opacity .4
+					padding .7em calc(1em + 10px) .7em 1em
+					background-color rgba(255, 255, 255, 0.1)
+					margin .25em 0
+					& > span
+						display table-cell
+						vertical-align middle
+						&.close
+							width 1.5em
+							text-align left
+						&:not(.close)
+							white-space nowrap
+							text-overflow ellipsis
+							overflow hidden
+							max-width 1em
+					&.selected
+						opacity .8
+						padding .7em 1em
+						border-right 10px solid #0093FF
+					&:hover:not(.selected), &:active
+						padding .7em 1em
+					&:hover:not(.selected)
+						cursor pointer
+						border-right 10px solid rgba(255, 255, 255, .5)
+					&:active
+						opacity .8
+						border-right 10px solid #0093FF
+		.misc
+			position absolute
+			bottom 0
+			right 0
+			margin 0 0 1em 0
+			h2
+				padding-top 1em
 
 /*===================================================================================
 ------- BROWSER DESIGN --------------------------------------------------------------
 =====================================================================================*/
 
 // For classic displays
+.search-box, .listobjects
+	position relative
+	top 1em
+
 .search-box
 	display table
 	width 100%
 	height 3em
 	background-color cInputBg0
 	color rgba(255, 255, 255, 0.5)
-	margin 1em 0px 0.5em
+	margin 0 0 .5em
 	& > div
 		display table-cell
 		vertical-align middle		
@@ -179,7 +265,7 @@ body
 	display none
 	&.selected
 		display block
-		height calc(100% - 3em)
+		height calc(100% - 4.5em)
 	.milestones
 		display block
 		height 3em
@@ -223,7 +309,7 @@ body
 				color white
 	.objects
 		display block
-		height calc(100% - 1em)
+		height calc(100% - 3em)		
 		overflow auto
 		li
 			height 3em
@@ -292,7 +378,7 @@ body
 					width 2em
 					opacity 0.3
 					text-align center
-					&:hover
+					.date:hover
 						cursor pointer
 					&.urgent
 						opacity 1
@@ -338,9 +424,9 @@ body
 						&:active
 							span
 								opacity 1							
-				.expand
+				.expand, .form
 					display none
-			&:hover:not(.expanded), &.active
+			&:hover:not(.expanded):not(.add), &.active
 				position relative
 				background-color cObjectBg1
 				.content
@@ -358,6 +444,8 @@ body
 							border none
 							background-color transparent
 							color white
+							&:hover
+								cursor pointer
 					.tags
 						display none
 					&:hover
@@ -390,10 +478,22 @@ body
 							cursor pointer
 			&.expanded
 				height auto
+				.form
+					display initial
 				.content
 					.due
 						vertical-align top
 						padding-top 0.5em
+						position relative
+						.sync
+							position absolute
+							margin auto
+							bottom 1em
+							width calc(100% - 1em)
+							.wip, .done.hide
+								display none
+							.wip.show, .done:not(.hide)
+								display initial
 					& > .label, & > .tags
 						display none
 					.form
@@ -491,7 +591,7 @@ body
 	.search-box
 		width calc(100% - 3em + 20px)
 		position relative
-		top -4em
+		top -3em
 		left calc(3em - 10px)
 	.listobjects
 		position relative

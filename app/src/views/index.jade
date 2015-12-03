@@ -61,14 +61,36 @@ block content
 				button.close.fa.fa-close
 			div
 				h1 meeno
-				nav
+				nav.browse
+					h2 browse
+						span.fa.fa-bookmark
 					// Commands to navigate between the different tabs
 					ul#nav
-						li.help HELP
 						li.browse.notes NOTES
 						li.browse.tasks.selected TASKS
 						li.browse.tags TAGS
-						//li.admin Manage
+					ul#editors-tabs
+						li 
+							span.close.fa.fa-remove
+							span SOMFY_MEE_DOM-AFE_2015-10-13-1630
+						li 
+							span.close.fa.fa-remove
+							span CS Checkpoint AFE 20151123
+						//li.selected
+						li
+							span.close.fa.fa-remove
+							span CS Checkpoint VPI 20151127
+						li
+							span.close.fa.fa-remove
+							span SOMFY_MEE_DOM-CMO_2015-06-25-1600
+						li
+							span.close.fa.fa-remove
+							span SOMFY_MEE_DOM-CMO_2015-07-16-1500
+				nav.misc
+					h2 get help
+						span.fa.fa-question-circle
+					h2 admin
+						span.fa.fa-cog
 		div.content.grid-75
 			div.browser
 				div.tab.tasks
@@ -148,8 +170,12 @@ block content
 									button.fa.fa-check
 								.content
 									.due
-										.day 28
-										.month JAN
+										.date
+											.day 28
+											.month JAN
+										.sync
+											.wip.fa.fa-spinner.fa-pulse
+											.done.fa.fa-thumbs-up 
 									.label
 										.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 									.tags.hide-on-mobile
@@ -163,7 +189,7 @@ block content
 										button.fa.fa-angle-down
 									.form
 										.label
-											.input Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+											.input(contenteditable="true") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 											.actions
 												button.edit EDIT
 												button.delete
@@ -182,7 +208,7 @@ block content
 											.actions
 												button.link link tag
 										.description
-											.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+											.input(contenteditable="true") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 											.actions
 												button.edit EDIT
 							li.task

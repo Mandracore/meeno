@@ -592,3 +592,10 @@ Pbms à voir
 #bug probable lié à editor-object : apparemment c'est la dernière vue qui se déclenche avant le bug de sauvegarde.
 Serait-ce parce qu'il essaie de sauver un objet dans la note qui n'existe plus ? Apparemment il y a avait des
 sauvegardes et maintenant plus du tout. C'est problabement parceque j'ai détruit un embedded-object.
+
+
+01/12====================================================
+To detect any change made to the contenteditable (whether its keypress, pasting text, droppping text,...) use the HTML5 input event : http://jsfiddle.net/ch6yn/
+document.getElementById("editor").addEventListener("input", function() {
+    alert("input event fired");
+}, false);
