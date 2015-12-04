@@ -30,6 +30,7 @@ cButtonActive      = rgba(255, 255, 255, 1)
 cButtonMilestone0  = rgba(255, 255, 255, .1);
 cButtonMilestone05 = rgba(255, 255, 255, .5);
 cButtonMilestone1  = rgba(255, 255, 255, 1);
+cCyan              = #0093FF
 cInputBg0          = rgba(0, 0, 0, 0.2);
 cInputBg1          = rgba(0, 0, 0, 0.3);
 
@@ -79,8 +80,100 @@ body
 ------- MAIN NAVIGATION --------------------------------------------------------------
 =====================================================================================*/
 
+
+// For larger displays
+@media screen and (min-width: 769px)
+	#nav
+		padding 1em 2em 0 0
+	#editors-tabs
+		padding .5em 2em 0 0
+
+// For all displays
+.navigation
+	height 100%
+	position relative
+	h2
+		text-align right
+		color white
+		font-weight bold
+		font-family Helvetica
+		padding 1em calc(1em + 10px) 0 0
+		text-transform uppercase
+		opacity 0.5
+		span
+			margin 0 0 0 1em
+	.browse
+		#nav
+			color white
+			font-family Dense
+			text-align right
+			li
+				opacity .4
+				font-size 2.5em
+				padding 0 calc(.3em + 10px) 0 0
+				background-color rgba(255, 255, 255, 0.1)
+				margin .1em 0
+				&.selected
+					opacity .8
+					padding 0 .3em 0 0
+					border-right 10px solid cCyan
+				&:hover:not(.selected)
+					cursor pointer
+					padding 0 .3em 0 0
+					border-right 10px solid rgba(255, 255, 255, .5)
+				&:active
+					opacity .8
+					padding 0 .3em 0 0
+					border-right 10px solid cCyan
+		#editors-tabs
+			color #FFF
+			font-family Helvetica, Arial
+			text-align right
+			li
+				display table
+				width calc(100% - 1em - 10px)
+				font-size 1em
+				letter-spacing -.05em
+				opacity .4
+				padding 0 calc(1em + 10px) 0 0
+				background-color rgba(255, 255, 255, 0.1)
+				margin .25em 0
+				& > span
+					display table-cell
+					vertical-align middle
+					&.close
+						width 2.5em
+						text-align center
+						height 2.5em
+						&:hover
+							color cyan
+					&:not(.close)
+						white-space nowrap
+						text-overflow ellipsis
+						overflow hidden
+						max-width 1em
+				&:hover:not(.selected), &:active, &.selected
+					padding 0 1em 0 0
+				&:hover:not(.selected)
+					cursor pointer
+					border-right 10px solid rgba(255, 255, 255, .5)
+				&.selected, &:active
+					opacity .8
+					border-right 10px solid #0093FF
+	.misc
+		position absolute
+		bottom 0
+		right 0
+		margin 0 .5em 1em .5em
+		h2
+			padding .5em 1em
+
 // Hacks for mobile design
 @media screen and (max-width: 768px) // to detect mobile phones
+	#nav
+		padding 1em 0 0 0
+	#editors-tabs
+		padding .5em 0 0 0
 	.navigation
 		width 3em
 		height 3em
@@ -103,6 +196,9 @@ body
 			z-index 1
 			position absolute
 			height 100%
+			background-color rgba(16, 30, 32, 0.95)
+			color white
+			box-shadow 0 0 30px black
 			.command
 				.close
 					display block
@@ -110,91 +206,6 @@ body
 					height 3em
 				.open
 					display none
-
-// For other displays
-
-@media screen and (min-width: 769px)
-	.navigation
-		height 100%
-		position relative
-		h2
-			text-align right
-			color white
-			font-weight bold
-			font-family Helvetica
-			padding 1em calc(1em + 10px) 0 0
-			text-transform uppercase
-			opacity 0.5
-			span
-				margin 0 0 0 1em
-		.browse
-			#nav
-				color white
-				font-family Dense
-				text-align right
-				padding 1em 2em 0 0
-				li
-					opacity .4
-					font-size 2.5em
-					padding 0 calc(.3em + 10px) 0 0
-					background-color rgba(255, 255, 255, 0.1)
-					margin .1em 0
-					&.selected
-						opacity .8
-						padding 0 .3em 0 0
-						border-right 10px solid #0093FF
-					&:hover:not(.selected)
-						cursor pointer
-						padding 0 .3em 0 0
-						border-right 10px solid rgba(255, 255, 255, .5)
-					&:active
-						opacity .8
-						padding 0 .3em 0 0
-						border-right 10px solid #0093FF
-			#editors-tabs
-				color #FFF
-				font-family Helvetica, Arial
-				text-align right
-				padding .5em 2em 0 0
-				li
-					display table
-					width calc(100% - 2em - 10px)
-					font-size 1em
-					letter-spacing -.05em
-					opacity .4
-					padding .7em calc(1em + 10px) .7em 1em
-					background-color rgba(255, 255, 255, 0.1)
-					margin .25em 0
-					& > span
-						display table-cell
-						vertical-align middle
-						&.close
-							width 1.5em
-							text-align left
-						&:not(.close)
-							white-space nowrap
-							text-overflow ellipsis
-							overflow hidden
-							max-width 1em
-					&.selected
-						opacity .8
-						padding .7em 1em
-						border-right 10px solid #0093FF
-					&:hover:not(.selected), &:active
-						padding .7em 1em
-					&:hover:not(.selected)
-						cursor pointer
-						border-right 10px solid rgba(255, 255, 255, .5)
-					&:active
-						opacity .8
-						border-right 10px solid #0093FF
-		.misc
-			position absolute
-			bottom 0
-			right 0
-			margin 0 0 1em 0
-			h2
-				padding-top 1em
 
 /*===================================================================================
 ------- BROWSER DESIGN --------------------------------------------------------------
@@ -593,6 +604,7 @@ body
 		position relative
 		top -3em
 		left calc(3em - 10px)
-	.listobjects
+	.listobjects.selected
 		position relative
 		top -3em
+		height calc(100% - 0.5em)
