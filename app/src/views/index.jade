@@ -53,14 +53,17 @@ block content
 				button#tologin Go log in
 
 	// Application skeleton
-	div#main.grid-container.grid-parent
-		div.navigation.active.grid-25.grid-parent
+	div#main.navigating.grid-container.grid-parent
+		div.navigation.grid-25.grid-parent
 			div.command.hide-on-desktop
 				button.open
 					span.fa.fa-navicon
-				button.close.fa.fa-close
-			div
-				h1 meeno
+				//- button.close
+					span.fa.fa-close
+			div.navigation-options
+				h1
+					span.one mee
+					span.two no
 				nav.browse
 					h2 browse
 						span.fa.fa-bookmark

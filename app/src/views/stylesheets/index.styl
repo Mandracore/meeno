@@ -92,12 +92,24 @@ body
 .navigation
 	height 100%
 	position relative
+	h1
+		letter-spacing -0.2em
+		text-align right
+		color white
+		font-family helvetica
+		font-weight bold
+		margin 1em 2em 0 0
+		opacity .8
+		span
+			font-size 3em
+		.one
+			color cCyan
 	h2
 		text-align right
 		color white
 		font-weight bold
 		font-family Helvetica
-		padding 1em calc(1em + 10px) 0 0
+		margin 1em 2em 0 0
 		text-transform uppercase
 		opacity 0.5
 		span
@@ -164,9 +176,7 @@ body
 		position absolute
 		bottom 0
 		right 0
-		margin 0 .5em 1em .5em
-		h2
-			padding .5em 1em
+		margin 0 0 1em
 
 // Hacks for mobile design
 @media screen and (max-width: 768px) // to detect mobile phones
@@ -175,6 +185,7 @@ body
 	#editors-tabs
 		padding .5em 0 0 0
 	.navigation
+		background black url("../images/bg.jpg") no-repeat fixed left bottom
 		width 3em
 		height 3em
 		overflow hidden
@@ -191,19 +202,30 @@ body
 				font-size 1em
 				span
 					font-size 1.5em
-		&.active
-			width 75%
+		.navigation-options
+			display none
+	#main.navigating
+		.content
+			height 100%
+		.navigation
+			width 80%
 			z-index 1
 			position absolute
 			height 100%
 			background-color rgba(16, 30, 32, 0.95)
 			color white
 			box-shadow 0 0 30px black
+			.navigation-options
+				display initial
 			.command
 				.close
 					display block
 					width 3em
 					height 3em
+					background-color transparent
+					border 1px solid rgba(255, 255, 255, 0.1)
+					span
+						font-size 2em
 				.open
 					display none
 
