@@ -599,3 +599,8 @@ To detect any change made to the contenteditable (whether its keypress, pasting 
 document.getElementById("editor").addEventListener("input", function() {
     alert("input event fired");
 }, false);
+
+
+06/12====================================================
+Version mobile : uniformiser browser et editors ; revoir la proposition de browser qui n'est pas très propre
+(relative -3em)

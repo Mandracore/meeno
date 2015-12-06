@@ -15,9 +15,9 @@ cObjectBorder0     = rgba(255, 255, 255, .3)
 cObjectBorder1     = rgba(255, 255, 255, .4)
 cObjectBg1         = rgba(255, 255, 255, .08)
 cObjectBg2         = rgba(255, 255, 255, .11)
-cButtonColor       = rgba(255, 255, 255, 0.5)
-cButtonColorO      = rgba(255, 255, 255, 0.4)
+cButtonColor0      = rgba(255, 255, 255, 0.5)
 cButtonColor1      = rgba(255, 255, 255, 0.8)
+cButtonColor2      = rgba(255, 255, 255, 1)
 cButtonBorder0     = rgba(255, 255, 255, .3)
 cButtonBorder1     = rgba(255, 255, 255, .6)
 cButtonBorder2     = rgba(255, 255, 255, .8)
@@ -41,6 +41,10 @@ cInputBg1          = rgba(0, 0, 0, 0.3);
 @font-face
 	font-family "dense"
 	src url("../font/Dense-Regular.otf")
+
+@font-face
+	font-family "moon"
+	src url("../font/Moon-Light.otf")
 
 html
 	width 100%
@@ -79,7 +83,6 @@ body
 /*===================================================================================
 ------- MAIN NAVIGATION --------------------------------------------------------------
 =====================================================================================*/
-
 
 // For larger displays
 @media screen and (min-width: 769px)
@@ -230,8 +233,115 @@ body
 					display none
 
 /*===================================================================================
+------- EDITOR DESIGN ---------------------------------------------------------------
+=====================================================================================*/
+.editors
+	height 100%
+	display none
+	&.active
+		display initial
+	.editor
+		height 100%
+		.header
+			display table
+			width 100%
+			height 3em
+			& > div
+				display table-cell
+				vertical-align middle
+			.close
+				margin 0 .5em 0 0
+				padding .5em 0
+				width 1em
+				button
+					background-color transparent
+					border none
+					color cButtonColor0
+					padding 0 .5em 0 0
+					&:hover
+						cursor pointer
+						color cButtonColor1
+					&:active
+						color cButtonColor2
+			.title
+				max-width 1em
+				font-size .9em
+				text-overflow ellipsis
+				overflow hidden
+				font-family Helvetica
+				white-space nowrap
+				color cButtonColor0
+				padding 1em 0
+			.actions
+				text-align right
+				width 17em
+				button
+					font-size 0.8em
+					margin 0
+					padding 0
+					margin .2em
+					background none
+					color cButtonColor0
+					border none
+					span
+						font-family Arial
+						margin 0 0 0 .5em
+					&:hover
+						cursor pointer
+						color cButtonColor1
+					&:active
+						color cButtonColor2
+		.body
+			height calc(100% - 3em)
+			background-color white
+			box-shadow 0 0 30px rgba(0, 0, 0, .5)
+			.left
+				padding 0 1em 0 2em
+			.right
+				padding 0 2em 0 1em
+			.left, .right
+				h1
+					font-family moon
+					font-size 2em
+					margin .5em 0 .5em 0
+				h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child
+					margin 0 0 .5em 0
+			.summary
+				ul
+					li
+						display inline-block
+						padding 1em .5em 1em .5em
+						opacity .7
+						font-family Dense
+						font-size 1.2em
+						&:hover
+							padding calc(1em - 5px) .5em 1em .5em
+							border-top 5px solid lightgrey
+							cursor pointer
+						&:active, &.active
+							padding calc(1em - 5px) .5em 1em .5em
+							opacity 1
+							border-top 5px solid cCyan
+
+
+// Hacks for mobile design
+/*@media screen and (max-width: 768px) // to detect mobile phones
+	#main .content
+		position relative
+		top -3em
+		height 100%*/
+		
+// Il vaut mieux décaler tout le content plutôt que les header, sinon les cacluls de hauteur sont 
+// plus complexes encore
+
+/*===================================================================================
 ------- BROWSER DESIGN --------------------------------------------------------------
 =====================================================================================*/
+
+.browser
+	display none
+	&.active
+		display initial
 
 // For classic displays
 .search-box, .listobjects
@@ -261,7 +371,7 @@ body
 			background-color transparent
 			margin 0 .4em 0 0
 			padding .2em .7em
-			color cButtonColor
+			color cButtonColor0
 			&:hover
 				background-color cButtonBg1
 				cursor pointer
@@ -286,7 +396,7 @@ body
 			text-align right
 			background-color transparent
 			border medium none
-			color cButtonColor
+			color cButtonColor0
 			span
 				margin 0 1em 0 .6em
 			&:hover
@@ -330,7 +440,7 @@ body
 				border 1px solid cButtonBorder0
 				border-radius 1em
 				background-color transparent
-				color cButtonColor
+				color cButtonColor0
 				text-transform uppercase
 			&:hover
 				border 1px solid cButtonBorder1
@@ -372,7 +482,7 @@ body
 					button
 						border none
 						background-color transparent
-						color cButtonColorO
+						color cButtonColor0
 						margin 0 1em 0 0
 						padding 0
 						span
@@ -579,7 +689,7 @@ body
 							border 1px solid cButtonBorder0
 							border-radius 1em
 							background-color transparent
-							color cButtonColor
+							color cButtonColor0
 							text-transform uppercase
 							span
 								margin 0 0 0 .6em
