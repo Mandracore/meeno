@@ -296,17 +296,32 @@ body
 			background-color white
 			box-shadow 0 0 30px rgba(0, 0, 0, .5)
 			.left
-				padding 0 1em 0 2em
+				padding 0 0 0 2em
 			.right
-				padding 0 2em 0 1em
+				padding 0 0 0 0
 			.left, .right
+				height 100%
 				h1
 					font-family moon
 					font-size 2em
 					margin .5em 0 .5em 0
 				h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child
 					margin 0 0 .5em 0
+			.content
+				height calc(100% - 4.6em)
+				overflow auto
+			.left
+				.content
+					margin 0 .5em 1em 0
+					padding 0 .5em 0 0
+			.right
+				.summary
+					padding 0 0 0 1em
+				.content
+					padding 0 1em 0
+					margin 0 .5em 1em 0
 			.summary
+				height 3.6em
 				ul
 					li
 						display inline-block
@@ -325,11 +340,17 @@ body
 
 
 // Hacks for mobile design
-/*@media screen and (max-width: 768px) // to detect mobile phones
-	#main .content
-		position relative
-		top -3em
-		height 100%*/
+@media screen and (max-width: 768px) // to detect mobile phones
+	#main .editor
+		.header, .body
+			position relative
+			top -3em
+		.header
+			left 3em
+			width calc(100% - 3em)
+		.body
+			height 100%
+			
 		
 // Il vaut mieux décaler tout le content plutôt que les header, sinon les cacluls de hauteur sont 
 // plus complexes encore
