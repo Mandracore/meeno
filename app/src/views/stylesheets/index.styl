@@ -293,14 +293,18 @@ body
 						color cButtonColor2
 		.body
 			height calc(100% - 3em)
-			background-color white
 			box-shadow 0 0 30px rgba(0, 0, 0, .5)
 			.left
-				padding 0 0 0 2em
+				padding 0
+				margin 0 5px 0 0
 			.right
 				padding 0 0 0 0
+				margin 0 0 0 5px
 			.left, .right
+				float left
+				width calc(50% - 5px)
 				height 100%
+				background-color white
 				h1
 					font-family moon
 					font-size 2em
@@ -310,16 +314,11 @@ body
 			.content
 				height calc(100% - 4.6em)
 				overflow auto
-			.left
-				.content
-					margin 0 .5em 1em 0
-					padding 0 .5em 0 0
-			.right
+			.left, .right
 				.summary
-					padding 0 0 0 1em
+					padding 0 0 0 1.5em
 				.content
-					padding 0 1em 0
-					margin 0 .5em 1em 0
+					padding 0 1.5em 0
 			.summary
 				height 3.6em
 				ul
@@ -331,7 +330,7 @@ body
 						font-size 1.2em
 						&:hover
 							padding calc(1em - 5px) .5em 1em .5em
-							border-top 5px solid lightgrey
+							border-top 5px solid grey
 							cursor pointer
 						&:active, &.active
 							padding calc(1em - 5px) .5em 1em .5em
@@ -350,6 +349,32 @@ body
 			width calc(100% - 3em)
 		.body
 			height 100%
+			position relative
+			.summary
+				padding 0 0 0 2em
+			.left
+				position absolute
+				width calc(100% - 1em - 10px)
+				left 0px
+				top 0px
+				transition left 1s ease, width 1s ease
+				.content
+					padding 0 1.5em 0 2em
+			.right
+				position absolute
+				top 0px
+				width 100%
+				left calc(100% - 1em)
+				transition left 1s ease, width 1s ease
+			&.swiped
+				.left
+					width 100%
+					left calc( (100% - 1em + 5px) * (-1) )
+				.right
+					width calc(100% - 1em - 10px)
+					left calc(1em + 5px)
+					.content
+						padding 0 1.5em 0 2em
 			
 		
 // Il vaut mieux décaler tout le content plutôt que les header, sinon les cacluls de hauteur sont 
