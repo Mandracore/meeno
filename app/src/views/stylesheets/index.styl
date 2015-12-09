@@ -190,6 +190,7 @@ body
 	.navigation
 		background black url("../images/bg.jpg") no-repeat fixed left bottom
 		width 3em
+		transition width .4s ease
 		height 3em
 		overflow hidden
 		.command
@@ -208,9 +209,9 @@ body
 		.navigation-options
 			display none
 	#main.navigating
-		.content
+		& > .content
 			height 100%
-		.navigation
+		& > .navigation
 			width 80%
 			z-index 1
 			position absolute
@@ -251,13 +252,13 @@ body
 				vertical-align middle
 			.close
 				margin 0 .5em 0 0
-				padding .5em 0
 				width 1em
 				button
+					padding .5em
 					background-color transparent
 					border none
 					color cButtonColor0
-					padding 0 .5em 0 0
+					transition color .2s ease
 					&:hover
 						cursor pointer
 						color cButtonColor1
@@ -282,6 +283,7 @@ body
 					margin .2em
 					background none
 					color cButtonColor0
+					transition color .4s ease
 					border none
 					span
 						font-family Arial
@@ -345,8 +347,12 @@ body
 			position relative
 			top -3em
 		.header
-			left 3em
-			width calc(100% - 3em)
+			padding 0 0 0 10px
+			background-color rgba(0, 0, 0, 0.2)
+			left calc(3em - 10px)
+			width calc(100% - 3em + 10px)
+			.actions
+				width 11em
 		.body
 			height 100%
 			position relative
@@ -357,7 +363,7 @@ body
 				width calc(100% - 1em - 10px)
 				left 0px
 				top 0px
-				transition left 1s ease, width 1s ease
+				transition left .4s ease, width .4s ease
 				.content
 					padding 0 1.5em 0 2em
 			.right
@@ -365,7 +371,7 @@ body
 				top 0px
 				width 100%
 				left calc(100% - 1em)
-				transition left 1s ease, width 1s ease
+				transition left .4s ease, width .4s ease
 			&.swiped
 				.left
 					width 100%
@@ -375,6 +381,11 @@ body
 					left calc(1em + 5px)
 					.content
 						padding 0 1.5em 0 2em
+	#main.navigating > .content > .editors > .editor
+		.header, .body
+			top 0
+		.body
+			height calc(100% - 3em)
 			
 		
 // Il vaut mieux décaler tout le content plutôt que les header, sinon les cacluls de hauteur sont 
