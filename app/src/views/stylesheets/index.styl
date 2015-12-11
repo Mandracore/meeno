@@ -13,8 +13,8 @@ reset-html5()
 cBgGrey            = lighten(#000000, 20%)
 cObjectBorder0     = rgba(255, 255, 255, .3)
 cObjectBorder1     = rgba(255, 255, 255, .4)
-cObjectBg1         = rgba(255, 255, 255, .08)
-cObjectBg2         = rgba(255, 255, 255, .11)
+cObjectBg1         = rgba(255, 255, 255, .06)
+cObjectBg2         = rgba(255, 255, 255, .12)
 cButtonColor0      = rgba(255, 255, 255, 0.5)
 cButtonColor1      = rgba(255, 255, 255, 0.8)
 cButtonColor2      = rgba(255, 255, 255, 1)
@@ -399,6 +399,10 @@ body
 	display none
 	&.active
 		display initial
+	.tab
+		display none
+		&.active
+			display initial
 
 // For classic displays
 .search-box, .listobjects
@@ -556,15 +560,16 @@ body
 						background-color transparent
 						border none
 						color white
-			//-------------------------------------------------------
-			// Tasks objects
+			//------------------------------------------------------------------------
+			// Initialization for tasks objects
+			// Afterwards, some adjustments will be made for notes and tags
 			&:nth-child(2) // The second item of the list (the first is the input to add new records)
 				border-top 1px solid cObjectBorder0
-			&.task
+			&:not(.add)
 				border-left 1px solid cObjectBorder0
 				border-right 1px solid cObjectBorder0
 				border-bottom 1px solid cObjectBorder0
-			.check
+			.check, .open
 				display none
 			.content
 				display table
@@ -653,7 +658,7 @@ body
 						cursor pointer
 					&:active
 						background-color cObjectBg2
-				.check
+				.check, .open
 					display block
 					position absolute
 					top 0
@@ -779,7 +784,68 @@ body
 							&:active
 								span
 									opacity 1
-				
+//-------------------------------------------------------
+// Specifics for Notes objects
+.browser .tab.notes
+	.listobjects .objects
+		li
+			&:not(.add):not(.active)
+				.content
+					.label
+						padding 0 .5em 0 1em
+			&:not(.add)
+				.open
+					.fa-folder-open
+						display none
+					.fa-folder
+						display initial
+				.open:hover
+					.fa-folder
+						display none
+					.fa-folder-open
+						display initial
+			&.expanded
+				.content
+					.form
+						width 100%
+						display block
+						input
+							font-family Helvetica
+							font-size 1em
+						.label
+							padding 0px
+							margin 0px 1em
+							width calc(100% - 2em)
+							display table
+						.tags
+							margin 0 1em
+							width calc(100% - 2em)
+						.reduce
+							margin 0
+							width 100%
+							border-bottom none
+							button
+								width 100%
+								display block
+								padding .7em 1em .7em 0
+								background none
+								border none
+								color white
+								text-align right
+								&:hover
+									background-color cButtonBg1
+									cursor pointer
+								&:active
+									background-color cButtonBg2
+						.input
+							input
+								width calc(100% - 1em)
+								background none
+								border none
+								color white
+								text-overflow ellipsis
+								padding 0 1em 0 0
+
 
 //--------------------------------------------------------------------------
 // Hacks for mobile design
