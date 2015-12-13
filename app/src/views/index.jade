@@ -136,7 +136,95 @@ block content
 								| Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
 			//div.browser.active
 			div.browser.active
-				div.tab.notes.active
+				//div.tab.tags.active
+				div.tab.tags
+					div.search-box
+						div.looking-glass
+							span.fa.fa-search
+						div.tags.nostretch
+							button tag3
+							button tag2
+						div.input
+							input(placeholder="Type here keywords")
+						div.reset
+							button
+								| clear
+								span.fa.fa-remove
+					div.listobjects.selected
+						ul.objects
+							li.add
+								div
+									span.fa.fa-plus
+								div.input
+									input(placeholder="Type here your new tag")
+								div.buttons
+									button.save
+										| save
+										span.fa.fa-save
+									button.cancel.hide-on-mobile
+										| cancel
+										span.fa.fa-remove
+							li
+								//.colorpicker.wip
+								.colorpicker
+									button.fa.fa-eyedropper
+									.wip
+										.fa.fa-spinner.fa-pulse
+								.label
+									.wrapper
+										.color
+											.globe
+										.input
+											input(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
+										//.rename.wip
+										.rename
+											button.fa.fa-pencil
+											.wip
+												.fa.fa-spinner.fa-pulse
+								.delete
+									button.fa.fa-trash
+									button.fa.fa-trash-o
+							li
+								//.colorpicker.wip
+								.colorpicker
+									button.fa.fa-eyedropper
+									.wip
+										.fa.fa-spinner.fa-pulse
+								.label
+									.wrapper
+										.color
+											.globe
+										.input
+											input(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
+										//.rename.wip
+										.rename
+											button.fa.fa-pencil
+											.wip
+												.fa.fa-spinner.fa-pulse
+								.delete
+									button.fa.fa-trash
+									button.fa.fa-trash-o
+							li
+								//.colorpicker.wip
+								.colorpicker
+									button.fa.fa-eyedropper
+									.wip
+										.fa.fa-spinner.fa-pulse
+								.label
+									.wrapper
+										.color
+											.globe
+										.input
+											input(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
+										//.rename.wip
+										.rename
+											button.fa.fa-pencil
+											.wip
+												.fa.fa-spinner.fa-pulse
+								.delete
+									button.fa.fa-trash
+									button.fa.fa-trash-o
+				div.tab.notes
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -150,15 +238,6 @@ block content
 								| clear
 								span.fa.fa-remove
 					div.listobjects.selected
-						div.nav.grid-container.grid-parent
-							ul.milestones.grid-90.mobile-grid-90.grid-parent
-								li.active Today
-								li Tomorrow
-								li Next week
-							div.filter-checked.grid-10.mobile-grid-10.grid-parent
-								button.active(data-step="0") Todo
-								button(data-step="1") Done
-								button(data-step="2") Both
 						ul.objects
 							li.add
 								div
@@ -172,6 +251,22 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
+							li
+								.open
+									button.fa.fa-folder
+									button.fa.fa-folder-open
+								.content
+									.label
+										.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+									.tags.hide-on-mobile
+										button
+											span.red
+											| tag1
+										button
+											span.green
+											| tag1
+									.expand
+										button.fa.fa-angle-down
 							li
 								.open
 									button.fa.fa-folder
@@ -227,7 +322,7 @@ block content
 												button.link link tag
 										.reduce
 											button.fa.fa-angle-up
-				div.tab.tasks
+				div.tab.tasks.active
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search

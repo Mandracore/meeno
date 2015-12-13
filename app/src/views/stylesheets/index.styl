@@ -515,10 +515,14 @@ body
 		display block
 		height calc(100% - 3em)		
 		overflow auto
+		input
+			font-size .9em
+			font-family Helvetica
 		li
+			font-size .9em
+			font-family Helvetica
 			height 3em
 			color white
-			font-family Helvetica
 			//-------------------------------------------------------
 			// Input to add new objects
 			&.add
@@ -787,64 +791,173 @@ body
 //-------------------------------------------------------
 // Specifics for Notes objects
 .browser .tab.notes
-	.listobjects .objects
-		li
-			&:not(.add):not(.active)
-				.content
-					.label
-						padding 0 .5em 0 1em
-			&:not(.add)
-				.open
-					.fa-folder-open
-						display none
-					.fa-folder
-						display initial
-				.open:hover
-					.fa-folder
-						display none
-					.fa-folder-open
-						display initial
-			&.expanded
-				.content
-					.form
-						width 100%
-						display block
-						input
-							font-family Helvetica
-							font-size 1em
+	.listobjects 
+		height calc(100% - 6em)
+		margin 2em 0 0 0
+		.objects
+			height 100%
+			li
+				&:not(.add):not(.active)
+					.content
 						.label
-							padding 0px
-							margin 0px 1em
-							width calc(100% - 2em)
-							display table
-						.tags
-							margin 0 1em
-							width calc(100% - 2em)
-						.reduce
-							margin 0
+							padding 0 .5em 0 1em
+				&:not(.add)
+					.open
+						.fa-folder-open
+							display none
+						.fa-folder
+							display initial
+					.open:hover
+						.fa-folder
+							display none
+						.fa-folder-open
+							display initial
+				&.expanded
+					.content
+						.form
 							width 100%
-							border-bottom none
-							button
-								width 100%
-								display block
-								padding .7em 1em .7em 0
-								background none
-								border none
-								color white
-								text-align right
-								&:hover
-									background-color cButtonBg1
-									cursor pointer
-								&:active
-									background-color cButtonBg2
-						.input
+							display block
 							input
-								width calc(100% - 1em)
-								background none
-								border none
-								color white
-								text-overflow ellipsis
-								padding 0 1em 0 0
+								font-family Helvetica
+								font-size 1em
+							.label
+								padding 0px
+								margin 0px 1em
+								width calc(100% - 2em)
+								display table
+							.tags
+								margin 0 1em
+								width calc(100% - 2em)
+							.reduce
+								margin 0
+								width 100%
+								border-bottom none
+								button
+									width 100%
+									display block
+									padding .7em 1em .7em 0
+									background none
+									border none
+									color white
+									text-align right
+									&:hover
+										background-color cButtonBg1
+										cursor pointer
+									&:active
+										background-color cButtonBg2
+							.input
+								input
+									width calc(100% - 1em)
+									background none
+									border none
+									color white
+									text-overflow ellipsis
+									padding 0 1em 0 0
+
+//-------------------------------------------------------
+// Specifics for Tags objects
+.browser .tab.tags
+	.listobjects 
+		height calc(100% - 6em)
+		margin 2em 0 0 0
+		.objects
+			height 100%
+			li
+				&:not(.add)
+					display table
+					width calc(100% - 2px)
+					& > div
+						display table-cell
+						vertical-align middle
+						height 100%
+					.label
+						.wrapper
+							display table
+							width 100%
+							height 100%
+							& > div:not(.rename)
+								display table-cell
+								vertical-align middle
+								&.color
+									width 1em
+									.globe
+										margin 0 0 0 1em
+										background-color red
+										opacity .5
+										width .8em
+										height .8em
+										border 1px solid white
+										border-radius 1em
+								&.input
+									max-width 1em
+									input
+										text-overflow ellipsis
+										width calc(100% - 2em)
+										border none
+										background none
+										color white
+										padding 0 1em
+					.colorpicker, .delete, .rename
+						display none
+						.wip
+							display none
+				&:not(.add):hover
+					& > .colorpicker, & > .delete
+						width 3em
+						display table-cell
+					.label
+						.wrapper
+							& > div
+								&.color
+									display none
+								&:not(.color)
+									display table-cell
+									vertical-align middle
+									&.rename
+										width 3em
+					.colorpicker, .rename
+						display table-cell
+						.wip
+							display none
+						&.wip
+							button, .color
+								display none
+							.wip
+								display block
+								width calc(100% - 2em)
+								height calc(100% - 2em)
+								display block
+								padding 1em
+					& > div
+						border-right 1px solid cObjectBorder0
+						&:last-child
+							border none
+						&:hover
+							background-color cObjectBg1
+						&:active
+							background-color cObjectBg2
+					//.colorpicker
+					//	.color
+					button
+						display block
+						height 100%
+						width 100%
+						background none
+						border none
+						color white
+						&:hover
+							cursor pointer
+					.delete
+						.fa-trash-o
+							display initial
+						.fa-trash
+							display none
+					.delete:hover
+						.fa-trash-o
+							display none
+						.fa-trash
+							display initial
+
 
 
 //--------------------------------------------------------------------------
