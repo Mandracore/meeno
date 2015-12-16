@@ -27,12 +27,12 @@ cButtonIcon0       = rgba(255, 255, 255, .5)
 cButtonIcon1       = rgba(255, 255, 255, .7)
 cButtonIcon2       = rgba(255, 255, 255, .9)
 cButtonActive      = rgba(255, 255, 255, 1)
-cButtonMilestone0  = rgba(255, 255, 255, .1);
-cButtonMilestone05 = rgba(255, 255, 255, .5);
-cButtonMilestone1  = rgba(255, 255, 255, 1);
+cButtonMilestone0  = rgba(255, 255, 255, .1)
+cButtonMilestone05 = rgba(255, 255, 255, .5)
+cButtonMilestone1  = rgba(255, 255, 255, 1)
 cCyan              = #0093FF
-cInputBg0          = rgba(0, 0, 0, 0.2);
-cInputBg1          = rgba(0, 0, 0, 0.3);
+cInputBg0          = rgba(0, 0, 0, 0.2)
+cInputBg1          = rgba(0, 0, 0, 0.3)
 
 @font-face
 	font-family "modernpics"
@@ -314,30 +314,149 @@ body
 				h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child
 					margin 0 0 .5em 0
 			.content
-				height calc(100% - 4.6em)
+				height calc(100% - 6.6em)
 				overflow auto
 			.left, .right
+				overflow hidden
 				.summary
 					padding 0 0 0 1.5em
 				.content
 					padding 0 1.5em 0
-			.summary
-				height 3.6em
-				ul
-					li
-						display inline-block
-						padding 1em .5em 1em .5em
-						opacity .7
-						font-family Dense
-						font-size 1.2em
+					height calc(100% - 3.6em)
+					transition height .5s ease
+					.task, .tag
+						input
+							border-radius 5px
+							border-left 1px solid rgba(0, 0, 0, .6)
+							border-right 1px solid rgba(0, 0, 0, .6)
+							border-top none
+							border-bottom none
+							padding 0 0.3em
+							margin 0 0 0 .2em
+							background-color transparent
+							font-style italic
+							font-family Helvetica
+							font-size 1em
+					.task
+						display block
+						position relative
+						padding .5em .1em .5em 1.5em
+						margin .2em 0
+						font-size 0.9em
+						font-family Helvetica
+						font-style italic
+						width calc(100% - 0.5em)
+						opacity .8
 						&:hover
-							padding calc(1em - 5px) .5em 1em .5em
-							border-top 5px solid grey
 							cursor pointer
-						&:active, &.active
-							padding calc(1em - 5px) .5em 1em .5em
+							text-decoration line-through
+							.fa
+								left .2em
+						&:active
 							opacity 1
-							border-top 5px solid cCyan
+						.fa
+							height 1em
+							transition left .5s ease
+							top calc(50% - 0.5em)
+							left 0
+							position absolute
+					.tag
+						opacity .8
+						display inline-block
+						color black
+						margin 0 .5em
+						font-size .9em
+						font-style italic
+						font-family Helvetica
+						&::before
+							content ''
+							display inline-block
+							background-color red
+							border-radius 20px
+							width .7em
+							height .7em
+							border 1px solid black
+							margin 0 .3em 0 0
+							transition margin .5s ease
+						&:hover
+							text-decoration line-through
+							cursor pointer
+							&::before
+								margin 0 .1em 0 .2em
+						&:active
+							text-decoration line-through
+							opacity 1							
+				.text-editor
+					padding 0 calc(100% - 11em + 3px) 0 1.5em
+					height 3em
+					overflow hidden
+					transition top .5s ease
+					position relative
+					top 3em
+					transition top .5s ease
+					display table
+					box-shadow 0px 1px 10px rgba(0, 0, 0, 0.4)
+					& > div
+						display table-cell
+						vertical-align middle
+						&.tag, &.task
+							width 1em
+						.info
+							display none
+						&:hover, &.active
+							.info
+								overflow hidden
+								text-overflow ellipsis
+								white-space nowrap
+								max-width calc(100% - 16em)
+								opacity .9
+								top 0
+								right 0
+								display block
+								position absolute
+								font-size .7em
+								font-family Helvetica
+								line-height 4.28em
+								padding 0 1em 0 0
+						button
+							opacity .6
+							color black
+							background none
+							border none
+							display block
+							padding 1em .5em
+							&:hover, &:active
+								opacity .8
+								padding calc(1em - 5px) .5em 1em .5em
+								cursor pointer
+							&:hover
+								border-top 5px solid grey
+							&:active
+								opacity 1
+								border-top 5px solid cCyan
+				&.focus
+					.content
+						height calc(100% - 6.6em)
+						transition height .5s ease
+					.text-editor
+						top 0
+				.summary
+					height 3.6em
+					ul
+						li
+							display inline-block
+							padding 1em .5em 1em .5em
+							opacity .7
+							font-family Dense
+							font-size 1.2em
+							&:hover
+								padding calc(1em - 5px) .5em 1em .5em
+								border-top 5px solid grey
+								cursor pointer
+							&:active, &.active
+								padding calc(1em - 5px) .5em 1em .5em
+								opacity 1
+								border-top 5px solid cCyan
 
 
 // Hacks for mobile design

@@ -55,7 +55,7 @@ block content
 	// Application skeleton
 	//div#main.navigating.grid-container.grid-parent
 	div#main.grid-container.grid-parent
-		div.navigation.grid-25.grid-parent
+		div.navigation.grid-20.grid-parent
 			div.command.hide-on-desktop
 				button.open
 					span.fa.fa-navicon
@@ -95,9 +95,9 @@ block content
 						span.fa.fa-question-circle
 					h2 admin
 						span.fa.fa-cog
-		div.content.grid-75
+		div.content.grid-80
 			//div.editors.active
-			div.editors
+			div.editors.active
 				div.editor
 					div.header
 						div.close
@@ -111,17 +111,46 @@ block content
 							button.fa.fa-clone
 								span DUPLICATE
 					div.body.grid-container.grid-parent
-						div.left
+						div.left.focus
 							div.summary
 								ul
 									li 1
 									li.active 2
 									li 3
-							div.content
+							div#rla.content(contenteditable="true")
 								h1 Participants
-								| Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
+								p Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. 
+								.tag(contenteditable="false") SOMFY
+								| Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								.tag(contenteditable="false")
+									input(placeholder="Name your tag here")
+								| Aenean ut gravida lorem. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor.
+								.task(contenteditable="false")
+									.fa.fa-tasks
+									|Préparer plan d'action AFE pour suite PMO Exec
+								.task(contenteditable="false")
+									.fa.fa-tasks
+									|Organiser la réunion du 27/11 avec tous les intervenants du CoProj
+								p ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.	
+								.task(contenteditable="false")
+									.fa.fa-tasks
+									input(placeholder="Describe here the task")
+								p ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
 								h1 Objectifs
 								| Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
+							div.text-editor
+								div.tag
+									button.fa.fa-tag
+									.info Insert tag (ttt)
+								div.task
+									button.fa.fa-tasks
+									.info Insert task (&&&)
+								div.font-header
+									button.fa.fa-header
+									.info Toggle headers (Ctrl + plus)
+								div.font-list
+									button.fa.fa-list
+									.info Insert list (lll)
 						div.right
 							div.summary
 								ul
@@ -129,15 +158,28 @@ block content
 									li 2
 									li 3
 									li 4
-							div.content
+							div.content(contenteditable="true")
 								h1 Decisions
 								| Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
 								h1 Actions
 								| Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
+							div.text-editor
+								div.tag
+									button.fa.fa-tag
+									.info Insert tag (ttt)
+								div.task
+									button.fa.fa-tasks
+									.info Insert task (&&&)
+								div.font-header
+									button.fa.fa-header
+									.info Toggle headers (Ctrl + plus)
+								div.font-list
+									button.fa.fa-list
+									.info Insert list (lll)
 			//div.browser.active
-			div.browser.active
+			div.browser
 				//div.tab.tags.active
-				div.tab.tags
+				div.tab.tags.active
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -322,7 +364,7 @@ block content
 												button.link link tag
 										.reduce
 											button.fa.fa-angle-up
-				div.tab.tasks.active
+				div.tab.tasks
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search

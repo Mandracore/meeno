@@ -604,3 +604,11 @@ document.getElementById("editor").addEventListener("input", function() {
 06/12====================================================
 Version mobile : uniformiser browser et editors ; revoir la proposition de browser qui n'est pas très propre
 (relative -3em)
+
+
+15/12====================================================
+Pour le WYSIWYG :
+document.execCommand('formatBlock',false,'<h1>')
+Voir comment protéger les tags et les tasks du reformatage... => contenteditable = false forcé sur tous les tags/tasks
+
+window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName pour détecter le type de node (h1, h2,...)
