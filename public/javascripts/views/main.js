@@ -23,13 +23,12 @@ define ([
 			el: '#meenoApp',
 
 			events: {
-				'submit #login'           : 'login',
-				'submit #register'        : 'register',
-				'click #toregister'       : 'toggleLR',
-				'click #tologin'          : 'toggleLR',
-				'click nav .browse.notes' : 'browseNotes',
-				'click nav .browse.tasks' : 'browseTasks',
-				'click nav .browse.tags'  : 'browseTags',
+				'submit #login'            : 'login',
+				'submit #register'         : 'register',
+				'click #toregister'        : 'toggleLR',
+				'click #tologin'           : 'toggleLR',
+				'click #nav .browse'       : 'browse',
+				'click #editors-tabs > li' : 'edit',
 			},
 
 			initialize: function() {
@@ -190,50 +189,44 @@ define ([
 			},*/
 
 			/**
-			 * To open the browser in position notes
+			 * To open the browser in the right position
 			 *
-			 * @method browseNotes
-			 * @param {event} event Backbone event
+			 * @method browse
+			 * @param {event} event backbone event
 			 */
-			browseNotes: function (event) {
+			browse: function (event) {
 				this.minEditors();
-				if (!($(event.target).hasClass('selected'))) {
-					$(event.target).siblings().removeClass('selected');
-					$(event.target).addClass('selected');
-					this.$('#tabs .listobjects.notes').siblings().removeClass('selected');
-					this.$('#tabs .listobjects.notes').addClass('selected');
+				var $button = $(event.target);
+				var type    = $button.attr("data-type");
+				if (!($button.hasClass('selected'))) {
+					$button.siblings().removeClass('selected');
+					$button.addClass('selected');
+					this.$('#browser').removeClass('active');
+					this.$('#browser').addClass('active');
+					this.$('#browser').children().removeClass('active');
+					this.$('#browser > .tab.' + type).addClass('active');
 				}
 			},
 
 			/**
-			 * To open the browser in position tasks
+			 * To open the browser in the right position
 			 *
-			 * @method browseTasks
-			 * @param {event} event Backbone event
+			 * @method edit
 			 */
-			browseTasks: function (event) {
-				this.minEditors();
-				if (!($(event.target).hasClass('selected'))) {
-					$(event.target).siblings().removeClass('selected');
-					$(event.target).addClass('selected');
-					this.$('#tabs .listobjects.tasks').siblings().removeClass('selected');
-					this.$('#tabs .listobjects.tasks').addClass('selected');
-				}
-			},
-
-			/**
-			 * To open the browser in position tags
-			 *
-			 * @method browseTags
-			 * @param {event} event Backbone event
-			 */
-			browseTags: function (event) {
-				this.minEditors();
-				if (!($(event.target).hasClass('selected'))) {
-					$(event.target).siblings().removeClass('selected');
-					$(event.target).addClass('selected');
-					this.$('#tabs .listobjects.tags').siblings().removeClass('selected');
-					this.$('#tabs .listobjects.tags').addClass('selected');
+			edit: function (event) {
+				this.minBrowser();
+				var $button = $(event.target).closest('li');
+				var noteCid = $button.attr("data-cid");
+				console.log($button);
+				console.log('noteCid='+noteCid);
+				if (!($button.hasClass('selected'))) {
+					$button.siblings().removeClass('selected');
+					$button.addClass('selected');
+					this.$('#editors').removeClass('active');
+					this.$('#editors').addClass('active');
+					this.$('#editors').children().removeClass('active');
+					//$("#editors-tabs li[data-cid='test']") // pour retrouver les tabs, pas les éditeurs
+					this.$('#editors .editor[data-cid=' + noteCid + ']').addClass('active');
 				}
 			},
 
@@ -241,11 +234,20 @@ define ([
 			 * To minimize the editors
 			 * 
 			 * @method minEditors
-			 * @param {event} event Backbone event
 			 */
 			minEditors: function () {
-				var $editors = $('#editors');
-				$editors.removeClass('visible',500);
+				$('#editors').removeClass('active');
+				$('#editors-tabs').children().removeClass('selected');
+			},
+
+			/**
+			 * To minimize the browser
+			 * 
+			 * @method minBrowser
+			 */
+			minBrowser: function () {
+				$('#browser').removeClass('active');
+				$('#nav').children().removeClass('selected');
 			},
 
 		});

@@ -612,3 +612,5 @@ document.execCommand('formatBlock',false,'<h1>')
 Voir comment protéger les tags et les tasks du reformatage... => contenteditable = false forcé sur tous les tags/tasks
 
 window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName pour détecter le type de node (h1, h2,...)
+
+On pourra utiliser pasteHTMLAtCaret mais il faut avant tester qu'on n'est pas dans un tag/task 

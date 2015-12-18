@@ -75,7 +75,7 @@ body
 	background-color white
 	opacity .8
 	
-#main, #main > .content, #main > .content > .browser, #main > .content > .browser > .tab
+#main, #main > .content, #browser, #browser > .tab
 	height 100%
 //	& > .content
 //		height calc(100% - 3em)
@@ -236,12 +236,15 @@ body
 /*===================================================================================
 ------- EDITOR DESIGN ---------------------------------------------------------------
 =====================================================================================*/
-.editors
+#editors
 	height 100%
 	display none
 	&.active
 		display initial
 	.editor
+		display none
+	.editor.active
+		display initial
 		height 100%
 		.header
 			display table
@@ -500,7 +503,7 @@ body
 					left calc(1em + 5px)
 					.content
 						padding 0 1.5em 0 2em
-	#main.navigating > .content > .editors > .editor
+	#main.navigating #editors > .editor
 		.header, .body
 			top 0
 		.body
@@ -514,7 +517,7 @@ body
 ------- BROWSER DESIGN --------------------------------------------------------------
 =====================================================================================*/
 
-.browser
+#browser
 	display none
 	&.active
 		display initial
@@ -909,7 +912,7 @@ body
 									opacity 1
 //-------------------------------------------------------
 // Specifics for Notes objects
-.browser .tab.notes
+#browser .tab.notes
 	.listobjects 
 		height calc(100% - 6em)
 		margin 2em 0 0 0
@@ -975,7 +978,7 @@ body
 
 //-------------------------------------------------------
 // Specifics for Tags objects
-.browser .tab.tags
+#browser .tab.tags
 	.listobjects 
 		height calc(100% - 6em)
 		margin 2em 0 0 0

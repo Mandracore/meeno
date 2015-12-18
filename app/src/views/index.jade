@@ -54,7 +54,7 @@ block content
 
 	// Application skeleton
 	//div#main.navigating.grid-container.grid-parent
-	div#main.grid-container.grid-parent
+	#main.grid-container.grid-parent
 		div.navigation.grid-20.grid-parent
 			div.command.hide-on-desktop
 				button.open
@@ -70,24 +70,23 @@ block content
 						span.fa.fa-bookmark
 					// Commands to navigate between the different tabs
 					ul#nav
-						li.browse.notes NOTES
-						li.browse.tasks.selected TASKS
-						li.browse.tags TAGS
+						li.browse.notes(data-type="notes") NOTES
+						li.browse.tasks.selected(data-type="tasks") TASKS
+						li.browse.tags(data-type="tags") TAGS
 					ul#editors-tabs
-						li 
+						li(data-cid="test")
 							span.close.fa.fa-remove
 							span SOMFY_MEE_DOM-AFE_2015-10-13-1630
-						li 
+						li(data-cid="notes")
 							span.close.fa.fa-remove
 							span CS Checkpoint AFE 20151123
-						//li.selected
-						li
+						li(data-cid="vpi")
 							span.close.fa.fa-remove
 							span CS Checkpoint VPI 20151127
-						li
+						li(data-cid="notes")
 							span.close.fa.fa-remove
 							span SOMFY_MEE_DOM-CMO_2015-06-25-1600
-						li
+						li(data-cid="notes")
 							span.close.fa.fa-remove
 							span SOMFY_MEE_DOM-CMO_2015-07-16-1500
 				nav.misc
@@ -97,8 +96,8 @@ block content
 						span.fa.fa-cog
 		div.content.grid-80
 			//div.editors.active
-			div.editors.active
-				div.editor
+			#editors
+				div.editor(data-cid="vpi")
 					div.header
 						div.close
 							button.fa.fa-remove
@@ -134,7 +133,7 @@ block content
 								p ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.	
 								.task(contenteditable="false")
 									.fa.fa-tasks
-									input(placeholder="Describe here the task")
+									input(placeholder="Describe here your task")
 								p ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
 								h1 Objectifs
 								| Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
@@ -177,9 +176,8 @@ block content
 									button.fa.fa-list
 									.info Insert list (lll)
 			//div.browser.active
-			div.browser
-				//div.tab.tags.active
-				div.tab.tags.active
+			#browser.active
+				div.tab.tags
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -285,10 +283,10 @@ block content
 								div
 									span.fa.fa-plus
 								div.input
-									input(placeholder="Type here your new task")
+									input(placeholder="Name here your new note")
 								div.buttons
 									button.save
-										| save
+										| save and open
 										span.fa.fa-save
 									button.cancel.hide-on-mobile
 										| cancel
@@ -364,7 +362,7 @@ block content
 												button.link link tag
 										.reduce
 											button.fa.fa-angle-up
-				div.tab.tasks
+				div.tab.tasks.active
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
