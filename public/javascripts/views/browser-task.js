@@ -59,8 +59,8 @@ define ([
 					task: this.model.toJSON(),
 					tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {
 						return {
-							cid : tag.cid,
-							'label' : tag.get('label'),
+							'cid'   : tag == null ? null : tag.cid,
+							'label' : tag == null ? "BROKEN" : tag.get('label'),
 					}}),
 				};
 

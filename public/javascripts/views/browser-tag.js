@@ -1,10 +1,11 @@
 define ([
 		'jquery',
+		'simplecolorpicker',
 		'underscore',
 		'backbone',
 		'channel',
 		'views/browser-object',
-	], function ($, _, Backbone, channel, BrowserObjectView) {
+	], function ($, $, _, Backbone, channel, BrowserObjectView) {
 
 		/**
 		 * A backbone view to display one tag in the browser
@@ -18,9 +19,12 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
-					'click .edit'    : 'edit',
-					'click .delete'  : 'delete',
-					'blur .label'    : 'save'
+					'click .edit'                       : 'editLabel',
+					'click .controls .cancel'           : 'editLabelCancel',
+					'click .controls .save'             : 'editLabelSave',
+					'click .colorpicker .fa-eyedropper' : 'editColor',
+					'click .colorpicker .fa-remove'     : 'editColorCancel',
+					'click .delete'                     : 'delete'
 				});
 			},
 
@@ -34,40 +38,60 @@ define ([
 				this.collName = "tags";
 				var templateFn = _.template( $(this.template).html() );
 				this.$el.html (templateFn (this.model.toJSON()));
-
-				/**
-				 * Event triggered on `channel` when this.render() method is called
-				 * @event browser:tags:reSyncSelectors
-				 */
-				channel.trigger("browser:tags:reSyncSelectors");
 				return this;
 			},
 
 			/**
-			 * Displays an input to edit the tag label
+			 * Display inline colorpicker when the user clicks on the eyedropper
 			 *
-			 * @method edit
+			 * @method editColor
 			 */
-			edit: function() {
-				console.log('edit');
-				this.$("span.label").attr('contenteditable','true').focus().select();
-				document.execCommand('selectAll',false,null);
+			editColor: function() {
+				if (!this.$el.hasClass("coloring")) {
+					this.$el.addClass("coloring");
+					this.$('select').simplecolorpicker();
+				}
+			},
+
+			/**
+			 * Hides the colorpicker
+			 *
+			 * @method editColorCancel
+			 */
+			editColorCancel: function() {
+				this.$el.removeClass("coloring");
+				this.$('select').simplecolorpicker('destroy');
+				this.$('select').hide();
+			},
+
+			/**
+			 * Select all text displayed in the label input
+			 *
+			 * @method editLabel
+			 */
+			editLabel: function() {
+				this.$el.addClass("editing");
+				this.$(".input input").focus().select();
+			},
+
+			/**
+			 * Select all text displayed in the label input
+			 *
+			 * @method editLabelCancel
+			 */
+			editLabelCancel: function() {
+				this.$el.removeClass('editing')
 			},
 
 			/**
 			 * Sets the view's model label to the input (`span.label`) value and saves the model
 			 *
-			 * @method save
+			 * @method editLabelSave
 			 */
-			save: function() {
-				this.$("span.label").attr('contenteditable','false');
-				console.log('save');
+			editLabelSave: function() {
 				this.model.set({
-					label  :this.$("span.label").html()
+					label  :this.$(".input input").val()
 				}).save({},{
-					success: function() {
-						console.log('save success');
-					},
 					error  : function() {
 						console.log('save error');
 					}
@@ -81,7 +105,6 @@ define ([
 			 */
 			delete: function() {
 				this.model.destroy();
-				mee.Tags.remove(this.model);
 				this.remove();
 			},
 		});

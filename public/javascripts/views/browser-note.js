@@ -35,7 +35,11 @@ define ([
 				// json.created_at = json.created_at.toString('dddd, MMMM ,yyyy');
 				var json = {
 					note: this.model.toJSON(),
-					tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {return tag.get('label')})
+					tags: _.map(this.model.get('tagLinks').pluck('tag'), function(tag) {
+						return {
+							'cid'   : tag == null ? null : tag.cid,
+							'label' : tag == null ? "BROKEN" : tag.get('label'),
+					}}),
 				};
 
 				var templateFn = _.template( $(this.template).html() );

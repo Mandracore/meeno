@@ -1,14 +1,80 @@
+<!-- ################### BROWSER NOTE TEMPLATE ###################-->
 <script type="text/template" id="browser-note-template" style="display: none;">
-	<span style="display: none;" class="checkbox icon-check-empty"></span>
-	<span class="edit title attribute"><%= note.title %></span>
-	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag %>]</span><% }); %></span>
+	<div class="open">
+		<button class="fa fa-folder"></button>
+		<button class="fa fa-folder-open"></button>
+	</div>
+	<div class="content">
+		<div class="label">
+			<div class="text"><%= note.title %></div>
+		</div>
+		<div class="tags hide-on-mobile">
+			<% _.each(tags, function(tag) { %>
+				<button><span class="red"></span><%= tag.label %></button>
+			<% }); %>
+		</div>
+		<div class="expand">
+			<button class="fa fa-angle-down"></button>
+		</div>
+	</div>
 </script>
+
+<!-- ################### BROWSER TAG TEMPLATE ###################-->
 <script type="text/template" id="browser-tag-template" style="display: none;">
-	<span style="display: none;" class="checkbox icon-check-empty"></span>
-	<span class="edit label attribute"><%= label %></span>
+	<div class="colorpicker">
+		<select name="colorpicker">
+			<option value="#7bd148">Green</option>
+			<option value="#5484ed">Bold blue</option>
+			<option value="#a4bdfc">Blue</option>
+			<option value="#46d6db">Turquoise</option>
+			<option value="#7ae7bf">Light green</option>
+			<option value="#fbd75b">Yellow</option>
+			<option value="#ffb878">Orange</option>
+			<option value="#ff887c">Red</option>
+			<option value="#dc2127">Bold red</option>
+			<option value="#dbadff">Purple</option>
+			<option value="#e1e1e1">Gray</option>
+		</select>
+		<button class="fa fa-eyedropper"></button>
+		<button class="fa fa-remove"></button>
+		<div class="wip">
+			<div class="fa fa-spinner fa-pulse"></div>
+		</div>
+	</div>
+	<div class="default">
+		<div class="table">
+			<div class="color">
+				<div class="globe"></div>
+			</div>
+			<div class="label"><%= label %></div>
+			<div class="form">
+				<div class="table">
+					<div class="input">
+						<input placeholder="Type here the name of the tag" value="<%= label %>">
+					</div>
+					<div class="controls">
+						<button class="save">SAVE</button>
+						<button class="cancel">CANCEL</button>
+					</div>
+				</div>
+			</div>
+			<div class="edit">
+				<button class="fa fa-pencil"></button>
+				<div class="wip">
+					<div class="fa fa-spinner fa-pulse"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="delete">
+		<button class="fa fa-trash"></button>
+		<button class="fa fa-trash-o"></button>
+	</div>
 </script>
+
+<!-- ################### BROWSER TASK TEMPLATE ###################-->
 <script type="text/template" id="browser-task-template" style="display: none;">
-	<span style="display: none;" class="checkbox icon-check-empty"></span>
+
 	<!-- //////////// Dates display, for debug purposes only
 	span class="attribute"><%= task.created_at %> **** created</span></br>
 	<span class="attribute"><%= task.todo_at %> **** todo</span></br>
@@ -28,41 +94,41 @@
 	var month  = month[due_at.getMonth()];
 	var urgent = due_at-now < 1000*3600*72 ? "urgent" : "";
 	var urgent = due_at-now < 1000*3600*24 ? "veryurgent" : urgent;
-
 	%>
-	<span class="due <%= urgent %>">
-		<input type="hidden" class="datepicker" name="datepicker" value=""/>
-		<span class="day"><%= day %></span>
-		<span class="month"><%= month %></span>
-	</span>
-	<span class="labelandtags">
-		<span class="label">
-			<span class="default">
-				<span class="attribute"><%= task.label %></span>
-				<button class="hidden edit">Edit</button>
-				<button class="hidden delete">Delete</button>
-			</span>
-			<span class="edition">
-				<input type="text" class="mousetrap" name="label" value="<%= task.label %>"/>
-				<button class="save">Update</button>
-				<button class="cancel">Cancel</button>
-			</span>
-		</span>
-		<span class="tags">
-			<span class="buttons"><% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %></span>
-			<span class="default">
-				<button class="hidden edit">Add tag</button>
-			</span>
-			<span class="edition">
-				<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create one"/><button class="save">Add</button><button class="cancel">Cancel</button>
-			</span>
-		</span>
-	</span>
+
+	<div class="check">
+		<button class="fa fa-check"></button>
+	</div>
+	<div class="content">
+		<div class="due <%= urgent %>">
+			<div class="day"><%= day %></div>
+			<div class="month"><%= month %></div>
+		</div>
+		<div class="label">
+			<div class="text"><%= task.label %></div>
+		</div>
+		<div class="tags hide-on-mobile">
+			<% _.each(tags, function(tag) { %>
+			<button data-cid="<%= tag.cid %>">
+				<span class="red"></span><%= tag.label %>
+			</button>
+			<% }); %>
+		</div>
+		<div class="expand">
+			<button class="fa fa-angle-down"></button>
+		</div>
+	</div>
 </script>
+
+<!-- ################### BROWSER FILTER TEMPLATE ###################-->
 <script type="text/template" id="browser-filter-template" style="display: none;"><%= label %></script>
+
+<!-- ################### EDITOR TAB TEMPLATE ###################-->
 <script type="text/template" id="editor-tab-template" style="display: none;">
 	<%= title %>
 </script>
+
+<!-- ################### EDITOR BODY TEMPLATE ###################-->
 <script type="text/template" id="editor-body-template" style="display: none;">
 	<div class="col1">
 		<ul class="actions-contextual">

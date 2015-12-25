@@ -40,7 +40,7 @@ define ([
 				'click .filter-editor button.save'                  : 'searchFilterSave1',
 				'click .filter-editor button.saveConfirm'           : 'searchFilterSave2',
 				'click .filter-editor button.delete'                : 'searchFilterDelete',
-				'click .filter-checked'                             : 'toggleTasks',
+				'click .filter-checked'                             : 'searchTasksToggle',
 				// Action-related events
 				'click .new-task button'                            : 'newTask',
 				'click .actions-contextual .delete'                 : 'actionDeleteToggle',
@@ -403,6 +403,7 @@ define ([
 				$input.val("").focus();
 			},
 
+			// =============================================================================
 			// Mass actions
 			// =============================================================================
 			// Series of methods that allow for selecting several objects and operating an 
@@ -514,24 +515,9 @@ define ([
 			// Filter tasks by state
 			// =============================================================================
 
-			/**
-			 * @method toggleTasks
-			 */
-			toggleTasks: function(event) {
-				var $button = $(event.target);
-				var step = $button.attr('data-step');
-
-				var sequence = {
-					0 : 1,
-					1 : 2,
-					2 : 0,
-				};
-
-				this.filters.taskFilter.set('completed', sequence[step]);
-				$button.hide().parent().find("[data-step="+sequence[step]+"]").show();
-			},
 
 
+			// =============================================================================
 			// Search business objets in database
 			// =============================================================================
 
@@ -548,6 +534,27 @@ define ([
 					$listObjects.find(".search-wrapper .search").focus();
 				}
 			},*/
+
+			/**
+			 * To toggle the kind of tasks displayed (done, todo, both)
+			 * 
+			 * @method searchTasksToggle
+			 */
+			searchTasksToggle: function(event) {
+				var $button = $(event.target);
+				var step = $button.attr('data-step');
+
+				var sequence = {
+					0 : 1,
+					1 : 2,
+					2 : 0,
+				};
+
+				this.filters.taskFilter.set('completed', sequence[step]);
+
+				$button.removeClass('active');
+				$button.siblings("[data-step="+sequence[step]+"]").addClass('active');
+			},
 
 			/**
 			 * Allows to remove from current filter the object that has been clicked on
@@ -760,15 +767,17 @@ define ([
 			 * @method renderCollection
 			 */
 			renderCollection: function (collName) {
+				console.log	('render collection ' + collName)
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
 
 				// First, emptying the DOM
-				var $list = this.$('.listobjects.'+collName+' .'+collName);
+				var $list = this.$('.tab.'+collName+' ul.objects');
 				if ($list.is(':ui-sortable')) {
 					$list.sortable( "destroy" );
 				}
-				$list.html('');
+				//$list.children(':not(.add)').remove();
+				//$list.html('');
 
 				// Second, killing children views of the right collection
 				_.each(this.children[collName], function (child, index) {
@@ -780,7 +789,7 @@ define ([
 				var newView = {};
 				var results = temp.coll[collName].search(this.filters[filterName]);
 
-				if (collName === "tasks") {
+				/*if (collName === "tasks") {
 					// Special rendering for tasks
 					var now = new Date ();
 					self.setupMilestones(now);
@@ -803,16 +812,17 @@ define ([
 						}
 					}
 
-				} else {
+				} else {*/
 					// Normal rendering for notes and tags
 					results.each(function (element) {
 						if (collName == "notes") { newView = new BrowserNoteView({ collName:"notes", model: element }); }
 						if (collName == "tags") { newView = new BrowserTagView({ collName:"tags", model: element }); }
+						if (collName == "tasks") { newView = new BrowserTaskView({ collName:"tasks", model: element }); }
 
 						self.children[collName].push (newView);
 						$list.append(newView.render().el);
 					}, this);
-				}
+				//}
 
 
 				if($list.hasClass('tasks')) {

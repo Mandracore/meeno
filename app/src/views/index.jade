@@ -71,8 +71,8 @@ block content
 					// Commands to navigate between the different tabs
 					ul#nav
 						li.browse.notes(data-type="notes") NOTES
-						li.browse.tasks.selected(data-type="tasks") TASKS
-						li.browse.tags(data-type="tags") TAGS
+						li.browse.tasks(data-type="tasks") TASKS
+						li.browse.tags.selected(data-type="tags") TAGS
 					ul#editors-tabs
 						li(data-cid="test")
 							span.close.fa.fa-remove
@@ -177,7 +177,7 @@ block content
 									.info Insert list (lll)
 			//div.browser.active
 			#browser.active
-				div.tab.tags
+				div.tab.tags.active
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -204,60 +204,40 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							li
+							li#colortest
 								//.colorpicker.wip
 								.colorpicker
+									select(name="colorpicker")
+										option(value="#7bd148") Green
+										option(value="#5484ed") Bold blue
+										option(value="#a4bdfc") Blue
+										option(value="#46d6db") Turquoise
+										option(value="#7ae7bf") Light green
+										option(value="#51b749") Bold green
+										option(value="#fbd75b") Yellow
+										option(value="#ffb878") Orange
+										option(value="#ff887c") Red
+										option(value="#dc2127") Bold red
+										option(value="#dbadff") Purple
+										option(value="#e1e1e1") Gray
 									button.fa.fa-eyedropper
+									button.fa.fa-remove
 									.wip
 										.fa.fa-spinner.fa-pulse
-								.label
-									.wrapper
+								.default
+									.table
 										.color
 											.globe
-										.input
-											input(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
+										.label Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.
+										.form
+											.table
+												.input
+													input(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
+												.controls
+													button.save SAVE
+													button.cancel CANCEL
 										//.rename.wip
-										.rename
-											button.fa.fa-pencil
-											.wip
-												.fa.fa-spinner.fa-pulse
-								.delete
-									button.fa.fa-trash
-									button.fa.fa-trash-o
-							li
-								//.colorpicker.wip
-								.colorpicker
-									button.fa.fa-eyedropper
-									.wip
-										.fa.fa-spinner.fa-pulse
-								.label
-									.wrapper
-										.color
-											.globe
-										.input
-											input(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
-										//.rename.wip
-										.rename
-											button.fa.fa-pencil
-											.wip
-												.fa.fa-spinner.fa-pulse
-								.delete
-									button.fa.fa-trash
-									button.fa.fa-trash-o
-							li
-								//.colorpicker.wip
-								.colorpicker
-									button.fa.fa-eyedropper
-									.wip
-										.fa.fa-spinner.fa-pulse
-								.label
-									.wrapper
-										.color
-											.globe
-										.input
-											input(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
-										//.rename.wip
-										.rename
+										.edit
 											button.fa.fa-pencil
 											.wip
 												.fa.fa-spinner.fa-pulse
@@ -291,7 +271,7 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							li
+							//li
 								.open
 									button.fa.fa-folder
 									button.fa.fa-folder-open
@@ -307,7 +287,7 @@ block content
 											| tag1
 									.expand
 										button.fa.fa-angle-down
-							li
+							//li
 								.open
 									button.fa.fa-folder
 									button.fa.fa-folder-open
@@ -323,7 +303,7 @@ block content
 											| tag1
 									.expand
 										button.fa.fa-angle-down
-							li.expanded
+							//li.expanded
 								.open
 									button.fa.fa-folder
 									button.fa.fa-folder-open
@@ -362,7 +342,7 @@ block content
 												button.link link tag
 										.reduce
 											button.fa.fa-angle-up
-				div.tab.tasks.active
+				div.tab.tasks
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -398,7 +378,7 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							li.task
+							//li.task
 								.check
 									button.fa.fa-check
 								.content
@@ -416,7 +396,7 @@ block content
 											| tag1
 									.expand
 										button.fa.fa-angle-down
-							li.task.active
+							//li.task.active
 								.check
 									button.fa.fa-check
 								.content
@@ -434,7 +414,7 @@ block content
 											| tag1
 									.expand
 										button.fa.fa-angle-down
-							li.task.expanded
+							//li.task.expanded
 								.check
 									button.fa.fa-check
 								.content
@@ -480,7 +460,7 @@ block content
 											.input(contenteditable="true") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 											.actions
 												button.edit EDIT
-							li.task
+							//li.task
 								.check
 									button.fa.fa-check
 								.content
@@ -498,7 +478,7 @@ block content
 											| tag1
 									.expand
 										button.fa.fa-angle-down
-							li.task
+							//li.task
 								.check
 									button.fa.fa-check
 								.content
@@ -516,123 +496,3 @@ block content
 											| tag1
 									.expand
 										button.fa.fa-angle-down
-
-
-
-		//div#tabs
-			div.tab.help
-				article
-					section
-						h1 Comment démarrer
-						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
-					section
-						h1 Rechercher du contenu
-						p Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet quos distinctio dolores deleniti perferendis eius aliquam omnis delectus sit adipisci rem sequi amet velit cupiditate explicabo molestiae harum numquam praesentium!
-			div.tab.browse.selected
-				div.listobjects.notes
-					div.col1
-						div.actions
-							div.new-note
-								.title NEW NOTE
-								.subtitle Type here the title of a new note you would like to create.
-								.form
-									input.mousetrap(type="text", placeholder="Name here your new note")
-									//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
-								button open a new note
-					div.col2
-						div.search-wrapper
-							div.super-input
-								span.objectButtons
-								input.mousetrap.autocomplete.search(type="text", autofocus, placeholder="search notes")
-							div.filter-editor
-								ul
-								input(style="display:none", type="text", placeholder="type a name for this new filter")
-								span
-									button.action.delete(style="display:none") Delete active filter
-									button.action.save(style="display:none") Save current filter
-									button.action.saveConfirm(style="display:none") Save
-						// Hereafeter will be displayed the objects
-						ul.objects.notes.draggable
-					div.col3
-				div.listobjects.tasks.selected
-					div.col1
-						div.jumper
-							button JUMP TO
-							span.fa.fa-angle-down
-						div.dropzone
-							.title dropzone
-							.subtitle Drag tasks and drop them below to postpone them
-							ul.zones
-								li.droppable.today Today
-								li.droppable.tomorrow Tomorrow
-								li.droppable.nextweek Next week
-								li.droppable.later Later
-						div.actions
-							div.new-task
-								.title NEW TASK
-								.subtitle Type here the content of a new task you would like to create. 
-								.form
-									input.mousetrap(type="text", placeholder="Describe here your new task")
-									//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
-								button save task
-					div.col2
-						div.search-wrapper
-							div.super-input
-								span.objectButtons
-								//span
-									input.mousetrap.autocomplete(type="text", placeholder="filter by objects", style="display:none")
-								input.mousetrap.autocomplete.search(type="text", autofocus, placeholder="search tasks")
-							div.filter-editor
-								span.checked
-									button.filter-checked(data-step="0") Todo
-									button.filter-checked(data-step="1", style="display:none") Done
-									button.filter-checked(data-step="2", style="display:none") Both
-								ul
-								input(style="display:none", type="text", placeholder="type a name for this new filter")
-								span
-									button.action.delete(style="display:none") Delete active filter
-									button.action.save(style="display:none") Save current filter
-									button.action.saveConfirm(style="display:none") Save
-						//div.actions-contextual-selection
-							button.select-all Tout sélectionner
-							button.unselect-all Tout déselectionner
-						//div.actions-contextual-trigger
-							button.delete Supprimer
-						//ul.actions-contextual
-							li.delete
-								span.action Delete tasks
-								span.cancel Cancel
-						// Hereafeter will be displayed the objects
-						ul.objects.tasks.draggable
-					div.col3
-						//div.saved-filters
-							.title saved filters
-							.subtitle Click on the star on the right end of the search bar to save the current filter and browse quicker next time
-				div.listobjects.tags
-					div.col1
-						div.actions
-							div.new-tag
-								.title NEW TAG
-								.subtitle Type here the label of a new tag you would like to create. 
-								.form
-									input.mousetrap(type="text", placeholder="Describe here your new task")
-									//- input class is mousetrap to ensure mousetrap can capture keyboard events in here
-								button save tag
-					div.col2
-						div.search-wrapper
-							div.super-input
-								span.objectButtons
-								input.mousetrap.autocomplete.search(type="text", autofocus, placeholder="search tags")
-							div.filter-editor
-								ul
-								input(style="display:none", type="text", placeholder="type a name for this new filter")
-								span
-									button.action.delete(style="display:none") Delete active filter
-									button.action.save(style="display:none") Save current filter
-									button.action.saveConfirm(style="display:none") Save
-						ul.objects.tags.draggable
-					div.col3
-		//div#editors.children-count-0
-			//div.editor note 1
-			//div.editor note 2
-			//div.editor note 3

@@ -69,7 +69,7 @@ define ([
 						// Initialize mandatory static tabs
 						new HelperView();
 						//new BrowserView();
-						new BrowserView({ el: $("#tabs .browse") })
+						new BrowserView({ el: $("#browser") })
 						// End data retrieval
 						temp.coll.tasks.fetch({silent: true});
 						temp.coll.notes.fetch({silent: true});
@@ -217,15 +217,12 @@ define ([
 				this.minBrowser();
 				var $button = $(event.target).closest('li');
 				var noteCid = $button.attr("data-cid");
-				console.log($button);
-				console.log('noteCid='+noteCid);
 				if (!($button.hasClass('selected'))) {
 					$button.siblings().removeClass('selected');
 					$button.addClass('selected');
 					this.$('#editors').removeClass('active');
 					this.$('#editors').addClass('active');
 					this.$('#editors').children().removeClass('active');
-					//$("#editors-tabs li[data-cid='test']") // pour retrouver les tabs, pas les éditeurs
 					this.$('#editors .editor[data-cid=' + noteCid + ']').addClass('active');
 				}
 			},

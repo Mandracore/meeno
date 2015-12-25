@@ -992,52 +992,59 @@ body
 						display table-cell
 						vertical-align middle
 						height 100%
-					.label
-						.wrapper
-							display table
-							width 100%
-							height 100%
-							& > div:not(.rename)
-								display table-cell
-								vertical-align middle
-								&.color
-									width 1em
-									.globe
-										margin 0 0 0 1em
-										background-color red
-										opacity .5
-										width .8em
-										height .8em
-										border 1px solid white
-										border-radius 1em
-								&.input
-									max-width 1em
-									input
-										text-overflow ellipsis
-										width calc(100% - 2em)
-										border none
-										background none
-										color white
-										padding 0 1em
-					.colorpicker, .delete, .rename
+					.table
+						display table
+						width 100%
+						height 100%
+						& > div
+							display table-cell
+							vertical-align middle
+					.default
+						.form, .edit
+							display none
+						.color
+							width 1em
+							.globe
+								margin 0 1em
+								background-color red
+								opacity .5
+								width .8em
+								height .8em
+								border 1px solid white
+								border-radius 1em
+						.label
+							max-width 1em
+							white-space nowrap
+							text-overflow ellipsis
+							overflow hidden
+							padding 0 1em 0 0
+							input
+								text-overflow ellipsis
+								width calc(100% - 2em)
+								border none
+								background none
+								color white
+								padding 0 1em
+							.edit
+								display  none
+					.colorpicker, .delete
 						display none
 						.wip
 							display none
-				&:not(.add):hover
+				&:not(.add):hover, &:not(.add).editing, &:not(.add).coloring
+					.default
+						& > .table
+							cursor pointer
+							.label
+								padding 0 1em
+						.color, .form
+							display none
+						.edit
+							width 3em
 					& > .colorpicker, & > .delete
-						width 3em
 						display table-cell
-					.label
-						.wrapper
-							& > div
-								&.color
-									display none
-								&:not(.color)
-									display table-cell
-									vertical-align middle
-									&.rename
-										width 3em
-					.colorpicker, .rename
+						width 3em
+					.colorpicker, .edit
 						display table-cell
 						.wip
 							display none
@@ -1050,6 +1057,11 @@ body
 								height calc(100% - 2em)
 								display block
 								padding 1em
+					.colorpicker
+						button.fa-eyedropper
+							display block
+						select, button.fa-remove
+							display none
 					& > div
 						border-right 1px solid cObjectBorder0
 						&:last-child
@@ -1078,7 +1090,94 @@ body
 						.fa-trash-o
 							display none
 						.fa-trash
-							display initial
+							display initial					
+				&:not(.add).coloring
+					.default
+						display none
+					.colorpicker
+						position relative
+						width inherit
+						white-space nowrap
+						padding 0 .5em 0 1em
+						select
+							display inline-block
+						button.fa-eyedropper
+							display none
+						button.fa-remove
+							opacity .7
+							display inline-block
+							width 2em
+							position absolute
+							width 3em
+							margin 0
+							padding 0
+							top 0
+							right 0
+							&:hover
+								opacity 1
+								cursor pointer
+						.simplecolorpicker
+							padding 0
+							span
+								opacity .6
+								margin 0 .4em 0 0
+								border-radius 1em
+								border 1px solid transparent
+								&:hover, &:active
+									margin 0 calc(.4em - 2px) 0 -2px
+									opacity 1
+									border 3px solid transparent
+				&:not(.add).editing
+					.default
+						.label
+							display none
+						.form
+							display table-cell
+							.table
+								.input
+									padding 0 1em
+									overflow hidden
+									text-overflow ellipsis
+									white-space nowrap
+									input
+										width 100%
+										padding 0
+										margin 0
+										white-space nowrap
+										overflow hidden
+										text-overflow ellipsis
+										border none
+										background none
+										color white
+								.controls
+									display table-cell
+									width 9em
+									text-align right
+									padding 0 .5em 0 0
+									button
+										display inline-block
+										width initial
+										padding 0.1em 0.8em
+										margin 0 .5em 0 0
+										font-size 0.7em
+										border 1px solid cButtonBorder0
+										border-radius 1em
+										background-color transparent
+										color cButtonColor0
+										text-transform uppercase
+										span
+											margin 0 0 0 .6em
+										&:hover
+											border 1px solid cButtonBorder1
+											background-color cButtonBg1
+											cursor pointer
+										&:active
+											border 1px solid cButtonBorder2
+											background-color cButtonBg2
+											color white
+								
+						.edit
+							display none
 
 
 
