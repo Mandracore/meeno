@@ -43,7 +43,8 @@ module.exports = function(mas, mongoose){
 		_creator  : String,
 		created_at: { type: Date },
 		updated_at: { type: Date },
-		label     : { type: String, required: true}
+		label     : { type: String, required: true},
+		color     : { type: String, required: false}
 	});
 	var msTask = new mongoose.Schema({
 		_creator   : String,

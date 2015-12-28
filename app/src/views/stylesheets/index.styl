@@ -741,10 +741,8 @@ body
 						padding 0 0 0 .5em
 						span
 							display inline-block
-							opacity .5
 							width .8em
 							height .8em
-							border 1px solid white
 							margin 0 .5em 0 0
 							border-radius 1em
 						&:hover
@@ -1007,10 +1005,9 @@ body
 							.globe
 								margin 0 1em
 								background-color red
-								opacity .5
+								opacity 1
 								width .8em
 								height .8em
-								border 1px solid white
 								border-radius 1em
 						.label
 							max-width 1em
@@ -1046,21 +1043,10 @@ body
 						width 3em
 					.colorpicker, .edit
 						display table-cell
-						.wip
-							display none
-						&.wip
-							button, .color
-								display none
-							.wip
-								display block
-								width calc(100% - 2em)
-								height calc(100% - 2em)
-								display block
-								padding 1em
 					.colorpicker
 						button.fa-eyedropper
 							display block
-						select, button.fa-remove
+						.colors, button.fa-remove
 							display none
 					& > div
 						border-right 1px solid cObjectBorder0
@@ -1099,8 +1085,6 @@ body
 						width inherit
 						white-space nowrap
 						padding 0 .5em 0 1em
-						select
-							display inline-block
 						button.fa-eyedropper
 							display none
 						button.fa-remove
@@ -1116,17 +1100,22 @@ body
 							&:hover
 								opacity 1
 								cursor pointer
-						.simplecolorpicker
+						.colors
 							padding 0
-							span
+							display inline-block
+							.color
+								display inline-block
+								width 1em
+								height 1em
 								opacity .6
-								margin 0 .4em 0 0
+								margin 0 .3em 0 0
 								border-radius 1em
-								border 1px solid transparent
+								border 2px solid rgba(0, 0, 0, .6)
 								&:hover, &:active
-									margin 0 calc(.4em - 2px) 0 -2px
+									cursor pointer
+									position relative
 									opacity 1
-									border 3px solid transparent
+									border 2px solid transparent
 				&:not(.add).editing
 					.default
 						.label

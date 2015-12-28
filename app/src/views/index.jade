@@ -205,29 +205,25 @@ block content
 										| cancel
 										span.fa.fa-remove
 							li#colortest
-								//.colorpicker.wip
 								.colorpicker
-									select(name="colorpicker")
-										option(value="#7bd148") Green
-										option(value="#5484ed") Bold blue
-										option(value="#a4bdfc") Blue
-										option(value="#46d6db") Turquoise
-										option(value="#7ae7bf") Light green
-										option(value="#51b749") Bold green
-										option(value="#fbd75b") Yellow
-										option(value="#ffb878") Orange
-										option(value="#ff887c") Red
-										option(value="#dc2127") Bold red
-										option(value="#dbadff") Purple
-										option(value="#e1e1e1") Gray
+									span.colors
+										span.color(title="Green", style="background-color: #7bd148;", data-color="#7bd148")
+										span.color(title="Bold blue", style="background-color: #5484ed;", data-color="#5484ed")
+										span.color(title="Blue", style="background-color: #a4bdfc;", data-color="#a4bdfc")
+										span.color(title="Turquoise", style="background-color: #46d6db;", data-color="#46d6db")
+										span.color(title="Light green", style="background-color: #7ae7bf;", data-color="#7ae7bf")
+										span.color(title="Yellow", style="background-color: #fbd75b;", data-color="#fbd75b")
+										span.color(title="Orange", style="background-color: #ffb878;", data-color="#ffb878")
+										span.color(title="Red", style="background-color: #ff887c;", data-color="#ff887c")
+										span.color(title="Bold red", style="background-color: #dc2127;", data-color="#dc2127")
+										span.color(title="Purple", style="background-color: #dbadff;", data-color="#dbadff")
+										span.color(title="Gray", style="background-color: #e1e1e1;", data-color="#e1e1e1")
 									button.fa.fa-eyedropper
 									button.fa.fa-remove
-									.wip
-										.fa.fa-spinner.fa-pulse
 								.default
 									.table
 										.color
-											.globe
+											.globe(style="background-color: #46d6db;")
 										.label Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.
 										.form
 											.table
@@ -239,8 +235,6 @@ block content
 										//.rename.wip
 										.edit
 											button.fa.fa-pencil
-											.wip
-												.fa.fa-spinner.fa-pulse
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o

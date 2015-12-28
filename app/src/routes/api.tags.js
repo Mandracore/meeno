@@ -25,6 +25,7 @@ module.exports = function(mas, securityProxy){
 			tag.created_at = req.body.created_at;
 			tag.updated_at = req.body.updated_at;
 			tag.label      = req.body.label;
+			tag.color      = req.body.color;
 
 			console.log(tag);
 
@@ -45,6 +46,7 @@ module.exports = function(mas, securityProxy){
 			created_at: req.body.created_at,
 			updated_at: req.body.updated_at,
 			label     : req.body.label,
+			color     : req.body.color,
 		});
 
 		console.log(req.body);

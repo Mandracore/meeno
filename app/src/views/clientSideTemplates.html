@@ -22,29 +22,26 @@
 <!-- ################### BROWSER TAG TEMPLATE ###################-->
 <script type="text/template" id="browser-tag-template" style="display: none;">
 	<div class="colorpicker">
-		<select name="colorpicker">
-			<option value="#7bd148">Green</option>
-			<option value="#5484ed">Bold blue</option>
-			<option value="#a4bdfc">Blue</option>
-			<option value="#46d6db">Turquoise</option>
-			<option value="#7ae7bf">Light green</option>
-			<option value="#fbd75b">Yellow</option>
-			<option value="#ffb878">Orange</option>
-			<option value="#ff887c">Red</option>
-			<option value="#dc2127">Bold red</option>
-			<option value="#dbadff">Purple</option>
-			<option value="#e1e1e1">Gray</option>
-		</select>
+		<span class="colors">
+			<span title="Green" style="background-color: #7bd148;" data-color="#7bd148" class="color"></span>
+			<span title="Bold blue" style="background-color: #5484ed;" data-color="#5484ed" class="color"></span>
+			<span title="Blue" style="background-color: #a4bdfc;" data-color="#a4bdfc" class="color"></span>
+			<span title="Turquoise" style="background-color: #46d6db;" data-color="#46d6db" class="color"></span>
+			<span title="Light green" style="background-color: #7ae7bf;" data-color="#7ae7bf" class="color"></span>
+			<span title="Yellow" style="background-color: #fbd75b;" data-color="#fbd75b" class="color"></span>
+			<span title="Orange" style="background-color: #ffb878;" data-color="#ffb878" class="color"></span>
+			<span title="Red" style="background-color: #ff887c;" data-color="#ff887c" class="color"></span>
+			<span title="Bold red" style="background-color: #dc2127;" data-color="#dc2127" class="color"></span>
+			<span title="Purple" style="background-color: #dbadff;" data-color="#dbadff" class="color"></span>
+			<span title="Gray" style="background-color: #e1e1e1;" data-color="#e1e1e1" class="color"></span>
+		</span>
 		<button class="fa fa-eyedropper"></button>
 		<button class="fa fa-remove"></button>
-		<div class="wip">
-			<div class="fa fa-spinner fa-pulse"></div>
-		</div>
 	</div>
 	<div class="default">
 		<div class="table">
 			<div class="color">
-				<div class="globe"></div>
+				<div class="globe" style="background-color: <%= color %>;"></div>
 			</div>
 			<div class="label"><%= label %></div>
 			<div class="form">
@@ -60,9 +57,6 @@
 			</div>
 			<div class="edit">
 				<button class="fa fa-pencil"></button>
-				<div class="wip">
-					<div class="fa fa-spinner fa-pulse"></div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -110,7 +104,7 @@
 		<div class="tags hide-on-mobile">
 			<% _.each(tags, function(tag) { %>
 			<button data-cid="<%= tag.cid %>">
-				<span class="red"></span><%= tag.label %>
+				<span style="background-color: <%= tag.color %>;"></span><%= tag.label %>
 			</button>
 			<% }); %>
 		</div>

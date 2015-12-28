@@ -5,7 +5,6 @@
 require.config ({
 	paths: {
 		jquery                : 'lib/jquery-1.8.3.min',
-		'simplecolorpicker'   : 'lib/jquery-simplecolorpicker/jquery.simplecolorpicker',
 		'jquery.ui'           : 'lib/jquery-ui-1.10.3.custom.min',
 		'jquery.dateFormat'   : 'lib/jquery.dateFormat-1.0',
 		underscore            : 'lib/underscore',
@@ -18,10 +17,6 @@ require.config ({
 	},
 	shim: {
 		'jquery.ui': {
-			deps: ['jquery'],
-			exports: '$'
-		},
-		'simplecolorpicker': {
 			deps: ['jquery'],
 			exports: '$'
 		},

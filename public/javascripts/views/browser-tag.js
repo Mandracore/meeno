@@ -1,11 +1,10 @@
 define ([
 		'jquery',
-		'simplecolorpicker',
 		'underscore',
 		'backbone',
 		'channel',
 		'views/browser-object',
-	], function ($, $, _, Backbone, channel, BrowserObjectView) {
+	], function ($, _, Backbone, channel, BrowserObjectView) {
 
 		/**
 		 * A backbone view to display one tag in the browser
@@ -23,6 +22,7 @@ define ([
 					'click .controls .cancel'           : 'editLabelCancel',
 					'click .controls .save'             : 'editLabelSave',
 					'click .colorpicker .fa-eyedropper' : 'editColor',
+					'click .colorpicker .color'         : 'editColorSelect',
 					'click .colorpicker .fa-remove'     : 'editColorCancel',
 					'click .delete'                     : 'delete'
 				});
@@ -49,8 +49,26 @@ define ([
 			editColor: function() {
 				if (!this.$el.hasClass("coloring")) {
 					this.$el.addClass("coloring");
-					this.$('select').simplecolorpicker();
 				}
+			},
+
+			/**
+			 * Update tag's color to match the one selected by the user
+			 *
+			 * @method editColorSelect
+			 */
+			editColorSelect: function(event) {
+				this.editColorCancel();
+				this.model.set({
+					color: $(event.target).attr('data-color'),
+				}).save({},{
+					error  : function() {
+						console.log('save error');
+					},
+					success  : function() {
+						console.log('save success');
+					}
+				});				
 			},
 
 			/**
@@ -60,8 +78,6 @@ define ([
 			 */
 			editColorCancel: function() {
 				this.$el.removeClass("coloring");
-				this.$('select').simplecolorpicker('destroy');
-				this.$('select').hide();
 			},
 
 			/**

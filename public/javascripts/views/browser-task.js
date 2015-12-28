@@ -61,6 +61,7 @@ define ([
 						return {
 							'cid'   : tag == null ? null : tag.cid,
 							'label' : tag == null ? "BROKEN" : tag.get('label'),
+							'color' : tag == null ? "#000000" : tag.get('color'),
 					}}),
 				};
 
