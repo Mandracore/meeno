@@ -66,7 +66,7 @@ define ([
 						console.log('save error');
 					},
 					success  : function() {
-						console.log('save success');
+						//console.log('save success');
 					}
 				});				
 			},

@@ -709,6 +709,8 @@ body
 					width 2em
 					opacity 0.3
 					text-align center
+					.sync
+						display none
 					.date:hover
 						cursor pointer
 					&.urgent
@@ -830,6 +832,12 @@ body
 							display table
 							width calc(100% - 1em)
 							border-bottom 1px solid cObjectBorder0
+							&:first-child
+								border-bottom none
+							&:nth-child(2)
+								border-top 1px solid cObjectBorder0
+							&:last-child
+								border-bottom none
 							& > div
 								display table-cell
 								vertical-align middle
@@ -866,27 +874,30 @@ body
 									background none
 									color white
 							.actions
-								width 6em
+								width 10em
 								text-align right
 						// Commons action buttons
-						.actions button
-							padding 0.1em 0.8em
-							font-size 0.7em
-							border 1px solid cButtonBorder0
-							border-radius 1em
-							background-color transparent
-							color cButtonColor0
-							text-transform uppercase
-							span
-								margin 0 0 0 .6em
-							&:hover
-								border 1px solid cButtonBorder1
-								background-color cButtonBg1
-								cursor pointer
-							&:active
-								border 1px solid cButtonBorder2
-								background-color cButtonBg2
-								color white
+						.actions
+							button
+								padding 0.1em 0.8em
+								font-size 0.7em
+								border 1px solid cButtonBorder0
+								border-radius 1em
+								background-color transparent
+								color cButtonColor0
+								text-transform uppercase
+								span
+									margin 0 0 0 .6em
+								&:hover
+									border 1px solid cButtonBorder1
+									background-color cButtonBg1
+									cursor pointer
+								&:active
+									border 1px solid cButtonBorder2
+									background-color cButtonBg2
+									color white
+							button:last-child
+								margin 0 0 0 .5em
 						button.tag
 							color white
 							background-color transparent
@@ -940,18 +951,14 @@ body
 							input
 								font-family Helvetica
 								font-size 1em
-							.label
-								padding 0px
-								margin 0px 1em
-								width calc(100% - 2em)
-								display table
-							.tags
+							.label, .tags
 								margin 0 1em
 								width calc(100% - 2em)
+							.label
+								padding 0
+								display table
 							.reduce
-								margin 0
 								width 100%
-								border-bottom none
 								button
 									width 100%
 									display block

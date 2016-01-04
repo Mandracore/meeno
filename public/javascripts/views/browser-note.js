@@ -19,9 +19,18 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
-					'click .edit'           : 'edit',
+					'click .label'  : 'expand',
+					'click .reduce' : 'reduce',
 				});
 			},
+
+			/*
+			 ADD NEW EVENT LISTENER TO TOGGLE FORM CONTROLS : WHENEVER THE INPUT DIFFERS FROM IDLE, DISPLAY CONTROLS
+
+
+
+
+			*/
 
 			initialize: function(options){
 				BrowserObjectView.prototype.initialize.apply(this, [options])
@@ -46,6 +55,54 @@ define ([
 				this.$el.html (templateFn (json));
 
 				return this;
+			},
+
+			/**
+			 * Expand the note to allow quick edition
+			 * 
+			 * @method expand
+			 */
+			expand: function(date) {
+				if(!this.$el.hasClass('expanded')) {
+					this.$el.addClass('expanded');
+					this.listenStart();
+				}
+			},
+
+			/**
+			 * Listen to the `input` event (any change, inc. copy/paste) of the inputs and do the right actions (display form controls or not)
+			 * 
+			 * @method listenStart
+			 */
+			listenStart: function(date) {
+				this.$('.label input').on('input', function() {
+					alert('label changed!');
+				});
+				this.$('.tags input').on('input', function() {
+					alert('tags changed!');
+				});
+			},
+
+			/**
+			 * Stop listening to the `input` event (any change, inc. copy/paste) of the inputs
+			 * 
+			 * @method listenStop
+			 */
+			listenStop: function(date) {
+				this.$('.label input').off('input');
+				this.$('.tags input').off('input');
+			},
+
+			/**
+			 * reduce the note
+			 * 
+			 * @method reduce
+			 */
+			reduce: function(date) {
+				if(this.$el.hasClass('expanded')) {
+					this.$el.removeClass('expanded');
+					this.listenStop();
+				}
 			},
 
 			edit: function() {

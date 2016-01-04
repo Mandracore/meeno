@@ -70,9 +70,9 @@ block content
 						span.fa.fa-bookmark
 					// Commands to navigate between the different tabs
 					ul#nav
-						li.browse.notes(data-type="notes") NOTES
+						li.browse.notes.selected(data-type="notes") NOTES
 						li.browse.tasks(data-type="tasks") TASKS
-						li.browse.tags.selected(data-type="tags") TAGS
+						li.browse.tags(data-type="tags") TAGS
 					ul#editors-tabs
 						li(data-cid="test")
 							span.close.fa.fa-remove
@@ -177,7 +177,7 @@ block content
 									.info Insert list (lll)
 			//div.browser.active
 			#browser.active
-				div.tab.tags.active
+				div.tab.tags
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -204,7 +204,7 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							li#colortest
+							//li#colortest
 								.colorpicker
 									span.colors
 										span.color(title="Green", style="background-color: #7bd148;", data-color="#7bd148")
@@ -238,7 +238,7 @@ block content
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
-				div.tab.notes
+				div.tab.notes.active
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -265,39 +265,7 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							//li
-								.open
-									button.fa.fa-folder
-									button.fa.fa-folder-open
-								.content
-									.label
-										.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									.tags.hide-on-mobile
-										button
-											span.red
-											| tag1
-										button
-											span.green
-											| tag1
-									.expand
-										button.fa.fa-angle-down
-							//li
-								.open
-									button.fa.fa-folder
-									button.fa.fa-folder-open
-								.content
-									.label
-										.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									.tags.hide-on-mobile
-										button
-											span.red
-											| tag1
-										button
-											span.green
-											| tag1
-									.expand
-										button.fa.fa-angle-down
-							//li.expanded
+							li.expanded
 								.open
 									button.fa.fa-folder
 									button.fa.fa-folder-open
@@ -314,14 +282,18 @@ block content
 									.expand
 										button.fa.fa-angle-down
 									.form
+										.reduce
+											button.fa.fa-angle-up
 										.label
 											.input
 												input(placeholder="Type here the name of the note", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 											.actions
-												button.edit EDIT
-												button.delete
-													| DELETE
-													span.fa.fa-trash
+												button.save
+													| SAVE
+													span.fa.fa-save
+												button.cancel
+													| CANCEL
+													span.fa.fa-remove
 										.tags
 											.buttons
 												button.tag
@@ -333,9 +305,12 @@ block content
 											.input
 												input(placeholder="Search here the tag to add or to create")
 											.actions
-												button.link link tag
-										.reduce
-											button.fa.fa-angle-up
+												button.link
+													| LINK
+													span.fa.fa-link
+												button.cancel
+													| CANCEL
+													span.fa.fa-remove
 				div.tab.tasks
 					div.search-box
 						div.looking-glass
@@ -372,24 +347,6 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							//li.task
-								.check
-									button.fa.fa-check
-								.content
-									.due
-										.day 28
-										.month JAN
-									.label
-										.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-									.tags.hide-on-mobile
-										button
-											span.red
-											| tag1
-										button
-											span.green
-											| tag1
-									.expand
-										button.fa.fa-angle-down
 							//li.task.active
 								.check
 									button.fa.fa-check

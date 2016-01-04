@@ -9,12 +9,31 @@
 			<div class="text"><%= note.title %></div>
 		</div>
 		<div class="tags hide-on-mobile">
-			<% _.each(tags, function(tag) { %>
-				<button><span class="red"></span><%= tag.label %></button>
-			<% }); %>
+			<% _.each(tags, function(tag) { %><button><span class="red"></span><%= tag.label %></button><% }); %>
 		</div>
 		<div class="expand">
 			<button class="fa fa-angle-down"></button>
+		</div>
+		<div class="form">
+			<div class="reduce">
+				<button class="fa fa-angle-up"></button>
+			</div>
+			<div class="label">
+				<div class="input"><input placeholder="Type here the name of the note" value="<%= note.title %>"></div>
+				<div class="actions">
+					<button class="save">SAVE<span class="fa fa-save"></span></button><button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
+				</div>
+			</div>
+			<div class="tags">
+				<div class="buttons">
+					<% _.each(tags, function(tag) { %><button class="tag"><span class="red"></span><%= tag.label %></button><% }); %>
+				</div>
+				<div class="input">
+					<input placeholder="Search here the tag to add or to create"></div>
+				<div class="actions">
+					<button class="link">LINK<span class="fa fa-link"></span></button><button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
+				</div>
+			</div>
 		</div>
 	</div>
 </script>
@@ -66,7 +85,9 @@
 	</div>
 </script>
 
+<!-- #############################################################-->
 <!-- ################### BROWSER TASK TEMPLATE ###################-->
+<!-- #############################################################-->
 <script type="text/template" id="browser-task-template" style="display: none;">
 
 	<!-- //////////// Dates display, for debug purposes only
@@ -95,8 +116,14 @@
 	</div>
 	<div class="content">
 		<div class="due <%= urgent %>">
-			<div class="day"><%= day %></div>
-			<div class="month"><%= month %></div>
+			<div class="date">
+				<div class="day"><%= day %></div>
+				<div class="month"><%= month %></div>
+			</div>
+			<div class="sync">
+				<div class="wip fa fa-spinner fa-pulse"></div>
+				<div class="done fa fa-thumbs-up"></div>
+			</div>
 		</div>
 		<div class="label">
 			<div class="text"><%= task.label %></div>
@@ -111,7 +138,43 @@
 		<div class="expand">
 			<button class="fa fa-angle-down"></button>
 		</div>
+		<div class="form">
+			<div class="label">
+				<div class="input" contenteditable="true"><%= task.label %></div>
+				<div class="actions">
+					<button class="edit">EDIT</button>
+					<button class="delete">DELETE<span class="fa fa-trash"></span></button>
+				</div>
+			</div>
+			<div class="tags">
+				<div class="buttons">
+					<% _.each(tags, function(tag) { %>
+					<button class="tag" data-cid="<%= tag.cid %>">
+						<span style="background-color: <%= tag.color %>;"></span><%= tag.label %>
+					</button>
+					<% }); %>
+				</div>
+				<div class="input">
+					<input placeholder="Search here the tag to add or to create"></div>
+				<div class="actions">
+					<button class="link">link tag</button>
+				</div>
+			</div>
+			<div class="description">
+				<div class="input" contenteditable="true">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+				</div>
+				<div class="actions">
+					<button class="edit">EDIT</button>
+				</div>
+			</div>
+		</div>
 	</div>
+
+
+
+
+
 </script>
 
 <!-- ################### BROWSER FILTER TEMPLATE ###################-->

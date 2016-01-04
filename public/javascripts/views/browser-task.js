@@ -22,6 +22,7 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
+					'click .content'              : 'expand',
 					'click .label .edit'          : 'editLabel',
 					'click .label .cancel'        : 'editLabelCancel',
 					'click .label .save'          : 'editLabelSave',
@@ -40,7 +41,11 @@ define ([
 			 */
 			initialize: function() {
 				// To catch keyboard events and dispatch them to a proxy
-				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
+				// this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
+				// V2 / On n'écoute les évenèements clavier que si la tache est déjà dépliée.
+				// Cela permet de limiter le nombre d'event listeners
+
+
 			},
 
 			/**
@@ -94,6 +99,17 @@ define ([
 			},
 
 			/**
+			 * Expand to task to allow edition
+			 * 
+			 * @method expand
+			 */
+			expand: function(date) {
+				if(!this.$el.hasClass('expanded')) {
+					this.$el.addClass('expanded');
+				}
+			},
+
+			/**
 			 * Since the datepicker is not attached to a visible input, we need a function to display it.
 			 * The following method will display the date picker when clicking on the due date of the task
 			 * 
@@ -111,6 +127,7 @@ define ([
 			dueDateUpdate: function(date) {
 				this.model.set('due_at',new Date (date).toISOString()).save();
 			},
+
 
 
 //================================================
