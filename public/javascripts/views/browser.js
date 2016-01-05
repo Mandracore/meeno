@@ -76,7 +76,8 @@ define ([
 				// Event listeners
 				//------------------------------------------------
 
-				this.listenTo(temp.coll.notes, 'sync add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+				//this.listenTo(temp.coll.notes, 'sync add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+				this.listenTo(temp.coll.notes, 'sync add remove', function () {this.renderCollection("notes");});
 				this.listenTo(temp.coll.tags, 'sync add remove change:label change:color', function () {
 					this.renderCollection("notes");
 					this.renderCollection("tasks");

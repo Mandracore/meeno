@@ -9,7 +9,7 @@
 			<div class="text"><%= note.title %></div>
 		</div>
 		<div class="tags hide-on-mobile">
-			<% _.each(tags, function(tag) { %><button><span class="red"></span><%= tag.label %></button><% }); %>
+			<% _.each(tags, function(tag) { %><button><span style="background-color: <%= tag.color %>;"></span><%= tag.label %></button><% }); %>
 		</div>
 		<div class="expand">
 			<button class="fa fa-angle-down"></button>
@@ -19,17 +19,17 @@
 				<button class="fa fa-angle-up"></button>
 			</div>
 			<div class="label">
-				<div class="input"><input placeholder="Type here the name of the note" value="<%= note.title %>"></div>
+				<div class="input"><input class="mousetrap" tabindex=1 placeholder="Type here the name of the note" value="<%= note.title %>"></div>
 				<div class="actions">
 					<button class="save">SAVE<span class="fa fa-save"></span></button><button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
 				</div>
 			</div>
 			<div class="tags">
 				<div class="buttons">
-					<% _.each(tags, function(tag) { %><button class="tag"><span class="red"></span><%= tag.label %></button><% }); %>
+					<% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>" class="tag"><span style="background-color: <%= tag.color %>;"></span><%= tag.label %></button><% }); %>
 				</div>
 				<div class="input">
-					<input placeholder="Search here the tag to add or to create"></div>
+					<input class="autocomplete mousetrap" tabindex=1 placeholder="Search here the tag to add or to create"></div>
 				<div class="actions">
 					<button class="link">LINK<span class="fa fa-link"></span></button><button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
 				</div>

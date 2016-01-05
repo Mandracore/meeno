@@ -286,7 +286,7 @@ block content
 											button.fa.fa-angle-up
 										.label
 											.input
-												input(placeholder="Type here the name of the note", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+												input.mousetrap(tabindex=1, placeholder="Type here the name of the note", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 											.actions
 												button.save
 													| SAVE
@@ -296,14 +296,14 @@ block content
 													span.fa.fa-remove
 										.tags
 											.buttons
-												button.tag
+												button.tag(data-cid="cid")
 													span.red
 													| tag1
 												button.tag
 													span.green
 													| tag1
 											.input
-												input(placeholder="Search here the tag to add or to create")
+												input.autocomplete.mousetrap(tabindex=1, placeholder="Search here the tag to add or to create")
 											.actions
 												button.link
 													| LINK

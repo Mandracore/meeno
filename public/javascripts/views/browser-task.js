@@ -31,7 +31,7 @@ define ([
 					'click .tags .save'           : 'editTagsSave',
 					'click .label .attribute'     : 'check',
 					'click .delete'               : 'delete',
-					'click .tags .buttons button' : 'editTagsRemove',
+					// 'click .tags .buttons button' : 'editTagsRemove',
 					'click .due'                  : 'dueDateShowPicker',
 				});
 			},
@@ -226,12 +226,16 @@ define ([
 			},
 
 			/**
+
+			MOVED TO BROWSER-OBJECT
+
+
 			 * Should initialize the task's tag autocomplete input and allow for linking existing tags
 			 * to the task.
 			 * To be called only when the user wants to add a new tag, and closed afterwards
 			 * 
 			 * @method editTagsAutocompleteInit
-			 */
+			 
 			editTagsAutocompleteInit: function() {
 				var self = this;
 				this.$(".autocomplete").autocomplete({
@@ -269,10 +273,13 @@ define ([
 			 * 2. The user gives up its tag modification
 			 * 
 			 * @method editTagsAutocompleteKill
-			 */
+			 
 			editTagsAutocompleteKill: function() {
 				this.$(".autocomplete").autocomplete("destroy");
 			},
+
+
+			*/
 
 			/**
 			 * Cancelling tags edition
@@ -295,7 +302,7 @@ define ([
 			 * 2. The tag keyed in does not exist (create and link)
 			 * 
 			 * @method editTagsReturnKey
-			 */
+			 
 			editTagsReturnKey: function() {
 				var self = this;
 				if (self.$("input[name='newTag']").is(":focus") && self.$("input[name='newTag']").val().length > 1) {
@@ -339,7 +346,7 @@ define ([
 			 * 2. The tag keyed in does not exist (create and link)
 			 * 
 			 * @method editTagsReturnKey
-			 */
+			 
 			editTagsSave: function() {
 				var self = this;
 				if (self.$("input[name='newTag']").val().length > 1) {
@@ -379,7 +386,7 @@ define ([
 			 * Should remove the clicked tag from the task
 			 * 
 			 * @method editTagsRemove
-			 */
+
 			editTagsRemove: function(event) {
 				var tag = temp.coll.tags.get($(event.target).attr('data-cid'));
 				var tagLink = this.model.get('tagLinks').find(
@@ -389,7 +396,7 @@ define ([
 
 				this.model.save();
 				this.render();
-			},
+			},*/
 
 			//============================================================
 			// COMPLETION EDITION
