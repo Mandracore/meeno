@@ -76,7 +76,7 @@ define ([
 				// Event listeners
 				//------------------------------------------------
 
-				//this.listenTo(temp.coll.notes, 'sync add remove change:title add:tagLinks', function () {this.renderCollection("notes");});
+				// 'Sync' event is triggered by Backbone each time .save() is called
 				this.listenTo(temp.coll.notes, 'sync add remove', function () {this.renderCollection("notes");});
 				this.listenTo(temp.coll.tags, 'sync add remove change:label change:color', function () {
 					this.renderCollection("notes");
@@ -108,9 +108,9 @@ define ([
 					this.searchRenderFilterSuper("tagFilter");});
 
 				// Keyboard events listeners
-				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
-				this.listenTo(channel, 'keyboard:backspace', function () {this.kbEventProxy("backspace");});
-				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
+				// this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
+				// this.listenTo(channel, 'keyboard:backspace', function () {this.kbEventProxy("backspace");});
+				// this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 
 				// Deactivated for testing purposes only
 				this.searchFiltersCtrlUpd("note");

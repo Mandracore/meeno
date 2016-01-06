@@ -71,7 +71,7 @@ define ([
 					select: function(event, ui) {
 						var selection = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
 						self.model.get('tagLinks').add({ tag: selection }); // adding the tag to the model
-						self.editTagsAutocompleteKill();
+						//self.editTagsAutocompleteKill();
 						// Re-rendering the task but re-opening the editTag form to go quicker if the user wants to go on
 						self.model.save();
 						self.render();
@@ -88,6 +88,7 @@ define ([
 			 */
 			editTagsAutocompleteKill: function() {
 				this.$(".autocomplete").autocomplete("destroy");
+				console.log ('Kill AC')
 			},
 
 			/**
@@ -99,7 +100,7 @@ define ([
 			 */
 			editTagsSubmit: function() {
 				var self   = this;
-				var $input = $(".form .tags input");
+				var $input = this.$(".form .tags input");
 				if ($input.val().length > 1) {
 				// Check that the value set by the user corresponds to a new tag
 				// get all tags having exactly the label value = input value
@@ -116,7 +117,6 @@ define ([
 						// 2. link the new tag
 								self.model.get('tagLinks').add({ tag: newTag });
 								self.model.save();
-								self.editTagsAutocompleteKill();
 								self.render();
 								return false;
 							},

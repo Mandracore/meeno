@@ -21,8 +21,10 @@ define ([
 				return _.extend({},BrowserObjectView.prototype.events,{
 					'click .label'         : 'expand',
 					'click .reduce'        : 'reduce',
-					'click .tags .cancel'  : 'editTagsCancel',
 					'click .label .cancel' : 'editLabelCancel',
+					'click .tags .cancel'  : 'editTagsCancel',
+					'click .label .save'   : 'editLabelSubmit',
+					'click .tags .link'    : 'editTagsSubmit',
 				});
 			},
 
@@ -110,6 +112,7 @@ define ([
 			listenStop: function() {
 				this.stopListening(channel, 'keyboard:enter');
 				this.stopListening(channel, 'keyboard:escape');
+				this.editTagsAutocompleteKill();
 				this.$('.label input').off('input');
 				this.$('.tags input').off('input');
 			},
@@ -131,9 +134,7 @@ define ([
 						return;
 					}
 					if (event == "enter") {
-						this.model.set('title', this.$('.form .label input').val());
-						this.model.save();
-						this.render();
+						this.editLabelSubmit();
 						return;
 					}
 				}
@@ -153,6 +154,17 @@ define ([
 						this.editTagsSubmit ();
 					}
 				}
+			},
+
+			/**
+			 * Empty the label's input
+			 * 
+			 * @method editLabelSubmit
+			 */
+			editLabelSubmit: function() {
+				this.model.set('title', this.$('.form .label input').val());
+				this.model.save();
+				this.render();
 			},
 
 			/**
