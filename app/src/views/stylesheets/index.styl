@@ -1021,19 +1021,12 @@ body
 								width .8em
 								height .8em
 								border-radius 1em
-						.label
+						& > div > .label
 							max-width 1em
 							white-space nowrap
 							text-overflow ellipsis
 							overflow hidden
 							padding 0 1em 0 0
-							input
-								text-overflow ellipsis
-								width calc(100% - 2em)
-								border none
-								background none
-								color white
-								padding 0 1em
 							.edit
 								display  none
 					.colorpicker, .delete
@@ -1042,9 +1035,9 @@ body
 							display none
 				&:not(.add):hover, &:not(.add).editing, &:not(.add).coloring
 					.default
-						& > .table
+						& > div
 							cursor pointer
-							.label
+							& > .label
 								padding 0 1em
 						.color, .form
 							display none
@@ -1130,7 +1123,7 @@ body
 									border 2px solid transparent
 				&:not(.add).editing
 					.default
-						.label
+						& > div > .label
 							display none
 						.form
 							display table-cell
@@ -1150,7 +1143,7 @@ body
 										border none
 										background none
 										color white
-								.controls
+								.actions
 									display table-cell
 									width 9em
 									text-align right

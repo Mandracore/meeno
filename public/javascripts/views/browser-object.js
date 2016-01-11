@@ -29,11 +29,119 @@ define ([
 			},
 
 			initialize: function(options) {
-				this.options = options;
 				// this.listenTo(channel, 'browser:actions:toggle-checkboxes:'+this.options.collName, function () { this.actionToggleCheckbox() });
 				// this.listenTo(channel, 'browser:actions:delete:'+this.options.collName, function () { this.actionDelete() });
 				// this.listenTo(channel, 'browser:actions:select:all:'+this.options.collName, function () { this.actionSelectMe() });
 				// this.listenTo(channel, 'browser:actions:select:none:'+this.options.collName, function () { this.actionUnSelectMe() });
+			},
+
+
+			//============================================================
+			// CORE ATTRIBUTES EDITION (commons btw. notes, tags and tasks)
+			//============================================================
+
+			/**
+			 * Initialize event listeners
+			 * In order to minimize the number of listeners, each browser object view only starts listening
+			 * when they are maximized.
+			 * Listen to the `input` event (any change, inc. copy/paste) of the inputs
+			 * and do the right actions (display form controls or not)
+			 * 
+			 * @method listenStart
+			 */
+			listenStart: function() {
+				this.className = this.$el.closest('.tab').hasClass('notes') ? "note" : (this.$el.closest('.tab').hasClass('tasks') ? "task" : "tag");
+
+				var self = this;
+
+				// Listen to the keyboard events
+				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
+				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
+
+				//#### Commons for notes, tags and tasks
+				// Listen to the `input` event (any change, inc. copy/paste) of the inputs
+				// and do the right actions (display form controls or not)
+				this.$('.form .label input').on('input', function() {
+					var backup = (this.className == "note") ? self.model.get('title') : self.model.get('label');
+					if($(this).val() != backup) {
+						$(this).closest('.label').addClass('updated');
+					} else {
+						$(this).closest('.label').removeClass('updated');
+					}
+				});
+
+				//#### For notes and tasks only
+				if(this.className == "note" || this.className == "task") {
+					// Init the autocomplete
+					this.editTagsAutocompleteInit();
+					// Listen to the `input` event (any change, inc. copy/paste) of the inputs
+					// and do the right actions (display form controls or not)
+					this.$('.tags input').on('input', function() {
+						if($(this).val() != "") {
+							$(this).closest('.tags').addClass('updated');
+						} else {
+							$(this).closest('.tags').removeClass('updated');
+						}
+					});
+				}
+
+			},
+
+			/**
+			 * Destroy event listeners
+			 * 
+			 * @method listenStop
+			 */
+			listenStop: function() {
+				this.stopListening(channel, 'keyboard:enter');
+				this.stopListening(channel, 'keyboard:escape');
+				if(this.className == "note" || this.className == "task") {
+					this.editTagsAutocompleteKill();
+				}
+				this.$('.label input').off('input');
+				this.$('.tags input').off('input'); // Will not work for tags (but it's OK)
+			},
+
+			/**
+			 * A proxy meant to interpret all keyboard events received and to dispatch them seamlessly
+			 * 
+			 * @method kbEventProxy
+			 */
+			kbEventProxy: function(event) {
+				//#### Commons for notes, tags and tasks
+				var $inputEditLabel = this.$(".form .label input");
+				// 1. The user is updating the label
+				if ($inputEditLabel.is(":focus")) {
+					if (event == "escape") {
+						this.$('.form .label input').blur(); // Mandatory to blur the input or it triggers infinite loop with the input event
+						this.editLabelCancel();
+						return;
+					}
+					if (event == "enter") {
+						this.editLabelSubmit();
+						return;
+					}
+				}
+
+				//#### For notes and tasks only
+				if(this.className == "note" || this.className == "task") {
+					var $inputEditTags  = this.$(".form .tags input");
+					// 2. The user is updating the tags
+					if ($inputEditTags.is(":focus")) {
+						// 2.1 The user wants to rollback
+						if (event == "escape") {
+							this.$('.form .tags input').blur();
+							this.editTagsCancel(); // Mandatory to blur the input or it triggers infinite loop with the input event
+							return;
+						}
+						// 2.2 The user wants to link a tag that doesn't exist to the current task
+						// Will handle what happens if the user keyes in ENTER in the input, which bypasses the autocomplete, 
+						// whether the autocomplete provided a match or not
+						if (event == "enter") {
+							this.editTagsSubmit ();
+						}
+					}
+				}
 			},
 
 
@@ -74,7 +182,6 @@ define ([
 						//self.editTagsAutocompleteKill();
 						// Re-rendering the task but re-opening the editTag form to go quicker if the user wants to go on
 						self.model.save();
-						self.render();
 					}
 				});
 			},
@@ -88,7 +195,6 @@ define ([
 			 */
 			editTagsAutocompleteKill: function() {
 				this.$(".autocomplete").autocomplete("destroy");
-				console.log ('Kill AC')
 			},
 
 			/**
@@ -117,7 +223,6 @@ define ([
 						// 2. link the new tag
 								self.model.get('tagLinks').add({ tag: newTag });
 								self.model.save();
-								self.render();
 								return false;
 							},
 						});
@@ -126,7 +231,6 @@ define ([
 						// The user wants to link an existing tag
 						self.model.get('tagLinks').add({ tag: selection[0] });
 						self.model.save();
-						self.render();
 					}
 				}
 				return false;
@@ -145,7 +249,6 @@ define ([
 				this.model.get('tagLinks').remove(tagLink);
 
 				this.model.save();
-				this.render();
 			},
 
 

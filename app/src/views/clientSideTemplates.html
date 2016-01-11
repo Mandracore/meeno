@@ -58,17 +58,17 @@
 		<button class="fa fa-remove"></button>
 	</div>
 	<div class="default">
-		<div class="table">
+		<div class="table expand">
 			<div class="color">
 				<div class="globe" style="background-color: <%= color %>;"></div>
 			</div>
 			<div class="label"><%= label %></div>
 			<div class="form">
-				<div class="table">
+				<div class="table label">
 					<div class="input">
-						<input placeholder="Type here the name of the tag" value="<%= label %>">
+						<input class="mousetrap" placeholder="Type here the name of the tag" value="<%= label %>">
 					</div>
-					<div class="controls">
+					<div class="actions">
 						<button class="save">SAVE</button>
 						<button class="cancel">CANCEL</button>
 					</div>
@@ -155,7 +155,7 @@
 					<% }); %>
 				</div>
 				<div class="input">
-					<input placeholder="Search here the tag to add or to create"></div>
+					<input  class="mousetrap" placeholder="Search here the tag to add or to create"></div>
 				<div class="actions">
 					<button class="link">link tag</button>
 				</div>

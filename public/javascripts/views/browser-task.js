@@ -40,12 +40,6 @@ define ([
 			 * @method initialize
 			 */
 			initialize: function() {
-				// To catch keyboard events and dispatch them to a proxy
-				// this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
-				// V2 / On n'écoute les évenèements clavier que si la tache est déjà dépliée.
-				// Cela permet de limiter le nombre d'event listeners
-
-
 			},
 
 			/**

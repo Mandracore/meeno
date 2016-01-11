@@ -614,3 +614,8 @@ Voir comment protéger les tags et les tasks du reformatage... => contenteditabl
 window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName pour détecter le type de node (h1, h2,...)
 
 On pourra utiliser pasteHTMLAtCaret mais il faut avant tester qu'on n'est pas dans un tag/task 
+
+
+
+09/01====================================================
+Bug à résoudre sur browser-tag avec .actions/.controls qui ne s'affiche plus

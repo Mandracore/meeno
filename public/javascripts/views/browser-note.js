@@ -29,10 +29,7 @@ define ([
 			},
 
 			initialize: function(options){
-				BrowserObjectView.prototype.initialize.apply(this, [options])
-				this.options = options;
 				this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
-				this.listenTo(this.model, 'change:title change:position', this.render);
 			},
 
 			render: function () {
@@ -68,95 +65,6 @@ define ([
 			},
 
 			/**
-			 * Initialize event listeners
-			 * In order to minimize the number of listeners, each browser object view only starts listening
-			 * when they are maximized.
-			 * Listen to the `input` event (any change, inc. copy/paste) of the inputs
-			 * and do the right actions (display form controls or not)
-			 * 
-			 * @method listenStart
-			 */
-			listenStart: function() {
-				var self = this;
-
-				// Listen to the keyboard events
-				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
-				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
-
-				// Init the autocomplete
-				this.editTagsAutocompleteInit();
-
-				// Listen to the `input` event (any change, inc. copy/paste) of the inputs
-				// and do the right actions (display form controls or not)
-				this.$('.label input').on('input', function() {
-					if(self.model.get('title') != $(this).val()) {
-						$(this).closest('.label').addClass('updated');
-					} else {
-						$(this).closest('.label').removeClass('updated');
-					}
-				});
-				this.$('.tags input').on('input', function() {
-					if($(this).val() != "") {
-						$(this).closest('.tags').addClass('updated');
-					} else {
-						$(this).closest('.tags').removeClass('updated');
-					}
-				});
-			},
-
-			/**
-			 * Destroy event listeners
-			 * 
-			 * @method listenStop
-			 */
-			listenStop: function() {
-				this.stopListening(channel, 'keyboard:enter');
-				this.stopListening(channel, 'keyboard:escape');
-				this.editTagsAutocompleteKill();
-				this.$('.label input').off('input');
-				this.$('.tags input').off('input');
-			},
-
-			/**
-			 * A proxy meant to interpret all keyboard events received and to dispatch them seamlessly
-			 * 
-			 * @method kbEventProxy
-			 */
-			kbEventProxy: function(event) {
-				var $inputEditLabel = this.$(".form .label input");
-				var $inputEditTags  = this.$(".form .tags input");
-
-				// 1. The user is updating the label
-				if ($inputEditLabel.is(":focus")) {
-					if (event == "escape") {
-						this.$('.form .label input').blur(); // Mandatory to blur the input or it triggers infinite loop with the input event
-						this.editLabelCancel();
-						return;
-					}
-					if (event == "enter") {
-						this.editLabelSubmit();
-						return;
-					}
-				}
-
-				// 2. The user is updating the tags
-				if ($inputEditTags.is(":focus")) {
-					// 2.1 The user wants to rollback
-					if (event == "escape") {
-						this.$('.form .tags input').blur();
-						this.editTagsCancel(); // Mandatory to blur the input or it triggers infinite loop with the input event
-						return;
-					}
-					// 2.2 The user wants to link a tag that doesn't exist to the current task
-					// Will handle what happens if the user keyes in ENTER in the input, which bypasses the autocomplete, 
-					// whether the autocomplete provided a match or not
-					if (event == "enter") {
-						this.editTagsSubmit ();
-					}
-				}
-			},
-
-			/**
 			 * Empty the label's input
 			 * 
 			 * @method editLabelSubmit
@@ -164,7 +72,7 @@ define ([
 			editLabelSubmit: function() {
 				this.model.set('title', this.$('.form .label input').val());
 				this.model.save();
-				this.render();
+				//this.render();
 			},
 
 			/**

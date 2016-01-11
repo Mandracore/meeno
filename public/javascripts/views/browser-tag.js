@@ -18,14 +18,17 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
-					'click .edit'                       : 'editLabel',
-					'click .controls .cancel'           : 'editLabelCancel',
-					'click .controls .save'             : 'editLabelSave',
+					'click .expand'               : 'editLabel',
+					'click .form .actions .cancel'      : 'editLabelCancel',
+					'click .form .actions .save'        : 'editLabelSubmit',
 					'click .colorpicker .fa-eyedropper' : 'editColor',
 					'click .colorpicker .color'         : 'editColorSelect',
 					'click .colorpicker .fa-remove'     : 'editColorCancel',
 					'click .delete'                     : 'delete'
 				});
+			},
+
+			initialize: function(options){
 			},
 
 			/**
@@ -88,6 +91,7 @@ define ([
 			editLabel: function() {
 				this.$el.addClass("editing");
 				this.$(".input input").focus().select();
+				this.listenStart();
 			},
 
 			/**
@@ -97,16 +101,18 @@ define ([
 			 */
 			editLabelCancel: function() {
 				this.$el.removeClass('editing')
+				this.$('.form .label input').val(this.model.get('label'));
+				this.listenStop();
 			},
 
 			/**
 			 * Sets the view's model label to the input (`span.label`) value and saves the model
 			 *
-			 * @method editLabelSave
+			 * @method editLabelSubmit
 			 */
-			editLabelSave: function() {
+			editLabelSubmit: function() {
 				this.model.set({
-					label  :this.$(".input input").val()
+					label  :this.$(".form .label input").val(),
 				}).save({},{
 					error  : function() {
 						console.log('save error');
