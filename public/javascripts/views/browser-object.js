@@ -76,11 +76,25 @@ define ([
 					this.editTagsAutocompleteInit();
 					// Listen to the `input` event (any change, inc. copy/paste) of the inputs
 					// and do the right actions (display form controls or not)
-					this.$('.tags input').on('input', function() {
+					this.$('.form .tags input').on('input', function() {
 						if($(this).val() != "") {
 							$(this).closest('.tags').addClass('updated');
 						} else {
 							$(this).closest('.tags').removeClass('updated');
+						}
+					});
+				}
+
+				//#### For tasks only
+				if(this.className == "task") {
+					// Listen to the `input` event (any change, inc. copy/paste) of the inputs
+					// and do the right actions (display form controls or not)
+					this.$('.description .input').on('input', function() {
+						var backup = self.model.get('description');
+						if($(this).html() != backup) {
+							$(this).closest('.description').addClass('updated');
+						} else {
+							$(this).closest('.description').removeClass('updated');
 						}
 					});
 				}
@@ -109,8 +123,8 @@ define ([
 			 */
 			kbEventProxy: function(event) {
 				//#### Commons for notes, tags and tasks
-				var $inputEditLabel = this.$(".form .label input");
 				// 1. The user is updating the label
+				var $inputEditLabel = this.$(".form .label input");
 				if ($inputEditLabel.is(":focus")) {
 					if (event == "escape") {
 						this.$('.form .label input').blur(); // Mandatory to blur the input or it triggers infinite loop with the input event
@@ -124,13 +138,13 @@ define ([
 				}
 
 				//#### For notes and tasks only
+				// 2. The user is updating the tags of the object
 				if(this.className == "note" || this.className == "task") {
 					var $inputEditTags  = this.$(".form .tags input");
-					// 2. The user is updating the tags
 					if ($inputEditTags.is(":focus")) {
 						// 2.1 The user wants to rollback
 						if (event == "escape") {
-							this.$('.form .tags input').blur();
+							$inputEditTags.blur();
 							this.editTagsCancel(); // Mandatory to blur the input or it triggers infinite loop with the input event
 							return;
 						}
@@ -139,6 +153,27 @@ define ([
 						// whether the autocomplete provided a match or not
 						if (event == "enter") {
 							this.editTagsSubmit ();
+						}
+					}
+				}
+
+				//#### For tasks only
+				// 3. The user is updating the description of the task
+				if(this.className == "task") {
+					var $inputEditDesc  = this.$(".form .description .input");
+					if ($inputEditDesc.is(":focus")) {
+						// 2.1 The user wants to rollback
+						if (event == "escape") {
+							console.log('escape desc')
+							$inputEditDesc.blur();
+							this.editDescCancel(); // Mandatory to blur the input or it triggers infinite loop with the input event
+							return;
+						}
+						// 2.2 The user wants to link a tag that doesn't exist to the current task
+						// Will handle what happens if the user keyes in ENTER in the input, which bypasses the autocomplete, 
+						// whether the autocomplete provided a match or not
+						if (event == "enter") {
+							this.editDescSubmit ();
 						}
 					}
 				}

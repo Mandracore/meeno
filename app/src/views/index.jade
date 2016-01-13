@@ -70,8 +70,8 @@ block content
 						span.fa.fa-bookmark
 					// Commands to navigate between the different tabs
 					ul#nav
-						li.browse.notes.selected(data-type="notes") NOTES
-						li.browse.tasks(data-type="tasks") TASKS
+						li.browse.notes(data-type="notes") NOTES
+						li.browse.tasks.selected(data-type="tasks") TASKS
 						li.browse.tags(data-type="tags") TAGS
 					ul#editors-tabs
 						li(data-cid="test")
@@ -238,7 +238,7 @@ block content
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
-				div.tab.notes.active
+				div.tab.notes
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -311,7 +311,7 @@ block content
 												button.cancel
 													| CANCEL
 													span.fa.fa-remove
-				div.tab.tasks
+				div.tab.tasks.active
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -347,25 +347,7 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							//li.task.active
-								.check
-									button.fa.fa-check
-								.content
-									.due
-										.day 28
-										.month JAN
-									.label
-										.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-									.tags.hide-on-mobile
-										button 
-											span.red
-											| tag1
-										button
-											span.green
-											| tag1
-									.expand
-										button.fa.fa-angle-down
-							//li.task.expanded
+							li.task.expanded
 								.check
 									button.fa.fa-check
 								.content
@@ -389,11 +371,11 @@ block content
 										button.fa.fa-angle-down
 									.form
 										.label
-											.input(contenteditable="true") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+											.input
+												input.mousetrap(tabindex=1, value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 											.actions
-												button.edit EDIT
-												button.delete
-													| DELETE
+												button.save SAVE
+												button.cancel CANCEL
 													span.fa.fa-trash
 										.tags
 											.buttons
@@ -404,10 +386,15 @@ block content
 													span.green
 													| tag1
 											.input
-												input.mousetrap(placeholder="Search here the tag to add or to create")
+												input.mousetrap(tabindex=1, placeholder="Search here the tag to add or to create")
 											.actions
-												button.link link tag
+												button.link LINK
+													span.fa.fa-link
+												button.cancel CANCEL
+													span.fa.fa-remove
 										.description
-											.input(contenteditable="true") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+											.input.mousetrap(tabindex=1, contenteditable="true") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 											.actions
-												button.edit EDIT
+												button.save SAVE
+												button.cancel CANCEL
+													span.fa.fa-trash

@@ -842,40 +842,52 @@ body
 								display table-cell
 								vertical-align middle
 								padding .6em 0
+						input
+							background none
+							border none
+							color white
+							width 100%
+							font-size 1em
 						.description
 							border none
 							.actions
 								vertical-align top
+						.label, .tags, .description
+							.actions
+								display none
+							&.updated
+								.actions
+									display table-cell
+									white-space nowrap
+									text-align right							
+									width 10em
 						.label
 							.input
-								white-space nowrap
-								text-overflow ellipsis
-								overflow hidden
-								max-width 1em
-							.actions
-								white-space nowrap
-								width 9em
-								text-align right
-							button
-								&.delete
-									width 7em
-								&.edit
-									margin 0 .5em 0 0
-									width 5em
+								padding 0 1em 0 0
+								input
+									padding .7em 0 .7em 0
+									white-space nowrap
+									text-overflow ellipsis
+									overflow hidden
 						.tags
 							.buttons
 								white-space nowrap
 								width 1%
-								padding-right .5em
+								button
+									padding-right .5em
 							.input
 								input
 									width 100%
 									border none
 									background none
 									color white
-							.actions
-								width 10em
-								text-align right
+						.description
+							.input
+								padding .7em 9em .7em 0
+								font-size 1em
+							&.updated
+								.input
+									padding .7em 0
 						// Commons action buttons
 						.actions
 							button
@@ -985,6 +997,9 @@ body
 									color white
 									text-overflow ellipsis
 									padding 0 1em 0 0
+							.label
+								input
+									padding .7em 1em .7em 0
 
 //-------------------------------------------------------
 // Specifics for Tags objects

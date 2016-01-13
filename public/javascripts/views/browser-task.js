@@ -100,6 +100,8 @@ define ([
 			expand: function(date) {
 				if(!this.$el.hasClass('expanded')) {
 					this.$el.addClass('expanded');
+					this.$('.label input').focus().select();
+					this.listenStart();
 				}
 			},
 
@@ -122,101 +124,51 @@ define ([
 				this.model.set('due_at',new Date (date).toISOString()).save();
 			},
 
-
-
-//================================================
-// TO BE REFITTED
-//================================================
-
-
-
-
-			// Keyboard event proxy
-			// =============================================================================
-
 			/**
-			 * Should become the one proxy for all keyboard events. For now, it is only used for
-			 * task creation. #Performance issue : there is one listener per task, so if 200 tasks are
-			 * rendered, there is 200 proxies that will receive the same event and do a similar check.
-			 * #enhancement In the future, it could be interesting to think about something more efficient.
-			 *
-			 * @method kbEventProxy
-			 */
-			kbEventProxy: function (event) {
-				var $inputEditLabel = this.$(".label input");
-				var $inputEditTags  = this.$(".tags input");
-
-				// 1. The user wants to create a new task
-				if ($inputEditLabel.is(":focus") && event == "enter") {
-					this.editLabelSave ();
-				}
-
-				// 2. The user wants to link a tag that doesn't exist to the current task
-				// Will handle what happens if the user keyes in ENTER in the input, which bypasses the autocomplete, 
-				// whether the autocomplete provided a match or not
-				if ($inputEditTags.is(":focus") && event == "enter") {
-					this.editTagsReturnKey ();
-				}
-			},
-
-			//============================================================
-			// LABEL EDITION
-			//============================================================
-
-			/**
-			 * To handle label edition. Globally works as follows : the user clicks on "edit", then we hide this button
-			 * by add the class "inactive" to the parent span "default". 
+			 * Update the model's description attribute
 			 * 
-			 * @method editLabel
+			 * @method editDescSubmit
 			 */
-			editLabel: function() {
-				this.$(".default").addClass("inactive");
-				this.$(".label .edition").addClass("active");
-				this.$("input[name='label']").focus().select();
+			editDescSubmit: function() {
+				this.model.set('description', this.$('.form .description .input').html());
+				this.model.save();
 			},
 
 			/**
-			 * Saving label update
+			 * Reset the descriptions's input
 			 * 
-			 @method editLabelSave
+			 * @method editDescCancel
 			 */
-			editLabelSave: function() {
-				this.model.set({
-					label : this.$("input[name='label']").val(),
-				}).save();
-				this.$(".default").removeClass("inactive");
-				this.$(".label .edition").removeClass("active");
+			editDescCancel: function() {
+				this.$('.form .description .input').html(this.model.get('description')).trigger('input').focus().select();
 			},
 
 			/**
-			 * Cancelling label update
+			 * Update the model's label attribute
+			 * 
+			 * @method editLabelSubmit
+			 */
+			editLabelSubmit: function() {
+				this.model.set('label', this.$('.form .label input').val());
+				this.model.save();
+			},
+
+			/**
+			 * Reset the label's input
 			 * 
 			 * @method editLabelCancel
 			 */
 			editLabelCancel: function() {
-				this.$("input[name='label']").val(this.model.get("label"))
-				this.$(".default").removeClass("inactive");
-				this.$(".label .edition").removeClass("active");
+				this.$('.form .label input').val(this.model.get('label')).trigger('input').focus().select();
 			},
 
-			//============================================================
-			// TAGS EDITION
-			//============================================================
-
 			/**
-			 * To link new tags to the current task
+			 * Empty the tags' input
 			 * 
-			 * @method editTags
+			 * @method editTagsCancel
 			 */
-			editTags: function() {
-				this.editTagsAutocompleteInit();
-				
-				this.$(".label .default button").addClass("inactive");
-				this.$(".tags .default").addClass("inactive");
-				this.$(".tags").addClass("active");
-				this.$("input[name='newTag']").focus().select();
-
-				//this.editLabelCancel(); // To close the label editor in cas it's open
+			editTagsCancel: function() {
+				this.$('.form .tags input').val('').trigger('input').focus();
 			},
 
 			/**
@@ -275,122 +227,6 @@ define ([
 
 			*/
 
-			/**
-			 * Cancelling tags edition
-			 * 
-			 * @method editTagsCancel
-			 */
-			editTagsCancel: function() {
-				this.$(".label .default button").removeClass("inactive");
-				this.$(".tags .default").removeClass("inactive");
-				this.$(".tags").removeClass("active");
-
-				this.$("input[name='tags']").val("");
-				this.editTagsAutocompleteKill();
-			},
-
-			/**
-			 * To be called when the user keyes ENTER in and the autcomplete has not the focus (just the input)
-			 * Two cases are possible :
-			 * 1. The tag keyed in already exists (link only)
-			 * 2. The tag keyed in does not exist (create and link)
-			 * 
-			 * @method editTagsReturnKey
-			 
-			editTagsReturnKey: function() {
-				var self = this;
-				if (self.$("input[name='newTag']").is(":focus") && self.$("input[name='newTag']").val().length > 1) {
-				// Check that the value set by the user corresponds to a new tag
-				// get all tags having exactly the label value = input value
-					var selection = temp.coll.tags.where({label: self.$("input[name='newTag']").val()});
-					if (selection.length == 0) {
-						// The user wants a new tag
-						// 1. create a new tag
-						var newTag = new Tag ({
-							label : self.$("input[name='newTag']").val(),
-						});
-						temp.coll.tags.add(newTag); // We add it to the collection so that we can save it
-						newTag.save({}, {
-							success: function () {
-						// 2. link the new tag
-								self.model.get('tagLinks').add({ tag: newTag });
-								self.model.save();
-								self.editTagsAutocompleteKill();
-								self.render();
-								return false;
-							},
-						});
-						return false;
-					} else {
-						// The user wants to link an existing tag
-						self.model.get('tagLinks').add({ tag: selection[0] });
-						self.model.save();
-						self.editTagsAutocompleteKill();
-						self.render();
-					}
-				}
-				return false;
-			},
-
-
-			/**
-			 * To be called when the user clicks on the "Link tag" button
-			 * Two cases are possible :
-			 * 1. The tag keyed in already exists (link only)
-			 * 2. The tag keyed in does not exist (create and link)
-			 * 
-			 * @method editTagsReturnKey
-			 
-			editTagsSave: function() {
-				var self = this;
-				if (self.$("input[name='newTag']").val().length > 1) {
-				// Check that the value set by the user corresponds to a new tag
-				// get all tags having exactly the label value = input value
-					var selection = temp.coll.tags.where({label: self.$("input[name='newTag']").val()});
-					if (selection.length == 0) {
-						// The user wants a new tag
-						// 1. create a new tag
-						var newTag = new Tag ({
-							label : self.$("input[name='newTag']").val(),
-						});
-						temp.coll.tags.add(newTag); // We add it to the collection so that we can save it
-						newTag.save({}, {
-							success: function () {
-						// 2. link the new tag
-								self.model.get('tagLinks').add({ tag: newTag });
-								self.model.save();
-								self.editTagsAutocompleteKill();
-								self.render();
-								return false;
-							},
-						});
-						return false;
-					} else {
-						// The user wants to link an existing tag
-						self.model.get('tagLinks').add({ tag: selection[0] });
-						self.model.save();
-						self.editTagsAutocompleteKill();
-						self.render();
-					}
-				}
-				return false;
-			},
-
-			/**
-			 * Should remove the clicked tag from the task
-			 * 
-			 * @method editTagsRemove
-
-			editTagsRemove: function(event) {
-				var tag = temp.coll.tags.get($(event.target).attr('data-cid'));
-				var tagLink = this.model.get('tagLinks').find(
-					function (tagLink) {return tagLink.get("tag") == tag; }
-				);
-				this.model.get('tagLinks').remove(tagLink);
-
-				this.model.save();
-				this.render();
-			},*/
 
 			//============================================================
 			// COMPLETION EDITION

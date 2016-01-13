@@ -65,7 +65,7 @@ define ([
 			},
 
 			/**
-			 * Empty the label's input
+			 * Update the model's label attribute
 			 * 
 			 * @method editLabelSubmit
 			 */
@@ -76,7 +76,7 @@ define ([
 			},
 
 			/**
-			 * Empty the label's input
+			 * Reset the label's input
 			 * 
 			 * @method editLabelCancel
 			 */
