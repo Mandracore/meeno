@@ -22,17 +22,16 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
-					'click .content'              : 'expand',
-					'click .label .edit'          : 'editLabel',
-					'click .label .cancel'        : 'editLabelCancel',
-					'click .label .save'          : 'editLabelSave',
-					'click .tags .edit'           : 'editTags',
-					'click .tags .cancel'         : 'editTagsCancel',
-					'click .tags .save'           : 'editTagsSave',
-					'click .label .attribute'     : 'check',
-					'click .delete'               : 'delete',
-					// 'click .tags .buttons button' : 'editTagsRemove',
-					'click .due'                  : 'dueDateShowPicker',
+					'click .content'             : 'expand',
+					'click .label .edit'         : 'editLabel',
+					'click .label .cancel'       : 'editLabelCancel',
+					'click .label .save'         : 'editLabelSubmit',
+					'click .tags .cancel'        : 'editTagsCancel',
+					'click .tags .link'          : 'editTagsSubmit',
+					'click .description .cancel' : 'editDescCancel',
+					'click .description .save'   : 'editDescSubmit',
+					'click .check button'        : 'check',
+					'click .date'                : 'dueDateShowPicker',
 				});
 			},
 
@@ -130,7 +129,9 @@ define ([
 			 * @method editDescSubmit
 			 */
 			editDescSubmit: function() {
+				var self = this;
 				this.model.set('description', this.$('.form .description .input').html());
+				this.$('.form .description').removeClass('updated');
 				this.model.save();
 			},
 
@@ -170,63 +171,6 @@ define ([
 			editTagsCancel: function() {
 				this.$('.form .tags input').val('').trigger('input').focus();
 			},
-
-			/**
-
-			MOVED TO BROWSER-OBJECT
-
-
-			 * Should initialize the task's tag autocomplete input and allow for linking existing tags
-			 * to the task.
-			 * To be called only when the user wants to add a new tag, and closed afterwards
-			 * 
-			 * @method editTagsAutocompleteInit
-			 
-			editTagsAutocompleteInit: function() {
-				var self = this;
-				this.$(".autocomplete").autocomplete({
-					source: function (request, response) {
-						// request.term : data typed in by the user ("new yor")
-						// response : native callback that must be called with the data to suggest to the user
-						var tagFilter = new Filter.Tag ({text: request.term});
-						response (
-							temp.coll.tags.search(tagFilter).map(function (model, key, list) {
-								return {
-									label: model.get("label"),
-									value: model.cid
-								};
-							})
-						);
-					},
-					focus: function(event, ui) {
-						self.$("input[name='newTag']").val(ui.item.label);
-						return false; // to cancel normal behaviour
-					},
-					select: function(event, ui) {
-						var selection = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
-						self.model.get('tagLinks').add({ tag: selection }); // adding the tag to the model
-						// Re-rendering the task but re-opening the editTag form to go quicker if the user wants to go on
-						self.model.save();
-						self.editTagsAutocompleteKill();
-						self.render();
-					}
-				});
-			},
-
-			/**
-			 * Used to destroy the autocomplete widget. It is necessary when :
-			 * 1. The user successfully links a tag to the task
-			 * 2. The user gives up its tag modification
-			 * 
-			 * @method editTagsAutocompleteKill
-			 
-			editTagsAutocompleteKill: function() {
-				this.$(".autocomplete").autocomplete("destroy");
-			},
-
-
-			*/
-
 
 			//============================================================
 			// COMPLETION EDITION

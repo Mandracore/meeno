@@ -3,10 +3,11 @@ define ([
 		'underscore',
 		'channel',
 		'backbone',
+		'mousetrap',
 		'temp',
 		'models/tag',
 		'models/filter',
-	], function ($, _, channel, Backbone, temp, Tag, Filter) {
+	], function ($, _, channel, Backbone, Mousetrap, temp, Tag, Filter) {
 
 		/**
 		 * This class retains all core features for displaying objects views in the browser.
@@ -54,13 +55,21 @@ define ([
 
 				var self = this;
 
-				// Listen to the keyboard events
+				//-------------------------------------------------------------------
+				// Initialize keyboard events listeners
 				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
 
+				if(this.className == "task") {
+					Mousetrap.bind(['ctrl+enter'], function() {
+						self.kbEventProxy("ctrl+enter");
+						// return false; // to prevent default browser behavior and stop event from bubbling
+					});
+				}
+
+				//-------------------------------------------------------------------
+				// Initialize 'input' events listeners (any change, inc. copy/paste to inputs or contenteditable) 
 				//#### Commons for notes, tags and tasks
-				// Listen to the `input` event (any change, inc. copy/paste) of the inputs
-				// and do the right actions (display form controls or not)
 				this.$('.form .label input').on('input', function() {
 					var backup = (this.className == "note") ? self.model.get('title') : self.model.get('label');
 					if($(this).val() != backup) {
@@ -69,21 +78,6 @@ define ([
 						$(this).closest('.label').removeClass('updated');
 					}
 				});
-
-				//#### For notes and tasks only
-				if(this.className == "note" || this.className == "task") {
-					// Init the autocomplete
-					this.editTagsAutocompleteInit();
-					// Listen to the `input` event (any change, inc. copy/paste) of the inputs
-					// and do the right actions (display form controls or not)
-					this.$('.form .tags input').on('input', function() {
-						if($(this).val() != "") {
-							$(this).closest('.tags').addClass('updated');
-						} else {
-							$(this).closest('.tags').removeClass('updated');
-						}
-					});
-				}
 
 				//#### For tasks only
 				if(this.className == "task") {
@@ -98,6 +92,23 @@ define ([
 						}
 					});
 				}
+
+				//-------------------------------------------------------------------
+				// Initialize autocompletes / For notes and tasks only
+				if(this.className == "note" || this.className == "task") {
+					// Init the autocomplete
+					this.editTagsAutocompleteInit();
+					// Listen to the `input` event (any change, inc. copy/paste) of the inputs
+					// and do the right actions (display form controls or not)
+					this.$('.form .tags input').on('input', function() {
+						if($(this).val() != "") {
+							$(this).closest('.tags').addClass('updated');
+						} else {
+							$(this).closest('.tags').removeClass('updated');
+						}
+					});
+				}
+
 
 			},
 
@@ -164,16 +175,18 @@ define ([
 					if ($inputEditDesc.is(":focus")) {
 						// 2.1 The user wants to rollback
 						if (event == "escape") {
-							console.log('escape desc')
 							$inputEditDesc.blur();
 							this.editDescCancel(); // Mandatory to blur the input or it triggers infinite loop with the input event
 							return;
 						}
-						// 2.2 The user wants to link a tag that doesn't exist to the current task
-						// Will handle what happens if the user keyes in ENTER in the input, which bypasses the autocomplete, 
-						// whether the autocomplete provided a match or not
-						if (event == "enter") {
+						// 2.2 The user wants to submit changes
+						if (event == "ctrl+enter") {
 							this.editDescSubmit ();
+							return;
+						}
+						// 2.3 The user just wants to add a line break
+						if (event == "enter") {
+							return; // Don't do anything
 						}
 					}
 				}
@@ -212,11 +225,11 @@ define ([
 						return false; // to cancel normal behaviour
 					},
 					select: function(event, ui) {
-						var selection = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
-						self.model.get('tagLinks').add({ tag: selection }); // adding the tag to the model
-						//self.editTagsAutocompleteKill();
-						// Re-rendering the task but re-opening the editTag form to go quicker if the user wants to go on
+						var tagSelected = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
+						self.model.get('tagLinks').add({ tag: tagSelected }); // adding the tag to the model
 						self.model.save();
+						self.editTagsAppendNew(tagSelected);
+						return false;
 					}
 				});
 			},
@@ -231,6 +244,19 @@ define ([
 			editTagsAutocompleteKill: function() {
 				this.$(".autocomplete").autocomplete("destroy");
 			},
+
+			/**
+			 * Renders a new tag inside the opened task (without having to re-render it all)
+			 * 
+			 * @method editTagsAppendNew
+			 */
+			editTagsAppendNew: function(tag) {
+				this.$('.buttons').append(
+					"<button class=\"tag\" data-cid=\""+tag.cid+"\"><span style=\"background-color: "+tag.get('color')+";\"></span>"+tag.get('label')+"</button>"
+				);
+				this.$('.form .tags input').val('').focus();
+			},
+
 
 			/**
 			 * Used in two cases : the user pressed ENTER or clicked on the "Link tag" button
@@ -258,6 +284,7 @@ define ([
 						// 2. link the new tag
 								self.model.get('tagLinks').add({ tag: newTag });
 								self.model.save();
+								self.editTagsAppendNew(newTag);
 								return false;
 							},
 						});
@@ -266,6 +293,8 @@ define ([
 						// The user wants to link an existing tag
 						self.model.get('tagLinks').add({ tag: selection[0] });
 						self.model.save();
+						self.editTagsAppendNew(selection[0]);
+						return false;
 					}
 				}
 				return false;
@@ -277,11 +306,13 @@ define ([
 			 * @method editTagsRemove
 			 */
 			editTagsRemove: function(event) {
-				var tag = temp.coll.tags.get($(event.target).attr('data-cid'));
+				var $target = $(event.target);
+				var tag = temp.coll.tags.get($target.attr('data-cid'));
 				var tagLink = this.model.get('tagLinks').find(
 					function (tagLink) {return tagLink.get("tag") == tag; }
 				);
 				this.model.get('tagLinks').remove(tagLink);
+				$target.remove();
 
 				this.model.save();
 			},

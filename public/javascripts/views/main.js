@@ -71,8 +71,17 @@ define ([
 						//new BrowserView();
 						new BrowserView({ el: $("#browser") })
 						// End data retrieval
-						temp.coll.tasks.fetch({silent: true});
-						temp.coll.notes.fetch({silent: true});
+						temp.coll.tasks.fetch({
+							silent: true,
+							success: function (collection, xhr, options) {
+								temp.coll.notes.fetch({
+									silent: true,
+									success: function (collection, xhr, options) {
+										channel.trigger('fetching:done');
+									}
+								});
+							}
+						});
 						temp.coll.noteFilters.fetch({silent: false});
 						temp.coll.taskFilters.fetch({silent: false});
 						temp.coll.tagFilters.fetch({silent: false});

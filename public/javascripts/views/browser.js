@@ -75,14 +75,23 @@ define ([
 				//------------------------------------------------
 				// Event listeners
 				//------------------------------------------------
+				
+				// First data loading (one shot)
+				this.listenTo(channel, "fetching:done", function () {
+					this.renderCollection("notes");
+					this.renderCollection("tasks");
+					this.renderCollection("tags");
+				});
 
 				// 'Sync' event is triggered by Backbone each time .save() is called
-				this.listenTo(temp.coll.notes, 'sync add remove', function () {this.renderCollection("notes");});
-				this.listenTo(temp.coll.tags, 'sync add remove change:label change:color', function () {
+				this.listenTo(temp.coll.notes, 'add remove', function () {this.renderCollection("notes");});
+				this.listenTo(temp.coll.tags, 'add remove', function () {
+					this.renderCollection("tags");});
+				this.listenTo(temp.coll.tags, 'change:label change:color', function () {
 					this.renderCollection("notes");
 					this.renderCollection("tasks");
 					this.renderCollection("tags");});
-				this.listenTo(temp.coll.tasks, 'sync add remove change:label change:completed', function () {this.renderCollection("tasks");});
+				this.listenTo(temp.coll.tasks, 'add remove change:label change:completed', function () {this.renderCollection("tasks");});
 
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
 				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});
