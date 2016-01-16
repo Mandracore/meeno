@@ -71,7 +71,7 @@ define ([
 				// Initialize 'input' events listeners (any change, inc. copy/paste to inputs or contenteditable) 
 				//#### Commons for notes, tags and tasks
 				this.$('.form .label input').on('input', function() {
-					var backup = (this.className == "note") ? self.model.get('title') : self.model.get('label');
+					var backup = (self.className == "note") ? self.model.get('title') : self.model.get('label');
 					if($(this).val() != backup) {
 						$(this).closest('.label').addClass('updated');
 					} else {
@@ -123,8 +123,9 @@ define ([
 				if(this.className == "note" || this.className == "task") {
 					this.editTagsAutocompleteKill();
 				}
-				this.$('.label input').off('input');
-				this.$('.tags input').off('input'); // Will not work for tags (but it's OK)
+				this.$('.form .label input').off('input');
+				this.$('.form .tags input').off('input'); // Will not work for tags (but it's OK)
+				this.$('.form .description .input').off('input'); // Will not work for tags and tasks (but it's OK)
 			},
 
 			/**
@@ -266,6 +267,7 @@ define ([
 			 * @method editTagsSubmit
 			 */
 			editTagsSubmit: function() {
+				this.$('.form .tags').removeClass('updated');
 				var self   = this;
 				var $input = this.$(".form .tags input");
 				if ($input.val().length > 1) {

@@ -150,6 +150,7 @@ define ([
 			 * @method editLabelSubmit
 			 */
 			editLabelSubmit: function() {
+				this.$('.form .label').removeClass('updated');
 				this.model.set('label', this.$('.form .label input').val());
 				this.model.save();
 			},

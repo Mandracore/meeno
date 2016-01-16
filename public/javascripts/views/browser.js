@@ -91,7 +91,7 @@ define ([
 					this.renderCollection("notes");
 					this.renderCollection("tasks");
 					this.renderCollection("tags");});
-				this.listenTo(temp.coll.tasks, 'add remove change:label change:completed', function () {this.renderCollection("tasks");});
+				this.listenTo(temp.coll.tasks, 'add remove change:completed', function () {this.renderCollection("tasks");});
 
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
 				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});

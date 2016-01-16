@@ -29,7 +29,7 @@ define ([
 			},
 
 			initialize: function(options){
-				this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
+				//this.listenTo(this.model, 'add:tagLinks remove:tagLinks change:title', this.render);
 			},
 
 			render: function () {
@@ -70,9 +70,9 @@ define ([
 			 * @method editLabelSubmit
 			 */
 			editLabelSubmit: function() {
+				this.$('.form .label').removeClass('updated');
 				this.model.set('title', this.$('.form .label input').val());
 				this.model.save();
-				//this.render();
 			},
 
 			/**
