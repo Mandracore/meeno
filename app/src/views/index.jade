@@ -265,7 +265,7 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							li.expanded
+							li
 								.open
 									button.fa.fa-folder
 									button.fa.fa-folder-open
@@ -311,6 +311,9 @@ block content
 												button.cancel
 													| CANCEL
 													span.fa.fa-remove
+								.delete
+									button.fa.fa-trash
+									button.fa.fa-trash-o
 				div.tab.tasks.active
 					div.search-box
 						div.looking-glass
@@ -355,6 +358,7 @@ block content
 										.date
 											.day 28
 											.month JAN
+											input.datepicker(type="hidden")
 										.sync
 											.wip.fa.fa-spinner.fa-pulse
 											.done.fa.fa-thumbs-up 

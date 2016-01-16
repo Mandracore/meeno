@@ -3,8 +3,9 @@ define ([
 		'underscore',
 		'backbone',
 		'channel',
+		'temp',
 		'views/browser-object',
-	], function ($, _, Backbone, channel, BrowserObjectView) {
+	], function ($, _, Backbone, channel, temp, BrowserObjectView) {
 
 		/**
 		 * A backbone view to display one tag in the browser
@@ -18,7 +19,7 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
-					'click .expand'               : 'editLabel',
+					'click .expand'                     : 'editLabel',
 					'click .form .actions .cancel'      : 'editLabelCancel',
 					'click .form .actions .save'        : 'editLabelSubmit',
 					'click .colorpicker .fa-eyedropper' : 'editColor',
@@ -89,9 +90,11 @@ define ([
 			 * @method editLabel
 			 */
 			editLabel: function() {
-				this.$el.addClass("editing");
-				this.$(".input input").focus().select();
-				this.listenStart();
+				if (!this.$el.hasClass("editing")) {
+					this.$el.addClass("editing");
+					this.$(".input input").focus().select();
+					this.listenStart();
+				}
 			},
 
 			/**
@@ -100,8 +103,9 @@ define ([
 			 * @method editLabelCancel
 			 */
 			editLabelCancel: function() {
-				this.$el.removeClass('editing')
+				this.$el.removeClass('editing');
 				this.$('.form .label input').val(this.model.get('label'));
+				this.$('.form .label').removeClass('updated');
 				this.listenStop();
 			},
 

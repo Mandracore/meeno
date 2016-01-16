@@ -75,18 +75,24 @@ define ([
 
 				this.$(".datepicker").datepicker({
 					dateFormat        : "yy/mm/dd",
-					showOtherMonths   : true,
-					selectOtherMonths : true,
-					changeMonth       : true,
-					changeYear        : true,
-					firstDay          : 1,
-					defaultDate       : new Date(self.model.get('due_at')),
 					onSelect          : function (date, dp) {
 						self.dueDateUpdate(date);
 					}
 				});
+				// this.$(".datepicker").datepicker({
+				// 	dateFormat        : "yy/mm/dd",
+				// 	showOtherMonths   : true,
+				// 	selectOtherMonths : true,
+				// 	changeMonth       : true,
+				// 	changeYear        : true,
+				// 	firstDay          : 1,
+				// 	defaultDate       : new Date(self.model.get('due_at')),
+				// 	onSelect          : function (date, dp) {
+				// 		self.dueDateUpdate(date);
+				// 	}
+				// });
 
-				channel.trigger("browser:tasks:reSyncSelectors");
+				//channel.trigger("browser:tasks:reSyncSelectors");
 
 				return this;
 			},
@@ -111,7 +117,9 @@ define ([
 			 * @method dueDateShowPicker
 			 */
 			dueDateShowPicker: function() {
-				this.$(".datepicker").datepicker('show');
+				//this.$(".datepicker").datepicker('show');
+				this.$('.datepicker').show().focus().hide();
+				//console.log('dueDateShowPicker')
 			},
 
 			/**
@@ -121,6 +129,7 @@ define ([
 			 */
 			dueDateUpdate: function(date) {
 				this.model.set('due_at',new Date (date).toISOString()).save();
+				this.render();
 			},
 
 			/**

@@ -695,6 +695,21 @@ body
 				border-left 1px solid cObjectBorder0
 				border-right 1px solid cObjectBorder0
 				border-bottom 1px solid cObjectBorder0
+				.delete
+					display none
+				&:hover
+					.delete
+						display table-cell
+						width 3em
+						.fa-trash-o
+							display initial
+						.fa-trash
+							display none
+						&:hover
+							.fa-trash-o
+								display none
+							.fa-trash
+								display initial
 			.check, .open
 				display none
 			.content
@@ -711,8 +726,11 @@ body
 					text-align center
 					.sync
 						display none
-					.date:hover
-						cursor pointer
+					.date
+						input
+							display none
+						&:hover
+							cursor pointer
 					&.urgent
 						opacity 1
 					&.veryurgent
@@ -1014,7 +1032,7 @@ body
 				&:not(.add)
 					display table
 					width calc(100% - 2px)
-					& > div
+					& > .colorpicker, & > .default
 						display table-cell
 						vertical-align middle
 						height 100%
@@ -1045,7 +1063,7 @@ body
 							padding 0 1em 0 0
 							.edit
 								display  none
-					.colorpicker, .delete
+					.colorpicker
 						display none
 						.wip
 							display none
@@ -1059,7 +1077,7 @@ body
 							display none
 						.edit
 							width 3em
-					& > .colorpicker, & > .delete
+					& > .colorpicker
 						display table-cell
 						width 3em
 					.colorpicker, .edit
@@ -1079,8 +1097,9 @@ body
 							background-color cObjectBg2
 					//.colorpicker
 					//	.color
+					//& > div:not(.delete) button
 					button
-						display block
+						//display block
 						height 100%
 						width 100%
 						background none
@@ -1088,16 +1107,6 @@ body
 						color white
 						&:hover
 							cursor pointer
-					.delete
-						.fa-trash-o
-							display initial
-						.fa-trash
-							display none
-					.delete:hover
-						.fa-trash-o
-							display none
-						.fa-trash
-							display initial					
 				&:not(.add).coloring
 					.default
 						display none
@@ -1143,6 +1152,15 @@ body
 							display none
 						.form
 							display table-cell
+							.label
+								.actions
+									display none
+								&.updated
+									.actions
+										display table-cell
+										width 9em
+										text-align right
+										padding 0 .5em 0 0
 							.table
 								.input
 									padding 0 1em
@@ -1159,32 +1177,27 @@ body
 										border none
 										background none
 										color white
-								.actions
-									display table-cell
-									width 9em
-									text-align right
-									padding 0 .5em 0 0
-									button
-										display inline-block
-										width initial
-										padding 0.1em 0.8em
-										margin 0 .5em 0 0
-										font-size 0.7em
-										border 1px solid cButtonBorder0
-										border-radius 1em
-										background-color transparent
-										color cButtonColor0
-										text-transform uppercase
-										span
-											margin 0 0 0 .6em
-										&:hover
-											border 1px solid cButtonBorder1
-											background-color cButtonBg1
-											cursor pointer
-										&:active
-											border 1px solid cButtonBorder2
-											background-color cButtonBg2
-											color white
+								.actions button
+									display inline-block
+									width initial
+									padding 0.1em 0.8em
+									margin 0 .5em 0 0
+									font-size 0.7em
+									border 1px solid cButtonBorder0
+									border-radius 1em
+									background-color transparent
+									color cButtonColor0
+									text-transform uppercase
+									span
+										margin 0 0 0 .6em
+									&:hover
+										border 1px solid cButtonBorder1
+										background-color cButtonBg1
+										cursor pointer
+									&:active
+										border 1px solid cButtonBorder2
+										background-color cButtonBg2
+										color white
 								
 						.edit
 							display none

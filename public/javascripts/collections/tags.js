@@ -13,8 +13,9 @@ define ([
 		 */
 
 		var Tags = Backbone.Collection.extend({
-			model: Tag,
-			url: '/api/tags',
+			model      : Tag,
+			url        : '/api/tags',
+			comparator : 'label',
 
 			/**
 			 * Allows to search through a collection of tags based on full-text search (in label)
