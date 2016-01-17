@@ -695,92 +695,113 @@ body
 				border-left 1px solid cObjectBorder0
 				border-right 1px solid cObjectBorder0
 				border-bottom 1px solid cObjectBorder0
-				.delete
+				display table
+				width calc(100% - 2px)
+				& > div
+					display table-cell
+					vertical-align middle
+					height 100%
+				.check, .move, .open, .delete, .colorpicker
 					display none
-				&:hover
+				&:hover:not(.expanded), &.hover
+					.check, .move, .open, .colorpicker
+						border-right 1px solid cObjectBorder0
 					.delete
-						display table-cell
+						border-left 1px solid cObjectBorder0
+					.check, .move, .open, .delete, .colorpicker
 						width 3em
+						height 3em
+						text-align center
+						display table-cell
 						.fa-trash-o
 							display initial
 						.fa-trash
 							display none
 						&:hover
+							cursor pointer
+							background-color cObjectBg1
 							.fa-trash-o
 								display none
 							.fa-trash
 								display initial
-			.check, .open
-				display none
-			.content
-				display table
-				width 100%
-				height 100%
-				& > div
-					display table-cell
-					vertical-align middle
-				.due
-					padding 0 .5em
-					width 2em
-					opacity 0.3
-					text-align center
-					.sync
-						display none
-					.date
-						input
-							display none
-						&:hover
-							cursor pointer
-					&.urgent
-						opacity 1
-					&.veryurgent
-						opacity 1
-						color orange
-					.day
-						display block
-						font-size .9em
-						font-weight bold
-					.month
-						display block
-						text-transform uppercase
-						font-size 0.7em
-				& > .label
-					max-width 1em
-					.text
-						overflow hidden
-						white-space nowrap
-						text-overflow ellipsis
-				& > .tags
-					width 1%
-					white-space nowrap
-					padding 0 .8em
-					button
-						color white
-						background-color transparent
-						border none
-						padding 0 0 0 .5em
-						span
-							display inline-block
-							width .8em
-							height .8em
-							margin 0 .5em 0 0
-							border-radius 1em
-						&:hover
-							text-decoration line-through
-							cursor pointer
-							span
-								opacity .8
 						&:active
-							span
-								opacity 1							
-				.expand, .form
-					display none
-			&:hover:not(.expanded):not(.add), &.active
-				position relative
+							background-color cObjectBg2
+						button
+							display block
+							height 100%
+							width 100%
+							border none
+							background-color transparent
+							color white
+							&:hover
+								cursor pointer
+				.content // display : table-cell
+					.overview .expand, .form
+						display none
+					.overview
+						display table
+						width 100%
+						height 100%
+						& > div
+							display table-cell
+							vertical-align middle
+						.due
+							padding 0 .5em
+							width 2em
+							opacity 0.3
+							text-align center
+							.sync
+								display none
+							.date
+								input
+									display none
+								&:hover
+									cursor pointer
+							&.urgent
+								opacity 1
+							&.veryurgent
+								opacity 1
+								color orange
+							.day
+								display block
+								font-size .9em
+								font-weight bold
+							.month
+								display block
+								text-transform uppercase
+								font-size 0.7em
+						.label
+							max-width 1em
+							.text
+								overflow hidden
+								white-space nowrap
+								text-overflow ellipsis
+						.tags
+							width 1%
+							white-space nowrap
+							padding 0 .8em
+							button
+								color white
+								background-color transparent
+								border none
+								padding 0 0 0 .5em
+								span
+									display inline-block
+									width .8em
+									height .8em
+									margin 0 .5em 0 0
+									border-radius 1em
+								&:hover
+									text-decoration line-through
+									cursor pointer
+									span
+										opacity .8
+								&:active
+									span
+										opacity 1
+			&:hover:not(.expanded):not(.add), &.active, &.hover
 				background-color cObjectBg1
 				.content
-					width calc(100% - 3em)
-					margin 0 0 0 3em
 					.due
 						display none
 					.label
@@ -802,64 +823,28 @@ body
 						cursor pointer
 					&:active
 						background-color cObjectBg2
-				.check, .open
-					display block
-					position absolute
-					top 0
-					left 0
-					width 3em
-					height 3em
-					text-align center
-					border-right 1px solid cObjectBorder0
-					&:hover
-						cursor pointer
-						background-color cObjectBg1
-					&:active
-						background-color cObjectBg2
-					button
-						display block
-						height 100%
-						width 100%
-						border none
-						background-color transparent
-						color white
-						&:hover
-							cursor pointer
 			&.expanded
 				height auto
-				.form
-					display initial
 				.content
-					.due
-						vertical-align top
-						padding-top 0.5em
-						position relative
-						.sync
-							position absolute
-							margin auto
-							bottom 1em
-							width calc(100% - 1em)
-							.wip, .done.hide
-								display none
-							.wip.show, .done:not(.hide)
-								display initial
-					& > .label, & > .tags
+					.overview, .check, .move, .delete, .open
 						display none
 					.form
-						& > div
+						display block
+						width 100%
+						& > div:not(.reduce):not(.due) // label, tags and description
 							display table
-							width calc(100% - 1em)
-							border-bottom 1px solid cObjectBorder0
-							&:first-child
-								border-bottom none
-							&:nth-child(2)
-								border-top 1px solid cObjectBorder0
-							&:last-child
-								border-bottom none
-							& > div
+							width calc(100% - 4em)
+							border-top 1px solid cObjectBorder0
+							margin 0 0 0 3em
+							& > div // inputs and actions
 								display table-cell
 								vertical-align middle
 								padding .6em 0
+						.due
+							float left
+							vertical-align top
+							padding-top 0.5em
+							position relative
 						input
 							background none
 							border none
@@ -974,51 +959,7 @@ body
 							display none
 						.fa-folder-open
 							display initial
-				&.expanded
-					.content
-						.form > div
-							& > .actions
-								display none
-							&.updated > .actions
-								display table-cell						
-						.form
-							width 100%
-							display block
-							input
-								font-family Helvetica
-								font-size 1em
-							.label, .tags
-								margin 0 1em
-								width calc(100% - 2em)
-							.label
-								padding 0
-								display table
-							.reduce
-								width 100%
-								button
-									width 100%
-									display block
-									padding .7em 1em .7em 0
-									background none
-									border none
-									color white
-									text-align right
-									&:hover
-										background-color cButtonBg1
-										cursor pointer
-									&:active
-										background-color cButtonBg2
-							.input
-								input
-									width calc(100% - 1em)
-									background none
-									border none
-									color white
-									text-overflow ellipsis
-									padding 0 1em 0 0
-							.label
-								input
-									padding .7em 1em .7em 0
+
 
 //-------------------------------------------------------
 // Specifics for Tags objects
