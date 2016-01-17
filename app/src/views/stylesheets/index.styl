@@ -74,15 +74,27 @@ body
 .white
 	background-color white
 	opacity .8
+
+/*===================================================================================
+------- LOGIN -----------------------------------------------------------------------
+=====================================================================================*/
+
+#form-wrapper
+	color white
+	h1
+		font-size 2em
+		
+
+/*===================================================================================
+------- MAIN NAVIGATION --------------------------------------------------------------
+=====================================================================================*/
+
 	
 #main, #main > .content, #browser, #browser > .tab
 	height 100%
 //	& > .content
 //		height calc(100% - 3em)
 
-/*===================================================================================
-------- MAIN NAVIGATION --------------------------------------------------------------
-=====================================================================================*/
 
 // For larger displays
 @media screen and (min-width: 769px)
@@ -966,15 +978,17 @@ body
 							display none
 						.fa-folder
 							display initial
-					.open:hover
-						.fa-folder
-							display none
-						.fa-folder-open
-							display initial
+						&:hover
+							.fa-folder
+								display none
+							.fa-folder-open
+								display initial
+					.overview .label
+						padding 0 0 0 1em
 					&.expanded .content .form
 						& > div:not(.reduce):not(.due) // label, tags and description
-							margin 0 0 0 1em // to update for notes
-							width calc(100% - 1em) // to update for notes
+							margin 0 1em
+							width calc(100% - 2em) // to update for notes
 
 //-------------------------------------------------------
 // Specifics for Tags objects

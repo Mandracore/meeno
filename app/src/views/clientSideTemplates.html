@@ -1,27 +1,35 @@
-<!-- ################### BROWSER NOTE TEMPLATE ###################-->
+
+<!-- #############################################################-->
+<!-- ################### BROWSER NOTE TEMPLATE ####################-->
+<!-- #############################################################-->
+
 <script type="text/template" id="browser-note-template" style="display: none;">
 	<div class="open">
 		<button class="fa fa-folder"></button>
 		<button class="fa fa-folder-open"></button>
 	</div>
 	<div class="content">
-		<div class="label">
-			<div class="text"><%= note.title %></div>
-		</div>
-		<div class="tags hide-on-mobile">
-			<% _.each(tags, function(tag) { %><button><span style="background-color: <%= tag.color %>;"></span><%= tag.label %></button><% }); %>
-		</div>
-		<div class="expand">
-			<button class="fa fa-angle-down"></button>
+		<div class="overview">
+			<div class="label">
+				<div class="text"><%= note.title %></div>
+			</div>
+			<div class="tags hide-on-mobile">
+				<% _.each(tags, function(tag) { %><button><span style="background-color: <%= tag.color %>;"></span><%= tag.label %></button><% }); %>
+			</div>
+			<div class="expand">
+				<button class="fa fa-angle-down"></button>
+			</div>
 		</div>
 		<div class="form">
 			<div class="reduce">
 				<button class="fa fa-angle-up"></button>
 			</div>
 			<div class="label">
-				<div class="input"><input class="mousetrap" tabindex=1 placeholder="Type here the name of the note" value="<%= note.title %>"></div>
+				<div class="input">
+					<input class="mousetrap" tabindex="1" value="<%= note.title %>"></div>
 				<div class="actions">
-					<button class="save">SAVE<span class="fa fa-save"></span></button><button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
+					<button class="save">SAVE</button>
+					<button class="cancel">CANCEL<span class="fa fa-trash"></span></button>
 				</div>
 			</div>
 			<div class="tags">
@@ -29,16 +37,23 @@
 					<% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>" class="tag"><span style="background-color: <%= tag.color %>;"></span><%= tag.label %></button><% }); %>
 				</div>
 				<div class="input">
-					<input class="autocomplete mousetrap" tabindex=1 placeholder="Search here the tag to add or to create"></div>
+					<input tabindex="1" placeholder="Search here the tag to add or to create" class="autocomplete mousetrap"></div>
 				<div class="actions">
-					<button class="link">LINK<span class="fa fa-link"></span></button><button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
+					<button class="link">LINK<span class="fa fa-link"></span></button>
+					<button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
 				</div>
 			</div>
 		</div>
 	</div>
+	<div class="delete">
+		<button class="fa fa-trash"></button>
+		<button class="fa fa-trash-o"></button>
+	</div>
 </script>
 
-<!-- ################### BROWSER TAG TEMPLATE ###################-->
+<!-- #############################################################-->
+<!-- ################### BROWSER TAG TEMPLATE ####################-->
+<!-- #############################################################-->
 <script type="text/template" id="browser-tag-template" style="display: none;">
 	<div class="colorpicker">
 		<span class="colors">

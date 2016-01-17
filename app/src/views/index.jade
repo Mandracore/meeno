@@ -265,38 +265,36 @@ block content
 									button.cancel.hide-on-mobile
 										| cancel
 										span.fa.fa-remove
-							li
+							//li.expanded
 								.open
 									button.fa.fa-folder
 									button.fa.fa-folder-open
 								.content
-									.label
-										.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-									.tags.hide-on-mobile
-										button 
-											span.red
-											| tag1
-										button
-											span.green
-											| tag1
-									.expand
-										button.fa.fa-angle-down
+									.overview
+										.label
+											.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+										.tags.hide-on-mobile
+											button 
+												span.red
+												| tag1
+											button
+												span.green
+												| tag1
+										.expand
+											button.fa.fa-angle-down
 									.form
 										.reduce
 											button.fa.fa-angle-up
-										.label
+										.label.updated
 											.input
-												input.mousetrap(tabindex=1, placeholder="Type here the name of the note", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+												input.mousetrap(tabindex=1, value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 											.actions
-												button.save
-													| SAVE
-													span.fa.fa-save
-												button.cancel
-													| CANCEL
-													span.fa.fa-remove
-										.tags
+												button.save SAVE
+												button.cancel CANCEL
+													span.fa.fa-trash
+										.tags.updated
 											.buttons
-												button.tag(data-cid="cid")
+												button.tag
 													span.red
 													| tag1
 												button.tag
@@ -305,15 +303,14 @@ block content
 											.input
 												input.autocomplete.mousetrap(tabindex=1, placeholder="Search here the tag to add or to create")
 											.actions
-												button.link
-													| LINK
+												button.link LINK
 													span.fa.fa-link
-												button.cancel
-													| CANCEL
+												button.cancel CANCEL
 													span.fa.fa-remove
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
+
 				div.tab.tasks.active
 					div.search-box
 						div.looking-glass
