@@ -22,7 +22,8 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
-					'click .content'             : 'expand',
+					'click .overview'            : 'expand',
+					'click .reduce'              : 'reduce',
 					'click .label .edit'         : 'editLabel',
 					'click .label .cancel'       : 'editLabelCancel',
 					'click .label .save'         : 'editLabelSubmit',
@@ -31,7 +32,7 @@ define ([
 					'click .description .cancel' : 'editDescCancel',
 					'click .description .save'   : 'editDescSubmit',
 					'click .check button'        : 'check',
-					'click .date'                : 'dueDateShowPicker',
+					'click .form .date'          : 'dueDateShowPicker',
 				});
 			},
 
@@ -111,6 +112,18 @@ define ([
 			},
 
 			/**
+			 * reduce the note
+			 * 
+			 * @method reduce
+			 */
+			reduce: function() {
+				if(this.$el.hasClass('expanded')) {
+					this.$el.removeClass('expanded');
+					this.listenStop();
+				}
+			},
+
+			/**
 			 * Since the datepicker is not attached to a visible input, we need a function to display it.
 			 * The following method will display the date picker when clicking on the due date of the task
 			 * 
@@ -119,7 +132,7 @@ define ([
 			dueDateShowPicker: function() {
 				//this.$(".datepicker").datepicker('show');
 				this.$('.datepicker').show().focus().hide();
-				//console.log('dueDateShowPicker')
+				console.log('dueDateShowPicker')
 			},
 
 			/**

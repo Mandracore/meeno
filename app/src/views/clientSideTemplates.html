@@ -96,7 +96,7 @@
 	<span class="attribute"><%= task.due_at %> **** due</span></br>
 	<span class="attribute"><%= task.updated_at %> **** updated</span></br
 	/////////////////-->
-	
+
 	<%
 	var month = {
 		0  :"jan",1  :"fev",2  :"mar",3  :"apr",4  :"may",5  :"jun",6  :"jul",7  :"aug",8  :"sep",9  :"oct",10 :"nov",11 :"dec",
@@ -114,35 +114,45 @@
 	<div class="check">
 		<button class="fa fa-check"></button>
 	</div>
+	<div class="move">
+		<button class="fa fa-arrows"></button>
+	</div>
 	<div class="content">
-		<div class="due <%= urgent %>">
-			<div class="date">
-				<div class="day"><%= day %></div>
-				<div class="month"><%= month %></div>
-				<input class="datepicker">
+		<div class="overview">
+			<div class="due <%= urgent %>">
+				<div class="date">
+					<div class="day"><%= day %></div>
+					<div class="month"><%= month %></div>
+				</div>
 			</div>
-			<div class="sync">
-				<div class="wip fa fa-spinner fa-pulse"></div>
-				<div class="done fa fa-thumbs-up"></div>
+			<div class="label">
+				<div class="text"><%= task.label %></div>
 			</div>
-		</div>
-		<div class="label">
-			<div class="text"><%= task.label %></div>
-		</div>
-		<div class="tags hide-on-mobile">
-			<% _.each(tags, function(tag) { %>
-			<button data-cid="<%= tag.cid %>">
-				<span style="background-color: <%= tag.color %>;"></span><%= tag.label %>
-			</button>
-			<% }); %>
-		</div>
-		<div class="expand">
-			<button class="fa fa-angle-down"></button>
+			<div class="tags hide-on-mobile">
+				<% _.each(tags, function(tag) { %>
+				<button data-cid="<%= tag.cid %>">
+					<span style="background-color: <%= tag.color %>;"></span><%= tag.label %>
+				</button>
+				<% }); %>
+			</div>
+			<div class="expand">
+				<button class="fa fa-angle-down"></button>
+			</div>
 		</div>
 		<div class="form">
+			<div class="reduce">
+				<button class="fa fa-angle-up"></button>
+			</div>
+			<div class="due <%= urgent %>">
+				<div class="date">
+					<div class="day"><%= day %></div>
+					<div class="month"><%= month %></div>
+					<input class="datepicker">
+				</div>
+			</div>
 			<div class="label">
 				<div class="input">
-					<input tabindex=1 class="mousetrap" value="<%= task.label %>"></div>
+					<input tabindex="1" value="<%= task.label %>" class="mousetrap"></div>
 				<div class="actions">
 					<button class="save">SAVE</button>
 					<button class="cancel">CANCEL<span class="fa fa-trash"></span></button>
@@ -157,21 +167,24 @@
 					<% }); %>
 				</div>
 				<div class="input">
-					<input tabindex=1 class="autocomplete mousetrap" placeholder="Search here the tag to add or to create">
-				</div>
+					<input tabindex="1" placeholder="Search here the tag to add or to create" class="autocomplete mousetrap"></div>
 				<div class="actions">
 					<button class="link">LINK<span class="fa fa-link"></span></button>
 					<button class="cancel">CANCEL<span class="fa fa-remove"></span></button>
 				</div>
 			</div>
 			<div class="description">
-				<div tabindex=1 class="input mousetrap" contenteditable="true"><%= task.description %></div>
+				<div tabindex="1" class="input mousetrap" contenteditable="true"><%= task.description %></div>
 				<div class="actions">
 					<button class="save">SAVE</button>
 					<button class="cancel">CANCEL<span class="fa fa-trash"></span></button>
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="delete">
+		<button class="fa fa-trash"></button>
+		<button class="fa fa-trash-o"></button>
 	</div>
 
 </script>

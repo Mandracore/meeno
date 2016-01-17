@@ -745,6 +745,7 @@ body
 						& > div
 							display table-cell
 							vertical-align middle
+					.overview, .form
 						.due
 							padding 0 .5em
 							width 2em
@@ -770,6 +771,7 @@ body
 								display block
 								text-transform uppercase
 								font-size 0.7em
+					.overview
 						.label
 							max-width 1em
 							.text
@@ -832,14 +834,29 @@ body
 						display block
 						width 100%
 						& > div:not(.reduce):not(.due) // label, tags and description
+							margin 0 0 0 3em // to update for notes
+							width calc(100% - 4em) // to update for notes
 							display table
-							width calc(100% - 4em)
 							border-top 1px solid cObjectBorder0
-							margin 0 0 0 3em
-							& > div // inputs and actions
+							& > div:not(.actions) // inputs, but not actions
 								display table-cell
 								vertical-align middle
-								padding .6em 0
+								padding .7em 0
+						.reduce
+							width 100%
+							button
+								width 100%
+								display block
+								padding .7em 1em .7em 0
+								background none
+								border none
+								color white
+								text-align right
+								&:hover
+									background-color cButtonBg1
+									cursor pointer
+								&:active
+									background-color cButtonBg2
 						.due
 							float left
 							vertical-align top
@@ -852,23 +869,13 @@ body
 							width 100%
 							font-size 1em
 						.description
-							border none
 							.actions
 								vertical-align top
-						.label, .tags, .description
-							.actions
-								display none
-							&.updated
-								.actions
-									display table-cell
-									white-space nowrap
-									text-align right							
-									width 10em
 						.label
 							.input
 								padding 0 1em 0 0
 								input
-									padding .7em 0 .7em 0
+									//padding .7em 0 .7em 0
 									white-space nowrap
 									text-overflow ellipsis
 									overflow hidden
@@ -893,27 +900,36 @@ body
 								.input
 									padding .7em 0
 						// Commons action buttons
-						.actions
-							button
-								padding 0.1em 0.8em
-								font-size 0.7em
-								border 1px solid cButtonBorder0
-								border-radius 1em
-								background-color transparent
-								color cButtonColor0
-								text-transform uppercase
-								span
-									margin 0 0 0 .6em
-								&:hover
-									border 1px solid cButtonBorder1
-									background-color cButtonBg1
-									cursor pointer
-								&:active
-									border 1px solid cButtonBorder2
-									background-color cButtonBg2
-									color white
-							button:last-child
-								margin 0 0 0 .5em
+						.label, .tags, .description
+							.actions
+								display none
+							&.updated
+								.actions
+									padding .7em 0
+									display table-cell
+									white-space nowrap
+									text-align right							
+									width 10em
+									button
+										padding 0.1em 0.8em
+										font-size 0.7em
+										border 1px solid cButtonBorder0
+										border-radius 1em
+										background-color transparent
+										color cButtonColor0
+										text-transform uppercase
+										span
+											margin 0 0 0 .6em
+										&:hover
+											border 1px solid cButtonBorder1
+											background-color cButtonBg1
+											cursor pointer
+										&:active
+											border 1px solid cButtonBorder2
+											background-color cButtonBg2
+											color white
+									button:last-child
+										margin 0 0 0 .5em
 						button.tag
 							color white
 							background-color transparent
@@ -944,10 +960,6 @@ body
 		.objects
 			height 100%
 			li
-				&:not(.add):not(.active)
-					.content
-						.label
-							padding 0 .5em 0 1em
 				&:not(.add)
 					.open
 						.fa-folder-open
@@ -959,7 +971,10 @@ body
 							display none
 						.fa-folder-open
 							display initial
-
+					&.expanded .content .form
+						& > div:not(.reduce):not(.due) // label, tags and description
+							margin 0 0 0 1em // to update for notes
+							width calc(100% - 1em) // to update for notes
 
 //-------------------------------------------------------
 // Specifics for Tags objects

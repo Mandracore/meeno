@@ -229,7 +229,7 @@ define ([
 						var tagSelected = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
 						self.model.get('tagLinks').add({ tag: tagSelected }); // adding the tag to the model
 						self.model.save();
-						self.editTagsAppendNew(tagSelected);
+						self.editTagsRefresh();
 						return false;
 					}
 				});
@@ -247,14 +247,18 @@ define ([
 			},
 
 			/**
-			 * Renders a new tag inside the opened task (without having to re-render it all)
+			 * Refreshed the object after adding a new tag (but displays the form again)
 			 * 
-			 * @method editTagsAppendNew
+			 * @method editTagsRefresh
 			 */
-			editTagsAppendNew: function(tag) {
-				this.$('.buttons').append(
+			editTagsRefresh: function(tag) {
+				this.reduce();
+				this.render();
+
+				/*this.$('.buttons').append(
 					"<button class=\"tag\" data-cid=\""+tag.cid+"\"><span style=\"background-color: "+tag.get('color')+";\"></span>"+tag.get('label')+"</button>"
-				);
+				);*/
+				this.expand();
 				this.$('.form .tags input').val('').focus();
 			},
 
@@ -286,7 +290,7 @@ define ([
 						// 2. link the new tag
 								self.model.get('tagLinks').add({ tag: newTag });
 								self.model.save();
-								self.editTagsAppendNew(newTag);
+								self.editTagsRefresh();
 								return false;
 							},
 						});
@@ -295,7 +299,7 @@ define ([
 						// The user wants to link an existing tag
 						self.model.get('tagLinks').add({ tag: selection[0] });
 						self.model.save();
-						self.editTagsAppendNew(selection[0]);
+						self.editTagsRefresh();
 						return false;
 					}
 				}
@@ -317,6 +321,7 @@ define ([
 				$target.remove();
 
 				this.model.save();
+				this.editTagsRefresh();
 			},
 
 
