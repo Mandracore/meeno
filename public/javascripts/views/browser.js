@@ -836,17 +836,18 @@ define ([
 				//}
 
 
-				if($list.hasClass('tasks')) {
+				if($list.closest('.tab').hasClass('tasks')) {
 					$list.sortable({
-						placeholder: "ui-state-highlight",
-						connectWith: '.droppable',
+						placeholder : "ui-state-highlight",
+						connectWith : '.droppable',
+						handle      : ".move",
+						cancel      : ".milestone",
 						receive: function( event, ui ) { // Not sure it is useful
 							return console.log("received !");
 						},
 						update: function( event, ui ) {
 							return self.sortableUpdate(event, ui);
 						},
-						cancel: ".milestone",
 					});
 				}
 			},

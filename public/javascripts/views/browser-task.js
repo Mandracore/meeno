@@ -76,22 +76,16 @@ define ([
 
 				this.$(".datepicker").datepicker({
 					dateFormat        : "yy/mm/dd",
+					showOtherMonths   : true,
+					selectOtherMonths : true,
+					changeMonth       : true,
+					changeYear        : true,
+					firstDay          : 1,
+					defaultDate       : new Date(self.model.get('due_at')),
 					onSelect          : function (date, dp) {
 						self.dueDateUpdate(date);
 					}
 				});
-				// this.$(".datepicker").datepicker({
-				// 	dateFormat        : "yy/mm/dd",
-				// 	showOtherMonths   : true,
-				// 	selectOtherMonths : true,
-				// 	changeMonth       : true,
-				// 	changeYear        : true,
-				// 	firstDay          : 1,
-				// 	defaultDate       : new Date(self.model.get('due_at')),
-				// 	onSelect          : function (date, dp) {
-				// 		self.dueDateUpdate(date);
-				// 	}
-				// });
 
 				//channel.trigger("browser:tasks:reSyncSelectors");
 
@@ -142,7 +136,6 @@ define ([
 			 */
 			dueDateUpdate: function(date) {
 				this.model.set('due_at',new Date (date).toISOString()).save();
-				this.render();
 			},
 
 			/**
@@ -209,7 +202,6 @@ define ([
 				var self = this;
 				this.model.set("completed",!(this.model.get("completed")));
 				this.model.save();
-				this.render();
 			},
 
 			//============================================================

@@ -715,6 +715,9 @@ body
 					height 100%
 				.check, .move, .open, .delete, .colorpicker
 					display none
+				&.completed
+					.label
+						text-decoration line-through
 				&:hover:not(.expanded), &.hover
 					.check, .move, .open, .colorpicker
 						border-right 1px solid cObjectBorder0
