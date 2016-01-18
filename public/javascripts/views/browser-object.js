@@ -254,10 +254,6 @@ define ([
 			editTagsRefresh: function(tag) {
 				this.reduce();
 				this.render();
-
-				/*this.$('.buttons').append(
-					"<button class=\"tag\" data-cid=\""+tag.cid+"\"><span style=\"background-color: "+tag.get('color')+";\"></span>"+tag.get('label')+"</button>"
-				);*/
 				this.expand();
 				this.$('.form .tags input').val('').focus();
 			},

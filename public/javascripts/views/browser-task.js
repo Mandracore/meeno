@@ -136,6 +136,10 @@ define ([
 			 */
 			dueDateUpdate: function(date) {
 				this.model.set('due_at',new Date (date).toISOString()).save();
+				this.reduce();
+				this.render();
+				this.expand();
+				//this.$('.form .tags input').val('').focus();
 			},
 
 			/**
