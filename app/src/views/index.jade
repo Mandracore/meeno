@@ -191,19 +191,19 @@ block content
 								| clear
 								span.fa.fa-remove
 					div.listobjects.selected
+						div.add
+							div
+								span.fa.fa-file-o
+							div.input
+								input(placeholder="Type here your new tag")
+							div.buttons
+								button.save
+									| save
+									span.fa.fa-save
+								button.cancel.hide-on-mobile
+									| cancel
+									span.fa.fa-remove
 						ul.objects
-							li.add
-								div
-									span.fa.fa-plus
-								div.input
-									input(placeholder="Type here your new tag")
-								div.buttons
-									button.save
-										| save
-										span.fa.fa-save
-									button.cancel.hide-on-mobile
-										| cancel
-										span.fa.fa-remove
 							//li#colortest
 								.colorpicker
 									span.colors
@@ -252,19 +252,19 @@ block content
 								| clear
 								span.fa.fa-remove
 					div.listobjects.selected
+						div.add
+							div
+								span.fa.fa-file-o
+							div.input
+								input(placeholder="Type here the title of your new note")
+							div.buttons
+								button.save
+									| save
+									span.fa.fa-save
+								button.cancel.hide-on-mobile
+									| cancel
+									span.fa.fa-remove
 						ul.objects
-							li.add
-								div
-									span.fa.fa-plus
-								div.input
-									input(placeholder="Name here your new note")
-								div.buttons
-									button.save
-										| save and open
-										span.fa.fa-save
-									button.cancel.hide-on-mobile
-										| cancel
-										span.fa.fa-remove
 							//li.expanded
 								.open
 									button.fa.fa-folder
@@ -310,7 +310,6 @@ block content
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
-
 				div.tab.tasks.active
 					div.search-box
 						div.looking-glass
@@ -327,26 +326,27 @@ block content
 					div.listobjects.selected
 						div.nav.grid-container.grid-parent
 							ul.milestones.grid-90.mobile-grid-90.grid-parent
-								li.active Today
-								li Tomorrow
-								li Next week
+								li.active.today Today
+								li.tomorrow Tomorrow
+								li.nextweek Next week
+								li.later Later
 							div.filter-checked.grid-10.mobile-grid-10.grid-parent
 								button.active(data-step="0") Todo
 								button(data-step="1") Done
 								button(data-step="2") Both
-						ul.objects
-							li.add
-								div
-									span.fa.fa-plus
-								div.input
-									input(placeholder="Type here your new task")
-								div.buttons
-									button.save
-										| save
-										span.fa.fa-save
-									button.cancel.hide-on-mobile
-										| cancel
-										span.fa.fa-remove
+						div.add
+							div
+								span.fa.fa-file-o
+							div.input
+								input(placeholder="Type here your new task")
+							div.buttons
+								button.save
+									| save
+									span.fa.fa-save
+								button.cancel.hide-on-mobile
+									| cancel
+									span.fa.fa-remove
+						ul.objects.draggable
 							//li.task
 							//li.task.expanded
 								.check

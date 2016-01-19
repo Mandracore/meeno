@@ -91,7 +91,8 @@ define ([
 					this.renderCollection("notes");
 					this.renderCollection("tasks");
 					this.renderCollection("tags");});
-				this.listenTo(temp.coll.tasks, 'add remove change:completed', function () {this.renderCollection("tasks");});
+				this.listenTo(temp.coll.tasks, 'add remove change:completed', function () {
+					this.renderCollection("tasks");});
 
 				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
 				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});
@@ -138,20 +139,30 @@ define ([
 				//------------------------------------------------
 				// Task dropzone and milestone management 
 				//------------------------------------------------
+				this.setupDropZones();
 
-				this.$( ".droppable" ).droppable({
-					accept      : ".draggable li",
+				// this.lastupdate = {
+				// 	dropzone: new Date(),
+				// };
+
+				this.$(".milestones li").droppable({
+					// accept      : ".tab.tasks .draggable li",
+					accept      : ".task",
 					activeClass : "target",
 					hoverClass  : "target-hover",
 					tolerance   : "pointer",
 					drop        : function( event, ui ) {
+						var $target = $(this);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
+						
+						console.log("dropped! in "+ $target.attr("data-todo"));
 						sortedModel.set("position",_.min(temp.coll.tasks.pluck('position'))-1);
-						if ($(this).hasClass('today')) {
+
+						if ($target.hasClass('today')) {
 							sortedModel.set("todo_at",_.min(_.map(temp.coll.tasks.pluck('todo_at'),
 								function (sDate) {return new Date(sDate);})));
 						} else {
-							sortedModel.set("todo_at",new Date($(this).attr("data-todo")));
+							sortedModel.set("todo_at",new Date($target.attr("data-todo")));
 						}
 
 						sortedModel.save();
@@ -185,12 +196,6 @@ define ([
 					}
 				} );
 
-				var now = new Date ();
-				self.setupDropZones();
-
-				this.lastupdate = {
-					dropzone: new Date(),
-				};
 
 				//------------------------------------------------
 				// Initializing autocompletes for object filtering
@@ -298,7 +303,7 @@ define ([
 			 */
 			setupDropZones: function () {
 				console.log('start setupDropZones');
-				// Setup milestones
+				// Setup dates
 				var today    = new Date();
 				var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
 				var nextweek = new Date(); nextweek.setDate(nextweek.getDate() + 7 - nextweek.getDay() + 1);
@@ -308,10 +313,11 @@ define ([
 					$(".droppable.tomorrow").hide();
 				}
 
-				$(".droppable.today").attr("data-todo", today.toISOString());
-				$(".droppable.tomorrow").attr("data-todo", tomorrow.toISOString());
-				$(".droppable.nextweek").attr("data-todo", nextweek.toISOString());
-				$(".droppable.later").attr("data-todo", later.toISOString());
+				var $milestones = this.$(".milestones");
+				$milestones.find(".today").attr("data-todo", today.toISOString());
+				$milestones.find(".tomorrow").attr("data-todo", tomorrow.toISOString());
+				$milestones.find(".nextweek").attr("data-todo", nextweek.toISOString());
+				$milestones.find(".later").attr("data-todo", later.toISOString());
 			},
 
 			/**
@@ -319,7 +325,7 @@ define ([
 			 * Indeed, the milestones to display will change depending on the day of the week.
 			 *
 			 * @method setupMilestones
-			 */
+			 *
 			setupMilestones: function (today) {
 
 				// Initialize with 'today' as point of reference
@@ -349,7 +355,7 @@ define ([
 
 				this.milestones = milestones;
 				return milestones;
-			},
+			},*/
 
 			// Navigation in the browser
 			// =============================================================================
@@ -907,7 +913,7 @@ define ([
 			 * @param  {Array} list The list of tasks
 			 * @param  {Array} milestones The milestones list to be inserted within the tasks
 			 * @param  {Array} result The final list of objects that should be rendered
-			 */
+			 *
 			insertMilestones: function (list, milestones, result) {
 				if (!result) { result = []; }
 
@@ -963,7 +969,7 @@ define ([
 						return this.insertMilestones(list, milestones, result);
 					}
 				}
-			},
+			},*/
 
 		});
 

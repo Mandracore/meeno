@@ -52,6 +52,9 @@ define ([
 			 */
 			editColor: function() {
 				if (!this.$el.hasClass("coloring")) {
+					if (this.$el.hasClass("editing")) {
+						this.$el.removeClass("editing");
+					}
 					this.$el.addClass("coloring");
 				}
 			},

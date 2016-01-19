@@ -623,6 +623,9 @@ body
 				cursor pointer
 			&:active, &.active
 				color cButtonMilestone1
+			&.target-hover
+				color orange
+				font-style italic
 	.filter-checked
 		padding .8em 0
 		button
@@ -645,6 +648,52 @@ body
 				border 1px solid cButtonBorder2
 				background-color cButtonBg2
 				color white
+	//-------------------------------------------------------
+	// Input to add new objects
+	.add
+		display table
+		border none
+		background-color cInputBg0
+		&:hover
+			border none
+			background-color cInputBg1
+		& > div
+			display table-cell
+			vertical-align middle
+		& > div:first-child
+			width 1%
+			white-space nowrap
+			color white
+			font-size .9em
+			span
+				margin 0 .6em 0 1em
+				opacity .2
+		.buttons
+			width 1%
+			white-space nowrap
+			padding .7em 0
+			button
+				border none
+				background-color transparent
+				color cButtonColor0
+				margin 0 1em 0 0
+				padding 0
+				span
+					margin 0 0 0 .6em
+				&:hover
+					cursor pointer
+					color cButtonColor1
+				&:active
+					color white
+					
+		.input
+			input
+				width 100%
+				background-color transparent
+				border none
+				color white
+				font-size .9em
+				font-family Helvetica
 	.objects
 		display block
 		height calc(100% - 3em)		
@@ -657,51 +706,10 @@ body
 			font-family Helvetica
 			height 3em
 			color white
-			//-------------------------------------------------------
-			// Input to add new objects
-			&.add
-				display table
-				border none
-				background-color cInputBg0
-				&:hover
-					border none
-					background-color cInputBg1
-				& > div
-					display table-cell
-					vertical-align middle
-				& > div:first-child
-					width 1%
-					white-space nowrap
-					span
-						margin 0 .6em 0 1em
-						opacity .5
-				.buttons
-					width 1%
-					white-space nowrap
-					button
-						border none
-						background-color transparent
-						color cButtonColor0
-						margin 0 1em 0 0
-						padding 0
-						span
-							margin 0 0 0 .6em
-						&:hover
-							cursor pointer
-							color cButtonColor1
-						&:active
-							color white
-							
-				.input
-					input
-						width 100%
-						background-color transparent
-						border none
-						color white
 			//------------------------------------------------------------------------
 			// Initialization for tasks objects
 			// Afterwards, some adjustments will be made for notes and tags
-			&:nth-child(2) // The second item of the list (the first is the input to add new records)
+			&:nth-child(1) // The second item of the list (the first is the input to add new records)
 				border-top 1px solid cObjectBorder0
 			&:not(.add)
 				border-left 1px solid cObjectBorder0
@@ -750,6 +758,11 @@ body
 							color white
 							&:hover
 								cursor pointer
+					.move
+						button:hover
+							cursor move
+						button:active
+							cursor grabbing
 				.content // display : table-cell
 					.overview .expand, .form
 						display none

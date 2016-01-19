@@ -25,6 +25,8 @@ define ([
 
 				var date1 = typeof task1.get('todo_at') == "string" ? new Date (task1.get('todo_at')) : task1.get('todo_at');
 				var date2 = typeof task2.get('todo_at') == "string" ? new Date (task2.get('todo_at')) : task2.get('todo_at');
+				if (!date1) { return 0; }
+				if (!date2) { return 0; }
 				date1.setHours(0,0,0,0);
 				date2.setHours(0,0,0,0);
 				var time1 = date1.getTime();
