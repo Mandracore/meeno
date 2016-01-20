@@ -154,8 +154,7 @@ define ([
 					drop        : function( event, ui ) {
 						var $target = $(this);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
-						
-						console.log("dropped! in "+ $target.attr("data-todo"));
+
 						sortedModel.set("position",_.min(temp.coll.tasks.pluck('position'))-1);
 
 						if ($target.hasClass('today')) {
@@ -167,6 +166,7 @@ define ([
 
 						sortedModel.save();
 						temp.coll.tasks.sort();
+						self.renderCollection("tasks");
 					}
 				});
 
@@ -196,6 +196,21 @@ define ([
 					}
 				} );
 
+
+				//------------------------------------------------
+				// Preparing vars for object rendering
+				//------------------------------------------------
+
+				this.$renderingAreas = {
+					notes : this.$('.tab.notes ul.objects'),
+					tags  : this.$('.tab.tags ul.objects'),
+					tasks : {
+						today    : this.$('.tab.tasks ul.today'),
+						tomorrow : this.$('.tab.tasks ul.tomorrow'),
+						nextweek : this.$('.tab.tasks ul.nextweek'),
+						later    : this.$('.tab.tasks ul.later'),
+					},
+				};
 
 				//------------------------------------------------
 				// Initializing autocompletes for object filtering
@@ -788,11 +803,17 @@ define ([
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
 
-				// First, emptying the DOM
-				var $list = this.$('.tab.'+collName+' ul.objects');
-				if ($list.is(':ui-sortable')) {
-					$list.sortable( "destroy" );
+
+				// Destroy task sortables
+				if (collName === "tasks") {
+					_.each(self.$('.tab.tasks ul.objects'), function (child, index) {
+						if ($(child).is(':ui-sortable')) {
+							$(child).sortable( "destroy" );
+						}
+					});
 				}
+
+				// Empty the DOM
 				//$list.children(':not(.add)').remove();
 				//$list.html('');
 
@@ -804,56 +825,48 @@ define ([
 
 				// Third, filling the DOM again
 				var newView = {};
+				var $target  = {};
 				var results = temp.coll[collName].search(this.filters[filterName]);
 
-				/*if (collName === "tasks") {
-					// Special rendering for tasks
-					var now = new Date ();
-					self.setupMilestones(now);
-					results = this.insertMilestones(results, this.milestones);
-
-					for (var idx in results) {
-						if (!results[idx].label) {
-							// This is a task
-							newView = new BrowserTaskView({ collName:"tasks", model: results[idx] });
-							self.children[collName].push (newView);
-							$list.append(newView.render().el);
-						} else {
-							// This is a milestone
-							$list.append($('<li>', {
-								id: results[idx].label,
-								class: "milestone",
-								"data-todo": results[idx].todo_at,
-								text: results[idx].label
-							}));
-						}
+				results.each(function (element) {
+					switch (collName) {
+						case "notes" :
+							newView = new BrowserNoteView({ collName:"notes", model: element });
+							$target = self.$renderingAreas.notes;
+							break;
+						case "tags" :
+							newView = new BrowserTagView({ collName:"tags", model: element });
+							$target = self.$renderingAreas.tags;
+							break;
+						case "tasks" :
+							newView = new BrowserTaskView({ collName:"tasks", model: element });
+							// insert calculation here
+							$target = self.$renderingAreas.tasks.today;
+							break;
+						default:
 					}
 
-				} else {*/
-					// Normal rendering for notes and tags
-					results.each(function (element) {
-						if (collName == "notes") { newView = new BrowserNoteView({ collName:"notes", model: element }); }
-						if (collName == "tags") { newView = new BrowserTagView({ collName:"tags", model: element }); }
-						if (collName == "tasks") { newView = new BrowserTaskView({ collName:"tasks", model: element }); }
+					self.children[collName].push (newView);
+					$target.append(newView.render().el);
 
-						self.children[collName].push (newView);
-						$list.append(newView.render().el);
-					}, this);
-				//}
+				}, this);
 
 
-				if($list.closest('.tab').hasClass('tasks')) {
-					$list.sortable({
-						placeholder : "ui-state-highlight",
-						connectWith : '.droppable',
-						handle      : ".move",
-						cancel      : ".milestone",
-						receive: function( event, ui ) { // Not sure it is useful
-							return console.log("received !");
-						},
-						update: function( event, ui ) {
-							return self.sortableUpdate(event, ui);
-						},
+				// Initialize task sortables
+				if (collName === "tasks") {
+					_.each(self.$('.tab.tasks ul.objects'), function (child, index) {
+						$(child).sortable({
+							placeholder : "ui-state-highlight",
+							connectWith : '.droppable',
+							handle      : ".move",
+							cancel      : ".milestone",
+							receive: function( event, ui ) { // Not sure it is useful
+								return console.log("received !");
+							},
+							update: function( event, ui ) {
+								return self.sortableUpdate(event, ui);
+							},
+						});
 					});
 				}
 			},

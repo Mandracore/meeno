@@ -328,7 +328,7 @@ block content
 							ul.milestones.grid-90.mobile-grid-90.grid-parent
 								li.active.today Today
 								li.tomorrow Tomorrow
-								li.nextweek Next week
+								li.nextweek Nextweek
 								li.later Later
 							div.filter-checked.grid-10.mobile-grid-10.grid-parent
 								button.active(data-step="0") Todo
@@ -346,7 +346,10 @@ block content
 								button.cancel.hide-on-mobile
 									| cancel
 									span.fa.fa-remove
-						ul.objects.draggable
+						ul.objects.today.draggable.active
+						ul.objects.tomorrow.draggable
+						ul.objects.nextweek.draggable
+						ul.objects.later.draggable
 							//li.task
 							//li.task.expanded
 								.check
