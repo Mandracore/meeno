@@ -13,7 +13,7 @@ block content
 	script(data-main="javascripts/main", src="javascripts/lib/require.js")
 
 	// Login/Register form
-	div#form-wrapper(style="display:none")
+	div#form-wrapper(style="display:none").grid-parent
 		form#login(autocomplete="on")
 			h1 Log in
 			p.errors
@@ -25,7 +25,7 @@ block content
 				input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
 			p.keeplogin
 				input(id="keeplogin", name="keeplogin", type="checkbox", value="keeplogin")
-				label(for="keeplogin") Keep me logged in
+				label.checkbox(for="keeplogin") Keep me logged in
 			p.button.login
 				input(id="do-login", type="submit", value="Login", data-init-value="Login")
 			p.switch
@@ -51,7 +51,6 @@ block content
 			p.switch
 				|Already a member ?
 				button#tologin Go log in
-
 	// Application skeleton
 	//div#main.navigating.grid-container.grid-parent
 	#main.grid-container.grid-parent
@@ -326,10 +325,10 @@ block content
 					div.listobjects.selected
 						div.nav.grid-container.grid-parent
 							ul.milestones.grid-90.mobile-grid-90.grid-parent
-								li.active.today Today
-								li.tomorrow Tomorrow
-								li.nextweek Nextweek
-								li.later Later
+								li.active.today(data-mile="today") Today
+								li.tomorrow(data-mile="tomorrow") Tomorrow
+								li.nextweek(data-mile="nextweek") Nextweek
+								li.later(data-mile="later") Later
 							div.filter-checked.grid-10.mobile-grid-10.grid-parent
 								button.active(data-step="0") Todo
 								button(data-step="1") Done

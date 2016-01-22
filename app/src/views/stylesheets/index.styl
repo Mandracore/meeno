@@ -83,6 +83,18 @@ body
 	color white
 	h1
 		font-size 2em
+	p
+		margin 1em 0 0 0
+	label:not(.checkbox)
+		display block
+		margin 0 0 .3em 0
+	label
+		text-transform uppercase
+		font-size .8em
+		font-family Helvetica
+	input
+		padding .5em
+		border-radius .5em
 		
 
 /*===================================================================================
@@ -695,9 +707,11 @@ body
 				font-size .9em
 				font-family Helvetica
 	.objects
-		display block
-		height calc(100% - 3em)		
-		overflow auto
+		display none
+		&.active
+			display block
+			height calc(100% - 3em)		
+			overflow auto
 		input
 			font-size .9em
 			font-family Helvetica

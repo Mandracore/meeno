@@ -40,7 +40,8 @@ define ([
 				'click .filter-editor button.save'                  : 'searchFilterSave1',
 				'click .filter-editor button.saveConfirm'           : 'searchFilterSave2',
 				'click .filter-editor button.delete'                : 'searchFilterDelete',
-				'click .filter-checked'                             : 'searchTasksToggle',
+				'click .filter-checked'                             : 'tasksToggleChecked',
+				'click .milestones li'                              : 'tasksToggleMilestones',
 				// Action-related events
 				'click .new-task button'                            : 'newTask',
 				'click .actions-contextual .delete'                 : 'actionDeleteToggle',
@@ -139,7 +140,7 @@ define ([
 				//------------------------------------------------
 				// Task dropzone and milestone management 
 				//------------------------------------------------
-				this.setupDropZones();
+				this.milestonesSetupDrop();
 
 				// this.lastupdate = {
 				// 	dropzone: new Date(),
@@ -152,16 +153,20 @@ define ([
 					hoverClass  : "target-hover",
 					tolerance   : "pointer",
 					drop        : function( event, ui ) {
+						console.log('dropped !');
 						var $target = $(this);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
 
 						sortedModel.set("position",_.min(temp.coll.tasks.pluck('position'))-1);
 
 						if ($target.hasClass('today')) {
-							sortedModel.set("todo_at",_.min(_.map(temp.coll.tasks.pluck('todo_at'),
-								function (sDate) {return new Date(sDate);})));
+							var todos        = temp.coll.tasks.pluck('todo_at');
+							var todos_nonull = todos.filter(function (date) { return date !== null; });
+							var todos_dates  = todos_nonull.map(function (date) { return new Date(date); });
+							var todos_min    = _.min(todos_dates);
+							sortedModel.set("todo_at", todos_min);
 						} else {
-							sortedModel.set("todo_at",new Date($target.attr("data-todo")));
+							sortedModel.set("todo_at",$target.attr("data-todo"));
 						}
 
 						sortedModel.save();
@@ -172,29 +177,29 @@ define ([
 
 				// Launch dropzone setup at initialization and every time the dropzone .today is activated
 
-				this.$( ".col1 .dropzone" ).on( "dropactivate", function( event, ui ) {
-					$(this).fadeIn(200,
-						function () {$(this).siblings().each(function( index, sib ) {
-  							$(sib).hide();
-						});}
-					);
-				} );
-				this.$( ".col1 .dropzone" ).on( "dropdeactivate", function( event, ui ) {
-					$(this).fadeOut(200,
-						function () {$(this).siblings().each(function( index, sib ) {
-  							$(sib).show();
-						});}
-					);
-				} );
+				// this.$( ".col1 .dropzone" ).on( "dropactivate", function( event, ui ) {
+				// 	$(this).fadeIn(200,
+				// 		function () {$(this).siblings().each(function( index, sib ) {
+  		// 					$(sib).hide();
+				// 		});}
+				// 	);
+				// } );
+				// this.$( ".col1 .dropzone" ).on( "dropdeactivate", function( event, ui ) {
+				// 	$(this).fadeOut(200,
+				// 		function () {$(this).siblings().each(function( index, sib ) {
+  		// 					$(sib).show();
+				// 		});}
+				// 	);
+				// } );
 
-				this.$( ".droppable.today" ).on( "dropactivate", function( event, ui ) {
-					// Make sure dropzones are adapted to current situation (an update is
-					// necessary every day)
-					var now = new Date ();
-					if (now.getDay() != self.lastupdate.dropzone.getDay()) {
-						self.setupDropZones();
-					}
-				} );
+				// this.$( ".droppable.today" ).on( "dropactivate", function( event, ui ) {
+				// 	// Make sure dropzones are adapted to current situation (an update is
+				// 	// necessary every day)
+				// 	var now = new Date ();
+				// 	if (now.getDay() != self.lastupdate.dropzone.getDay()) {
+				// 		self.milestonesSetupDrop();
+				// 	}
+				// } );
 
 
 				//------------------------------------------------
@@ -310,67 +315,28 @@ define ([
 			// Dropzones and milestones setup
 			// =============================================================================
 			/**
-			 * Forces the browser to update the data attributes of the dropzones so that
-			 * the behavior remains consistent from one day to another even if the page
-			 * is not reloaded. It should be using a today date passed as parameter, just like {{setupMilestones}}
-			 *
-			 * @method setupDropZones
+			 * Should store in the milestones the right dates, so that tasks are correctly updated
+			 * when dropped on a milestone.
+			 * 
+			 * @method milestonesSetupDrop
 			 */
-			setupDropZones: function () {
-				console.log('start setupDropZones');
+			milestonesSetupDrop: function () {
+				console.log('start milestonesSetupDrop');
 				// Setup dates
 				var today    = new Date();
 				var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
 				var nextweek = new Date(); nextweek.setDate(nextweek.getDate() + 7 - nextweek.getDay() + 1);
 				var later    = new Date(); later.setDate(later.getDate() + 14 - later.getDay() + 1);
+				var $milestones = this.$(".milestones");
 
 				if (today.getDay() === 0) {
-					$(".droppable.tomorrow").hide();
+					$milestones.find(".tomorrow").hide();
 				}
-
-				var $milestones = this.$(".milestones");
 				$milestones.find(".today").attr("data-todo", today.toISOString());
 				$milestones.find(".tomorrow").attr("data-todo", tomorrow.toISOString());
 				$milestones.find(".nextweek").attr("data-todo", nextweek.toISOString());
 				$milestones.find(".later").attr("data-todo", later.toISOString());
 			},
-
-			/**
-			 * Forces the browser to update the milestones it should render along with the tasks.
-			 * Indeed, the milestones to display will change depending on the day of the week.
-			 *
-			 * @method setupMilestones
-			 *
-			setupMilestones: function (today) {
-
-				// Initialize with 'today' as point of reference
-				var tomorrow      = new Date(); tomorrow.setDate(today.getDate()); tomorrow.setMonth(today.getMonth());
-				var laterthisweek = new Date(); laterthisweek.setDate(today.getDate()); laterthisweek.setMonth(today.getMonth());
-				var nextweek      = new Date(); nextweek.setDate(today.getDate()); nextweek.setMonth(today.getMonth());
-				var later         = new Date(); later.setDate(today.getDate()); later.setMonth(today.getMonth());
-
-				today.setHours(0,0,0,0);
-				tomorrow.setHours(0,0,0,0);
-				laterthisweek.setHours(0,0,0,0);
-				nextweek.setHours(0,0,0,0);
-				later.setHours(0,0,0,0);
-
-				// Setup each date starting from today
-				tomorrow.setDate(tomorrow.getDate() + 1);
-				laterthisweek.setDate(laterthisweek.getDate() + 2);
-				nextweek.setDate(today.getDay() === 0 ? nextweek.getDate() + 1 : (nextweek.getDate() + 7 - nextweek.getDay() + 1));
-				later.setDate(today.getDay() === 0 ? nextweek.getDate() + 7 : (later.getDate() + 14 - later.getDay() + 1));
-
-				var milestones = [];
-				milestones.push ({label : "Today", todo_at: today.toISOString()});
-				if (today.getDay() !== 0) { milestones.push ({label : "Tomorrow", todo_at: tomorrow.toISOString()}); }
-				if (today.getDay() !== 0 && today.getDay() !== 6) { milestones.push ({label : "Later this week", todo_at: laterthisweek.toISOString()}); }
-				milestones.push ({label : "Next week", todo_at: nextweek.toISOString()});
-				milestones.push ({label : "Later", todo_at: later.toISOString()});
-
-				this.milestones = milestones;
-				return milestones;
-			},*/
 
 			// Navigation in the browser
 			// =============================================================================
@@ -547,6 +513,45 @@ define ([
 			// Filter tasks by state
 			// =============================================================================
 
+			/**
+			 * To toggle the kind of tasks displayed (done, todo, both)
+			 * 
+			 * @method tasksToggleChecked
+			 */
+			tasksToggleChecked: function(event) {
+				var $button = $(event.target);
+				var step = $button.attr('data-step');
+
+				var sequence = {
+					0 : 1,
+					1 : 2,
+					2 : 0,
+				};
+
+				this.filters.taskFilter.set('completed', sequence[step]);
+
+				$button.removeClass('active');
+				$button.siblings("[data-step="+sequence[step]+"]").addClass('active');
+			},
+
+			/**
+			 * To toggle the kind of tasks displayed (done, todo, both)
+			 * 
+			 * @method tasksToggleMilestones
+			 */
+			tasksToggleMilestones: function(event) {
+				var $button = $(event.target);
+
+				this.$('.tab.tasks ul.objects').each(function (index) {
+					$(this).removeClass('active');
+				});
+				this.$('.tab.tasks ul.'+$button.attr('data-mile')).addClass('active');
+
+				$button.siblings().each(function (index) {
+					$(this).removeClass('active');
+				});
+				$button.addClass('active');
+			},
 
 
 			// =============================================================================
@@ -567,26 +572,6 @@ define ([
 				}
 			},*/
 
-			/**
-			 * To toggle the kind of tasks displayed (done, todo, both)
-			 * 
-			 * @method searchTasksToggle
-			 */
-			searchTasksToggle: function(event) {
-				var $button = $(event.target);
-				var step = $button.attr('data-step');
-
-				var sequence = {
-					0 : 1,
-					1 : 2,
-					2 : 0,
-				};
-
-				this.filters.taskFilter.set('completed', sequence[step]);
-
-				$button.removeClass('active');
-				$button.siblings("[data-step="+sequence[step]+"]").addClass('active');
-			},
 
 			/**
 			 * Allows to remove from current filter the object that has been clicked on
@@ -799,10 +784,9 @@ define ([
 			 * @method renderCollection
 			 */
 			renderCollection: function (collName) {
-				console.log	('render collection ' + collName)
+				console.log	('render collection ' + collName);
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
-
 
 				// Destroy task sortables
 				if (collName === "tasks") {
@@ -828,6 +812,11 @@ define ([
 				var $target  = {};
 				var results = temp.coll[collName].search(this.filters[filterName]);
 
+				if (collName === "tasks") {
+					// console.log('========RENDER========')
+					// console.log(results.pluck('todo_at'))
+				}
+
 				results.each(function (element) {
 					switch (collName) {
 						case "notes" :
@@ -840,8 +829,28 @@ define ([
 							break;
 						case "tasks" :
 							newView = new BrowserTaskView({ collName:"tasks", model: element });
-							// insert calculation here
-							$target = self.$renderingAreas.tasks.today;
+
+							// Setup dates
+							var todo     = new Date(element.get('todo_at'));
+							var today    = new Date();
+							var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+							var nextweek = new Date(); nextweek.setDate(nextweek.getDate() + 7 - nextweek.getDay() + 1);
+							var later    = new Date(); later.setDate(later.getDate() + 14 - later.getDay() + 1);
+
+							// Compare date part only
+							todo.setHours(0,0,0,0);
+							tomorrow.setHours(0,0,0,0);
+							nextweek.setHours(0,0,0,0);
+							later.setHours(0,0,0,0);
+
+							if (today.getDay() == 0) { // Sunday case => no tomorrow
+								if (todo < nextweek) { $target = self.$renderingAreas.tasks.today; break; }
+							} else {
+								if (todo < tomorrow) { $target = self.$renderingAreas.tasks.today; break; }
+								if (todo < nextweek) { $target = self.$renderingAreas.tasks.tomorrow; break; }
+							}
+							if (todo < later) { $target = self.$renderingAreas.tasks.nextweek; break; }
+							$target = self.$renderingAreas.tasks.later;
 							break;
 						default:
 					}
@@ -860,9 +869,6 @@ define ([
 							connectWith : '.droppable',
 							handle      : ".move",
 							cancel      : ".milestone",
-							receive: function( event, ui ) { // Not sure it is useful
-								return console.log("received !");
-							},
 							update: function( event, ui ) {
 								return self.sortableUpdate(event, ui);
 							},
@@ -879,6 +885,8 @@ define ([
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 			 */
 			sortableUpdate: function (event, ui) {
+				console.log('sorted !');
+				/*
 				// 1. Find the model corresponding to the sorted DOM node
 				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 
@@ -915,75 +923,8 @@ define ([
 
 				sortedModel.set('position', newPosition);
 				sortedModel.set('todo_at', newTodo);
-				sortedModel.save();
+				sortedModel.save();*/
 			},
-
-			/**
-			 * This methods aims at preparing the rendering of the tasks with the milestones at the right place
-			 * It can be used only with tasks sorted by todo_at date
-			 * 
-			 * @method insertMilestones
-			 * @param  {Array} list The list of tasks
-			 * @param  {Array} milestones The milestones list to be inserted within the tasks
-			 * @param  {Array} result The final list of objects that should be rendered
-			 *
-			insertMilestones: function (list, milestones, result) {
-				if (!result) { result = []; }
-
-				// Both are empty
-				//---------------------------------
-				if (list.length === 0 && milestones.length === 0) {
-					return result;
-
-				// Only milestones is empty
-				//---------------------------------
-				} else if (milestones.length === 0) {
-					result.push(list.at(0)); // store first task from the list in the final result
-					list.remove(list.at(0)); // remove first task from list
-					return this.insertMilestones(list, milestones, result);
-
-				// Only list is empty
-				//---------------------------------
-				} else if (list.length === 0) {
-					result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
-					return this.insertMilestones(list, milestones, result);
-
-				// Both still contain some information
-				//---------------------------------
-				} else {
-					mile  = milestones[0].todo_at;
-					task0 = list.at(0).get('todo_at');
-					task1 = !list.at(1) ? task0 : list.at(1).get('todo_at');
-
-					if (milestones[0].label == "Today") {
-						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
-						return this.insertMilestones(list, milestones, result);
-					}
-
-					// Case 0 < 1 < X
-					//---------------------------------
-					if (mile > task0 && mile > task1) {
-						result.push(list.at(0)); // store first task from the list in the final result
-						list.remove(list.at(0)); // remove first task from list
-						return this.insertMilestones(list, milestones, result);
-
-					// Case 0 < X <= 1
-					//---------------------------------
-					} else if (mile > task0 && mile <= task1) {
-						result.push(list.at(0)); // store first task from the list in the final result
-						list.remove(list.at(0)); // remove first task from list
-						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
-						return this.insertMilestones(list, milestones, result);
-
-					// Case X <= 0 < 1
-					//---------------------------------
-					} else {
-						result.push(milestones.shift()); // remove first milestone from milestones but store it in the final result
-						return this.insertMilestones(list, milestones, result);
-					}
-				}
-			},*/
-
 		});
 
 		return BrowserView;
