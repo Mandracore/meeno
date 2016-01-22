@@ -80,7 +80,17 @@ body
 =====================================================================================*/
 
 #form-wrapper
+	display table
 	color white
+	font-family Helvetica
+	height 100%
+	width 100%
+	& > div, & > form
+		display table-cell
+		vertical-align middle
+		height 100%
+	div:first-child, div:last-child
+		width 30%
 	h1
 		font-size 2em
 	p
@@ -91,10 +101,18 @@ body
 	label
 		text-transform uppercase
 		font-size .8em
-		font-family Helvetica
-	input
+		&.checkbox
+			text-transform initial
+	input.checkbox
+		padding 0
+		margin 0 .2em
+	input:not(.submit):not(.checkbox)
 		padding .5em
 		border-radius .5em
+		border none
+		background rgba(0,0,0,.2)
+		color white
+		width 100%
 		
 
 /*===================================================================================
@@ -626,6 +644,7 @@ body
 		li
 			display inline-block
 			color cButtonMilestone0
+			transition color .6s
 			text-transform uppercase
 			letter-spacing .05em
 			font-family Dense

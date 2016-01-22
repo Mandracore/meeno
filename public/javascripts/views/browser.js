@@ -35,8 +35,8 @@ define ([
 			// ###Setup the view's DOM events
 			events: {
 				// Search-related events
-				'keyup .search'                                     : 'searchText',
-				'click .objectButtons span'                         : 'searchObjectRemove',
+				'keyup .search-box input'                           : 'searchText',
+				'click .search-box .tags button'                    : 'searchObjectRemove',
 				'click .filter-editor button.save'                  : 'searchFilterSave1',
 				'click .filter-editor button.saveConfirm'           : 'searchFilterSave2',
 				'click .filter-editor button.delete'                : 'searchFilterDelete',
@@ -103,20 +103,20 @@ define ([
 				this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("tag");});
 
 				this.listenTo(this.filters.noteFilter, 'change add:tags remove:tags add:tasks remove:tasks', function () {
-					channel.trigger("browser:search:filters:check-status:noteFilter", this.filters.noteFilter);
+					// channel.trigger("browser:search:filters:check-status:noteFilter", this.filters.noteFilter);
 					this.renderCollection("notes");
 					this.searchFiltersCtrlUpd("note");
-					this.searchRenderFilterSuper("noteFilter"); });
+					this.searchRenderInputFilter("noteFilter"); });
 				this.listenTo(this.filters.taskFilter, 'change add:tags remove:tags', function () {
-					channel.trigger("browser:search:filters:check-status:taskFilter", this.filters.taskFilter);
+					// channel.trigger("browser:search:filters:check-status:taskFilter", this.filters.taskFilter);
 					this.renderCollection("tasks");
 					this.searchFiltersCtrlUpd("task");
-					this.searchRenderFilterSuper("taskFilter");});
+					this.searchRenderInputFilter("taskFilter");});
 				this.listenTo(this.filters.tagFilter, 'change', function () {
-					channel.trigger("browser:search:filters:check-status:tagFilter", this.filters.tagFilter);
+					// channel.trigger("browser:search:filters:check-status:tagFilter", this.filters.tagFilter);
 					this.renderCollection("tags");
 					this.searchFiltersCtrlUpd("tag");
-					this.searchRenderFilterSuper("tagFilter");});
+					this.searchRenderInputFilter("tagFilter");});
 
 				// Keyboard events listeners
 				// this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
@@ -142,18 +142,27 @@ define ([
 				//------------------------------------------------
 				this.milestonesSetupDrop();
 
-				// this.lastupdate = {
-				// 	dropzone: new Date(),
-				// };
-
 				this.$(".milestones li").droppable({
 					// accept      : ".tab.tasks .draggable li",
 					accept      : ".task",
 					activeClass : "target",
 					hoverClass  : "target-hover",
 					tolerance   : "pointer",
+					activate    : function( event, ui ) {
+						self.dropped = false;
+						// Visual hint to help the user discover the dropzones
+						var $milestone = $(this);
+						var delay = $milestone.nextAll().length * 200;
+
+						setTimeout(function() {
+							$milestone.addClass('target-hover');
+							setTimeout(function() {
+								$milestone.removeClass('target-hover');
+							}, 300);
+						}, delay);
+					},
 					drop        : function( event, ui ) {
-						console.log('dropped !');
+						self.dropped = true;
 						var $target = $(this);
 						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
 
@@ -174,33 +183,6 @@ define ([
 						self.renderCollection("tasks");
 					}
 				});
-
-				// Launch dropzone setup at initialization and every time the dropzone .today is activated
-
-				// this.$( ".col1 .dropzone" ).on( "dropactivate", function( event, ui ) {
-				// 	$(this).fadeIn(200,
-				// 		function () {$(this).siblings().each(function( index, sib ) {
-  		// 					$(sib).hide();
-				// 		});}
-				// 	);
-				// } );
-				// this.$( ".col1 .dropzone" ).on( "dropdeactivate", function( event, ui ) {
-				// 	$(this).fadeOut(200,
-				// 		function () {$(this).siblings().each(function( index, sib ) {
-  		// 					$(sib).show();
-				// 		});}
-				// 	);
-				// } );
-
-				// this.$( ".droppable.today" ).on( "dropactivate", function( event, ui ) {
-				// 	// Make sure dropzones are adapted to current situation (an update is
-				// 	// necessary every day)
-				// 	var now = new Date ();
-				// 	if (now.getDay() != self.lastupdate.dropzone.getDay()) {
-				// 		self.milestonesSetupDrop();
-				// 	}
-				// } );
-
 
 				//------------------------------------------------
 				// Preparing vars for object rendering
@@ -245,7 +227,7 @@ define ([
 				});
 
 				// Parameter one autocomplete for each nature of objects (except for tags)
-				$(".listobjects:not(.tags) .search-wrapper input.autocomplete").catcomplete({
+				$(".tab:not(.tags) .search-box input.autocomplete").catcomplete({
 					source: function (request, response) {
 						// request.term : data typed in by the user ("new yor")
 						// response : native callback that must be called with the data to suggest to the user
@@ -267,7 +249,7 @@ define ([
 						return false; // to cancel normal behaviour
 					},
 					select: function(event, ui) {
-						collectionFiltered = $(event.target).closest(".listobjects").hasClass("notes") ? "noteFilter" : "taskFilter";
+						collectionFiltered = $(event.target).closest(".tab").hasClass("notes") ? "noteFilter" : "taskFilter";
 
 						// Saving input value into the global filter
 						var modelSelected = temp.coll.tags.get(ui.item.value) // ui.item.value == model.cid
@@ -356,6 +338,7 @@ define ([
 				this.$el.addClass('selected');
 			},
 
+			// =============================================================================
 			// Add new records
 			// =============================================================================
 			// Find below all the methods meant to create new tasks, tags or notes
@@ -408,106 +391,109 @@ define ([
 			// action on them (delete, tag, move,...)
 			// Not ready yet, for future use.
 
-			/**
-			 * Manages the buttons "select all" and "unselect all". Will be called every time an object
-			 * is selected or unseleted to make sure that the right buttons are displayed
-			 * 
-			 * @method actionSelectorsUpdate
-			 */
-			actionSelectorsUpdate : function (collName) {
-				var $listObjects = this.$(".listobjects."+collName);
+			// /**
+			//  * Manages the buttons "select all" and "unselect all". Will be called every time an object
+			//  * is selected or unseleted to make sure that the right buttons are displayed
+			//  * 
+			//  * @method actionSelectorsUpdate
+			//  */
+			// actionSelectorsUpdate : function (collName) {
+			// 	var $listObjects = this.$(".listobjects."+collName);
 
-				var countUnselected = $listObjects.find("span.checkbox.icon-check-empty").length;
-				if (countUnselected === 0) { // "Unselect all" only
-					$listObjects.find(".actions-contextual-selection .select-all").hide();
-					$listObjects.find(".actions-contextual-selection .unselect-all").show();
-				} else {
-					var countSelected = $listObjects.find("span.checkbox.icon-check").length;
-					if (countSelected === 0) { // "Select all" only
-						$listObjects.find(".actions-contextual-selection .select-all").show();
-						$listObjects.find(".actions-contextual-selection .unselect-all").hide();
-					} else { // "Select all" and "Unselect all"
-						$listObjects.find(".actions-contextual-selection .select-all").show();
-						$listObjects.find(".actions-contextual-selection .unselect-all").show();
-					}
-				}
-			},
+			// 	var countUnselected = $listObjects.find("span.checkbox.icon-check-empty").length;
+			// 	if (countUnselected === 0) { // "Unselect all" only
+			// 		$listObjects.find(".actions-contextual-selection .select-all").hide();
+			// 		$listObjects.find(".actions-contextual-selection .unselect-all").show();
+			// 	} else {
+			// 		var countSelected = $listObjects.find("span.checkbox.icon-check").length;
+			// 		if (countSelected === 0) { // "Select all" only
+			// 			$listObjects.find(".actions-contextual-selection .select-all").show();
+			// 			$listObjects.find(".actions-contextual-selection .unselect-all").hide();
+			// 		} else { // "Select all" and "Unselect all"
+			// 			$listObjects.find(".actions-contextual-selection .select-all").show();
+			// 			$listObjects.find(".actions-contextual-selection .unselect-all").show();
+			// 		}
+			// 	}
+			// },
 
-			/**
-			 * Should select all objects
-			 * 
-			 * @method actionSelectAll
-			 */
-			actionSelectAll: function (event) {
-				var $listObjects = $(event.target).closest(".listobjects");
-				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+			// /**
+			//  * Should select all objects
+			//  * 
+			//  * @method actionSelectAll
+			//  */
+			// actionSelectAll: function (event) {
+			// 	var $listObjects = $(event.target).closest(".listobjects");
+			// 	var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 
-				channel.trigger("browser:actions:select:all:"+collName); // To display checked boxes
-				this.actionSelectorsUpdate(collName); // To update selectors
-			},
+			// 	channel.trigger("browser:actions:select:all:"+collName); // To display checked boxes
+			// 	this.actionSelectorsUpdate(collName); // To update selectors
+			// },
 
-			/**
-			 * Should unselect all objects
-			 * 
-			 * @method actionUnSelectAll
-			 */
-			actionUnSelectAll: function (event) {
-				var $listObjects = $(event.target).closest(".listobjects");
-				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+			// /**
+			//  * Should unselect all objects
+			//  * 
+			//  * @method actionUnSelectAll
+			//  */
+			// actionUnSelectAll: function (event) {
+			// 	var $listObjects = $(event.target).closest(".listobjects");
+			// 	var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 
-				channel.trigger("browser:actions:select:none:"+collName); // To display checked boxes
-				this.actionSelectorsUpdate(collName); // To update selectors
-			},
+			// 	channel.trigger("browser:actions:select:none:"+collName); // To display checked boxes
+			// 	this.actionSelectorsUpdate(collName); // To update selectors
+			// },
 
-			/**
-			 * Displays or hides the controls necessary to select/unselect all objects, delete them,...
-			 * Throws an event to make subviews display their checkboxes
-			 * 
-			 * @method actionDeleteToggle
-			 */
-			actionDeleteToggle: function (event) {
-				var $listObjects = $(event.target).closest(".listobjects");
-				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+			// *
+			//  * Displays or hides the controls necessary to select/unselect all objects, delete them,...
+			//  * Throws an event to make subviews display their checkboxes
+			//  * 
+			//  * @method actionDeleteToggle
+			 
+			// actionDeleteToggle: function (event) {
+			// 	var $listObjects = $(event.target).closest(".listobjects");
+			// 	var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
 
-				$listObjects.find(".actions-contextual .delete .action").toggle();
-				$listObjects.find(".actions-contextual .delete .cancel").toggle();
-				$listObjects.find(".actions-contextual-trigger").toggle();
-				$listObjects.find(".actions-contextual-trigger .delete").toggle();
-				$listObjects.find(".actions-contextual-selection").toggle();
+			// 	$listObjects.find(".actions-contextual .delete .action").toggle();
+			// 	$listObjects.find(".actions-contextual .delete .cancel").toggle();
+			// 	$listObjects.find(".actions-contextual-trigger").toggle();
+			// 	$listObjects.find(".actions-contextual-trigger .delete").toggle();
+			// 	$listObjects.find(".actions-contextual-selection").toggle();
 
-				/**
-				* To make objects subviews show/hide their checkbox.
-				* @event browser:actions:toggle-checkboxes:[collName]
-				*/
-				channel.trigger("browser:actions:toggle-checkboxes:"+collName);
+			// 	/**
+			// 	* To make objects subviews show/hide their checkbox.
+			// 	* @event browser:actions:toggle-checkboxes:[collName]
+			// 	*/
+			// 	channel.trigger("browser:actions:toggle-checkboxes:"+collName);
 
-				if ($listObjects.find(".actions-contextual-selection").is(":visible")) {
-					this.actionSelectorsUpdate(collName);
-				}
-			},
+			// 	if ($listObjects.find(".actions-contextual-selection").is(":visible")) {
+			// 		this.actionSelectorsUpdate(collName);
+			// 	}
+			// },
 
-			/**
-			 * Triggers an event, which will be heard by sub-views that will actually execute the action
-			 * 
-			 * @method actionDeleteExecute
-			 */
-			actionDeleteExecute: function (event) {
-				var $listObjects = $(event.target).closest(".listobjects");
-				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-				var action       = $(event.target).attr('class');// Which action do we want to trigger ?
+			// /**
+			//  * Triggers an event, which will be heard by sub-views that will actually execute the action
+			//  * 
+			//  * @method actionDeleteExecute
+			//  */
+			// actionDeleteExecute: function (event) {
+			// 	var $listObjects = $(event.target).closest(".listobjects");
+			// 	var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
+			// 	var action       = $(event.target).attr('class');// Which action do we want to trigger ?
 
-				/**
-				* To make objects subviews kill themselves and destroy their model if they are selected.
-				* @event browser:actions:delete:[collName]
-				*/
-				channel.trigger("browser:actions:delete:"+collName);
+			// 	/**
+			// 	* To make objects subviews kill themselves and destroy their model if they are selected.
+			// 	* @event browser:actions:delete:[collName]
+			// 	*/
+			// 	channel.trigger("browser:actions:delete:"+collName);
 
-				$listObjects.find(".actions-contextual .delete .action").toggle();
-				$listObjects.find(".actions-contextual .delete .cancel").toggle();
-				$listObjects.find(".actions-contextual-trigger").toggle();
-				$listObjects.find(".actions-contextual-trigger .delete").toggle();
-				$listObjects.find(".actions-contextual-selection").toggle();
-			},
+			// 	$listObjects.find(".actions-contextual .delete .action").toggle();
+			// 	$listObjects.find(".actions-contextual .delete .cancel").toggle();
+			// 	$listObjects.find(".actions-contextual-trigger").toggle();
+			// 	$listObjects.find(".actions-contextual-trigger .delete").toggle();
+			// 	$listObjects.find(".actions-contextual-selection").toggle();
+			// },
+
+
+
 
 
 			// Filter tasks by state
@@ -581,7 +567,7 @@ define ([
 			 */
 			searchObjectRemove: function (event) {
 				var $objectButton          = $(event.target);
-				var $listObjects           = $objectButton.closest('.listobjects');
+				var $listObjects           = $objectButton.closest('.tab');
 				var filteredColl           = $listObjects.hasClass('notes') ? 'notes' : ($listObjects.hasClass('tags') ? 'tags' : 'tasks');
 				var filteredCollFilterName = filteredColl.replace(/(s)$/, function($1){ return ""; })+"Filter";
 				var object                 = temp.coll[$objectButton.attr('data-class')].get($objectButton.attr('data-cid'));
@@ -708,44 +694,27 @@ define ([
 			/**
 			 * Forces the view's current filter to match the one clicked by the user
 			 *
-			 * @method searchRenderFilterSuper
+			 * @method searchRenderInputFilter
 			 * @param filter the model held by the filter view clicked on by the user
 			 */
-			searchRenderFilterSuper: function (filterName) {
+			searchRenderInputFilter: function (filterName) {
 				var self         = this;
 				var filter       = this.filters[filterName];
 				var filteredColl = filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
+				var $searchBox   = this.$(".tab."+filteredColl+" .search-box");
 
-				this.$(".listobjects."+filteredColl+" .super-input .objectButtons span").remove();
-				this.$(".listobjects."+filteredColl+" .super-input input.search").val(filter.get('text')).focus();
+				// Empty the tags rendered in the super input
+				$searchBox.find('.tags button').remove();
+				// Make the input's content match the collection filter just updated
+				$searchBox.find('input').val(filter.get('text')).focus();
 
-				switch (filterName) {
-					case 'noteFilter':
-						filter.get('tags').each(function (tag) {
-							var $objectButton = $("<span></span>")
-								.attr('data-class', "tags") //tags
-								.attr('data-cid', tag.cid)
-								.html(tag.get('label'));
-							self.$(".listobjects."+filteredColl+" .super-input .objectButtons").append($objectButton);
-						});
-						filter.get('tasks').each(function (task) {
-							var $objectButton = $("<span></span>")
-								.attr('data-class', "tasks") //tasks
-								.attr('data-cid', task.cid)
-								.html(task.get('label'));
-							self.$(".listobjects."+filteredColl+" .super-input .objectButtons").append($objectButton);
-						});
-						break;
-					case 'taskFilter':
-						filter.get('tags').each(function (tag) {
-							var $objectButton = $("<span class='fa fa-tag'></span>")
-								.attr('data-class', "tags") //tags
-								.attr('data-cid', tag.cid)
-								.html(tag.get('label'));
-							self.$(".listobjects."+filteredColl+" .super-input .objectButtons").append($objectButton);
-						});
-						break;
-				}
+				filter.get('tags').each(function (tag) {
+					var $tag = $("<button></button>")
+						.attr('data-class', "tags") //tags
+						.attr('data-cid', tag.cid)
+						.html(tag.get('label'));
+					$searchBox.find('.tags').append($tag);
+				});
 			},
 
 			/**
@@ -885,45 +854,48 @@ define ([
 			 * @param  {jQuery ui} ui http://api.jqueryui.com/sortable/#event-update the ui object that is sortable
 			 */
 			sortableUpdate: function (event, ui) {
-				console.log('sorted !');
-				/*
-				// 1. Find the model corresponding to the sorted DOM node
-				var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
+				var self = this;
 
-				// 2. Find out in which scenario we are
-				var domPrev = ui.item.prev(); // previous sibling
-				var domNext = ui.item.next(); // next sibling
-
-				if (!domPrev.length) {
-					// Happens when the user tries to put the task before today
-					// There is nothing in the list before this item (it must be placed just after the milestone 'Today')
-					newPosition = _.min(temp.coll.tasks.pluck('position'))-1;
-					newTodo     = _.min(_.map(temp.coll.tasks.pluck('todo_at'),
-						function (sDate) {return new Date(sDate);}));
-				} else {
-					// If there is a task after
-					if (domNext.length > 0 && !domNext.hasClass('milestone')) {
-						nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
-						newPosition = nextModel.get('position') - 1;
-						newTodo     = nextModel.get('todo_at');
-					// If there is not task after
+				setTimeout(function(){
+					if(self.dropped) {
+					// The object has been dropped first
+						return;
 					} else {
-						// If there is a task before
-						if (!domPrev.hasClass('milestone')) {
-							prevModel   = temp.coll.tasks.get(domPrev.attr('data-cid'));
-							newPosition = prevModel.get('position') + 1;
-							newTodo     = prevModel.get('todo_at');
-						// Before, it's a milestone
-						} else {
-							newPosition = _.min(temp.coll.tasks.pluck('position'))-1;
-							newTodo     = domPrev.attr('data-todo');
-						}
-					}
-				}
+					// The object is only sorted
+						// 1. Find the model corresponding to the sorted DOM node
+						var sortedModel = temp.coll.tasks.get(ui.item.attr('data-cid'));
 
-				sortedModel.set('position', newPosition);
-				sortedModel.set('todo_at', newTodo);
-				sortedModel.save();*/
+						// 2. Find out in which scenario we are
+						var domPrev = ui.item.prev(); // previous sibling
+						var domNext = ui.item.next(); // next sibling
+
+						// No task before => there is something after
+						if (!domPrev.length) {
+							nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
+							newPosition = nextModel.get('position') - 1;
+							newTodo     = nextModel.get('todo_at');
+						} else {
+						// There is something before
+							if (domNext.length > 0) {
+							// There is also something after
+								prevModel   = temp.coll.tasks.get(domPrev.attr('data-cid'));
+								nextModel   = temp.coll.tasks.get(domNext.attr('data-cid'));
+								newPosition = 0.5*(prevModel.get('position') + nextModel.get('position'));
+								newTodo     = nextModel.get('todo_at');
+							} else {
+							// There is nothing after
+								prevModel   = temp.coll.tasks.get(domPrev.attr('data-cid'));
+								newPosition = prevModel.get('position')+1;
+								newTodo     = prevModel.get('todo_at');
+							}
+						}
+
+						sortedModel.set('position', newPosition);
+						sortedModel.set('todo_at', newTodo);
+						sortedModel.save();
+					}
+				}, 50); // Wait 50ms just to be sure the drop event has been triggered (if it is supposed to)
+
 			},
 		});
 
