@@ -35,19 +35,20 @@ define ([
 			// ###Setup the view's DOM events
 			events: {
 				// Search-related events
-				'keyup .search-box input'                           : 'searchText',
-				'click .search-box .tags button'                    : 'searchObjectRemove',
-				'click .filter-editor button.save'                  : 'searchFilterSave1',
-				'click .filter-editor button.saveConfirm'           : 'searchFilterSave2',
-				'click .filter-editor button.delete'                : 'searchFilterDelete',
-				'click .filter-checked'                             : 'tasksToggleChecked',
-				'click .milestones li'                              : 'tasksToggleMilestones',
+				'keyup .search-box input'                    : 'searchText',
+				'click .search-box .tags button'             : 'searchObjectRemove',
+				'click .search-box .reset button'            : 'searchReset',
+				// 'click .filter-editor button.save'        : 'searchFilterSave1',
+				// 'click .filter-editor button.saveConfirm' : 'searchFilterSave2',
+				// 'click .filter-editor button.delete'      : 'searchFilterDelete',
+				'click .filter-checked'                      : 'tasksToggleChecked',
+				'click .milestones li'                       : 'tasksToggleMilestones',
 				// Action-related events
-				'click .new-task button'                            : 'newTask',
-				'click .actions-contextual .delete'                 : 'actionDeleteToggle',
-				'click .actions-contextual-selection .select-all'   : 'actionSelectAll',
-				'click .actions-contextual-selection .unselect-all' : 'actionUnSelectAll',
-				'click .actions-contextual-trigger button'          : 'actionDeleteExecute',
+				'click .new-task button'                               : 'newTask',
+				// 'click .actions-contextual .delete'                 : 'actionDeleteToggle',
+				// 'click .actions-contextual-selection .select-all'   : 'actionSelectAll',
+				// 'click .actions-contextual-selection .unselect-all' : 'actionUnSelectAll',
+				// 'click .actions-contextual-trigger button'          : 'actionDeleteExecute',
 			},
 
 			//===========================================================================================
@@ -95,27 +96,27 @@ define ([
 				this.listenTo(temp.coll.tasks, 'add remove change:completed', function () {
 					this.renderCollection("tasks");});
 
-				this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
-				this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});
-				this.listenTo(temp.coll.tagFilters, 'reset add remove', function () {this.searchRenderFilters("tagFilters");});
-				this.listenTo(temp.coll.noteFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("note");});
-				this.listenTo(temp.coll.taskFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("task");});
-				this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("tag");});
+				// this.listenTo(temp.coll.noteFilters, 'reset add remove', function () {this.searchRenderFilters("noteFilters");});
+				// this.listenTo(temp.coll.taskFilters, 'reset add remove', function () {this.searchRenderFilters("taskFilters");});
+				// this.listenTo(temp.coll.tagFilters, 'reset add remove', function () {this.searchRenderFilters("tagFilters");});
+				// this.listenTo(temp.coll.noteFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("notes");});
+				// this.listenTo(temp.coll.taskFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("tasks");});
+				// this.listenTo(temp.coll.tagFilters, 'change add remove', function () {this.searchFiltersCtrlUpd("tags");});
 
 				this.listenTo(this.filters.noteFilter, 'change add:tags remove:tags add:tasks remove:tasks', function () {
 					// channel.trigger("browser:search:filters:check-status:noteFilter", this.filters.noteFilter);
 					this.renderCollection("notes");
-					this.searchFiltersCtrlUpd("note");
+					// this.searchFiltersCtrlUpd("notes");
 					this.searchRenderInputFilter("noteFilter"); });
 				this.listenTo(this.filters.taskFilter, 'change add:tags remove:tags', function () {
 					// channel.trigger("browser:search:filters:check-status:taskFilter", this.filters.taskFilter);
 					this.renderCollection("tasks");
-					this.searchFiltersCtrlUpd("task");
+					// this.searchFiltersCtrlUpd("tasks");
 					this.searchRenderInputFilter("taskFilter");});
 				this.listenTo(this.filters.tagFilter, 'change', function () {
 					// channel.trigger("browser:search:filters:check-status:tagFilter", this.filters.tagFilter);
 					this.renderCollection("tags");
-					this.searchFiltersCtrlUpd("tag");
+					// this.searchFiltersCtrlUpd("tags");
 					this.searchRenderInputFilter("tagFilter");});
 
 				// Keyboard events listeners
@@ -124,11 +125,11 @@ define ([
 				// this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 
 				// Deactivated for testing purposes only
-				this.searchFiltersCtrlUpd("note");
-				this.searchFiltersCtrlUpd("task");
-				this.searchFiltersCtrlUpd("tag");
+				// this.searchFiltersCtrlUpd("notes");
+				// this.searchFiltersCtrlUpd("tasks");
+				// this.searchFiltersCtrlUpd("tags");
 
-				this.listenTo(channel, "browser:search:filters:activate", this.searchFilterActivate);
+				// this.listenTo(channel, "browser:search:filters:activate", this.searchFilterActivate);
 
 				/*
 				// Actions management
@@ -152,13 +153,13 @@ define ([
 						self.dropped = false;
 						// Visual hint to help the user discover the dropzones
 						var $milestone = $(this);
-						var delay = $milestone.nextAll().length * 200;
+						var delay = $milestone.nextAll().length * 100;
 
 						setTimeout(function() {
 							$milestone.addClass('target-hover');
 							setTimeout(function() {
 								$milestone.removeClass('target-hover');
-							}, 300);
+							}, 200);
 						}, delay);
 					},
 					drop        : function( event, ui ) {
@@ -271,27 +272,27 @@ define ([
 			// Keyboard event proxy
 			// =============================================================================
 
-			/**
-			 * Should become the one proxy for all keyboard events. For now, it is only used for
-			 * task creation.
-			 *
-			 * @method kbEventProxy
-			 */
-			kbEventProxy: function (event) {
-				var $newTaskInput          = this.$(".new-task input");
-				// var $noteAutocompleteInput = this.$(".listobjects.notes .search-wrapper input.autocomplete");
-				// var $taskAutocompleteInput = this.$(".listobjects.tasks .search-wrapper input.autocomplete");
+// 			/**
+// 			 * Should become the one proxy for all keyboard events. For now, it is only used for
+// 			 * task creation.
+// 			 *
+// 			 * @method kbEventProxy
+// 			 */
+// 			kbEventProxy: function (event) {
+// 				var $newTaskInput          = this.$(".new-task input");
+// 				// var $noteAutocompleteInput = this.$(".listobjects.notes .search-wrapper input.autocomplete");
+// 				// var $taskAutocompleteInput = this.$(".listobjects.tasks .search-wrapper input.autocomplete");
 
-				// 1. The user wants to create a new task
-				if ($newTaskInput.is(":focus") && event=="enter") {
-					this.newTaskSub ($newTaskInput);
-				}
-/*
-				// 2. The user wants to close an autocomplete
-				if ($taskAutocompleteInput.is(":focus") && event=="escape") {
-					$taskAutocompleteInput
-				}*/
-			},
+// 				// 1. The user wants to create a new task
+// 				if ($newTaskInput.is(":focus") && event=="enter") {
+// 					this.newTaskSub ($newTaskInput);
+// 				}
+// /*
+// 				// 2. The user wants to close an autocomplete
+// 				if ($taskAutocompleteInput.is(":focus") && event=="escape") {
+// 					$taskAutocompleteInput
+// 				}*/
+// 			},
 
 
 			// Dropzones and milestones setup
@@ -545,19 +546,40 @@ define ([
 			// =============================================================================
 
 			/**
-			 * Controls what happens when the user tries to close the autocomplete
+			 * Updates current filter with the text typed in by the user
 			 *
-			 * @method searchCloseAutocomplete
+			 * @method searchText
 			 * @param event the keyboard event
-			 
-			searchCloseAutocomplete: function (event) {
-				var $listObjects = this.$(".listobjects."+browserActiveView);
-				// Listening to "backspace" & "escape" events triggered by mousetrap
-				if ( event == "escape" || (event == "backspace" && $listObjects.find(".search-wrapper .autocomplete").val() == '') ) {
-					$listObjects.find(".search-wrapper .search").focus();
-				}
-			},*/
+			 */
+			searchText: function (event) {
+				var $input     = $(event.target);
+				var collName   = $input.attr("data-filter");
+				var filterName = collName.replace(/(s)$/, function($1){ return ""; })+"Filter";
 
+				this.filters[filterName].set('text', $input.val());
+				// this.searchFiltersCtrlUpd(collName);
+			},
+
+			/**
+			 * Allows to remove from current filter the object that has been clicked on
+			 *
+			 * @method searchReset
+			 * @param event
+			 */
+			searchReset: function (event) {
+				var self = this;
+				var $resetButton = $(event.target);
+				var filteredColl = $resetButton.closest('.tab').attr('data-class');
+				var filterName   = filteredColl.replace(/(s)$/, function($1){ return ""; })+"Filter";
+
+				this.filters[filterName].set('text','');
+
+				if (filteredColl != "tags") {
+					this.filters[filterName].get('tags').each(function (tag) {
+						self.filters[filterName].get('tags').remove(tag); // Removing model from Filter
+					});
+				}
+			},
 
 			/**
 			 * Allows to remove from current filter the object that has been clicked on
@@ -575,18 +597,46 @@ define ([
 			},
 
 			/**
-			 * Updates current filter with the text typed in by the user
+			 * Forces the view's current filter to match the one clicked by the user
 			 *
-			 * @method searchText
-			 * @param event the keyboard event
+			 * @method searchRenderInputFilter
+			 * @param filter the model held by the filter view clicked on by the user
 			 */
-			searchText: function (event) {
-				var $listObjects = $(event.target).closest(".listobjects");
-				var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
-				var collName     = $listObjects.hasClass("notes") ? "notes" : ($listObjects.hasClass("tags") ? "tags" : "tasks");
-				this.filters[filterName].set('text', $(event.target).val());
-				this.searchFiltersCtrlUpd(collName.replace(/(s)$/, function($1){ return ""; }));
+			searchRenderInputFilter: function (filterName) {
+				var self         = this;
+				var filter       = this.filters[filterName];
+				var filteredColl = filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
+				var $searchBox   = this.$(".tab."+filteredColl+" .search-box");
+
+				// Empty the tags rendered in the super input
+				$searchBox.find('.tags button').remove();
+				// Make the input's content match the collection filter just updated
+				$searchBox.find('input').val(filter.get('text')).focus();
+
+				if (filterName != "tagFilter") {
+					filter.get('tags').each(function (tag) {
+						var $tag = $("<button></button>")
+							.attr('data-class', "tags") //tags
+							.attr('data-cid', tag.cid)
+							.html(tag.get('label'));
+						$searchBox.find('.tags').append($tag);
+					});
+				}
 			},
+
+			/**
+			 * Controls what happens when the user tries to close the autocomplete
+			 *
+			 * @method searchCloseAutocomplete
+			 * @param event the keyboard event
+			 
+			searchCloseAutocomplete: function (event) {
+				var $listObjects = this.$(".listobjects."+browserActiveView);
+				// Listening to "backspace" & "escape" events triggered by mousetrap
+				if ( event == "escape" || (event == "backspace" && $listObjects.find(".search-wrapper .autocomplete").val() == '') ) {
+					$listObjects.find(".search-wrapper .search").focus();
+				}
+			},*/
 
 			/**
 			 * Should update the controls to save/delete filters
@@ -595,11 +645,11 @@ define ([
 			 *
 			 * @method searchFiltersCtrlUpd
 			 * @param {string} collName the name of the collection (example : `tags`)
-			 */
+			 *
 			searchFiltersCtrlUpd: function (collName) { //note
-				var $listObjects    = this.$(".listobjects."+collName+"s");
-				var filtersCollName = collName+"Filters";
-				var filterName      = collName+"Filter";
+				var $listObjects    = this.$(".listobjects."+collName);
+				var filtersCollName = collName.replace(/(s)$/, function($1){ return ""; })+"Filters";
+				var filterName      = collName.replace(/(s)$/, function($1){ return ""; })+"Filter";
 
 				$listObjects.find('.filter-editor .action').hide(); // No action controls should be displayed
 
@@ -617,7 +667,7 @@ define ([
 			 *
 			 * @method searchFilterSave1
 			 * @param event
-			 */
+			 *
 			searchFilterSave1: function (event) {
 				var $listObjects    = $(event.target).closest(".listobjects");
 				$listObjects.find(".filter-editor input").show().focus();
@@ -630,7 +680,7 @@ define ([
 			 *
 			 * @method searchFilterSave2
 			 * @param event
-			 */
+			 *
 			searchFilterSave2: function (event) {
 				var $listObjects      = $(event.target).closest(".listobjects");
 				var filterName        = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
@@ -650,23 +700,23 @@ define ([
 			 *
 			 * @method searchFilterDelete
 			 * @param event
-			 */
+			 
 			searchFilterDelete: function (event) {
 				var $listObjects = $(event.target).closest(".listobjects");
 				var filterName   = $listObjects.hasClass("notes") ? "noteFilter" : ($listObjects.hasClass("tags") ? "tagFilter" : "taskFilter");
 				/**
 				* Will make the view holding the active filter destroy its model
 				* @event browser:search:filters:remove:[filter-name]
-				*/
+				*
 				channel.trigger("browser:search:filters:remove:"+filterName);
-			},
+			},*/
 
 			/**
 			 * Renders all the filters stored in the temp storage.
 			 *
 			 * @method searchRenderFilters
 			 * @param filtersCollName
-			 */
+			 
 			searchRenderFilters: function (filtersCollName) {
 				var self         = this;
 				var filteredColl = filtersCollName.replace(/(Filters)$/, function($1){ return "s"; }); // noteFilters => notes
@@ -688,41 +738,15 @@ define ([
 					self.children[filtersCollName].push (newView);
 					$list.append(newView.render().el);
 				}, this);
-			},
+			},*/
 
-
-			/**
-			 * Forces the view's current filter to match the one clicked by the user
-			 *
-			 * @method searchRenderInputFilter
-			 * @param filter the model held by the filter view clicked on by the user
-			 */
-			searchRenderInputFilter: function (filterName) {
-				var self         = this;
-				var filter       = this.filters[filterName];
-				var filteredColl = filterName.replace(/(Filter)$/, function($1){ return "s"; }); // noteFilter => notes
-				var $searchBox   = this.$(".tab."+filteredColl+" .search-box");
-
-				// Empty the tags rendered in the super input
-				$searchBox.find('.tags button').remove();
-				// Make the input's content match the collection filter just updated
-				$searchBox.find('input').val(filter.get('text')).focus();
-
-				filter.get('tags').each(function (tag) {
-					var $tag = $("<button></button>")
-						.attr('data-class', "tags") //tags
-						.attr('data-cid', tag.cid)
-						.html(tag.get('label'));
-					$searchBox.find('.tags').append($tag);
-				});
-			},
 
 			/**
 			 * Forces the view's current filter to match the one clicked by the user
 			 *
 			 * @method searchFilterActivate
 			 * @param filter the model held by the filter view clicked on by the user
-			 */
+			 *
 			searchFilterActivate: function (filter) {
 				var filterSubClass = filter.get('subClass'); // NoteFilter
 				var filterName     = filterSubClass.charAt(0).toLowerCase() + filterSubClass.slice(1); // noteFilter
@@ -732,9 +756,9 @@ define ([
 				* This event is listened by filter views to make them check
 				* if they are active
 				* @event browser:search:filters:check-status:[filter-name]
-				*/
+				*
 				channel.trigger("browser:search:filters:check-status:"+filterName, this.filters[filterName]);
-			},
+			},*/
 
 			//=================================================================================
 			// Render business objects' sub views 

@@ -179,15 +179,14 @@ block content
 									.info Insert list (lll)
 			//div.browser.active
 			#browser.active
-				div.tab.tags
+				div.tab.tags(data-class="tags")
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
 						div.tags.nostretch
-							button tag3
-							button tag2
+							//button tag2
 						div.input
-							input(placeholder="Type here keywords")
+							input(data-filter="tags", placeholder="Type here keywords")
 						div.reset
 							button
 								| clear
@@ -205,7 +204,7 @@ block content
 								button.cancel.hide-on-mobile
 									| cancel
 									span.fa.fa-remove
-						ul.objects
+						ul.objects.active
 							//li#colortest
 								.colorpicker
 									span.colors
@@ -240,14 +239,14 @@ block content
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
-				div.tab.notes
+				div.tab.notes(data-class="notes")
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
 						div.tags.nostretch
 							// button tag1
 						div.input
-							input.autocomplete(placeholder="Type here keywords")
+							input.autocomplete(data-filter="notes", placeholder="Type here keywords")
 						div.reset
 							button
 								| clear
@@ -265,7 +264,7 @@ block content
 								button.cancel.hide-on-mobile
 									| cancel
 									span.fa.fa-remove
-						ul.objects
+						ul.objects.active
 							//li.expanded
 								.open
 									button.fa.fa-folder
@@ -311,14 +310,14 @@ block content
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
-				div.tab.tasks.active
+				div.tab.tasks.active(data-class="tasks")
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
 						div.tags.nostretch
 							//button tag1
 						div.input
-							input.autocomplete(placeholder="Type here keywords")
+							input.autocomplete(data-filter="tasks", placeholder="Type here keywords")
 						div.reset
 							button
 								| clear
