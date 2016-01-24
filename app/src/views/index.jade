@@ -196,12 +196,12 @@ block content
 							div
 								span.fa.fa-file-o
 							div.input
-								input(placeholder="Type here your new tag")
+								input.mousetrap(data-input-usage="add", placeholder="Type here your new tag")
 							div.buttons
 								button.save
 									| save
 									span.fa.fa-save
-								button.cancel.hide-on-mobile
+								button.cancel
 									| cancel
 									span.fa.fa-remove
 						ul.objects.active
@@ -256,12 +256,12 @@ block content
 							div
 								span.fa.fa-file-o
 							div.input
-								input(placeholder="Type here the title of your new note")
+								input.mousetrap(data-input-usage="add", placeholder="Type here the title of your new note")
 							div.buttons
 								button.save
 									| save
 									span.fa.fa-save
-								button.cancel.hide-on-mobile
+								button.cancel
 									| cancel
 									span.fa.fa-remove
 						ul.objects.active
@@ -337,12 +337,12 @@ block content
 							div
 								span.fa.fa-file-o
 							div.input
-								input(placeholder="Type here your new task")
+								input.mousetrap(data-input-usage="add", placeholder="Type here your new task")
 							div.buttons
 								button.save
 									| save
 									span.fa.fa-save
-								button.cancel.hide-on-mobile
+								button.cancel
 									| cancel
 									span.fa.fa-remove
 						ul.objects.today.draggable.active

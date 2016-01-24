@@ -26,20 +26,19 @@ define ([
 			}],
 
 			initialize: function() {
-				var self = this;
 				this.listenTo(this,'change', this.updated);
 			},
 
 			updated: function() {
-				this.set('updated_at', new Date());
+				this.set('updated_at', new Date().toISOString());
 			},
 
 			defaults: function() {
 				return {
 					label     : 'New Tag',
 					color     : '#000000',
-					created_at: new Date(),
-					updated_at: new Date()
+					created_at  : (new Date()).toISOString(),
+					updated_at  : (new Date()).toISOString(),
 				};
 			}
 		});

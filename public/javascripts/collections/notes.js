@@ -15,6 +15,17 @@ define ([
 		var Notes = Backbone.Collection.extend({
 			model: Note,
 			url: '/api/notes',
+			comparator : 'updated_at',
+			comparator: function (note1, note2) {
+				/* 	Guidelines for building a "sort"-like backbone comparator :
+						return -1 if the first model should come before the second
+						return 0 if they are of the same rank
+						return 1 if the first model should come after
+				*/
+				if (note1.get('updated_at') < note2.get('updated_at')) { return 1; }
+				if (note1.get('updated_at') > note2.get('updated_at')) { return -1; }
+				return 0;
+			},
 
 			search : function (filter) {
 				if(filter.get('text') === "" && filter.get('tags').length == 0 && filter.get('tasks').length == 0) return this;

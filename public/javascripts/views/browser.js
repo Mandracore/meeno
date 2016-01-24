@@ -6,11 +6,13 @@ define ([
 		'channel',
 		'models/filter',
 		'models/task',
+		'models/note',
+		'models/tag',
 		'views/browser-note',
 		'views/browser-task',
 		'views/browser-tag',
 		'views/browser-filter',
-	], function ($, _, Backbone, temp, channel, Filter, Task, BrowserNoteView, BrowserTaskView, BrowserTagView, BrowserFilterView) {
+	], function ($, _, Backbone, temp, channel, Filter, Task, Note, Tag, BrowserNoteView, BrowserTaskView, BrowserTagView, BrowserFilterView) {
 
 		/**
 		 * This class will be used to support the main view of the object browser.
@@ -35,16 +37,17 @@ define ([
 			// ###Setup the view's DOM events
 			events: {
 				// Search-related events
-				'keyup .search-box input'                    : 'searchText',
-				'click .search-box .tags button'             : 'searchObjectRemove',
-				'click .search-box .reset button'            : 'searchReset',
+				'keyup .search-box input'               : 'searchText',
+				'click .search-box .tags button'        : 'searchObjectRemove',
+				'click .search-box .reset button'       : 'searchReset',
+				'click .listobjects .add button.save'   : 'addModelByClick',
+				'click .listobjects .add button.cancel' : 'addModelCancelByClick',
+				'click .filter-checked'                 : 'tasksToggleChecked',
+				'click .milestones li'                  : 'tasksToggleMilestones',
 				// 'click .filter-editor button.save'        : 'searchFilterSave1',
 				// 'click .filter-editor button.saveConfirm' : 'searchFilterSave2',
 				// 'click .filter-editor button.delete'      : 'searchFilterDelete',
-				'click .filter-checked'                      : 'tasksToggleChecked',
-				'click .milestones li'                       : 'tasksToggleMilestones',
 				// Action-related events
-				'click .new-task button'                               : 'newTask',
 				// 'click .actions-contextual .delete'                 : 'actionDeleteToggle',
 				// 'click .actions-contextual-selection .select-all'   : 'actionSelectAll',
 				// 'click .actions-contextual-selection .unselect-all' : 'actionUnSelectAll',
@@ -138,52 +141,17 @@ define ([
 				this.listenTo(channel, 'browser:actions:update-selectors:tags', function () {this.actionSelectorsUpdate("tags");});
 				*/
 
+				//-------------------------------------------------------------------------------
+				// Key DOM events listeners : on inputs, and on keyboard events
+				//-------------------------------------------------------------------------------
+				this.listenInputStart();
+				this.listenTo(channel, 'keyboard:enter', function () {this.listenKbProxy("enter");});
+				this.listenTo(channel, 'keyboard:escape', function () {this.listenKbProxy("escape");});
+
 				//------------------------------------------------
 				// Task dropzone and milestone management 
 				//------------------------------------------------
 				this.milestonesSetupDrop();
-
-				this.$(".milestones li").droppable({
-					// accept      : ".tab.tasks .draggable li",
-					accept      : ".task",
-					activeClass : "target",
-					hoverClass  : "target-hover",
-					tolerance   : "pointer",
-					activate    : function( event, ui ) {
-						self.dropped = false;
-						// Visual hint to help the user discover the dropzones
-						var $milestone = $(this);
-						var delay = $milestone.nextAll().length * 100;
-
-						setTimeout(function() {
-							$milestone.addClass('target-hover');
-							setTimeout(function() {
-								$milestone.removeClass('target-hover');
-							}, 200);
-						}, delay);
-					},
-					drop        : function( event, ui ) {
-						self.dropped = true;
-						var $target = $(this);
-						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
-
-						sortedModel.set("position",_.min(temp.coll.tasks.pluck('position'))-1);
-
-						if ($target.hasClass('today')) {
-							var todos        = temp.coll.tasks.pluck('todo_at');
-							var todos_nonull = todos.filter(function (date) { return date !== null; });
-							var todos_dates  = todos_nonull.map(function (date) { return new Date(date); });
-							var todos_min    = _.min(todos_dates);
-							sortedModel.set("todo_at", todos_min);
-						} else {
-							sortedModel.set("todo_at",$target.attr("data-todo"));
-						}
-
-						sortedModel.save();
-						temp.coll.tasks.sort();
-						self.renderCollection("tasks");
-					}
-				});
 
 				//------------------------------------------------
 				// Preparing vars for object rendering
@@ -240,7 +208,7 @@ define ([
 								return {
 									label    : model.get("label"),
 									value    : model.cid,
-									category : "Relevant tags",
+									category : "Select an item below to filter by tag",
 								};
 							})
 						);
@@ -269,30 +237,55 @@ define ([
 			//===========================================================================================
 
 
-			// Keyboard event proxy
+			// DOM events listener initialization
 			// =============================================================================
 
-// 			/**
-// 			 * Should become the one proxy for all keyboard events. For now, it is only used for
-// 			 * task creation.
-// 			 *
-// 			 * @method kbEventProxy
-// 			 */
-// 			kbEventProxy: function (event) {
-// 				var $newTaskInput          = this.$(".new-task input");
-// 				// var $noteAutocompleteInput = this.$(".listobjects.notes .search-wrapper input.autocomplete");
-// 				// var $taskAutocompleteInput = this.$(".listobjects.tasks .search-wrapper input.autocomplete");
+			/**
+			 * Initialize event listeners
+			 * Listen to the `input` event (any change, inc. copy/paste) of the inputs
+			 * and do the right actions (display form controls or not)
+			 * 
+			 * @method listenInputStart
+			 */
+			listenInputStart: function() {
+				var self = this;
 
-// 				// 1. The user wants to create a new task
-// 				if ($newTaskInput.is(":focus") && event=="enter") {
-// 					this.newTaskSub ($newTaskInput);
-// 				}
-// /*
-// 				// 2. The user wants to close an autocomplete
-// 				if ($taskAutocompleteInput.is(":focus") && event=="escape") {
-// 					$taskAutocompleteInput
-// 				}*/
-// 			},
+				// Start watching events on add all boxes
+				this.$('.listobjects .add input').each(function (index){
+					var $input = $(this);
+					// Initialize 'input' events listener (any change, inc. copy/paste to inputs)
+					$input.on('input', function() {
+						if($input.val() != "") {
+							$input.closest('.add').addClass('updated');
+						} else {
+							$input.closest('.add').removeClass('updated');
+						}
+					});
+				});
+			},
+
+			/**
+			 * Should become the one proxy for all keyboard events.
+			 * 
+			 * @method listenKbProxy
+			 */
+			listenKbProxy: function (event) {
+				var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
+				console.log(event);
+				if ($focused.attr('data-input-usage')) {
+					// Option A / The user wants to create objects
+					if ($focused.attr('data-input-usage') == "add") {
+						switch (event) {
+							case "enter": 
+								this.addModel($focused);
+								break;
+							case "escape":
+								this.addModelCancel($focused);
+								break;
+						}
+					}
+				}
+			},
 
 
 			// Dropzones and milestones setup
@@ -305,7 +298,9 @@ define ([
 			 */
 			milestonesSetupDrop: function () {
 				console.log('start milestonesSetupDrop');
-				// Setup dates
+				var self = this;
+
+				// Store the right dates into the milestones and hide tomorrow in case we are sunday
 				var today    = new Date();
 				var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
 				var nextweek = new Date(); nextweek.setDate(nextweek.getDate() + 7 - nextweek.getDay() + 1);
@@ -319,6 +314,49 @@ define ([
 				$milestones.find(".tomorrow").attr("data-todo", tomorrow.toISOString());
 				$milestones.find(".nextweek").attr("data-todo", nextweek.toISOString());
 				$milestones.find(".later").attr("data-todo", later.toISOString());
+
+				// Setup jquery droppable on milestones
+				this.$(".milestones li").droppable({
+					// accept      : ".tab.tasks .draggable li",
+					accept      : ".task",
+					activeClass : "target",
+					hoverClass  : "target-hover",
+					tolerance   : "pointer",
+					activate    : function( event, ui ) {
+						self.dropped = false;
+						// Visual hint to help the user discover the dropzones
+						var $milestone = $(this);
+						var delay = $milestone.nextAll().length * 100;
+
+						setTimeout(function() {
+							$milestone.addClass('target-hover');
+							setTimeout(function() {
+								$milestone.removeClass('target-hover');
+							}, 200);
+						}, delay);
+					},
+					drop        : function( event, ui ) {
+						self.dropped = true;
+						var $target = $(this);
+						var sortedModel = temp.coll.tasks.get(ui.draggable.attr('data-cid'));
+
+						sortedModel.set("position",_.min(temp.coll.tasks.pluck('position'))-1);
+
+						if ($target.hasClass('today')) {
+							var todos        = temp.coll.tasks.pluck('todo_at');
+							var todos_nonull = todos.filter(function (date) { return date !== null; });
+							var todos_dates  = todos_nonull.map(function (date) { return new Date(date); });
+							var todos_min    = _.min(todos_dates);
+							sortedModel.set("todo_at", todos_min);
+						} else {
+							sortedModel.set("todo_at",$target.attr("data-todo"));
+						}
+
+						sortedModel.save();
+						temp.coll.tasks.sort();
+						self.renderCollection("tasks");
+					}
+				});
 			},
 
 			// Navigation in the browser
@@ -343,45 +381,87 @@ define ([
 			// Add new records
 			// =============================================================================
 			// Find below all the methods meant to create new tasks, tags or notes
-			
+
 			/**
-			 * When a user wants to create a new task by clicking on a submit button
+			 * When a user wants to abort creating a new object by clicking on `cancel` button
+			 * Will just call the function {{#crossLink "BrowserView/addModelCancel:method"}}{{/crossLink}} with the
+			 * right parameter.
 			 * 
-			 * @method newTask
+			 * @method addModelCancelByClick
 			 */
-			newTask: function (event) {
-				var $input = $(event.target).prev().find('input');
-				this.newTaskSub($input);
+			addModelCancelByClick: function (event) {
+				this.addModelCancel($(event.target).closest('.add').find('input'));
 			},
 
 			/**
-			 * Child of the method {{#crossLink "BrowserView/newTask:method"}}{{/crossLink}}.
-			 * Allows to have the same behaviour, regardless of how the user validates the creation. So the calling method can be
-			 * either {{#crossLink "BrowserView/newTask:method"}}{{/crossLink}} (creation by click on button) or
-			 * {{#crossLink "BrowserView/kbEventProxy:method"}}{{/crossLink}} (creation by keying ENTER).
+			 * When a user wants to abort creating a new object.
+			 * Can be triggered either by keyboard ({{#crossLink "BrowserView/listenKbProxy:method"}}{{/crossLink}})
+			 * or by click on `cancel` button ({{#crossLink "BrowserView/addModelCancelByClick:method"}}{{/crossLink}}).
 			 * 
-			 * @method newTaskSub
+			 * @method addModelCancel
 			 */
-			newTaskSub: function ($input) {
-				temp.coll.tasks.sort();
+			addModelCancel: function ($input) {
+				$input.blur().val('').trigger('input').focus();
+			},
 
-				var position = 0
-				var todo_at  = new Date();
-				if (temp.coll.tasks.length > 0) {
-					position = _.min(temp.coll.tasks.pluck('position'))-1;
-					todo_at  = _.min(_.map(temp.coll.tasks.pluck('todo_at'),
-						function (sDate) {return new Date(sDate);})
-					);
+			/**
+			 * When a user wants to create a new object by clicking on `save` button
+			 * Will just call the function {{#crossLink "BrowserView/addModel:method"}}{{/crossLink}} with the
+			 * right parameter.
+			 * 
+			 * @method addModelByClick
+			 */
+			addModelByClick: function (event) {
+				this.addModel($(event.target).closest('.add').find('input'));
+			},
+
+
+			/**
+			 * When a user wants to create a new object.
+			 * Can be triggered either by keyboard ({{#crossLink "BrowserView/listenKbProxy:method"}}{{/crossLink}})
+			 * or by click on `save` button ({{#crossLink "BrowserView/addModelByClick:method"}}{{/crossLink}}).
+			 * 
+			 * @method addModel
+			 */
+			addModel: function ($input) {
+				switch ($input.closest('.tab').attr('data-class')) {
+					case "notes" :
+						var newModel = new Note ({
+							title : $input.val(),
+						});
+						temp.coll.notes.add(newModel);
+						break;
+					case "tags" :
+						var newModel = new Tag ({
+							label : $input.val(),
+						});
+						temp.coll.tags.add(newModel);
+						break;
+
+					case "tasks" :
+						temp.coll.tasks.sort();
+
+						var position = 0
+						var todo_at  = new Date();
+						if (temp.coll.tasks.length > 0) {
+							var todos        = temp.coll.tasks.pluck('todo_at');
+							var todos_nonull = todos.filter(function (date) { return date !== null; });
+							var todos_dates  = todos_nonull.map(function (date) { return new Date(date); });
+
+							position = _.min(temp.coll.tasks.pluck('position'))-1;
+							todo_at  = _.min(todos_dates);
+						}
+
+						var newModel = new Task ({
+							label    : $input.val(),
+							position : position,
+							todo_at  : todo_at
+						});
+						temp.coll.tasks.add(newModel);
+						break;
 				}
 
-				var task = new Task ({
-					label    : $input.val(),
-					position : position,
-					todo_at  : todo_at
-				});
-
-				temp.coll.tasks.add(task)
-				task.save();
+				newModel.save();
 				$input.val("").focus();
 			},
 

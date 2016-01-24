@@ -101,8 +101,11 @@ body
 		width 30%
 	h1
 		font-size 2em
+		text-shadow 0 0 10px black
 	p
 		margin 1em 0 0 0
+		&.errors
+			color orange
 	label:not(.checkbox)
 		display block
 		margin 0 0 .3em 0
@@ -692,6 +695,7 @@ body
 	.add
 		display table
 		border none
+		height 2.5em
 		background-color cInputBg0
 		&:hover
 			border none
@@ -708,23 +712,25 @@ body
 				margin 0 .6em 0 1em
 				opacity .2
 		.buttons
-			width 1%
-			white-space nowrap
-			padding .7em 0
-			button
-				border none
-				background-color transparent
-				color cButtonColor0
-				margin 0 1em 0 0
-				padding 0
-				span
-					margin 0 0 0 .6em
-				&:hover
-					cursor pointer
-					color cButtonColor1
-				&:active
-					color white
-					
+			display none
+		&.updated
+			.buttons
+				width 1%
+				white-space nowrap
+				display table-cell
+				button
+					border none
+					background-color transparent
+					color cButtonColor0
+					margin 0 1em 0 0
+					padding 0
+					span
+						margin 0 0 0 .6em
+					&:hover
+						cursor pointer
+						color cButtonColor1
+					&:active
+						color white
 		.input
 			input
 				width 100%
@@ -737,7 +743,7 @@ body
 		display none
 		&.active
 			display block
-			height calc(100% - 3em)		
+			height calc(100% - 2.5em)		
 			overflow auto
 		input
 			font-size .9em
@@ -1029,7 +1035,6 @@ body
 		height calc(100% - 6em)
 		margin 2em 0 0 0
 		.objects
-			height 100%
 			li
 				&:not(.add)
 					.open
@@ -1056,7 +1061,6 @@ body
 		height calc(100% - 6em)
 		margin 2em 0 0 0
 		.objects
-			height 100%
 			li
 				&:not(.add)
 					display table

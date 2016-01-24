@@ -22,6 +22,7 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
+					'click .delete button'       : 'delete',
 					'click .overview'            : 'expand',
 					'click .reduce'              : 'reduce',
 					'click .label .edit'         : 'editLabel',
@@ -172,6 +173,9 @@ define ([
 				this.$('.form .label').removeClass('updated');
 				this.model.set('label', this.$('.form .label input').val());
 				this.model.save();
+				this.reduce();
+				this.render();
+				this.expand();
 			},
 
 			/**

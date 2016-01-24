@@ -29,6 +29,7 @@ define ([
 				var date2 = typeof task2.get('todo_at') == "string" ? new Date (task2.get('todo_at')) : task2.get('todo_at');
 				date1.setHours(0,0,0,0);
 				date2.setHours(0,0,0,0);
+
 				var time1 = date1.getTime();
 				var time2 = date2.getTime();
 

@@ -33,12 +33,11 @@ define ([
 			}],
 
 			initialize: function() {
-				var self = this;
 				this.listenTo(this,'change', this.updated);
 			},
 
 			updated: function() {
-				this.set('updated_at', new Date());
+				this.set('updated_at', new Date().toISOString());
 			},
 
 			defaults: function() {
@@ -46,8 +45,8 @@ define ([
 					title       : 'Nouvelle note',
 					content     : 'Saisissez ici le contenu de votre note...',
 					content_sec : 'Vous pouvez également saisir vos notes ici...',
-					created_at  : new Date(),
-					updated_at  : new Date()
+					created_at  : (new Date()).toISOString(),
+					updated_at  : (new Date()).toISOString(),
 				};
 			}
 		});

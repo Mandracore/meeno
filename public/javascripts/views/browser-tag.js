@@ -126,16 +126,6 @@ define ([
 					}
 				});
 			},
-
-			/**
-			 * Will destroy the view's model and the view itself when the user clics on `.delete` class DOM element
-			 *
-			 * @method delete
-			 */
-			delete: function() {
-				this.model.destroy();
-				this.remove();
-			},
 		});
 
 		return BrowserTagView;

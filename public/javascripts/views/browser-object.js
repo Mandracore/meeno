@@ -36,6 +36,16 @@ define ([
 				// this.listenTo(channel, 'browser:actions:select:none:'+this.options.collName, function () { this.actionUnSelectMe() });
 			},
 
+			/**
+			 * Will destroy the view's model and the view itself when the user clics on `.delete` class DOM element
+			 *
+			 * @method delete
+			 */
+			delete: function() {
+				this.model.destroy();
+				this.remove();
+			},
+
 
 			//============================================================
 			// CORE ATTRIBUTES EDITION (commons btw. notes, tags and tasks)

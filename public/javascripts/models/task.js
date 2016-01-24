@@ -45,7 +45,6 @@ define ([
 			},
 
 			initialize: function() {
-				var self = this;
 				this.listenTo(this,'change:label change:position change:completed change:due_at change:todo_at', this.updated);
 			},
 

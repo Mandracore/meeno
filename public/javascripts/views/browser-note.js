@@ -19,6 +19,7 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
+					'click .delete button' : 'delete',
 					'click .label'         : 'expand',
 					'click .reduce'        : 'reduce',
 					'click .label .cancel' : 'editLabelCancel',
@@ -65,6 +66,18 @@ define ([
 			},
 
 			/**
+			 * reduce the note
+			 * 
+			 * @method reduce
+			 */
+			reduce: function() {
+				if(this.$el.hasClass('expanded')) {
+					this.$el.removeClass('expanded');
+					this.listenStop();
+				}
+			},
+
+			/**
 			 * Update the model's label attribute
 			 * 
 			 * @method editLabelSubmit
@@ -73,6 +86,9 @@ define ([
 				this.$('.form .label').removeClass('updated');
 				this.model.set('title', this.$('.form .label input').val());
 				this.model.save();
+				this.reduce();
+				this.render();
+				this.expand();
 			},
 
 			/**
@@ -94,17 +110,6 @@ define ([
 			},
 
 
-			/**
-			 * reduce the note
-			 * 
-			 * @method reduce
-			 */
-			reduce: function() {
-				if(this.$el.hasClass('expanded')) {
-					this.$el.removeClass('expanded');
-					this.listenStop();
-				}
-			},
 /*
 			edit: function() {
 				var newEditor = new EditorView ({ model: this.model });
