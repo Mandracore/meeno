@@ -225,6 +225,9 @@ body
 				&:hover:not(.selected)
 					cursor pointer
 					border-right 10px solid rgba(255, 255, 255, .5)
+				&:hover
+					.close
+						cursor pointer
 				&.selected, &:active
 					opacity .8
 					border-right 10px solid #0093FF
@@ -363,12 +366,21 @@ body
 				width calc(50% - 5px)
 				height 100%
 				background-color white
-				h1
+				h1, h2, h3, h4
 					font-family moon
 					font-size 2em
 					margin .5em 0 .5em 0
 				h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child
 					margin 0 0 .5em 0
+				h2
+					font-size 1.7em
+				h3
+					font-size 1.4em
+				h4
+					font-size 1.1em
+				ul
+					list-style-type circle
+					list-style-position inside
 			.content
 				height calc(100% - 6.6em)
 				overflow auto
@@ -443,7 +455,7 @@ body
 							text-decoration line-through
 							opacity 1							
 				.text-editor
-					padding 0 calc(100% - 11em + 3px) 0 1.5em
+					width 100%
 					height 3em
 					overflow hidden
 					transition top .5s ease
@@ -455,7 +467,8 @@ body
 					& > div
 						display table-cell
 						vertical-align middle
-						&.tag, &.task
+						height 100%
+						&:not(.spacer)
 							width 1em
 						.info
 							display none
@@ -475,17 +488,18 @@ body
 								line-height 4.28em
 								padding 0 1em 0 0
 						button
+							display block
+							height 100%
+							padding 0 .5em
 							opacity .6
 							color black
 							background none
 							border none
-							display block
-							padding 1em .5em
-							&:hover, &:active
+							&:hover, &:active, &.hover
+								padding 0 .5em 5px .5em
 								opacity .8
-								padding calc(1em - 5px) .5em 1em .5em
 								cursor pointer
-							&:hover
+							&:hover, &.hover
 								border-top 5px solid grey
 							&:active
 								opacity 1
@@ -501,18 +515,24 @@ body
 					ul
 						li
 							display inline-block
-							padding 1em .5em 1em .5em
-							opacity .7
-							font-family Dense
-							font-size 1.2em
-							&:hover
-								padding calc(1em - 5px) .5em 1em .5em
-								border-top 5px solid grey
-								cursor pointer
-							&:active, &.active
-								padding calc(1em - 5px) .5em 1em .5em
-								opacity 1
-								border-top 5px solid cCyan
+							a
+								display block
+								color black
+								text-decoration none
+								padding 1em .5em 1em .5em
+								opacity .7
+								font-family Dense
+								font-size 1.2em
+								&:hover
+									padding calc(1em - 5px) .5em 1em .5em
+									border-top 5px solid grey
+									cursor pointer
+								&:active, &.active
+									color black
+									padding calc(1em - 5px) .5em 1em .5em
+									opacity 1
+									border-top 5px solid cCyan
+							
 
 
 // Hacks for mobile design

@@ -122,6 +122,10 @@ define ([
 					// this.searchFiltersCtrlUpd("tags");
 					this.searchRenderInputFilter("tagFilter");});
 
+				this.listenTo(channel, 'browser:refresh:notes', function () {this.renderCollection("notes");});
+				this.listenTo(channel, 'browser:refresh:tags', function () {this.renderCollection("tags");});
+				this.listenTo(channel, 'browser:refresh:tasks', function () {this.renderCollection("tasks");});
+
 				// Keyboard events listeners
 				// this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
 				// this.listenTo(channel, 'keyboard:backspace', function () {this.kbEventProxy("backspace");});
@@ -271,7 +275,6 @@ define ([
 			 */
 			listenKbProxy: function (event) {
 				var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
-				console.log(event);
 				if ($focused.attr('data-input-usage')) {
 					// Option A / The user wants to create objects
 					if ($focused.attr('data-input-usage') == "add") {

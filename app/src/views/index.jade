@@ -72,25 +72,13 @@ block content
 						span.fa.fa-bookmark
 					// Commands to navigate between the different tabs
 					ul#nav
-						li.browse.notes(data-type="notes") NOTES
-						li.browse.tasks.selected(data-type="tasks") TASKS
+						li.browse.notes.selected(data-type="notes") NOTES
+						li.browse.tasks(data-type="tasks") TASKS
 						li.browse.tags(data-type="tags") TAGS
 					ul#editors-tabs
-						li(data-cid="test")
-							span.close.fa.fa-remove
-							span SOMFY_MEE_DOM-AFE_2015-10-13-1630
-						li(data-cid="notes")
-							span.close.fa.fa-remove
-							span CS Checkpoint AFE 20151123
 						li(data-cid="vpi")
 							span.close.fa.fa-remove
-							span CS Checkpoint VPI 20151127
-						li(data-cid="notes")
-							span.close.fa.fa-remove
-							span SOMFY_MEE_DOM-CMO_2015-06-25-1600
-						li(data-cid="notes")
-							span.close.fa.fa-remove
-							span SOMFY_MEE_DOM-CMO_2015-07-16-1500
+							span.open CS Checkpoint VPI 20151127
 				nav.misc
 					h2 get help
 						span.fa.fa-question-circle
@@ -118,7 +106,7 @@ block content
 									li 1
 									li.active 2
 									li 3
-							div#rla.content(contenteditable="true")
+							div.content(tabindex=1, contenteditable="true")
 								h1 Participants
 								p Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. 
 								.tag(contenteditable="false") SOMFY
@@ -159,7 +147,7 @@ block content
 									li 2
 									li 3
 									li 4
-							div.content(contenteditable="true")
+							div.content(tabindex=1, contenteditable="true")
 								h1 Decisions
 								| Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
 								h1 Actions
@@ -239,7 +227,7 @@ block content
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
-				div.tab.notes(data-class="notes")
+				div.tab.notes.active(data-class="notes")
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search
@@ -310,7 +298,7 @@ block content
 								.delete
 									button.fa.fa-trash
 									button.fa.fa-trash-o
-				div.tab.tasks.active(data-class="tasks")
+				div.tab.tasks(data-class="tasks")
 					div.search-box
 						div.looking-glass
 							span.fa.fa-search

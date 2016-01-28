@@ -23,12 +23,13 @@ define ([
 			el: '#meenoApp',
 
 			events: {
-				'submit #login'            : 'login',
-				'submit #register'         : 'register',
-				'click #toregister'        : 'toggleLR',
-				'click #tologin'           : 'toggleLR',
-				'click #nav .browse'       : 'browse',
-				'click #editors-tabs > li' : 'edit',
+				'submit #login'                   : 'login',
+				'submit #register'                : 'register',
+				'click #toregister'               : 'toggleLR',
+				'click #tologin'                  : 'toggleLR',
+				'click #nav .browse'              : 'browse',
+				'click #editors-tabs > li .open'  : 'editorOpen',
+				'click #editors-tabs > li .close' : 'editorClose',
 			},
 
 			initialize: function() {
@@ -36,17 +37,17 @@ define ([
 				this.logging              = false;
 				this.registering          = false;
 
-				Mousetrap.bind(['ctrl+alt+shift+h'], function() {
+				Mousetrap.bind('# #', function() {
 					channel.trigger('keyboard:tag');
-					// return false; // return false to prevent default browser behavior and stop event from bubbling
+					return false; // return false to prevent default browser behavior and stop event from bubbling
 				});
-				Mousetrap.bind(['ctrl+alt+shift+a'], function() {
+				Mousetrap.bind('@ @', function() {
 					channel.trigger('keyboard:entity');
-					// return false; // return false to prevent default browser behavior and stop event from bubbling
+					return false; // return false to prevent default browser behavior and stop event from bubbling
 				});
-				Mousetrap.bind(['ctrl+alt+shift+t'], function() {
+				Mousetrap.bind('& &', function() {
 					channel.trigger('keyboard:task');
-					// return false; // return false to prevent default browser behavior and stop event from bubbling
+					return false; // return false to prevent default browser behavior and stop event from bubbling
 				});
 				Mousetrap.bind(['escape'], function() {
 					channel.trigger('keyboard:escape');
@@ -189,13 +190,6 @@ define ([
 				});
 				return false;
 			},
-/*
-			newNote: function() {
-				var newNote   = temp.coll.notes.create({silent:true});
-				var newEditor = new EditorView ({ model: newNote });
-				newEditor.render();
-				newEditor.toggle();
-			},*/
 
 			/**
 			 * To open the browser in the right position
@@ -207,6 +201,10 @@ define ([
 				this.minEditors();
 				var $button = $(event.target);
 				var type    = $button.attr("data-type");
+
+				temp.coll[type].sort();
+				channel.trigger('browser:refresh:'+type);
+
 				if (!($button.hasClass('selected'))) {
 					$button.siblings().removeClass('selected');
 					$button.addClass('selected');
@@ -218,23 +216,35 @@ define ([
 			},
 
 			/**
-			 * To open the browser in the right position
+			 * To open the right note editor. This method can be triggered by an editor itself if it needs to be 
+			 * displayed ({{#crossLink "EditorBodyView:show:method"}}{{/crossLink}}).
 			 *
-			 * @method edit
+			 * @method editorOpen
 			 */
-			edit: function (event) {
+			editorOpen: function (event) {
 				this.minBrowser();
 				var $button = $(event.target).closest('li');
 				var noteCid = $button.attr("data-cid");
 				if (!($button.hasClass('selected'))) {
 					$button.siblings().removeClass('selected');
-					$button.addClass('selected');
-					this.$('#editors').removeClass('active');
-					this.$('#editors').addClass('active');
+					$button.addClass('selected'); // activate the button tab itself
+					this.$('#editors').removeClass('active').addClass('active');
 					this.$('#editors').children().removeClass('active');
-					this.$('#editors .editor[data-cid=' + noteCid + ']').addClass('active');
+					this.$('#editors .editor[data-cid=' + noteCid + ']').addClass('active'); // display the right editor
 				}
 			},
+
+			/**
+			 * To close the right editor and go back to browser. Most actions are delegated to the editor view itself via
+			 * the event editors:close:noteCid
+			 *
+			 * @method editorClose
+			 */
+			editorClose: function (event) {
+				var noteCid = $(event.target).closest('li').attr("data-cid");
+				channel.trigger('editors:close:'+noteCid);
+			},
+
 
 			/**
 			 * To minimize the editors

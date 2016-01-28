@@ -42,9 +42,9 @@ define ([
 
 			defaults: function() {
 				return {
-					title       : 'Nouvelle note',
-					content     : 'Saisissez ici le contenu de votre note...',
-					content_sec : 'Vous pouvez également saisir vos notes ici...',
+					title       : 'New note',
+					content     : '<h1>Column 1 header</h1><p>Set here the content of your note</p>',
+					content_sec : '<h1>Column 2 header</h1><p>Set here some other content for your note</p>',
 					created_at  : (new Date()).toISOString(),
 					updated_at  : (new Date()).toISOString(),
 				};

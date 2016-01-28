@@ -212,30 +212,79 @@
 	<%= title %>
 </script>
 
-<!-- ################### EDITOR BODY TEMPLATE ###################-->
+<!-- #############################################################-->
+<!-- ################### EDITOR BODY TEMPLATE ####################-->
+<!-- #############################################################-->
 <script type="text/template" id="editor-body-template" style="display: none;">
-	<div class="col1">
-		<ul class="actions-contextual">
-			<li class="clone"><span class="fa fa-clone"></span>Duplicate</li>
-			<li class="delete"><span class="fa fa-trash"></span>Delete</li>
-		</ul>
-	</div>
-	<div class="col2">
-		<div class="maximize">
-			<ul class="windows-control">
-				<li class="close fa fa-close"></li>
-				<li class="title edit-title" contentEditable><%= title %></li>
-			</ul>
+	<div class="header">
+		<div class="close">
+			<button class="fa fa-remove"></button>
 		</div>
-		<article>
-			<!--section class="attributes date">
-				<span class="fieldname">last update </span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %>
-			</section-->
-			<section contentEditable class="edit-content editable mousetrap left"><%= content %></section>
-			<section contentEditable class="edit-content-sec editable mousetrap right"><%= content_sec %></section>
-		</article>
+		<div class="title"><%= title %></div>
+		<div class="actions hide-on-mobile">
+			<button class="fa fa-trash-o">
+				<span>DELETE</span>
+			</button>
+			<button class="fa fa-clone">
+				<span>DUPLICATE</span>
+			</button>
+		</div>
+	</div>
+	<div class="body grid-container grid-parent">
+		<div class="left column focus">
+			<div class="summary">
+				<ul>
+					<li>1</li>
+					<li class="active">2</li>
+					<li>3</li>
+				</ul>
+			</div>
+			<div tabindex=1 class="content mousetrap" contenteditable="true"><%= content %></div>
+			<div class="text-editor">
+				<div class="tag">
+					<button data-action="tag" class="fa fa-tag hover"></button>
+					<div class="info">Insert tag (ttt)</div>
+				</div>
+				<div class="task">
+					<button data-action="task" class="fa fa-tasks"></button>
+					<div class="info">Insert task (&amp;&amp;&amp;)</div>
+				</div>
+				<div class="font-header">
+					<button data-action="header" class="fa fa-header"></button>
+					<div class="info">Toggle headers (Ctrl + plus)</div>
+				</div>
+				<div class="spacer"></div>
+			</div>
+		</div>
+		<div class="right column focus">
+			<div class="summary">
+				<ul>
+					<li class="active">1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+				</ul>
+			</div>
+			<div tabindex=1 class="content mousetrap" contenteditable="true"><%= content_sec %></div>
+			<div class="text-editor">
+				<div class="tag">
+					<button data-action="tag" class="fa fa-tag"></button>
+					<div class="info">Insert tag (ttt)</div>
+				</div>
+				<div class="task">
+					<button data-action="task" class="fa fa-tasks"></button>
+					<div class="info">Insert task (&amp;&amp;&amp;)</div>
+				</div>
+				<div class="font-header">
+					<button data-action="header" class="fa fa-header"></button>
+					<div class="info">Toggle headers (Ctrl + plus)</div>
+				</div>
+				<div class="spacer"></div>
+			</div>
+		</div>
 	</div>
 </script>
+<!-- ################### EDITOR BODY OBJECT TEMPLATE ###################-->
 <script type="text/template" id="editor-body-object-template" style="display: none;">
 	<label class='datalist-wrapper'>
 		<datalist id='datalist_<%= id %>' class='datalist'>

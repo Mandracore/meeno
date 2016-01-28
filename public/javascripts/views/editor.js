@@ -11,32 +11,32 @@ define ([
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
-		 * 
+		 *
 		 * @class EditorBodyView
 		 * @extends Backbone.View
 		 */
 		var EditorBodyView = Backbone.View.extend({
 
 			tagName          : 'div',
-			className        : 'editor object note',
+			className        : 'editor',
 			template         : '#editor-body-template',
 			numberOfEdit     : 0,
 			limitNumberOfEdit: 5,
 
 			// The DOM events specific to an item.
 			events: {
-				'click .close'       : 'close',
-				'click .title'       : 'show',
-				'click .delete'      : 'delete',
-				'click .clone'       : 'clone',
-				'keypress'           : 'trySave',
-				'blur .edit-content' : 'save',
-				'blur .edit-title'   : 'save'
+				'click .header .close'      : 'close',
+				'click .text-editor button' : 'textEditor',
+
+
+				// 'click .title'      : 'show',
+				// 'click .delete'        : 'delete',
+				// 'click .clone'         : 'clone',
+				// 'keypress'             : 'trySave',
+				// 'blur .edit-content'   : 'save',
+				// 'blur .edit-title'     : 'save'
 			},
 
-			//=================================================
-			// V2 FUNC
-			//=================================================
 			/**
 			 * The user wants to open a note editor :
 			 * 1. Deploy #editors
@@ -47,11 +47,15 @@ define ([
 			initialize: function(options) {
 				//this.options = options;
 				//Backbone.View.prototype.initialize.apply(this, arguments);
+				var self = this;
 				this.children = [];
+
+				this.lastSave = new Date();
 
 				this.listenTo(channel, 'keyboard:tag', function () {this.newObject("tag");});
 				this.listenTo(channel, 'keyboard:task', function () {this.newObject("task");});
 				this.listenTo(channel, 'keyboard:entity', function () {this.newObject("entity");});
+				this.listenTo(channel, 'editors:close:' + this.model.cid , function () {this.close();});
 			},
 
 			render: function() {
@@ -61,6 +65,7 @@ define ([
 				var hTemplate        = $(this.template).html();
 				var compiledTemplate = _.template(hTemplate);
 				this.$el.html( compiledTemplate(data) );
+				this.$el.attr('data-cid',this.model.cid);
 
 				// Activating sub-views of embedded objects like tags, notes,...
 				this.$(".object").each(function (index, object) {
@@ -83,53 +88,213 @@ define ([
 						$object.addClass('broken');
 					}
 				});
+
+				// Render a tab to control editor display
+				var $tab = $("<li data-cid='"+this.model.cid+"'><span class='close fa fa-remove'></span><span class='open'>"+this.model.get('title')+"</span></li>");
+				$("#editors-tabs").prepend($tab);
+
+				// Listen to any change (copy/paste, keypress,...) in the two parts of the note
+				this.$('.body .content').on('input', function() { 
+					self.saveTry();
+				});
+
+				// Generate ToC
+				this.tocRebuild();
+
 				return this;
 			},
 
 			/**
-			 * The user wants to see a note already opened (inserted in #editors). We should only :
-			 * 1. Deploy #editors
-			 * 2. Ensure this note editor is in front of the others if it's not the case
-			 *
-			 * @method show
-			 */
-			show: function() {
-				var $editors = this.$el.parent();
-				var $editor  = this.$el.detach(); // Detach from DOM without removing attached jQuery objects and properties
-				$editor.appendTo($editors); // insert to the end
-				$editors.addClass('visible',500); // maximize the #editors
-				//$editors.removeClass('hidden',500); // maximize the #editors
-			},
-
-			/**
-			 * The user wants to maximize the #editors wrapper and show
-			 *
-			 * @method minimize
-			 */
-			minimize: function() {
-				var $editors = this.$el.parent();
-				$editors.removeClass("visible", 1000, "easeOutExpo");
-			},
-
-			/**
 			 * The user wants to close a note already opened. We should only :
-			 * 1. Remove the editor from #editors
-			 * 2. If #editors is now empty, close it (delegated to {{#crossLink "updateEditorsClass:method"}}{{/crossLink}}.)
+			 * 1. Remove the editors' tab from the DOM
+			 * 2. Remove the editor itself from the DOM
+			 * Other actions are handled by {{#crossLink "MainView:class"}}{{/crossLink}} itself.
 			 *
 			 * @method close
 			 */
 			close: function() {
-				var $editors = this.$el.parent();
+				this.save();
 
-				$editors.removeClass("visible", 1000);
-				//$editors.switchClass("visible", "hidden", 1000);
-
-				this.$el.remove(); // Remove from DOM
+				// 1. Destroy the tab
+				$('#editors-tabs li[data-cid=' + this.model.cid + ']').remove();
+				// 2. Display the browser
+				$('#nav .browse').eq(0).click();
+				// 3. Destroy the editor itself along with its subviews
 				this.model.set('isOpened',false);
-				this.updateEditorsClass(); // update the class of the editors' wrapper
 				_.map (this.children, function(child) {return child.kill();}); // destroy objects in editor (mainly tasks)
-				this.kill (); // destroy the view
+				this.$el.remove();
+				this.kill();
 			},
+
+			/**
+			 * Simple method to trigger note saving when necessary
+			 * 
+			 * @method saveTry
+			 */
+			saveTry: function() {
+				if((new Date()) - this.lastSave > 2000) {
+					this.save();
+					this.tocRebuild();
+				}
+			},
+
+			/**
+			 * To update the model following the content of the contenteditables
+			 * 
+			 * @method save
+			 */
+			save: function() {
+				this.lastSave = new Date();
+				this.model.set({
+					content     :this.$(".left .content").html(),
+					content_sec :this.$(".right .content").html()
+				}).save({},{
+					success: function() {
+						console.log('Note successfully saved');
+					},
+					error  : function() {
+						console.log('Saving note modifications failed');
+					}
+				});
+			},
+
+			/**
+			 * All functions required to provide simple WYSIWYG text edition
+			 * 
+			 * @method textEditor
+			 */
+			textEditor: function(event) {
+				var action = $(event.target).attr('data-action');
+				switch (action) {
+					case "header":
+						var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
+						// This will allow to switch header styles from H1 to H4
+						switch (nodeType) {
+							case "H1":
+								document.execCommand('formatBlock',false,'<h2>');
+								break;
+							case "H2":
+								document.execCommand('formatBlock',false,'<h3>');
+								break;
+							case "H3":
+								document.execCommand('formatBlock',false,'<h4>');
+								break;
+							case "H4":
+								document.execCommand('formatBlock',false,'<p>');
+								break;
+							default:
+								document.execCommand('formatBlock',false,'<h1>');
+								break;
+						}
+						break;
+					case "list":
+						document.execCommand('insertUnorderedList');
+						break;
+				}
+			},
+
+			/**
+			 * Browse the content of each parts of the editor to build a dynamic table of contents
+			 * 
+			 * @method tocRebuild
+			 */
+			tocRebuild: function() {
+				var $headers = this.$(".body .content h1");
+				var bRebuild = false;
+				var sToC = {
+					left  : "",
+					right : "",
+				};
+				var count = {
+					left  : 0,
+					right : 0,
+				};
+				var $ToC = {
+					left  : this.$(".left .summary ul"),
+					right : this.$(".right .summary ul"),
+				};
+
+
+				$headers.each(function() {
+					var $h1 = $(this);
+					// 1. Provide to each header a unique ID (if not done already)
+					if (!$h1.attr("id")) {
+						$h1.attr("id", (new Date()).getTime());
+					}
+
+					var anchor = $h1.attr("id");
+					var title = $h1.text();
+
+					if ($h1.closest(".column").hasClass("left")) {
+						count.left++;
+						sToC.left += "<li><a href='#"+$h1.attr("id")+"' title='"+$h1.text()+"'>"+count.left+"</a></li>";
+						if ($ToC.left.find("li[data-anchor=" + anchor + "]").length == 0) {
+							bRebuild = true;
+						}
+					} else {
+						count.right++;
+						sToC.right += "<li><a href='#"+$h1.attr("id")+"' title='"+$h1.text()+"'>"+count.right+"</a></li>";
+						if ($ToC.right.find("li[data-anchor=" + anchor + "]").length == 0) {
+							bRebuild = true;
+						}
+					}
+
+				});
+				// 2. Update the summary if necessary
+				if (bRebuild) {
+					$ToC.left.html(sToC.left);
+					$ToC.right.html(sToC.right);
+				}
+				// var $ToC = $h1.closest(".summary ul");
+			},
+
+			newObject: function (className) {
+
+				var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
+				if ($focused.hasClass('content')) { return; } // No action if no focus in the editor
+
+				console.log('>>> New '+className);
+
+				var newView = new EditorObjectView({
+					note      : this.model,
+					parent    : this,
+					modelClass: className
+				});
+
+				newView.undelegateEvents();
+
+				switch (className) {
+					case "tag":
+						var hObject = '<div class="tag" contenteditable="false"><input placeholder="Name your tag here"></div>';
+						break;
+					case "task":
+						var hObject = '<div class="task" contenteditable="false">'+
+							'<div class="fa fa-tasks"></div>'+
+							'<input placeholder="Describe here your task">'+
+						'</div>';
+						break;
+				}
+
+				var $object = $(hObject);
+
+				tools.pasteHtmlAtCaret(hObject);
+
+				// var newHtml = $("<div></div>").append(newView.render().el).html();
+				// tools.pasteHtmlAtCaret(
+				// 	newHtml + // The tag itself with a trick to get its html back
+				// 	"<span class='void'>&nbsp;</span>" // A place to put the caret
+				// );
+				// newView.$el = $("#" + newView.options.id); // Linking the DOM to the view
+				// newView.delegateEvents(); // Binding all events
+				// newView.options.parentDOM = this.$("section.edit-content");
+				// newView.$(".body").focus(); // Focusing on input
+				// this.children.push (newView);
+				// this.save();
+
+				return false;
+			},
+
+
 
 			/**
 			 * This method should update the class of #editors in the following cases :
@@ -140,52 +305,21 @@ define ([
 			 * 
 			 * @method updateEditorsClass
 			 */
-			updateEditorsClass: function (callback) {
-				var $editors             = this.$el.parent();
-				var editorsChildrenCount = $editors.children().length;
-				var editorsClass         = "children-count-" + editorsChildrenCount;
+			// updateEditorsClass: function (callback) {
+			// 	var $editors             = this.$el.parent();
+			// 	var editorsChildrenCount = $editors.children().length;
+			// 	var editorsClass         = "children-count-" + editorsChildrenCount;
 
-				// Testing
-				$editors.removeClass("children-count-0");
-				$editors.removeClass("children-count-1");
-				$editors.removeClass("children-count-2");
-				$editors.removeClass("children-count-3");
-				$editors.removeClass("children-count-4");
-				$editors.removeClass("children-count-5");
-				$editors.addClass(editorsClass, 100, "easeOutExpo", callback());
-			},
+			// 	// Testing
+			// 	$editors.removeClass("children-count-0");
+			// 	$editors.removeClass("children-count-1");
+			// 	$editors.removeClass("children-count-2");
+			// 	$editors.removeClass("children-count-3");
+			// 	$editors.removeClass("children-count-4");
+			// 	$editors.removeClass("children-count-5");
+			// 	$editors.addClass(editorsClass, 100, "easeOutExpo", callback());
+			// },
 
-			/**
-			 * Simple method to trigger note saving every 5 keypress
-			 * 
-			 * @method trySave
-			 */
-			trySave: function() {
-				this.numberOfEdit++;
-				if(this.numberOfEdit == this.limitNumberOfEdit){
-					this.save();
-					this.numberOfEdit=0;
-				}
-			},
-
-			/**
-			 * To update the model following the content of the contenteditables
-			 * 
-			 * @method save
-			 */
-			save: function() {
-				this.model.set({
-					title  :this.$(".edit-title").html(),
-					content:this.$(".edit-content1").html()
-				}).save({},{
-					success: function() {
-						console.log('Note successfully saved');
-					},
-					error  : function() {
-						console.log('Saving note modifications failed');
-					}
-				});
-			},
 
 			/*
 			delegatedKill: function() {
@@ -223,32 +357,6 @@ define ([
 				}
 			},
 
-
-			newObject: function (className) {
-				if (!this.checkFocus()) {return;} // No action if no focus in the editor
-				console.log('>>> New '+className);
-
-				var newView = new EditorObjectView({
-					note      : this.model,
-					parent    : this,
-					modelClass: className
-				});
-
-				newView.undelegateEvents();
-				var newHtml = $("<div></div>").append(newView.render().el).html();
-				tools.pasteHtmlAtCaret(
-					newHtml + // The tag itself with a trick to get its html back
-					"<span class='void'>&nbsp;</span>" // A place to put the caret
-				);
-				newView.$el = $("#" + newView.options.id); // Linking the DOM to the view
-				newView.delegateEvents(); // Binding all events
-				newView.options.parentDOM = this.$("section.edit-content");
-				newView.$(".body").focus(); // Focusing on input
-				this.children.push (newView);
-				this.save();
-
-				return false;
-			},
 
 			toggle: function() {
 				// First, deactivate the other tabs' content

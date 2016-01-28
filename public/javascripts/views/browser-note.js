@@ -19,6 +19,7 @@ define ([
 
 			events: function(){
 				return _.extend({},BrowserObjectView.prototype.events,{
+					'click .open button'   : 'open',
 					'click .delete button' : 'delete',
 					'click .label'         : 'expand',
 					'click .reduce'        : 'reduce',
@@ -109,17 +110,17 @@ define ([
 				this.$('.form .tags input').val('').trigger('input').focus();
 			},
 
-
-/*
-			edit: function() {
+			/**
+			 * Open the note's editor
+			 * 
+			 * @method open
+			 */
+			open: function() {
 				var newEditor = new EditorView ({ model: this.model });
 				$("#editors").append(newEditor.render().el);
-				newEditor.updateEditorsClass(function () {
-					newEditor.show();	
-				});
+				$("#editors-tabs").children().eq(0).find("span.open").click();
 				this.model.set('isOpened',true);
 			}
-*/
 		});
 
 		return BrowserNoteView;
