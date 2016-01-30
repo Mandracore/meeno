@@ -619,3 +619,7 @@ On pourra utiliser pasteHTMLAtCaret mais il faut avant tester qu'on n'est pas da
 
 09/01====================================================
 Bug à résoudre sur browser-tag avec .actions/.controls qui ne s'affiche plus
+
+
+30/01====================================================
+Job mostly done on editor, still need to update objects within the editor when they are updated
