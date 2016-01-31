@@ -388,37 +388,41 @@ define ([
 			 * @method objectSubmit
 			 */
 			objectSubmit: function ($focused) {
-				var self = this;
+				var self        = this;
+				var className   = $focused.closest('div').hasClass('tag') ? 'tag' : 'task';
+				var objectModel = {};
 
 				if ($focused.val().length < 2) { return; } // Do not do anything if label is too short
 
-				var className = $focused.closest('div').hasClass('tag') ? 'tag' : 'task';
 				if (className == "task") {
 				// 2.1 For tasks, always create + link
-					var objectModel = new Task ({
+					objectModel = new Task ({
 						label : $focused.val(),
 					});
 					temp.coll.tasks.add(objectModel);
-					objectModel.save();
 				} else {
 				// 2.2 If we are dealing with a tag, we can link or create + link => requires to check
 					// 2.2.0 Check whether the object already exists or not
-					var objectModel = temp.coll.tags.find(function (model) {
+					objectModel = temp.coll.tags.find(function (model) {
 						return model.get('label') == $focused.val();
 					});
 
 					if (!objectModel) {
 					// 2.2.1 The model does not exist in the DB so we create it first
-						var objectModel = new Tag ({
+						objectModel = new Tag ({
 							label : $focused.val(),
 						});
-
 						temp.coll.tags.add(objectModel);
-						objectModel.save();
 					}
 				}
 
-				this.objectLink($focused, objectModel, className);
+				objectModel.save({}, {
+					success: function () {
+						// Only link the object when we are sure it has been saved in the DB (in case it's new)
+						self.objectLink($focused, objectModel, className);
+						return false;
+					},
+				});
 			},
 
 			/**
@@ -427,7 +431,6 @@ define ([
 			 * @method objectLink
 			 */
 			objectLink: function ($focused, objectModel, className) {
-
 				switch (className) {
 					case "tag":
 						var link = this.model.get('tagLinks').find(function (link) {
@@ -438,11 +441,10 @@ define ([
 							alert('This tag is already linked to the current note.');
 							return false;
 						}
-
 						this.model.get('tagLinks').add({ tag: objectModel });
 						break;
 					case "task":
-						this.model.get('taskLinks').add({ tag: objectModel });
+						this.model.get('taskLinks').add({ task: objectModel });
 						break;
 				}
 

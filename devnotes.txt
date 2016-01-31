@@ -623,3 +623,4 @@ Bug à résoudre sur browser-tag avec .actions/.controls qui ne s'affiche plus
 
 30/01====================================================
 Job mostly done on editor, still need to update objects within the editor when they are updated
+#fixed-bug impossible de créer et de lier un nouveau tag apparemment depuis une note
