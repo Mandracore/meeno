@@ -109,14 +109,16 @@ block content
 							div.content(tabindex=1, contenteditable="true")
 								h1 Participants
 								p Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. 
-								.tag(contenteditable="false") SOMFY
+								.tag(contenteditable="false")
+									.circle
+									span.label SOMFY
 								| Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 								.tag(contenteditable="false")
 									input(placeholder="Name your tag here")
 								| Aenean ut gravida lorem. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor.
 								.task(contenteditable="false")
 									.fa.fa-tasks
-									|Préparer plan d'action AFE pour suite PMO Exec
+									span.label Préparer plan d'action AFE pour suite PMO Exec
 								.task(contenteditable="false")
 									.fa.fa-tasks
 									|Organiser la réunion du 27/11 avec tous les intervenants du CoProj

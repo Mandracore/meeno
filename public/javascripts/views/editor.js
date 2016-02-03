@@ -64,6 +64,10 @@ define ([
 				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
 
 				this.listenTo(channel, 'editors:close:' + this.model.cid , function () {this.close();});
+				
+				// Listeners allowing to automatically update note content in case the embedded objects change
+				this.listenTo(temp.coll.tags, 'delete change:label change:color', function () { this.objectsRepaint(); });
+				this.listenTo(temp.coll.tasks, 'delete change:label', function () { this.objectsRepaint(); });
 			},
 
 			render: function() {
@@ -74,28 +78,6 @@ define ([
 				var compiledTemplate = _.template(hTemplate);
 				this.$el.html( compiledTemplate(data) );
 				this.$el.attr('data-cid',this.model.cid);
-
-				// Activating sub-views of embedded objects like tags, notes,...
-				this.$(".object").each(function (index, object) {
-					var $object    = $(object);
-					var subView    = {};
-					var modelClass = $object.hasClass('tag') ? "tag" : "task";
-					var model      = temp.coll[modelClass+"s"].get($object.attr('data-model-id'));
-
-					if (model) {
-						subView  = new EditorObjectView({
-							model     : model,
-							modelClass: modelClass,
-							el        : $object[0], // We bind the sub view to the element we just created
-							note      : self.model,
-							parent    : self,
-							parentDOM : self.$("section.edit-content"),
-						});
-						self.children.push (subView);
-					} else {
-						$object.addClass('broken');
-					}
-				});
 
 				// Render a tab to control editor display
 				var $tab = $("<li data-cid='"+this.model.cid+"'><span class='close fa fa-remove'></span><span class='open'>"+this.model.get('title')+"</span></li>");
@@ -108,6 +90,9 @@ define ([
 
 				// Generate ToC
 				this.tocRebuild();
+
+				// Generate ToC
+				this.objectsRepaint();
 
 				return this;
 			},
@@ -272,10 +257,13 @@ define ([
 
 				switch (className) {
 					case "tag":
-						var hObject = '<div class="tag" id ="' + iObjectID +'" contenteditable="true"><input class="mousetrap" placeholder="Name your tag here"></div>';
+						var hObject = '<div class="tag object" id ="' + iObjectID +'" contenteditable="true">'+
+							'<div class="circle"></div>'+
+							'<input class="mousetrap" placeholder="Name your tag here">'+
+						'</div>';
 						break;
 					case "task":
-						var hObject = '<div class="task" id ="' + iObjectID +'" contenteditable="true">'+
+						var hObject = '<div class="task object" id ="' + iObjectID +'" contenteditable="true">'+
 							'<div class="fa fa-tasks"></div>'+
 							'<input class="mousetrap" placeholder="Describe here your task">'+
 						'</div>';
@@ -336,19 +324,24 @@ define ([
 			 * 
 			 * @method objectFreeze
 			 */
-			objectFreeze: function ($input, objectModelCid) {
+			objectFreeze: function ($input, objectModelCid, objectModelId, objectModelColor) {
 				var $parent = $input.parent();
 				var sParentNewHtml = "";
 				
 				if ($parent.hasClass('task')) {
 					sParentNewHtml += '<div class="fa fa-tasks"></div>';
+				} else {
+					sParentNewHtml += '<div class="circle" style="background-color: '+objectModelColor+';"></div>';
 				}
-				sParentNewHtml += $input.val();
+
+				sParentNewHtml += '<span class="label">' + $input.val() + '</span>';
 
 				$input.remove();
 				$parent.html(sParentNewHtml);
 				$parent.attr('contenteditable',false); // To prevent the user from editing the object once linked
 				$parent.attr('data-cid',objectModelCid);
+				$parent.attr('data-model-id',objectModelId);
+				$parent.closest('.content').focus();
 			},
 
 			/**
@@ -431,6 +424,7 @@ define ([
 			 * @method objectLink
 			 */
 			objectLink: function ($focused, objectModel, className) {
+				var color = undefined;
 				switch (className) {
 					case "tag":
 						var link = this.model.get('tagLinks').find(function (link) {
@@ -442,13 +436,14 @@ define ([
 							return false;
 						}
 						this.model.get('tagLinks').add({ tag: objectModel });
+						color = objectModel.get('color');
 						break;
 					case "task":
 						this.model.get('taskLinks').add({ task: objectModel });
 						break;
 				}
 
-				this.objectFreeze($focused, objectModel.cid);
+				this.objectFreeze($focused, objectModel.cid, objectModel.id, color);
 				this.model.save();
 				this.save();
 			},
@@ -460,7 +455,7 @@ define ([
 			 */
 			objectUnLink: function (event) {
 				var self        = this;
-				var $object     = $(event.target);
+				var $object     = $(event.target).parent();
 				var className   = $object.hasClass("task") ? "task" : "tag";
 				var objectModel = temp.coll[className+"s"].get($object.attr('data-cid'));
 				var link        = {};
@@ -481,6 +476,56 @@ define ([
 				}
 				$object.remove();
 				this.model.save();
+				this.save();
+			},
+
+			/**
+			 * This method will ensure the content of the note is updated in case :
+			 * 1. A tag or task is deleted
+			 * 2. A tag color changes
+			 * 3. A tag or task label changes
+			 * 
+			 * @method objectsRepaint
+			 */
+			objectsRepaint: function (event) {
+				this.$('.content .tag').each(function (index) {
+					var $tag = $(this);
+
+					// 1. First, test if the related model does exist
+					var model = temp.coll.tags.get($tag.attr('data-model-id'));
+
+					if (!model) {
+						// The model does not exist
+						$tag.remove();
+						console.log("Object destroyed !");
+						return true; // Skip to the next iteration
+					}
+
+					// 2. Second, update the color
+					$tag.find(".circle").css("background-color", model.get('color'));
+
+					// 3. Third, update the label
+					$tag.find(".label").text(model.get('label'));
+				});
+
+				this.$('.content .task').each(function (index) {
+					var $task = $(this);
+
+					// 1. First, test if the related model does exist
+					var model = temp.coll.tasks.get($task.attr('data-model-id'));
+
+					if (!model) {
+						// The model does not exist
+						$task.remove();
+						console.log("Object destroyed !");
+						return true; // Skip to the next iteration
+					}
+
+					// 2. Second, update the label
+					$task.find(".label").text(model.get('label'));
+				});
+
+
 				this.save();
 			},
 

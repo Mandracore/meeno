@@ -436,7 +436,7 @@ body
 						font-size .9em
 						font-style italic
 						font-family Helvetica
-						&::before
+						.circle
 							content ''
 							display inline-block
 							background-color red
@@ -444,13 +444,16 @@ body
 							width .7em
 							height .7em
 							border 1px solid black
-							margin 0 .3em 0 0
-							transition margin .3s ease
+							margin 0 .4em 0 0
+							transition margin .3s ease, width .3s ease, height .3s ease
 						&:hover
+							opacity 1
 							text-decoration line-through
 							cursor pointer
-							&::before
-								margin 0 .1em 0 .2em
+							.circle
+								margin 0 .1em .2em .7em
+								width .3em
+								height .3em
 						&:active
 							text-decoration line-through
 							opacity 1							
@@ -763,7 +766,7 @@ body
 		display none
 		&.active
 			display block
-			height calc(100% - 2.5em)		
+			height calc(100% - 6em)		
 			overflow auto
 		input
 			font-size .9em
