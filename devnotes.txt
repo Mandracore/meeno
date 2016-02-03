@@ -626,4 +626,18 @@ Job mostly done on editor, still need to update objects within the editor when t
 #fixed-bug impossible de créer et de lier un nouveau tag apparemment depuis une note
 
 01/02====================================================
-#bug sur les tâches dans les notes : si on renomme une tâche, elle est supprimée par le ObjectRepaint
+#fixed-bug sur les tâches dans les notes : si on renomme une tâche, elle est supprimée par le ObjectRepaint
+
+03/02====================================================
+#fixed-bug si je renomme une tâche ouverte dans un éditeur
+à partir du moment où une note est ouverte, tout renommage d'une tâche aboutit sur une duplication :
+	l'objet original n'est pas renommé
+	un nouvel object est créé avec le nouveau nom
+	même si la tâche n'apparaît pas dans la note ouverte
+
+render collection tasks browser.js:863:5
+Note successfully saved editor.js:145:7
+la note est sauvegardée avec un taskLink pointant sur une tâche qui n'existe pas dans l'éditeur !!
+
+03/02====================================================
+#bug Le div de sommaire se décale en dehors de son parent dès que je clique sur un chapitre

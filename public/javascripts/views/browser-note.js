@@ -116,6 +116,10 @@ define ([
 			 * @method open
 			 */
 			open: function() {
+				if (this.model.get('isOpened')) { 
+					$("#editors-tabs").children("[data-cid="+this.model.cid+"]").find("span.open").click();
+					return;
+				}
 				var newEditor = new EditorView ({ model: this.model });
 				$("#editors").append(newEditor.render().el);
 				$("#editors-tabs").children().eq(0).find("span.open").click();

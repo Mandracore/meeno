@@ -6,11 +6,10 @@ define ([
 		'lib/tools',
 		'temp',
 		'channel',
-		'views/editor-object',
 		'models/tag',
 		'models/task',
 		'models/filter',
-	], function ($, $, _, Backbone, tools, temp, channel, EditorObjectView, Tag, Task, Filter) {
+	], function ($, $, _, Backbone, tools, temp, channel, Tag, Task, Filter) {
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
@@ -259,13 +258,13 @@ define ([
 					case "tag":
 						var hObject = '<div class="tag object" id ="' + iObjectID +'" contenteditable="true">'+
 							'<div class="circle"></div>'+
-							'<input class="mousetrap" placeholder="Name your tag here">'+
+							'<input class="mousetrap noteEditor" placeholder="Name your tag here">'+
 						'</div>';
 						break;
 					case "task":
 						var hObject = '<div class="task object" id ="' + iObjectID +'" contenteditable="true">'+
 							'<div class="fa fa-tasks"></div>'+
-							'<input class="mousetrap" placeholder="Describe here your task">'+
+							'<input class="mousetrap noteEditor" placeholder="Describe here your task">'+
 						'</div>';
 						break;
 				}
@@ -354,7 +353,7 @@ define ([
 			kbEventProxy: function (event) {
 				var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
 
-				if ($focused.prop("tagName") != "INPUT") { return; } // No action if no focus in some object input
+				if (($focused.prop("tagName") != "INPUT") || !$focused.hasClass('noteEditor')) { return; } // No action if no focus in some object input
 
 				if (event == "escape") {
 				// 1. The user wants to abort object insertion

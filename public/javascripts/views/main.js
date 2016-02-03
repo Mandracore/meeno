@@ -216,8 +216,7 @@ define ([
 			},
 
 			/**
-			 * To open the right note editor. This method can be triggered by an editor itself if it needs to be 
-			 * displayed ({{#crossLink "EditorBodyView:show:method"}}{{/crossLink}}).
+			 * To open the right note editor.
 			 *
 			 * @method editorOpen
 			 */
