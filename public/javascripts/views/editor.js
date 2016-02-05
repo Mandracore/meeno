@@ -179,8 +179,14 @@ define ([
 								break;
 						}
 						break;
-					case "list":
+					case "list": // Not in use for now
 						document.execCommand('insertUnorderedList');
+						break;
+					case "task":
+						this.objectInsert("task", true);
+						break;
+					case "tag":
+						this.objectInsert("tag", true);
 						break;
 				}
 			},
@@ -246,11 +252,12 @@ define ([
 			 * 
 			 * @method objectInsert
 			 */
-			objectInsert: function (className) {
-				document.execCommand("delete", null, false); // to remove last character like ##
-
-				var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
-				if (!$focused.hasClass('content')) { return; } // No action if no focus in the editor
+			objectInsert: function (className, fromButton) {
+				if (!fromButton) { // To distinguish between the two trigger cases (through keypress or through click)
+					document.execCommand("delete", null, false); // to remove last character like ##
+					var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
+					if (!$focused.hasClass('content')) { return; } // No action if no focus in the editor (no need to check that if the trigger is not the keyboard)
+				}
 
 				var iObjectID = (new Date()).getTime();
 

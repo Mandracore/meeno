@@ -22,6 +22,7 @@ define ([
 					'click .open button'   : 'open',
 					'click .delete button' : 'delete',
 					'click .label'         : 'expand',
+					'click .expand'        : 'expand',
 					'click .reduce'        : 'reduce',
 					'click .label .cancel' : 'editLabelCancel',
 					'click .tags .cancel'  : 'editTagsCancel',
