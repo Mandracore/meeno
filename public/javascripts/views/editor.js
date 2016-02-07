@@ -56,9 +56,10 @@ define ([
 
 				this.lastSave = new Date();
 
-				this.listenTo(channel, 'keyboard:tag', function () {this.objectInsert("tag");});
-				this.listenTo(channel, 'keyboard:task', function () {this.objectInsert("task");});
-				this.listenTo(channel, 'keyboard:entity', function () {this.objectInsert("entity");});
+				this.listenTo(channel, 'keyboard:tag', function () {this.textEditor("tag");});
+				this.listenTo(channel, 'keyboard:task', function () {this.textEditor("task");});
+				this.listenTo(channel, 'keyboard:entity', function () {this.textEditor("entity");});
+				this.listenTo(channel, 'keyboard:header', function () {this.textEditor("header");});
 				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
 
@@ -151,47 +152,6 @@ define ([
 			},
 
 			/**
-			 * All functions required to provide simple WYSIWYG text edition
-			 * 
-			 * @method textEditor
-			 */
-			textEditor: function(event) {
-				var action = $(event.target).attr('data-action');
-				switch (action) {
-					case "header":
-						var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
-						// This will allow to switch header styles from H1 to H4
-						switch (nodeType) {
-							case "H1":
-								document.execCommand('formatBlock',false,'<h2>');
-								break;
-							case "H2":
-								document.execCommand('formatBlock',false,'<h3>');
-								break;
-							case "H3":
-								document.execCommand('formatBlock',false,'<h4>');
-								break;
-							case "H4":
-								document.execCommand('formatBlock',false,'<p>');
-								break;
-							default:
-								document.execCommand('formatBlock',false,'<h1>');
-								break;
-						}
-						break;
-					case "list": // Not in use for now
-						document.execCommand('insertUnorderedList');
-						break;
-					case "task":
-						this.objectInsert("task", true);
-						break;
-					case "tag":
-						this.objectInsert("tag", true);
-						break;
-				}
-			},
-
-			/**
 			 * Browse the content of each parts of the editor to build a dynamic table of contents
 			 * 
 			 * @method tocRebuild
@@ -245,6 +205,99 @@ define ([
 				}
 				// var $ToC = $h1.closest(".summary ul");
 			},
+
+			/**
+			 * All functions required to provide simple WYSIWYG text edition
+			 * 
+			 * @method textEditor
+			 */
+			textEditor: function (event) {
+				// event can come from :
+				// 1. Click : we use $(event.target).attr('data-action') to know which action to do
+				// 2. Keypress : we use directly event, which should be a simple string
+				var action     = !event.target ? event : $(event.target).attr('data-action');
+				var fromButton = (event.target != undefined);
+
+				switch (action) {
+					case "header":
+						if (!fromButton) {
+							document.execCommand("delete", null, false); // to remove last character like ! !
+						}
+						var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
+						// This will allow to switch header styles from H1 to H4
+						switch (nodeType) {
+							case "H1":
+								document.execCommand('formatBlock',false,'<h2>');
+								break;
+							case "H2":
+								document.execCommand('formatBlock',false,'<h3>');
+								break;
+							case "H3":
+								document.execCommand('formatBlock',false,'<h4>');
+								break;
+							case "H4":
+								document.execCommand('formatBlock',false,'<p>');
+								break;
+							default:
+								document.execCommand('formatBlock',false,'<h1>');
+								break;
+						}
+						this.tocRebuild();
+						this.save();
+						break;
+					case "list": // Not in use for now
+						//document.execCommand('insertUnorderedList');
+						break;
+					case "task":
+						this.objectInsert("task", fromButton);
+						break;
+					case "tag":
+						this.objectInsert("tag", fromButton);
+						break;
+				}
+			},
+
+			/**
+			 * All functions required to provide simple WYSIWYG text edition
+			 * 
+			 * @method textEditor
+			 */
+			// textEditor: function(event) {
+			// 	var action = $(event.target).attr('data-action');
+			// 	switch (action) {
+			// 		case "header":
+			// 			var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
+			// 			// This will allow to switch header styles from H1 to H4
+			// 			switch (nodeType) {
+			// 				case "H1":
+			// 					document.execCommand('formatBlock',false,'<h2>');
+			// 					break;
+			// 				case "H2":
+			// 					document.execCommand('formatBlock',false,'<h3>');
+			// 					break;
+			// 				case "H3":
+			// 					document.execCommand('formatBlock',false,'<h4>');
+			// 					break;
+			// 				case "H4":
+			// 					document.execCommand('formatBlock',false,'<p>');
+			// 					break;
+			// 				default:
+			// 					document.execCommand('formatBlock',false,'<h1>');
+			// 					break;
+			// 			}
+			// 			break;
+			// 		case "list": // Not in use for now
+			// 			document.execCommand('insertUnorderedList');
+			// 			break;
+			// 		case "task":
+			// 			this.objectInsert("task", true);
+			// 			break;
+			// 		case "tag":
+			// 			this.objectInsert("tag", true);
+			// 			break;
+			// 	}
+			// },
+
 
 			/**
 			 * Insert a new object (tag, task,...) into the note content. Will just insert a form into the editor at the

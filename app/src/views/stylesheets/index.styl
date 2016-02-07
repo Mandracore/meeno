@@ -384,17 +384,23 @@ body
 			.content
 				height calc(100% - 6.6em)
 				overflow auto
-				font-size 0.95em
 				:not(h1), :not(h2), :not(h3), :not(h4)
 					line-height 1.1em
 			.left, .right
 				overflow hidden
+				position relative
+				.summary, .content, .text-editor
+					position absolute
+				.summary
+					top 0
+				.content
+					top 3.6em
+					padding 0 0 0 1em
+				.text-editor
+					top calc(100% - 3em)
 				.summary
 					padding 0 0 0 1.5em
 				.content
-					padding 0 1.5em 0
-					height calc(100% - 3.6em)
-					transition height .5s ease
 					.task, .tag
 						input
 							border-radius 5px
@@ -416,7 +422,6 @@ body
 						font-size 0.9em
 						font-family Helvetica
 						font-style italic
-						width calc(100% - 0.5em)
 						opacity .8
 						&:hover
 							cursor pointer
@@ -465,9 +470,6 @@ body
 					height 3em
 					overflow hidden
 					transition top .5s ease
-					position relative
-					top 3em
-					transition top .5s ease
 					display table
 					box-shadow 0px 1px 10px rgba(0, 0, 0, 0.4)
 					& > div
@@ -510,12 +512,6 @@ body
 							&:active
 								opacity 1
 								border-top 5px solid cCyan
-				&.focus
-					.content
-						height calc(100% - 6.6em)
-						transition height .5s ease
-					.text-editor
-						top 0
 				.summary
 					height 3.6em
 					ul
@@ -769,7 +765,7 @@ body
 		display none
 		&.active
 			display block
-			height calc(100% - 6em)		
+			height calc(100% - 5.5em)
 			overflow auto
 		input
 			font-size .9em
@@ -1058,9 +1054,10 @@ body
 // Specifics for Notes objects
 #browser .tab.notes
 	.listobjects 
-		height calc(100% - 6em)
+		height calc(100% - 2.5em)
 		margin 2em 0 0 0
 		.objects
+			height: calc(100% - 6em);
 			li
 				&:not(.add)
 					.open
@@ -1084,9 +1081,10 @@ body
 // Specifics for Tags objects
 #browser .tab.tags
 	.listobjects 
-		height calc(100% - 6em)
+		height calc(100% - 2.5em)
 		margin 2em 0 0 0
 		.objects
+			height calc(100% - 6em)
 			li
 				&:not(.add)
 					display table

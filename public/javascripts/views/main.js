@@ -49,6 +49,10 @@ define ([
 					channel.trigger('keyboard:task');
 					return false; // return false to prevent default browser behavior and stop event from bubbling
 				});
+				Mousetrap.bind('§ §', function() {
+					channel.trigger('keyboard:header');
+					return false; // return false to prevent default browser behavior and stop event from bubbling
+				});
 				Mousetrap.bind(['escape'], function() {
 					channel.trigger('keyboard:escape');
 				});
