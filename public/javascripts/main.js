@@ -6,6 +6,7 @@ require.config ({
 	paths: {
 		jquery                : 'lib/jquery-1.8.3.min',
 		'jquery.ui'           : 'lib/jquery-ui-1.10.3.custom.min',
+		'jquery.finger'       : 'lib/jquery.finger.min',
 		'jquery.dateFormat'   : 'lib/jquery.dateFormat-1.0',
 		underscore            : 'lib/underscore',
 		backbone              : 'lib/backbone',
@@ -17,6 +18,10 @@ require.config ({
 	},
 	shim: {
 		'jquery.ui': {
+			deps: ['jquery'],
+			exports: '$'
+		},
+		'jquery.finger': {
 			deps: ['jquery'],
 			exports: '$'
 		},

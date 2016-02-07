@@ -1,6 +1,7 @@
 define ([
 		'jquery',
 		'jquery.dateFormat',
+		'jquery.finger',
 		'underscore',
 		'backbone',
 		'lib/tools',
@@ -9,7 +10,7 @@ define ([
 		'models/tag',
 		'models/task',
 		'models/filter',
-	], function ($, $, _, Backbone, tools, temp, channel, Tag, Task, Filter) {
+	], function ($, $, $, _, Backbone, tools, temp, channel, Tag, Task, Filter) {
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
@@ -93,6 +94,22 @@ define ([
 
 				// Generate ToC
 				this.objectsRepaint();
+
+				this.$(".body").on('flick', function(e) {
+					var $body = $(this);
+
+					if (e.orientation == "horizontal") {
+						var way = (e.dx > 0) ? "left" : "right";
+						if (way == "right") {
+							if ($body.hasClass("swiped")) { return; }
+							$body.addClass('swiped');
+						} else {
+							if (!($body.hasClass("swiped"))) { return; }
+							$body.removeClass('swiped');
+						}
+					}
+				});
+
 
 				return this;
 			},
