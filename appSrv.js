@@ -12,9 +12,15 @@ var stylus           = require('stylus');
 var nib              = require('nib');
 var mas              = express(); // Meeno App Server
 
+var bodyParser = require('body-parser');
+var morgan     = require('morgan');
+mas.jwt        = require('jsonwebtoken'); // used to create, sign, and verify tokens
+
+
+
 
 //------------------------------------------
-// SERVER CONFIGURATION
+// SERVER CONFIGURATION // TO BE ADJUSTED FOR PROD
 //------------------------------------------
 
 mas.configure('development', 'production', function(){
@@ -29,6 +35,12 @@ mas.configure('development', 'production', function(){
 	mas.use(mas.router);
 	mas.set('views', path.join(application_root, "app/src/views"));
 	mas.set('view engine', 'jade');
+
+	// JSON Web Tokens Parameters
+	mas.set('superSecret', "D@n1$06pG%9T3TL9@Z6PB1MGA6s%vJRdgAZ^9HR@7fKF!BVv@YnFlKz&E8!o9gF&$XWVbilLjn132YNGL6PZQ19XK&hbD$w#A^K4"); // secret variable
+	// use body parser so we can get info from POST and/or URL parameters
+	mas.use(bodyParser.urlencoded({ extended: false }));
+	mas.use(bodyParser.json());
 });
 
 mas.configure('development', function(){
@@ -70,7 +82,9 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 // ROUTING
 //------------------------------------------
-mas.security = require('./app/src/routes/security.proxy.js');
+mas.security       = require('./app/src/routes/security.proxy.js');
+mas.authentication = require('./app/src/routes/authenticate.js');
+
 require('./app/src/routes/main.js')(mas);
 require('./app/src/routes/api.notes.js')(mas);
 require('./app/src/routes/api.tags.js')(mas);
