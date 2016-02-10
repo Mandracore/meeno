@@ -16,14 +16,9 @@ module.exports = function(mas) {
 		});
 	});
 
-	mas.get('/test', mas.authentication.proxy(mas, "user"), function (req, res) {
-		negotiator = new Negotiator(req);
-		res.send('Congrats !');
-	});
-
 	// NEW LOGIN ENDPOINT !!!
 	// First route to login the user
-	mas.post('/authenticate', function (req, res) {
+	mas.post('/login2', function (req, res) {
 		if (!req.body.email) {return res.send(202, 'no user provided');}
 		mas.Models.User.findOne({'email': req.body.email}, function(err, user) {
 			console.log(user)
@@ -34,10 +29,13 @@ module.exports = function(mas) {
 
 			// User has been successfully authentified
 			// create a token
-			var payload = user;
+			var payload = {
+				userId: user._id,
+				role: "readwrite",
+			};
 			var token = jwt.sign(payload, mas.get('superSecret'), {
 				// expiresInMinutes: 1440 // expires in 24 hours
-				issuer: user.email,
+				issuer: "mandracore",
 				expiresIn: 60, // expires in 1 minute
 			});
 

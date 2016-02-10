@@ -82,8 +82,17 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 // ROUTING
 //------------------------------------------
-mas.security       = require('./app/src/routes/security.proxy.js');
-mas.authentication = require('./app/src/routes/authenticate.js');
+// mas.security       = require('./app/src/routes/security.proxy.js');
+var authentication = require('./app/src/routes/authenticate.js');
+
+// All routes starting with /api/ must first execute the authentication proxy
+// mas.all('/api/*', mas.authentication.proxy);
+
+mas.all('/api/*', function (req, res, next) {
+  console.log('Going through proxy...');
+  authentication.proxy (mas.get('superSecret'), req, res, next);
+  // next(); // pass control to the next handler
+});
 
 require('./app/src/routes/main.js')(mas);
 require('./app/src/routes/api.notes.js')(mas);

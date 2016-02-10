@@ -4,12 +4,12 @@
 
 module.exports = function(mas, securityProxy){
 
-	mas.get("/api/tags", mas.security.proxy("user"), function (req, res) {
+	mas.get("/api/tags", function (req, res) {
 		return mas.Models.Tag.find({'_creator': req.session.user._id }, function(err, tags) {
 			return res.send(tags);
 		});
 	});
-	mas.get("/api/tags/:id", mas.security.proxy("user"), function (req, res) {
+	mas.get("/api/tags/:id", function (req, res) {
 		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 
@@ -18,7 +18,7 @@ module.exports = function(mas, securityProxy){
 			}
 		});
 	});
-	mas.put("/api/tags/:id", mas.security.proxy("user"), function (req, res) {
+	mas.put("/api/tags/:id", function (req, res) {
 		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 
@@ -40,7 +40,7 @@ module.exports = function(mas, securityProxy){
 			});
 		});
 	});
-	mas.post("/api/tags", mas.security.proxy("user"), function (req, res) {
+	mas.post("/api/tags", function (req, res) {
 		var tag = new mas.Models.Tag ({
 			_creator  : req.session.user._id,
 			created_at: req.body.created_at,
@@ -61,7 +61,7 @@ module.exports = function(mas, securityProxy){
 			}
 		});
 	});
-	mas.delete("/api/tags/:id", mas.security.proxy("user"), function (req, res) {
+	mas.delete("/api/tags/:id", function (req, res) {
 		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 			return tag.remove(function(err) {

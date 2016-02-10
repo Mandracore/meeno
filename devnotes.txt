@@ -641,3 +641,8 @@ la note est sauvegardée avec un taskLink pointant sur une tâche qui n'existe p
 
 03/02====================================================
 #bug Le div de sommaire se décale en dehors de son parent dès que je clique sur un chapitre
+
+
+
+
+stocker le secret dans une env variable

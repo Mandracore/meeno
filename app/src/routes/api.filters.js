@@ -9,7 +9,7 @@ module.exports = function(mas, securityProxy){
 		'task' : "TaskFilter",
 	};
 
-	mas.get("/api/filters/:object", mas.security.proxy("user"), function (req, res) {
+	mas.get("/api/filters/:object", function (req, res) {
 		return mas.Models[FiltersTr[req.params.object]].find({'_creator': req.session.user._id }, function(err, filters) {
 
 			if (!err) {
@@ -19,7 +19,7 @@ module.exports = function(mas, securityProxy){
 			}
 		});
 	});
-	mas.get("/api/filters/:object/:id", mas.security.proxy("user"), function (req, res) {
+	mas.get("/api/filters/:object/:id", function (req, res) {
 		return mas.Models[FiltersTr[req.params.object]].findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, filter) {
 			if (!filter) {return res.send(403,"Forbidden");}
 
@@ -30,7 +30,7 @@ module.exports = function(mas, securityProxy){
 			}
 		});
 	});
-	mas.put("/api/filters/:object/:id", mas.security.proxy("user"), function (req, res) {
+	mas.put("/api/filters/:object/:id", function (req, res) {
 		return mas.Models[FiltersTr[req.params.object]].findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, filter) {
 			if (!filter) {return res.send(403,"Forbidden");}
 
@@ -57,7 +57,7 @@ module.exports = function(mas, securityProxy){
 			});
 		});
 	});
-	mas.post("/api/filters/:object", mas.security.proxy("user"), function (req, res) {
+	mas.post("/api/filters/:object", function (req, res) {
 		var filter = new mas.Models[FiltersTr[req.params.object]] ({
 			_creator : req.session.user._id,
 			subClass : FiltersTr[req.params.object],
@@ -83,7 +83,7 @@ module.exports = function(mas, securityProxy){
 			}
 		});
 	});
-	mas.delete("/api/filters/:object/:id", mas.security.proxy("user"), function (req, res) {
+	mas.delete("/api/filters/:object/:id", function (req, res) {
 		return mas.Models[FiltersTr[req.params.object]].findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, filter) {
 
 			if (!filter) {return res.send(403,"Forbidden");}

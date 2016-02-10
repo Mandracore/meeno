@@ -4,12 +4,12 @@
 
 module.exports = function(mas, securityProxy){
 
-	mas.get("/api/tasks", mas.security.proxy("user"), function (req, res) {
+	mas.get("/api/tasks", function (req, res) {
 		return mas.Models.Task.find({'_creator': req.session.user._id }, function(err, tasks) {
 			return res.send(tasks);
 		});
 	});
-	mas.get("/api/tasks/:id", mas.security.proxy("user"), function (req, res) {
+	mas.get("/api/tasks/:id", function (req, res) {
 		return mas.Models.Task.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, task) {
 			if (!task) {return res.send(403,"Forbidden");}
 
@@ -18,7 +18,7 @@ module.exports = function(mas, securityProxy){
 			}
 		});
 	});
-	mas.put("/api/tasks/:id", mas.security.proxy("user"), function (req, res) {
+	mas.put("/api/tasks/:id", function (req, res) {
 		return mas.Models.Task.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, task) {
 			if (!task) {return res.send(403,"Forbidden");}
 
@@ -46,7 +46,7 @@ module.exports = function(mas, securityProxy){
 			});
 		});
 	});
-	mas.post("/api/tasks", mas.security.proxy("user"), function (req, res) {
+	mas.post("/api/tasks", function (req, res) {
 		var task = new mas.Models.Task ({
 			_creator   : req.session.user._id,
 			created_at : req.body.created_at,
@@ -73,7 +73,7 @@ module.exports = function(mas, securityProxy){
 			}
 		});
 	});
-	mas.delete("/api/tasks/:id", mas.security.proxy("user"), function (req, res) {
+	mas.delete("/api/tasks/:id", function (req, res) {
 		return mas.Models.Task.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, task) {
 			if (!task) {return res.send(403,"Forbidden");}
 			return task.remove(function(err) {
