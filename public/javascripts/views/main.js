@@ -63,7 +63,39 @@ define ([
 					channel.trigger('keyboard:enter');
 				}, 'keydown');
 
+				// Make sur that all sync errors are caught (probably because of missing authorization)
+				this.listenTo(temp.coll.tags, 'request', this.beforeSyncCallback);
+				this.listenTo(temp.coll.tasks, 'error', this.syncCallback);
+				this.listenTo(temp.coll.tags, 'error', this.syncCallback);
+				this.listenTo(temp.coll.notes, 'error', this.syncCallback);
+				this.listenTo(temp.coll.noteFilters, 'error', this.syncCallback);
+				this.listenTo(temp.coll.taskFilters, 'error', this.syncCallback);
+				this.listenTo(temp.coll.tagFilters, 'error', this.syncCallback);
+
 				this.fetchData();
+			},
+
+			/**
+			 * To make sure the token is sent on every request (if it exists)
+			 *
+			 * @method beforeSyncCallback
+			 */
+			beforeSyncCallback: function (coll, xhr, options) {
+				console.log(xhr);
+			},
+
+			/**
+			 * To save the token received after successful login or registering
+			 *
+			 * @method syncCallback
+			 */
+			syncCallback: function (coll, resp, options) {
+				if (resp.status == 401) {
+					console.log ("Unauthorized, displaying user authentification form");
+					this.toggleAuth();
+				} else {
+					alert('Error: impossible to communicate with server');
+				}
 			},
 
 			fetchData: function() {
@@ -90,13 +122,6 @@ define ([
 						temp.coll.noteFilters.fetch({silent: false});
 						temp.coll.taskFilters.fetch({silent: false});
 						temp.coll.tagFilters.fetch({silent: false});
-					},
-					error: function (collection, xhr, options) {
-						console.log ("Fetching failed // Server response status : "+xhr.status);
-						if (xhr.status == 401) {
-							console.log ("Unauthorized, displaying user authentification form");
-							self.toggleAuth();
-						}
 					}
 				});
 			},
@@ -141,13 +166,15 @@ define ([
 				// Attempt login on server...
 				$.ajax({
 					type: 'POST',
-					url: "/login",
+					url: "/login2",
 					data: formData
 				})
 				.done(function(data, status, xhr) {
+
 					if (xhr.status != 200) {
 						$('#login').find(".errors").html(data);
 					} else {
+						self.tokenSave(data.token);
 						$('#login').find(".errors").html("");
 						self.toggleAuth();
 						self.fetchData();
@@ -193,6 +220,15 @@ define ([
 					$('#do-register').val($('#do-register').attr("data-init-value"));
 				});
 				return false;
+			},
+
+			/**
+			 * To save the token received after successful login or registering
+			 *
+			 * @method tokenSave
+			 */
+			tokenSave: function (token) {
+				console.log(token);
 			},
 
 			/**

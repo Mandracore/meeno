@@ -646,3 +646,8 @@ la note est sauvegardée avec un taskLink pointant sur une tâche qui n'existe p
 
 
 stocker le secret dans une env variable
+
+Comment faire pour que le login soit exigé de nouveau à chaque fois qu"une requête échoue ?
+main.js pourrait écouter un évènement qui affiche le login !
+exemple : main:login => toggleAuth
+En gros, quand 403/401 => trigger main:login

@@ -22,7 +22,7 @@ exports.proxy = function (secret, req, res, next) {
 		// verifies secret and checks expiration
 		jwt.verify(token, secret, function(err, decoded) {      
 			if (err) {
-				console.log(err)
+				console.log(err);
 				return res.json({ success: false, message: 'Failed to authenticate token' });
 			} else {
 				// if everything is good, save to request for use in other routes
@@ -34,7 +34,7 @@ exports.proxy = function (secret, req, res, next) {
 
 	} else {
 		// if there is no token, return an error
-		return res.status(403).send({ 
+		return res.status(401).send({ 
 				success: false, 
 				message: 'No token provided.' 
 		});

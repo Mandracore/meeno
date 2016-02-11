@@ -21,7 +21,6 @@ module.exports = function(mas) {
 	mas.post('/login2', function (req, res) {
 		if (!req.body.email) {return res.send(202, 'no user provided');}
 		mas.Models.User.findOne({'email': req.body.email}, function(err, user) {
-			console.log(user)
 			// console.log(user)
 			if (err) {return res.send(202, err);}
 			if (!user) {return res.send(202, 'unknown user');}
@@ -36,7 +35,7 @@ module.exports = function(mas) {
 			var token = jwt.sign(payload, mas.get('superSecret'), {
 				// expiresInMinutes: 1440 // expires in 24 hours
 				issuer: "mandracore",
-				expiresIn: 60, // expires in 1 minute
+				expiresIn: 120, // expires in 2 minutes
 			});
 
 			// return the information including token as JSON
