@@ -5,12 +5,12 @@
 module.exports = function(mas, securityProxy){
 
 	mas.get("/api/notes", function (req, res) {
-		return mas.Models.Note.find({'_creator': req.session.user._id }, function(err, notes) {
+		return mas.Models.Note.find({'_creator': req.decoded.userId }, function(err, notes) {
 			return res.send(notes);
 		});
 	});
 	mas.get("/api/notes/:id", function (req, res) {
-		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
+		return mas.Models.Note.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, note) {
 			if (!note) {return res.send(403,"Forbidden");}
 
 			if (!err) {
@@ -19,7 +19,7 @@ module.exports = function(mas, securityProxy){
 		});
 	});
 	mas.put("/api/notes/:id", function (req, res) {
-		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
+		return mas.Models.Note.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, note) {
 			if (!note) {return res.send(403,"Forbidden");}
 
 			note.created_at  = req.body.created_at;
@@ -30,11 +30,8 @@ module.exports = function(mas, securityProxy){
 			note.tagLinks    = req.body.tagLinks;
 			note.taskLinks   = req.body.taskLinks;
 
-			console.log(note);
-
 			return note.save(function(err) {
 				if (!err) {
-					console.log("updated");
 					return res.send(note);
 				} else {
 					console.log(err);
@@ -45,7 +42,7 @@ module.exports = function(mas, securityProxy){
 	});
 	mas.post("/api/notes", function (req, res) {
 		var note = new mas.Models.Note ({
-			_creator    : req.session.user._id,
+			_creator    : req.decoded.userId,
 			created_at  : req.body.created_at,
 			updated_at  : req.body.updated_at,
 			title       : req.body.title,
@@ -55,11 +52,8 @@ module.exports = function(mas, securityProxy){
 			taskLinks   : req.body.taskLinks,
 		});
 
-		console.log(req.body);
-
 		note.save(function(err) {
 			if (!err) {
-				console.log("created");
 				return res.send(note);
 			} else {
 				console.log(err);
@@ -68,12 +62,11 @@ module.exports = function(mas, securityProxy){
 		});
 	});
 	mas.delete("/api/notes/:id", function (req, res) {
-		return mas.Models.Note.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, note) {
+		return mas.Models.Note.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, note) {
 
 			if (!note) {return res.send(403,"Forbidden");}
 			return note.remove(function(err) {
 				if (!err) {
-					console.log("removed");
 					return res.send('');
 				}
 			});

@@ -5,12 +5,12 @@
 module.exports = function(mas, securityProxy){
 
 	mas.get("/api/tasks", function (req, res) {
-		return mas.Models.Task.find({'_creator': req.session.user._id }, function(err, tasks) {
+		return mas.Models.Task.find({'_creator': req.decoded.userId }, function(err, tasks) {
 			return res.send(tasks);
 		});
 	});
 	mas.get("/api/tasks/:id", function (req, res) {
-		return mas.Models.Task.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, task) {
+		return mas.Models.Task.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, task) {
 			if (!task) {return res.send(403,"Forbidden");}
 
 			if (!err) {
@@ -19,7 +19,7 @@ module.exports = function(mas, securityProxy){
 		});
 	});
 	mas.put("/api/tasks/:id", function (req, res) {
-		return mas.Models.Task.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, task) {
+		return mas.Models.Task.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, task) {
 			if (!task) {return res.send(403,"Forbidden");}
 
 			task.created_at  = req.body.created_at;
@@ -32,8 +32,6 @@ module.exports = function(mas, securityProxy){
 			task.completed   = req.body.completed;
 			task.noteLinks   = req.body.noteLinks;
 			task.tagLinks    = req.body.tagLinks;
-
-			console.log(task);
 
 			return task.save(function(err) {
 				if (!err) {
@@ -48,7 +46,7 @@ module.exports = function(mas, securityProxy){
 	});
 	mas.post("/api/tasks", function (req, res) {
 		var task = new mas.Models.Task ({
-			_creator   : req.session.user._id,
+			_creator   : req.decoded.userId,
 			created_at : req.body.created_at,
 			updated_at : req.body.updated_at,
 			todo_at    : req.body.todo_at,
@@ -61,8 +59,6 @@ module.exports = function(mas, securityProxy){
 			tagLinks   : req.body.tagLinks,
 		});
 
-		console.log(req.body);
-
 		task.save(function(err) {
 			if (!err) {
 				console.log("created");
@@ -74,11 +70,10 @@ module.exports = function(mas, securityProxy){
 		});
 	});
 	mas.delete("/api/tasks/:id", function (req, res) {
-		return mas.Models.Task.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, task) {
+		return mas.Models.Task.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, task) {
 			if (!task) {return res.send(403,"Forbidden");}
 			return task.remove(function(err) {
 				if (!err) {
-					console.log("removed");
 					return res.send('');
 				}
 			});

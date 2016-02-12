@@ -88,7 +88,7 @@ var authentication = require('./app/src/routes/authenticate.js');
 // All routes starting with /api/ must first execute the authentication proxy
 // mas.all('/api/*', mas.authentication.proxy);
 
-mas.all('/api/*', function (req, res, next) {
+mas.all(['/api/*', '/logout'], function (req, res, next) {
   console.log('Going through proxy...');
   authentication.proxy (mas.get('superSecret'), req, res, next);
   // next(); // pass control to the next handler

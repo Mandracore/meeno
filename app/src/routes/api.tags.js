@@ -5,12 +5,12 @@
 module.exports = function(mas, securityProxy){
 
 	mas.get("/api/tags", function (req, res) {
-		return mas.Models.Tag.find({'_creator': req.session.user._id }, function(err, tags) {
+		return mas.Models.Tag.find({'_creator': req.decoded.userId }, function(err, tags) {
 			return res.send(tags);
 		});
 	});
 	mas.get("/api/tags/:id", function (req, res) {
-		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
+		return mas.Models.Tag.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 
 			if (!err) {
@@ -19,15 +19,13 @@ module.exports = function(mas, securityProxy){
 		});
 	});
 	mas.put("/api/tags/:id", function (req, res) {
-		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
+		return mas.Models.Tag.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 
 			tag.created_at = req.body.created_at;
 			tag.updated_at = req.body.updated_at;
 			tag.label      = req.body.label;
 			tag.color      = req.body.color;
-
-			console.log(tag);
 
 			return tag.save(function(err) {
 				if (!err) {
@@ -42,14 +40,12 @@ module.exports = function(mas, securityProxy){
 	});
 	mas.post("/api/tags", function (req, res) {
 		var tag = new mas.Models.Tag ({
-			_creator  : req.session.user._id,
+			_creator  : req.decoded.userId,
 			created_at: req.body.created_at,
 			updated_at: req.body.updated_at,
 			label     : req.body.label,
 			color     : req.body.color,
 		});
-
-		console.log(req.body);
 
 		tag.save(function(err) {
 			if (!err) {
@@ -62,11 +58,10 @@ module.exports = function(mas, securityProxy){
 		});
 	});
 	mas.delete("/api/tags/:id", function (req, res) {
-		return mas.Models.Tag.findOne({'_creator': req.session.user._id, '_id': req.params.id}, function(err, tag) {
+		return mas.Models.Tag.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, tag) {
 			if (!tag) {return res.send(403,"Forbidden");}
 			return tag.remove(function(err) {
 				if (!err) {
-					console.log("removed");
 					return res.send('');
 				}
 			});

@@ -126,18 +126,6 @@ define ([
 				this.listenTo(channel, 'browser:refresh:tags', function () {this.renderCollection("tags");});
 				this.listenTo(channel, 'browser:refresh:tasks', function () {this.renderCollection("tasks");});
 
-				// Keyboard events listeners
-				// this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
-				// this.listenTo(channel, 'keyboard:backspace', function () {this.kbEventProxy("backspace");});
-				// this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
-
-				// Deactivated for testing purposes only
-				// this.searchFiltersCtrlUpd("notes");
-				// this.searchFiltersCtrlUpd("tasks");
-				// this.searchFiltersCtrlUpd("tags");
-
-				// this.listenTo(channel, "browser:search:filters:activate", this.searchFilterActivate);
-
 				/*
 				// Actions management
 				this.listenTo(channel, 'browser:actions:update-selectors:notes', function () {this.actionSelectorsUpdate("notes");});
@@ -874,7 +862,6 @@ define ([
 				}
 
 				// Empty the DOM
-				//$list.children(':not(.add)').remove();
 				//$list.html('');
 
 				// Second, killing children views of the right collection

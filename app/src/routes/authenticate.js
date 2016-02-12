@@ -22,11 +22,18 @@ exports.proxy = function (secret, req, res, next) {
 		// verifies secret and checks expiration
 		jwt.verify(token, secret, function(err, decoded) {      
 			if (err) {
+				console.log("[KO] Failed to authenticate token");
 				console.log(err);
-				return res.json({ success: false, message: 'Failed to authenticate token' });
+				return res.status(401).json({ success: false, message: 'Failed to authenticate token' });
 			} else {
+				if (decoded.revoked) {
+					console.log ('[KO] This token has been revoked');
+					return res.status(401).send({ 
+						success: false, 
+						message: 'This token has been revoked',
+					});
+				}
 				// if everything is good, save to request for use in other routes
-				console.log('[OK] Authentication successful')
 				req.decoded = decoded;    
 				next(); // The router will now execute next callback
 			}
@@ -34,6 +41,7 @@ exports.proxy = function (secret, req, res, next) {
 
 	} else {
 		// if there is no token, return an error
+		console.log ('[KO] No token has been provided');
 		return res.status(401).send({ 
 				success: false, 
 				message: 'No token provided.' 

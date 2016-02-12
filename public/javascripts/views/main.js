@@ -2,13 +2,15 @@ define ([
 		'jquery',
 		'underscore',
 		'backbone',
+		'lib/auth',
 		'mousetrap',
 		'channel',
 		'temp',
 		'views/helper',
 		'views/browser',
 		'views/editor',
-	], function ($, _, Backbone, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
+		'lib/backbone.sync.jwt',
+	], function ($, _, Backbone, Auth, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
 
 		/**
 		 * This backbone view holds the entire UI.
@@ -24,6 +26,7 @@ define ([
 
 			events: {
 				'submit #login'                   : 'login',
+				'click .logout'                   : 'logout',
 				'submit #register'                : 'register',
 				'click #toregister'               : 'toggleLR',
 				'click #tologin'                  : 'toggleLR',
@@ -64,7 +67,6 @@ define ([
 				}, 'keydown');
 
 				// Make sur that all sync errors are caught (probably because of missing authorization)
-				this.listenTo(temp.coll.tags, 'request', this.beforeSyncCallback);
 				this.listenTo(temp.coll.tasks, 'error', this.syncCallback);
 				this.listenTo(temp.coll.tags, 'error', this.syncCallback);
 				this.listenTo(temp.coll.notes, 'error', this.syncCallback);
@@ -73,15 +75,6 @@ define ([
 				this.listenTo(temp.coll.tagFilters, 'error', this.syncCallback);
 
 				this.fetchData();
-			},
-
-			/**
-			 * To make sure the token is sent on every request (if it exists)
-			 *
-			 * @method beforeSyncCallback
-			 */
-			beforeSyncCallback: function (coll, xhr, options) {
-				console.log(xhr);
 			},
 
 			/**
@@ -156,6 +149,29 @@ define ([
 				$("#register").toggle();
 			},
 
+			logout: function () {
+				var self = this;
+				$.ajax({
+					type: 'POST',
+					url: "/logout",
+					headers: {
+						'x-access-token': Auth.tokenGet(),
+					},
+				})
+				.done(function(data, status, xhr) {
+					if (xhr.status != 200) {
+						alert ('Communication error with server, logout failed.');
+					} else {
+						Auth.tokenSet(data.token);
+						self.fetchData();
+					}
+				})
+				.fail(function() {
+					console.log("Connection to server failed");
+				})
+				return false;
+			},
+
 			login: function () {
 				if (this.logging) { return false; } // To avoid submitting twice
 				this.logging = true;
@@ -166,7 +182,7 @@ define ([
 				// Attempt login on server...
 				$.ajax({
 					type: 'POST',
-					url: "/login2",
+					url: "/login",
 					data: formData
 				})
 				.done(function(data, status, xhr) {
@@ -174,7 +190,7 @@ define ([
 					if (xhr.status != 200) {
 						$('#login').find(".errors").html(data);
 					} else {
-						self.tokenSave(data.token);
+						Auth.tokenSet(data.token);
 						$('#login').find(".errors").html("");
 						self.toggleAuth();
 						self.fetchData();
@@ -204,9 +220,11 @@ define ([
 					data: formData
 				})
 				.done(function(data, status, xhr) {
-					if (xhr.status != 201) {
+					if (xhr.status != 200) {
 						$('#register').find(".errors").html(data);
 					} else {
+						console.log('registering successful');
+						Auth.tokenSet(data.token);
 						$('#register').find(".errors").html("");
 						self.toggleAuth();
 						self.fetchData();
@@ -220,15 +238,6 @@ define ([
 					$('#do-register').val($('#do-register').attr("data-init-value"));
 				});
 				return false;
-			},
-
-			/**
-			 * To save the token received after successful login or registering
-			 *
-			 * @method tokenSave
-			 */
-			tokenSave: function (token) {
-				console.log(token);
 			},
 
 			/**
