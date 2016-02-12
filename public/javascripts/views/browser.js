@@ -861,24 +861,20 @@ define ([
 					});
 				}
 
-				// Empty the DOM
-				//$list.html('');
-
+				// First, Empty the DOM
+				this.$('.tab.' + collName + ' ul.objects').each(function () {
+					$(this).html('');
+					console.log('emptying');
+				});
 				// Second, killing children views of the right collection
 				_.each(this.children[collName], function (child, index) {
 					child.kill();
 				});
 				this.children[collName] = [];
-
 				// Third, filling the DOM again
 				var newView = {};
 				var $target  = {};
 				var results = temp.coll[collName].search(this.filters[filterName]);
-
-				if (collName === "tasks") {
-					// console.log('========RENDER========')
-					// console.log(results.pluck('todo_at'))
-				}
 
 				results.each(function (element) {
 					switch (collName) {
