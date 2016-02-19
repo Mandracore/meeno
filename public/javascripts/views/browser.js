@@ -864,7 +864,6 @@ define ([
 				// First, Empty the DOM
 				this.$('.tab.' + collName + ' ul.objects').each(function () {
 					$(this).html('');
-					console.log('emptying');
 				});
 				// Second, killing children views of the right collection
 				_.each(this.children[collName], function (child, index) {
