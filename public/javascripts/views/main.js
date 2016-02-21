@@ -9,7 +9,7 @@ define ([
 		'views/helper',
 		'views/browser',
 		'views/editor',
-		'lib/backbone.sync.jwt',
+		// 'lib/backbone.sync.jwt', // No custom Backbone Sync to send jwt (done via $.ajaxSend)
 	], function ($, _, Backbone, Auth, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
 
 		/**

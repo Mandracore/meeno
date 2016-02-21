@@ -4,16 +4,17 @@
 // Configuring aliases for most important modules and libraries to load
 require.config ({
 	paths: {
-		jquery                : 'lib/jquery-1.8.3.min',
-		'jquery.ui'           : 'lib/jquery-ui-1.10.3.custom.min',
-		'jquery.finger'       : 'lib/jquery.finger.min',
-		'jquery.dateFormat'   : 'lib/jquery.dateFormat-1.0',
-		underscore            : 'lib/underscore',
-		backbone              : 'lib/backbone',
-		'backbone.relational' : 'lib/backbone-relational',
-		'backbone.mousetrap'  : 'lib/backbone.mousetrap',
-		'backbone.custom'     : 'backbone.custom',
-		mousetrap             : 'lib/mousetrap.min',
+		jquery                 : 'lib/jquery-1.8.3.min',
+		'jquery.ui'            : 'lib/jquery-ui-1.10.3.custom.min',
+		'jquery.finger'        : 'lib/jquery.finger.min',
+		'jquery.dateFormat'    : 'lib/jquery.dateFormat-1.0',
+		underscore             : 'lib/underscore',
+		backbone               : 'lib/backbone',
+		'backbone.relational'  : 'lib/backbone-relational',
+		'backbone.mousetrap'   : 'lib/backbone.mousetrap',
+		'backbone.custom'      : 'backbone.custom',
+		'backbone.dualStorage' : 'lib/backbone.dualstorage',
+		mousetrap              : 'lib/mousetrap.min',
 
 	},
 	shim: {
@@ -37,6 +38,10 @@ require.config ({
 			exports: 'Backbone'
 		},
 		'backbone.custom': {
+			deps: ['backbone'],
+			exports: 'Backbone'
+		},
+		'backbone.dualStorage': {
 			deps: ['backbone'],
 			exports: 'Backbone'
 		},
