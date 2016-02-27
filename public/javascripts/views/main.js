@@ -3,6 +3,7 @@ define ([
 		'underscore',
 		'backbone',
 		'lib/auth',
+		'lib/alive',
 		'mousetrap',
 		'channel',
 		'temp',
@@ -10,7 +11,7 @@ define ([
 		'views/browser',
 		'views/editor',
 		// 'lib/backbone.sync.jwt', // No custom Backbone Sync to send jwt (done via $.ajaxSend)
-	], function ($, _, Backbone, Auth, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
+	], function ($, _, Backbone, Auth, Alive, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
 
 		/**
 		 * This backbone view holds the entire UI.
@@ -36,6 +37,28 @@ define ([
 			},
 
 			initialize: function() {
+				var self = this;
+				self.isOnline = true;
+
+				$( document ).ajaxComplete(function( event, request, settings ) {
+					// console.log('ajaxComplete: '+request)
+					if (request.status === 0) {
+						if (self.isOnline) {
+							channel.trigger('app:offline');
+							self.isOnline = false;
+						}
+					} else {
+						if (!self.isOnline) {
+							self.isOnline = true;
+							channel.trigger('app:online');
+						}
+					}
+				});
+
+				this.listenTo(channel, 'app:offline', function () { this.connectivity(false); } );
+				this.listenTo(channel, 'app:online', function () { this.connectivity(true); } );
+
+
 				this.auth                 = false;
 				this.logging              = false;
 				this.registering          = false;
@@ -75,6 +98,24 @@ define ([
 				this.listenTo(temp.coll.tagFilters, 'error', this.syncCallback);
 
 				this.fetchData();
+			},
+
+			/**
+			 * To manage synchronization with backend in case of connectivity loss
+			 *
+			 * @method connectivity
+			 */
+			connectivity: function (online) {
+				if (!online) {
+					this.$("#connectivity").addClass('offline');
+				} else {
+					this.$("#connectivity").removeClass('offline');
+					// Resync. with server
+					// all changes are sent to the server and localStorage is updated
+					temp.coll.tasks.syncDirtyAndDestroyed();
+					temp.coll.tags.syncDirtyAndDestroyed();
+					temp.coll.notes.syncDirtyAndDestroyed();
+				}
 			},
 
 			/**

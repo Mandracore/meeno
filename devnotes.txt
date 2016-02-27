@@ -651,3 +651,11 @@ Comment faire pour que le login soit exigé de nouveau à chaque fois qu"une req
 main.js pourrait écouter un évènement qui affiche le login !
 exemple : main:login => toggleAuth
 En gros, quand 403/401 => trigger main:login
+
+21/02====================================================
+Voir comment resynchroniser le serveur une fois qu'il est online !!!
+
+27/02====================================================
+dualStorage fonctionne, il reste seulement à mettre en place un jQury qui permette de tester la connexion régulièrement alive.js
+
+
