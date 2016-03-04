@@ -58,7 +58,6 @@ define ([
 				this.listenTo(channel, 'app:offline', function () { this.connectivity(false); } );
 				this.listenTo(channel, 'app:online', function () { this.connectivity(true); } );
 
-
 				this.auth                 = false;
 				this.logging              = false;
 				this.registering          = false;
@@ -108,7 +107,9 @@ define ([
 			connectivity: function (online) {
 				if (!online) {
 					this.$("#connectivity").addClass('offline');
+					this.AliveId = Alive.start(); // start pinging
 				} else {
+					Alive.stop(this.AliveId); // stop pinging
 					this.$("#connectivity").removeClass('offline');
 					// Resync. with server
 					// all changes are sent to the server and localStorage is updated
@@ -124,6 +125,7 @@ define ([
 			 * @method syncCallback
 			 */
 			syncCallback: function (coll, resp, options) {
+				console.log('error syncCallback')
 				if (resp.status == 401) {
 					console.log ("Unauthorized, displaying user authentification form");
 					this.toggleAuth();

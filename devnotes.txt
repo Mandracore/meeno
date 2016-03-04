@@ -658,4 +658,6 @@ Voir comment resynchroniser le serveur une fois qu'il est online !!!
 27/02====================================================
 dualStorage fonctionne, il reste seulement à mettre en place un jQury qui permette de tester la connexion régulièrement alive.js
 
+#bug : le DELETE est tenté deux fois de suite => le second échoue en 403
 
+En cas d'échec de GET notes, un seul DELETE note est lancé (echec 401)

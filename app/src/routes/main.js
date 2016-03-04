@@ -33,7 +33,7 @@ module.exports = function(mas) {
 			};
 			var token = jwt.sign(payload, mas.get('superSecret'), {
 				issuer: "mandracore",
-				expiresIn: 120, // expires in 2 minutes
+				expiresIn: 31536000, // expires in one year
 			});
 
 			// return the information including token as JSON

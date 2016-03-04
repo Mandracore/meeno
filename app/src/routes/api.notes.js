@@ -11,7 +11,7 @@ module.exports = function(mas, securityProxy){
 	});
 	mas.get("/api/notes/:id", function (req, res) {
 		return mas.Models.Note.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, note) {
-			if (!note) {return res.send(403,"Forbidden");}
+			if (!note) {return res.send(404,"This ressource does not exist");}
 
 			if (!err) {
 				return res.send(note);
@@ -20,7 +20,7 @@ module.exports = function(mas, securityProxy){
 	});
 	mas.put("/api/notes/:id", function (req, res) {
 		return mas.Models.Note.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, note) {
-			if (!note) {return res.send(403,"Forbidden");}
+			if (!note) {return res.send(404,"This ressource does not exist");}
 
 			note.created_at  = req.body.created_at;
 			note.updated_at  = req.body.updated_at;
@@ -64,7 +64,7 @@ module.exports = function(mas, securityProxy){
 	mas.delete("/api/notes/:id", function (req, res) {
 		return mas.Models.Note.findOne({'_creator': req.decoded.userId, '_id': req.params.id}, function(err, note) {
 
-			if (!note) {return res.send(403,"Forbidden");}
+			if (!note) {return res.send(404,"This ressource does not exist");}
 			return note.remove(function(err) {
 				if (!err) {
 					return res.send('');

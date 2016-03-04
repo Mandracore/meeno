@@ -11,12 +11,9 @@ var mongoose         = require('mongoose');
 var stylus           = require('stylus');
 var nib              = require('nib');
 var mas              = express(); // Meeno App Server
-
-var bodyParser = require('body-parser');
-var morgan     = require('morgan');
-mas.jwt        = require('jsonwebtoken'); // used to create, sign, and verify tokens
-
-
+var bodyParser       = require('body-parser');
+var morgan           = require('morgan');
+mas.jwt              = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 
 //------------------------------------------
@@ -26,10 +23,11 @@ mas.jwt        = require('jsonwebtoken'); // used to create, sign, and verify to
 mas.configure('development', 'production', function(){
 	mas.set('mode', process.env.NODE_ENV || "development");
 	mas.set('port', process.env.PORT || 3000);
+	if (mas.get('mode') == "production") {
+		mas.set('port', 80);
+	}
 	mas.use(express.favicon());
 	mas.use(express.logger('dev'));
-	mas.use(express.cookieParser('your secret here'));
-	mas.use(express.session()); // , express.session({ secret: 'esoognom'})
 	mas.use(express.bodyParser());
 	mas.use(express.methodOverride());
 	mas.use(mas.router);
@@ -82,16 +80,11 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 // ROUTING
 //------------------------------------------
-// mas.security       = require('./app/src/routes/security.proxy.js');
 var authentication = require('./app/src/routes/authenticate.js');
 
 // All routes starting with /api/ must first execute the authentication proxy
-// mas.all('/api/*', mas.authentication.proxy);
-
 mas.all(['/api/*', '/logout'], function (req, res, next) {
-  console.log('Going through proxy...');
   authentication.proxy (mas.get('superSecret'), req, res, next);
-  // next(); // pass control to the next handler
 });
 
 require('./app/src/routes/main.js')(mas);
