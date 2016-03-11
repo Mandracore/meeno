@@ -61,5 +61,13 @@ require ([
 	], function (App) {
 		// The 'app' dependency is passed in as "App"
 		App.initialize();
+
+		window.addEventListener('load', function(e) {
+			window.applicationCache.addEventListener('updateready', function(e) {
+				window.applicationCache.swapCache();
+				window.location.reload();
+			})
+			window.applicationCache.update();
+		})
 	}
 );

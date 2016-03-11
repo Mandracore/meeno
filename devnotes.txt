@@ -661,3 +661,8 @@ dualStorage fonctionne, il reste seulement à mettre en place un jQury qui perme
 #bug : le DELETE est tenté deux fois de suite => le second échoue en 403
 
 En cas d'échec de GET notes, un seul DELETE note est lancé (echec 401)
+
+Reste à lancer l'appcache
+
+Todo:
+1. Avoir 2 index différents en PROD et DEV, qui appellent le js normal ou le built

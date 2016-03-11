@@ -10,9 +10,10 @@ module.exports = function(mas) {
 	mas.get('/', function (req, res) {
 		negotiator = new Negotiator(req);
 		res.render('index', {
-			title  : 'Meeno',
-			css    : '/stylesheets/index.css',
-			locale : negotiator.preferredLanguage(availableLanguages) || 'en'
+			environment : mas.get('mode'),
+			title       : 'Meeno',
+			css         : '/stylesheets/index.css',
+			locale      : negotiator.preferredLanguage(availableLanguages) || 'en'
 		});
 	});
 

@@ -125,7 +125,6 @@ define ([
 			 * @method syncCallback
 			 */
 			syncCallback: function (coll, resp, options) {
-				console.log('error syncCallback')
 				if (resp.status == 401) {
 					console.log ("Unauthorized, displaying user authentification form");
 					this.toggleAuth();

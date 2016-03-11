@@ -6,7 +6,10 @@ doctype html
 //if IE 8
 	<html class="no-js lt-ie9">
 //[if gt IE 8]><!
-html(class="no-js", manifest="other-assets/offline.dev.appcache")
+if environment == "development"
+	html(class="no-js", manifest="cache.manifest.failure")
+else
+	html(class="no-js", manifest="cache.manifest.notyet")
 	//<![endif]
 	head
 	meta(charset="utf-8")

@@ -10,9 +10,13 @@ block content
 
 	//- Client-side application's scripts
 	//- Load the script "js/main.js" as our entry point
-	script(data-main="javascripts/main", src="javascripts/lib/require.js")
 
-	// Login/Register form
+	if environment == "development"
+		script(data-main="javascripts/main", src="javascripts/lib/require.js")
+	else
+		script(data-main="javascripts-built/main", src="javascripts/lib/require.js")
+	h1= environment
+	// Login/Register
 	div#form-wrapper(style="display:none")
 		div
 		div

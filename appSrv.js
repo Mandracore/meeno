@@ -21,7 +21,8 @@ mas.jwt              = require('jsonwebtoken'); // used to create, sign, and ver
 //------------------------------------------
 
 mas.configure('development', 'production', function(){
-	mas.set('mode', process.env.NODE_ENV || "development");
+	mas.set('mode', process.env.NODE_ENV || "preproduction");
+	// mas.set('mode', process.env.NODE_ENV || "development");
 	mas.set('port', process.env.PORT || 3000);
 	if (mas.get('mode') == "production") {
 		mas.set('port', 80);
@@ -80,6 +81,25 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 // ROUTING
 //------------------------------------------
+
+// Serve cache manifest
+var version=7;
+mas.get('/cache.manifest',function(q,s){
+	s.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
+	s.end([
+		'CACHE MANIFEST',
+		'#v'+version, // Store version number
+		'CACHE:', // Resources to cache
+		'/javascripts-built/main.notyet.js',
+		'NETWORK:', // Resources that must never be cached
+		'/',
+		'/login',
+		'/logout',
+		'/register',
+		'/api', // everything starting with /api
+	].join("\n"));
+});
+
 var authentication = require('./app/src/routes/authenticate.js');
 
 // All routes starting with /api/ must first execute the authentication proxy
