@@ -21,8 +21,8 @@ mas.jwt              = require('jsonwebtoken'); // used to create, sign, and ver
 //------------------------------------------
 
 mas.configure('development', 'production', function(){
-	mas.set('mode', process.env.NODE_ENV || "preproduction");
-	// mas.set('mode', process.env.NODE_ENV || "development");
+	// mas.set('mode', process.env.NODE_ENV || "preproduction"); // To test the pre-production mode
+	mas.set('mode', process.env.NODE_ENV || "development"); // To test in development mode
 	mas.set('port', process.env.PORT || 3000);
 	if (mas.get('mode') == "production") {
 		mas.set('port', 80);
@@ -84,9 +84,9 @@ require('./app/src/models/index.js')(mas, mongoose);
 
 // Serve cache manifest
 var version=7;
-mas.get('/cache.manifest',function(q,s){
-	s.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
-	s.end([
+mas.get('/cache.manifest',function(req,res){
+	res.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
+	res.end([
 		'CACHE MANIFEST',
 		'#v'+version, // Store version number
 		'CACHE:', // Resources to cache

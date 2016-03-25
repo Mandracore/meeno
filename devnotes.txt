@@ -666,3 +666,9 @@ Reste à lancer l'appcache
 
 Todo:
 1. Avoir 2 index différents en PROD et DEV, qui appellent le js normal ou le built
+2. Rajouter au script post-receive de faire le build JS : node_modules/.bin/r.js -o build.js
+3. En DEV, un GET /cache.manifest doit retourner une erreur 404 pour éviter tout caching
+
+
+21/03=================================================
+Essayer de voir si dès l'uglify j'ai déjà un bug, cibler le fichier fautif et l'enlever

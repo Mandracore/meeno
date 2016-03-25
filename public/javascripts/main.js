@@ -11,11 +11,8 @@ require.config ({
 		underscore             : 'lib/underscore',
 		backbone               : 'lib/backbone',
 		'backbone.relational'  : 'lib/backbone-relational',
-		'backbone.mousetrap'   : 'lib/backbone.mousetrap',
-		'backbone.custom'      : 'backbone.custom',
 		'backbone.dualStorage' : 'lib/backbone.dualstorage',
 		mousetrap              : 'lib/mousetrap.min',
-
 	},
 	shim: {
 		'jquery.ui': {
