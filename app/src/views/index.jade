@@ -1,122 +1,75 @@
 extends layout
 
 block content
-	// For future use
+	//- For future use
 		|<p class="date">Created : <%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></p>
 
-
-	// Client-side Templates
-	// This part of the DOM must be ready before defining the views as they use it for templating
+	//- Client-side Templates
+	//- This part of the DOM must be ready before defining the views as they use it for templating
 	include clientSideTemplates.html
 
-	// Client-side application's scripts
-	//- Libraries scripts
-	script(src="javascripts/lib/modernizr-2.6.2.min.js")
-	script(src="javascripts/lib/jquery-1.8.3.min.js")
-	script(src="javascripts/lib/jquery-ui-1.10.3.custom.min.js")
-	script(src="javascripts/lib/jquery.dateFormat-1.0.js")
-	script(src="javascripts/lib/underscore-min.js")
-	script(src="javascripts/lib/backbone.js")
-	script(src="javascripts/lib/backbone-relational.js")
-	//- script(src="javascripts/lib/backbone.localStorage-min.js")
-	//- script(src="javascripts/lib/backbone-nested-v1.1.2.min.js")
-	//- script(src="javascripts/lib/jquery.at.caret.min.js")
-	script(src="javascripts/lib/mousetrap.min.js")
-	script(src="javascripts/lib/backbone.mousetrap.js")
-	script(src="javascripts/lib/jquery.caret.js")
-	script(src="javascripts/lib/caret.js")
-	script(src="javascripts/lib/tools.js")
-
-	//- Application specific scripts
-	script(src="javascripts/routers/router.js")
-	script(src="javascripts/models/note.js")
-	script(src="javascripts/models/tag.js")
-	script(src="javascripts/models/task.js")
-	script(src="javascripts/models/link-note-tag.js")
-	script(src="javascripts/models/link-note-task.js")
-	script(src="javascripts/models/link-task-tag.js")
-	script(src="javascripts/models/filter-object.js")
-	script(src="javascripts/models/filter-note.js")
-	script(src="javascripts/models/filter-task.js")
-	script(src="javascripts/models/filter-tag.js")
-	script(src="javascripts/collections/notes.js")
-	script(src="javascripts/collections/tags.js")
-	script(src="javascripts/collections/tasks.js")
-	script(src="javascripts/collections/filters-object.js")
-	script(src="javascripts/collections/filters-note.js")
-	script(src="javascripts/collections/filters-task.js")
-	script(src="javascripts/collections/filters-tag.js")
-	script(src="javascripts/views/browser-tab.js")
-	script(src="javascripts/views/browser-body.js")
-	script(src="javascripts/views/browser-body-object.js")
-	script(src="javascripts/views/browser-body-note.js")
-	script(src="javascripts/views/browser-body-tag.js")
-	script(src="javascripts/views/browser-body-task.js")
-	script(src="javascripts/views/browser-body-filter.js")
-	script(src="javascripts/views/browser.js")
-	script(src="javascripts/views/helper-tab.js")
-	script(src="javascripts/views/helper-body.js")
-	script(src="javascripts/views/helper.js")
-	script(src="javascripts/views/editor-tab.js")
-	script(src="javascripts/views/editor-body.js")
-	script(src="javascripts/views/editor-body-object.js")
-	//script(src="javascripts/views/editor-body-tag.js")
-	//script(src="javascripts/views/editor-body-task.js")
-	script(src="javascripts/views/editor.js")
-	script(src="javascripts/l18n/"+ locale + ".js")
-	script(src="javascripts/views/main.js")
-	script(src="javascripts/appCli.js")
-
-	// Login/Register form
+	//- Client-side application's scripts
+	//- Load the script "js/main.js" as our entry point
+	if environment == "development"
+		script(data-main="javascripts/main", src="javascripts/lib/require.js")
+	else
+		script(data-main="javascripts-built/main", src="javascripts/lib/require.js")
+		//script(src="javascripts-built/main.js")
+	h1= environment
+	// Login/Register
 	div#form-wrapper(style="display:none")
-		form#login(autocomplete="on")
-			h1 Log in
-			p.errors
-			p.email
-				label(for="email") Your email address
-				input(id="email", name="email", required="required", type="text", placeholder="myemail@mail.com", autofocus)
-			p.password
-				label(for="password") Your password
-				input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
-			p.keeplogin
-				input(id="keeplogin", name="keeplogin", type="checkbox", value="keeplogin")
-				label(for="keeplogin") Keep me logged in
-			p.button.login
-				input(id="do-login", type="submit", value="Login", data-init-value="Login")
-			p.switch
-				|Not a member yet ?
-				button#toregister Join us
-		form#register(autocomplete="on", style="display:none")
-			h1 Sign up
-			p.errors
-			p.email
-				label(for="emailSignup") Your email address
-				input(id="emailSignup", name="emailSignup", required="required", type="text", placeholder="myemail@mail.com")
-			p.email
-				label(for="emailSignupConfirm") Please confirm your email address
-				input(id="emailSignupConfirm", name="emailSignupConfirm", required="required", type="text", placeholder="myemail@mail.com")
-			p.password
-				label(for="passwordSignup") Your password
-				input(id="passwordSignup", name="passwordSignup", required="required", type="password", placeholder="eg. X8df!90EO")
-			p.password
-				label(for="passwordSignupConfirm") Please confirm your password
-				input(id="passwordSignupConfirm", name="passwordSignupConfirm", required="required", type="password", placeholder="eg. X8df!90EO")
-			p.button.signin
-				input(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")
-			p.switch
-				|Already a member ?
-				button#tologin Go log in
-
+		div
+		div
+			form#login(autocomplete="on")
+				h1 Log in
+				p.errors
+				p.email
+					label(for="email") Your email address
+					input(id="email", name="email", required="required", type="text", placeholder="myemail@mail.com", autofocus)
+				p.password
+					label(for="password") Your password
+					input(id="password", name="password", required="required", type="password", placeholder="eg. X8df!90EO")
+				p.keeplogin
+					input.checkbox(id="keeplogin", name="keeplogin", type="checkbox", value="keeplogin")
+					label.checkbox(for="keeplogin") Keep me logged in
+				p.button.login
+					input.submit(id="do-login", type="submit", value="Login", data-init-value="Login")
+				p.switch
+					|Not a member yet ?
+					button#toregister Join us
+			form#register(autocomplete="on", style="display:none")
+				h1 Sign up
+				p.errors
+				p.email
+					label(for="emailSignup") Your email address
+					input(id="emailSignup", name="emailSignup", required="required", type="text", placeholder="myemail@mail.com")
+				p.email
+					label(for="emailSignupConfirm") Please confirm your email address
+					input(id="emailSignupConfirm", name="emailSignupConfirm", required="required", type="text", placeholder="myemail@mail.com")
+				p.password
+					label(for="passwordSignup") Your password
+					input(id="passwordSignup", name="passwordSignup", required="required", type="password", placeholder="eg. X8df!90EO")
+				p.password
+					label(for="passwordSignupConfirm") Please confirm your password
+					input(id="passwordSignupConfirm", name="passwordSignupConfirm", required="required", type="password", placeholder="eg. X8df!90EO")
+				p.button.signin
+					input.submit(id="do-register", type="submit", value="Sign up", data-init-value="Sign up")
+				p.switch
+					|Already a member ?
+					button#tologin Go log in
+		div
 	// Application skeleton
-	ul.actions-main
-		li.note New Note
-		li.task New Task
-		li.report New Report
-
-	div#main
-		header
-			a(href="/",title="meeno")
+	//div#main.navigating.grid-container.grid-parent
+	#main.grid-container.grid-parent
+		div.navigation.grid-20.grid-parent
+			div.command.hide-on-desktop
+				button.open
+					span.fa.fa-navicon
+				//- button.close
+					span.fa.fa-close
+			div.navigation-options
 				h1
+<<<<<<< HEAD
 					span.organisation mandracore
 					| meeno v0.2
 			ul
@@ -217,3 +170,346 @@ block content
 		div#footer
 			p.current-action Saving...
 			p.sync-status Sync. Status : In Progress...
+=======
+					span.one mee
+					span.two no
+				div#connectivity
+					.offline offline
+				nav.browse
+					h2 browse
+						span.fa.fa-bookmark
+					// Commands to navigate between the different tabs
+					ul#nav
+						li.browse.notes.selected(data-type="notes") NOTES
+						li.browse.tasks(data-type="tasks") TASKS
+						li.browse.tags(data-type="tags") TAGS
+					ul#editors-tabs
+						//li(data-cid="vpi")
+							span.close.fa.fa-remove
+							span.open CS Checkpoint VPI 20151127
+				nav.misc
+					h2 get help
+						span.fa.fa-question-circle
+					h2 admin
+						span.fa.fa-cog
+					h2.logout logout
+						span.fa.fa-toggle-off
+		div.content.grid-80
+			//div.editors.active
+			#editors
+				//div.editor(data-cid="vpi")
+					div.header
+						div.close
+							button.fa.fa-remove
+						div.title SOMFY_MEE_DOM-CMO_2015-06-25-1600
+						div.actions.hide-on-mobile
+							button.fa.fa-trash-o
+								span DELETE
+							button.fa.fa-pencil-square-o
+								span RENAME
+							button.fa.fa-clone
+								span DUPLICATE
+					div.body.grid-container.grid-parent
+						div.left.focus
+							div.summary
+								ul
+									li 1
+									li.active 2
+									li 3
+							div.content(tabindex=1, contenteditable="true")
+								h1 Participants
+								p Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. 
+								.tag(contenteditable="false")
+									.circle
+									span.label SOMFY
+								| Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								.tag(contenteditable="false")
+									input(placeholder="Name your tag here")
+								| Aenean ut gravida lorem. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor.
+								.task(contenteditable="false")
+									.fa.fa-tasks
+									span.label Préparer plan d'action AFE pour suite PMO Exec
+								.task(contenteditable="false")
+									.fa.fa-tasks
+									|Organiser la réunion du 27/11 avec tous les intervenants du CoProj
+								p ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.	
+								.task(contenteditable="false")
+									.fa.fa-tasks
+									input(placeholder="Describe here your task")
+								p ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
+								h1 Objectifs
+								| Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
+							div.text-editor
+								div.tag
+									button.fa.fa-tag
+									.info Insert tag (ttt)
+								div.task
+									button.fa.fa-tasks
+									.info Insert task (&&&)
+								div.font-header
+									button.fa.fa-header
+									.info Toggle headers (Ctrl + plus)
+								div.font-list
+									button.fa.fa-list
+									.info Insert list (lll)
+						div.right
+							div.summary
+								ul
+									li.active 1
+									li 2
+									li 3
+									li 4
+							div.content(tabindex=1, contenteditable="true")
+								h1 Decisions
+								| Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut gravida lorem.
+								h1 Actions
+								| Ut turpis felis, pulvinar a semper sed, adipiscing id dolor. Pellentesque auctor nisi id magna consequat sagittis. Curabitur dapibus enim sit amet elit pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem facilisis semper ac in est. Vivamus fermentum semper porta. Nunc diam velit, adipiscing ut tristique vitae, sagittis vel odio. Maecenas convallis ullamcorper ultricies. Curabitur ornare, ligula semper consectetur sagittis, nisi diam iaculis velit, id fringilla sem nunc vel mi. Nam dictum, odio nec pretium volutpat, arcu ante placerat erat, non tristique elit urna et turpis. Quisque mi metus, ornare sit amet fermentum et, tincidunt et orci. Fusce eget orci a orci congue vestibulum. Ut dolor diam, elementum et vestibulum eu, porttitor vel elit. Curabitur venenatis pulvinar tellus gravida ornare. Sed et erat faucibus nunc euismod ultricies ut id justo. Nullam cursus suscipit nisi, et ultrices justo sodales nec. Fusce venenatis facilisis lectus ac semper. Aliquam at massa ipsum. Quisque bibendum purus convallis nulla ultrices ultricies. Nullam aliquam, mi eu aliquam tincidunt, purus velit laoreet tortor, viverra pretium nisi quam vitae mi. Fusce vel volutpat elit. Nam sagittis nisi dui.
+							div.text-editor
+								div.tag
+									button.fa.fa-tag
+									.info Insert tag (ttt)
+								div.task
+									button.fa.fa-tasks
+									.info Insert task (&&&)
+								div.font-header
+									button.fa.fa-header
+									.info Toggle headers (Ctrl + plus)
+								div.font-list
+									button.fa.fa-list
+									.info Insert list (lll)
+			//div.browser.active
+			#browser.active
+				div.tab.tags(data-class="tags")
+					div.search-box
+						div.looking-glass
+							span.fa.fa-search
+						div.tags.nostretch
+							//button tag2
+						div.input
+							input(data-filter="tags", placeholder="Type here keywords")
+						div.reset
+							button
+								| clear
+								span.fa.fa-remove
+					div.listobjects.selected
+						div.add
+							div
+								span.fa.fa-file-o
+							div.input
+								input.mousetrap(data-input-usage="add", placeholder="Type here your new tag")
+							div.buttons
+								button.save
+									| save
+									span.fa.fa-save
+								button.cancel
+									| cancel
+									span.fa.fa-remove
+						ul.objects.active
+							//li#colortest
+								.colorpicker
+									span.colors
+										span.color(title="Green", style="background-color: #7bd148;", data-color="#7bd148")
+										span.color(title="Bold blue", style="background-color: #5484ed;", data-color="#5484ed")
+										span.color(title="Blue", style="background-color: #a4bdfc;", data-color="#a4bdfc")
+										span.color(title="Turquoise", style="background-color: #46d6db;", data-color="#46d6db")
+										span.color(title="Light green", style="background-color: #7ae7bf;", data-color="#7ae7bf")
+										span.color(title="Yellow", style="background-color: #fbd75b;", data-color="#fbd75b")
+										span.color(title="Orange", style="background-color: #ffb878;", data-color="#ffb878")
+										span.color(title="Red", style="background-color: #ff887c;", data-color="#ff887c")
+										span.color(title="Bold red", style="background-color: #dc2127;", data-color="#dc2127")
+										span.color(title="Purple", style="background-color: #dbadff;", data-color="#dbadff")
+										span.color(title="Gray", style="background-color: #e1e1e1;", data-color="#e1e1e1")
+									button.fa.fa-eyedropper
+									button.fa.fa-remove
+								.default
+									.table.expand
+										.color
+											.globe(style="background-color: #46d6db;")
+										.label Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.
+										.form
+											.table.label
+												.input
+													input.mousetrap(placeholder="Type here the name of the tag", value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit.")
+												.controls
+													button.save SAVE
+													button.cancel CANCEL
+										//.rename.wip
+										.edit
+											button.fa.fa-pencil
+								.delete
+									button.fa.fa-trash
+									button.fa.fa-trash-o
+				div.tab.notes.active(data-class="notes")
+					div.search-box
+						div.looking-glass
+							span.fa.fa-search
+						div.tags.nostretch
+							// button tag1
+						div.input
+							input.autocomplete(data-filter="notes", placeholder="Type here keywords")
+						div.reset
+							button
+								| clear
+								span.fa.fa-remove
+					div.listobjects.selected
+						div.add
+							div
+								span.fa.fa-file-o
+							div.input
+								input.mousetrap(data-input-usage="add", placeholder="Type here the title of your new note")
+							div.buttons
+								button.save
+									| save
+									span.fa.fa-save
+								button.cancel
+									| cancel
+									span.fa.fa-remove
+						ul.objects.active
+							//li.expanded
+								.open
+									button.fa.fa-folder
+									button.fa.fa-folder-open
+								.content
+									.overview
+										.label
+											.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+										.tags.hide-on-mobile
+											button 
+												span.red
+												| tag1
+											button
+												span.green
+												| tag1
+										.expand
+											button.fa.fa-angle-down
+									.form
+										.reduce
+											button.fa.fa-angle-up
+										.label.updated
+											.input
+												input.mousetrap(tabindex=1, value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+											.actions
+												button.save SAVE
+												button.cancel CANCEL
+													span.fa.fa-trash
+										.tags.updated
+											.buttons
+												button.tag
+													span.red
+													| tag1
+												button.tag
+													span.green
+													| tag1
+											.input
+												input.autocomplete.mousetrap(tabindex=1, placeholder="Search here the tag to add or to create")
+											.actions
+												button.link LINK
+													span.fa.fa-link
+												button.cancel CANCEL
+													span.fa.fa-remove
+								.delete
+									button.fa.fa-trash
+									button.fa.fa-trash-o
+				div.tab.tasks(data-class="tasks")
+					div.search-box
+						div.looking-glass
+							span.fa.fa-search
+						div.tags.nostretch
+							//button tag1
+						div.input
+							input.autocomplete(data-filter="tasks", placeholder="Type here keywords")
+						div.reset
+							button
+								| clear
+								span.fa.fa-remove
+					div.listobjects.selected
+						div.nav.grid-container.grid-parent
+							ul.milestones.grid-90.mobile-grid-90.grid-parent
+								li.active.today(data-mile="today") Today
+								li.tomorrow(data-mile="tomorrow") Tomorrow
+								li.nextweek(data-mile="nextweek") Nextweek
+								li.later(data-mile="later") Later
+							div.filter-checked.grid-10.mobile-grid-10.grid-parent
+								button.active(data-step="0") Todo
+								button(data-step="1") Done
+								button(data-step="2") Both
+						div.add
+							div
+								span.fa.fa-file-o
+							div.input
+								input.mousetrap(data-input-usage="add", placeholder="Type here your new task")
+							div.buttons
+								button.save
+									| save
+									span.fa.fa-save
+								button.cancel
+									| cancel
+									span.fa.fa-remove
+						ul.objects.today.draggable.active
+						ul.objects.tomorrow.draggable
+						ul.objects.nextweek.draggable
+						ul.objects.later.draggable
+							//li.task
+							//li.task.expanded
+								.check
+									button.fa.fa-check
+								.move
+									button.fa.fa-arrows
+								.content
+									.overview
+										.due
+											.date
+												.day 28
+												.month JAN
+												input.datepicker(type="hidden") 
+										.label
+											.text Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+										.tags.hide-on-mobile
+											button 
+												span.red
+												| tag1
+											button
+												span.green
+												| tag1
+										.expand
+											button.fa.fa-angle-down
+									.form
+										.reduce
+											button.fa.fa-angle-up
+										.due
+											.date
+												.day 28
+												.month JAN
+												input.datepicker
+										.label.updated
+											.input
+												input.mousetrap(tabindex=1, value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+											.actions
+												button.save SAVE
+												button.cancel CANCEL
+													span.fa.fa-trash
+										.tags.updated
+											.buttons
+												button.tag
+													span.red
+													| tag1
+												button.tag
+													span.green
+													| tag1
+											.input
+												input.autocomplete.mousetrap(tabindex=1, placeholder="Search here the tag to add or to create")
+											.actions
+												button.link LINK
+													span.fa.fa-link
+												button.cancel CANCEL
+													span.fa.fa-remove
+										.description.updated
+											.input.mousetrap(tabindex=1, contenteditable="true") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris. Maecenas congue ligula ac quam viverra nec consectetur ante hendrerit. Donec et mollis dolor. Praesent et diam eget libero egestas mattis sit amet vitae augue. Nam tincidunt congue enim, ut porta lorem lacinia consectetur. Donec ut libero sed arcu vehicula ultricies a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+											.actions
+												button.save SAVE
+												button.cancel CANCEL
+													span.fa.fa-trash
+								.delete
+									button.fa.fa-trash
+									button.fa.fa-trash-o
+>>>>>>> Dev

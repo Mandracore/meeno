@@ -11,24 +11,35 @@ var mongoose         = require('mongoose');
 var stylus           = require('stylus');
 var nib              = require('nib');
 var mas              = express(); // Meeno App Server
+var bodyParser       = require('body-parser');
+var morgan           = require('morgan');
+mas.jwt              = require('jsonwebtoken'); // used to create, sign, and verify tokens
 
 
 //------------------------------------------
-// SERVER CONFIGURATION
+// SERVER CONFIGURATION // TO BE ADJUSTED FOR PROD
 //------------------------------------------
 
 mas.configure('development', 'production', function(){
-	mas.set('mode', process.env.NODE_ENV || "development");
+	// mas.set('mode', process.env.NODE_ENV || "preproduction"); // To test the pre-production mode
+	mas.set('mode', process.env.NODE_ENV || "development"); // To test in development mode
 	mas.set('port', process.env.PORT || 3000);
+	if (mas.get('mode') == "production") {
+		mas.set('port', 80);
+	}
 	mas.use(express.favicon());
 	mas.use(express.logger('dev'));
-	mas.use(express.cookieParser('your secret here'));
-	mas.use(express.session()); // , express.session({ secret: 'esoognom'})
 	mas.use(express.bodyParser());
 	mas.use(express.methodOverride());
 	mas.use(mas.router);
 	mas.set('views', path.join(application_root, "app/src/views"));
 	mas.set('view engine', 'jade');
+
+	// JSON Web Tokens Parameters
+	mas.set('superSecret', "D@n1$06pG%9T3TL9@Z6PB1MGA6s%vJRdgAZ^9HR@7fKF!BVv@YnFlKz&E8!o9gF&$XWVbilLjn132YNGL6PZQ19XK&hbD$w#A^K4"); // secret variable
+	// use body parser so we can get info from POST and/or URL parameters
+	mas.use(bodyParser.urlencoded({ extended: false }));
+	mas.use(bodyParser.json());
 });
 
 mas.configure('development', function(){
@@ -70,7 +81,32 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 // ROUTING
 //------------------------------------------
-mas.security = require('./app/src/routes/security.proxy.js');
+
+// Serve cache manifest
+var version=7;
+mas.get('/cache.manifest',function(req,res){
+	res.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
+	res.end([
+		'CACHE MANIFEST',
+		'#v'+version, // Store version number
+		'CACHE:', // Resources to cache
+		'/javascripts-built/main.notyet.js',
+		'NETWORK:', // Resources that must never be cached
+		'/',
+		'/login',
+		'/logout',
+		'/register',
+		'/api', // everything starting with /api
+	].join("\n"));
+});
+
+var authentication = require('./app/src/routes/authenticate.js');
+
+// All routes starting with /api/ must first execute the authentication proxy
+mas.all(['/api/*', '/logout'], function (req, res, next) {
+  authentication.proxy (mas.get('superSecret'), req, res, next);
+});
+
 require('./app/src/routes/main.js')(mas);
 require('./app/src/routes/api.notes.js')(mas);
 require('./app/src/routes/api.tags.js')(mas);

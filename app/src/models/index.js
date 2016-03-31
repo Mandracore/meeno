@@ -23,49 +23,53 @@ module.exports = function(mas, mongoose){
 	});
 
 	var msNote = new mongoose.Schema({
-		_creator   : String,
-		created_at : { type: Date, default: function () { return Date.now(); } },
-		updated_at : { type: Date, default: function () { return Date.now(); } },
-		title      : String,
-		content    : String,
-		tagLinks   : [msLinkNoteTag],
-		taskLinks  : [msLinkNoteTask]
+		_creator    : String,
+		created_at  : { type: Date },
+		updated_at  : { type: Date },
+		title       : String,
+		content     : String,
+		content_sec : String,
+		tagLinks    : [msLinkNoteTag],
+		taskLinks   : [msLinkNoteTask]
 	});
 	var msUser = new mongoose.Schema({
-		created_at : { type: Date, default: function () { return Date.now(); } },
-		updated_at : { type: Date, default: function () { return Date.now(); } },
+		created_at : { type: Date },
+		updated_at : { type: Date },
 		email      : { type: String, required: true, unique: true },
 		password   : { type: String, required: true },
 		role       : { type: String, default: "user" }
 	});
 	var msTag = new mongoose.Schema({
 		_creator  : String,
-		created_at: { type: Date, default: function () { return Date.now(); } },
-		updated_at: { type: Date, default: function () { return Date.now(); } },
-		label     : { type: String, required: true}
+		created_at: { type: Date },
+		updated_at: { type: Date },
+		label     : { type: String, required: true},
+		color     : { type: String, required: false}
 	});
 	var msTask = new mongoose.Schema({
 		_creator   : String,
-		created_at : { type: Date, default: function () { return Date.now(); } },
-		updated_at : { type: Date, default: function () { return Date.now(); } },
-		due_at     : { type: Date, default: function () { return Date.now(); } },
+		created_at : { type: Date },
+		updated_at : { type: Date },
+		todo_at    : { type: Date },
+		due_at     : { type: Date },
 		label      : { type: String, required: true},
 		description: String,
-		parent     : { type: mongoose.Schema.Types.ObjectId, ref: 'Task' }, // Linked document is Task
+		position   : Number,
+		completed  : Boolean,
 		tagLinks   : [msLinkTaskTag],
 	});
 	var msNoteFilter = new mongoose.Schema({
 		_creator : String,
 		label    : { type: String, required: true},
 		text     : { type: String },
-		tags      : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
-		tasks     : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }], // Linked document is Task
+		tags     : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
+		tasks    : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Task' }], // Linked document is Task
 	});
 	var msTaskFilter = new mongoose.Schema({
 		_creator : String,
 		label    : { type: String, required: true},
 		text     : { type: String },
-		tags      : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
+		tags     : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }], // Linked document is Tag
 	});
 	var msTagFilter = new mongoose.Schema({
 		_creator : String,

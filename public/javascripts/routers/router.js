@@ -1,17 +1,31 @@
-// js/routers/router.js
-var meenoAppCli = meenoAppCli || {};
-meenoAppCli.Classes = meenoAppCli.Classes || {};
+define ([
+		'jquery',
+		'underscore',
+		'backbone',
+	], function ($, _, Backbone) {
 
-// Todo Router
-// ----------
+		var Router = Backbone.Router.extend({
+			routes:{
+				'*filter': 'setFilter'
+			},
 
-meenoAppCli.Classes.Router = Backbone.Router.extend({
-	routes:{
-		'*filter': 'setFilter'
-	},
+			setFilter: function( param ) {
+				//console.log("Router param:"+param);
+			}
+		});
 
-	setFilter: function( param ) {
-		//console.log("Router param:"+param);
+		return Router;
 	}
-});
+);
 
+/*
+
+
+define ([
+		'jquery',
+		'underscore',
+		'backbone',
+	], function ($, _, Backbone) {
+		return {};
+	}
+);*/

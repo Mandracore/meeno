@@ -5,3 +5,6 @@ node_modules*
 app/config/private*
 app/logs*
 app/pids*
+
+# Ignore built files
+public/javascripts-built*

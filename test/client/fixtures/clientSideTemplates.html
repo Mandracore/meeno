@@ -1,0 +1,90 @@
+<script type="text/template" id="browser-note-template" style="display: none;">
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
+	<span class="edit title attribute"><%= note.title %></span>
+	<span class="tags attribute"><% _.each(tags, function(tag) { %><span>[<%= tag %>]</span><% }); %></span>
+</script>
+<script type="text/template" id="browser-tag-template" style="display: none;">
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
+	<span class="edit label attribute"><%= label %></span>
+</script>
+<script type="text/template" id="browser-task-template" style="display: none;">
+	<span style="display: none;" class="checkbox icon-check-empty"></span>
+	<!-- //////////// Dates display, for debug purposes only
+	span class="attribute"><%= task.created_at %> **** created</span></br>
+	<span class="attribute"><%= task.todo_at %> **** todo</span></br>
+	<span class="attribute"><%= task.due_at %> **** due</span></br>
+	<span class="attribute"><%= task.updated_at %> **** updated</span></br
+	/////////////////-->
+	
+	<span class="reorder">
+		<span class="fa fa-reorder"></span>
+	</span>
+	<%
+	var month = {
+		0  :"jan",1  :"fev",2  :"mar",3  :"apr",4  :"may",5  :"jun",6  :"jul",7  :"aug",8  :"sep",9  :"oct",10 :"nov",11 :"dec",
+	};
+
+	var now    = new Date();
+	var due_at = new Date(task.due_at);
+	var date   = due_at.getDate().toString();
+	var day    = date.length > 1 ? date : "0"+date;
+	var month  = month[due_at.getMonth()];
+	var urgent = due_at-now < 1000*3600*72 ? "urgent" : "";
+	var urgent = due_at-now < 1000*3600*24 ? "veryurgent" : urgent;
+
+	%>
+	<span class="due <%= urgent %>">
+		<input type="hidden" class="datepicker" name="datepicker" value=""/>
+		<span class="day"><%= day %></span>
+		<span class="month"><%= month %></span>
+	</span>
+	<span class="labelandtags">
+		<span class="label">
+			<span class="default">
+				<span class="attribute"><%= task.label %></span>
+				<button class="hidden edit">Edit</button>
+				<button class="hidden delete">Delete</button>
+			</span>
+			<span class="edition">
+				<input type="text" class="mousetrap" name="label" value="<%= task.label %>"/>
+				<button class="save">Update</button>
+				<button class="cancel">Cancel</button>
+			</span>
+		</span>
+		<span class="tags">
+			<span class="buttons"><% _.each(tags, function(tag) { %><button data-cid="<%= tag.cid %>"><%= tag.label %></button><% }); %></span>
+			<span class="default">
+				<button class="hidden edit">Add tag</button>
+			</span>
+			<span class="edition">
+				<input class="edition mousetrap autocomplete" type="text" name="newTag" placeholder="Find a tag or create one"/><button class="save">Add</button><button class="cancel">Cancel</button>
+			</span>
+		</span>
+	</span>
+</script>
+<script type="text/template" id="browser-filter-template" style="display: none;"><%= label %></script>
+<script type="text/template" id="editor-tab-template" style="display: none;">
+	<%= title %>
+</script>
+<script type="text/template" id="editor-body-template" style="display: none;">
+	<ul class="actions-contextual">
+		<li class="clone">Duplicate</li>
+		<li class="delete">Delete</li>
+		<li class="close kill">Close</li>
+	</ul>
+	<article>
+		<section class="attributes">
+			<p><h1><span class="edit-title editable" contentEditable><%= title %></span></h1></p>
+			<p><span class="fieldname">Date de création :</span> <span><%= $.format.date(created_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+			<p><span class="fieldname">Date de la dernière mise à jour :</span> <span><%= $.format.date(updated_at, "ddd dd MMM yyyy, HH:mm") %></span></p>
+		</section>
+		<section contentEditable class="edit-content editable mousetrap"><%= content %></section>
+	</article>
+</script>
+<script type="text/template" id="editor-body-object-template" style="display: none;">
+	<label class='datalist-wrapper'>
+		<datalist id='datalist_<%= id %>' class='datalist'>
+		</datalist>
+		<input class='body mousetrap' type='text' name='datalist_<%= id %>' list='datalist_<%= id %>'>
+	</label>
+</script>

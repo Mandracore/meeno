@@ -1,360 +1,1292 @@
+
 @import 'nib'
 
-cText         = #434343
-cTextFaded    = lighten(#535353, 40%)
-cTextRev      = #dddddd
-cTextRevFaded = darken(#dddddd, 40%)
-cDarkGrey     = lighten(#000000, 30%)
-cLightGrey    = lighten(#000000, 90%)
-cBlueLine     = lighten(#5e939f, 40%)
-wApp          = 1200px
-wRightCol     = 850px
-wLeftCol      = wApp - wRightCol
-wLeftColPad   = 35px
-wRightColPad  = 50px
-zLiner        = 5
-pyLiner       = 80px
-pHeadersV     = 40px
-pWrappPadV    = pyLiner - pHeadersV
-hTabs         = 40px
-hControls     = 30px
-hFadeOut      = 100px
+// J : tag
+// T : croix
+// I : poubelle
+// V : editer
+// r : editer
 
 global-reset()
 reset-html5()
 
+cBgGrey            = lighten(#000000, 20%)
+cObjectBorder0     = rgba(255, 255, 255, .3)
+cObjectBorder1     = rgba(255, 255, 255, .4)
+cObjectBg1         = rgba(255, 255, 255, .06)
+cObjectBg2         = rgba(255, 255, 255, .12)
+cButtonColor0      = rgba(255, 255, 255, 0.5)
+cButtonColor1      = rgba(255, 255, 255, 0.8)
+cButtonColor2      = rgba(255, 255, 255, 1)
+cButtonBorder0     = rgba(255, 255, 255, .3)
+cButtonBorder1     = rgba(255, 255, 255, .6)
+cButtonBorder2     = rgba(255, 255, 255, .8)
+cButtonBg1         = rgba(255, 255, 255, .1)
+cButtonBg2         = rgba(255, 255, 255, .3)
+cButtonIcon0       = rgba(255, 255, 255, .5)
+cButtonIcon1       = rgba(255, 255, 255, .7)
+cButtonIcon2       = rgba(255, 255, 255, .9)
+cButtonActive      = rgba(255, 255, 255, 1)
+cButtonMilestone0  = rgba(255, 255, 255, .1)
+cButtonMilestone05 = rgba(255, 255, 255, .5)
+cButtonMilestone1  = rgba(255, 255, 255, 1)
+cCyan              = #0093FF
+cInputBg0          = rgba(0, 0, 0, 0.2)
+cInputBg1          = rgba(0, 0, 0, 0.3)
+
 @font-face
 	font-family "modernpics"
 	src url("../font/modernpics.otf")
+	
+@font-face
+	font-family "dense"
+	src url("../font/Dense-Regular.otf")
+
+@font-face
+	font-family "moon"
+	src url("../font/Moon-Light.otf")
 
 html
 	width 100%
 	height 100%
 	overflow hidden
-	background-color #999
-
-@css{
-	html{
-		background-image: -moz-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-moz-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-moz-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -webkit-linear-gradient(0deg, rgba(255,255,255,.07) 50%, transparent 50%),-webkit-linear-gradient(0deg, rgba(255,255,255,.13) 50%, transparent 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.17) 50%),-webkit-linear-gradient(0deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -o-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-o-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-o-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: -ms-linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%),-ms-linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%),-ms-linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-image: linear-gradient(left, rgba(255,255,255,.07) 50%, transparent 50%),linear-gradient(left, rgba(255,255,255,.13) 50%, transparent 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.17) 50%),linear-gradient(left, transparent 50%, rgba(255,255,255,.19) 50%);
-		background-size: 13px, 29px, 37px, 53px;
-	}
-}
+	background-color cBgGrey
+	font-size 16px
+	
 body
 	margin 0 auto
-	width 90%
+	width 100%
 	height 100%
 	position relative
 	background none
 
-#main
+body 
+	background-image url('../images/bg.jpg')
+
+.red
+	background-color red
+	opacity .8
+
+.green
+	background-color green
+	opacity .8
+
+.white
+	background-color white
+	opacity .8
+
+.ui-autocomplete-category
+	color black
+	font-style italic
+	padding .3em
+	font-size .8em
+	background-color rgba(0, 0, 0, .2)
+	border-bottom 1px solid rgba(0, 0, 0, .3)
+
+/*===================================================================================
+------- LOGIN -----------------------------------------------------------------------
+=====================================================================================*/
+
+#form-wrapper
+	display table
+	color white
+	font-family Helvetica
 	height 100%
-	padding 1em 0 1em 15em
-	position relative
-
-header
-	clearfix()
-	color #FFF
-	font-size 1em
-	position relative
-	top 0
-	margin-top 1em
-	a
-		float left
-		display inline-block
-		position relative
-		color inherit
-		text-decoration none
-		&:before
-			fSize = 2.35
-			content attr(title)
-			position absolute
-			left (-15/fSize)em
-			width (15/fSize)em
-			top -.2em
-			font-size  fSize * 1em;
-			color rgba(255,255,255,.7)
-			text-align center
-	h1
-		padding .5em
-		margin 0
-		font-size 1em
-	ul
-		float right
-		list-style none
-		margin 0
-		padding 0
-		display inline-block
-		li
-			display inline-block
-			vertical-align middle
-			padding .5em
-			&.selected,&:hover,&:active
-				background-color #FFF
-				color black
-				cursor pointer
-	.organisation
-		color rgba(255,255,255,.5)
-		&:after
-			content "\00A0"
-
-.actions-main,.actions-contextual
-	width 15em
-	list-style none
-	margin 0
-	padding 0
-	li
-		padding .5em
-		margin-bottom .25em
-		cursor pointer
-		&:before
-			font-family 'modernpics'
-			position relative
-			font-size 1.5em
-			margin 0 5px 0
-
-.actions-main
-	height 100%
-	padding-top 5.5em
-	position absolute
-	z-index 1
-	li
-		margin-right 1em
-		background-color rgba(255,255,255,.5)
-		&:before
-			content "+"
-		&:hover,&:active
-			background-color #FFF
-
-.actions-contextual
-	position absolute
-	top 14em
-	left 0
-	z-index 2
-	li
-		background-color #FFF
-		&.delete:before
-			content 'I'
-		&.close:before
-			content 'X'
-		&.clone:before
-			content 'W'
-		&.related:before
-			content 'K'
-		&.unselect:before
-			content 'K'
-		&.select
-			display list-item
-			&:before
-				content '%'
-	&.hasSelected li
-		display list-item
-.tab.object.note .actions-contextual li
-	display list-item
-
-nav
-	background-color rgba(255,255,255,.35);
-	ul
-		list-style none
-		padding 0
-		margin 0
-		display inline-block
-		li
-			display inline-block
-			padding .5em
-			vertical-align middle
-			&.selected,&:hover,&:active
-				background-color #FFF
-				cursor pointer
-	.object
-		max-width: 7em;
-		overflow: ellipsis;
-
-#tabs
-	background-color #FFF
-	padding 1em
-	height 74%
-	height '-moz-calc(%s - %s)' % (100% 13em)
-	height '-webkit-calc(%s - %s)' % (100% 13em)
-	height 'calc(%s - %s)' % (100% 13em)
-
-.tab
-	display none
-	&.selected
-		display block
+	width 100%
+	& > div, & > form
+		display table-cell
+		vertical-align middle
 		height 100%
-	&.help, &.object
-		overflow-y scroll
+	div:first-child, div:last-child
+		width 30%
+	h1
+		font-size 2em
+		text-shadow 0 0 10px black
+	p
+		margin 1em 0 0 0
+		&.errors
+			color orange
+	label:not(.checkbox)
+		display block
+		margin 0 0 .3em 0
+	label
+		text-transform uppercase
+		font-size .8em
+		&.checkbox
+			text-transform initial
+	input.checkbox
+		padding 0
+		margin 0 .2em
+	input:not(.submit):not(.checkbox)
+		padding 1em
+		border-radius .5em
+		border none
+		background rgba(0,0,0,.2)
+		color white
+		width 100%
+		
 
-.browse
-	.filter
+/*===================================================================================
+------- MAIN NAVIGATION --------------------------------------------------------------
+=====================================================================================*/
+
+	
+#main, #main > .content, #browser, #browser > .tab
+	height 100%
+//	& > .content
+//		height calc(100% - 3em)
+
+
+// For larger displays
+@media screen and (min-width: 769px)
+	#nav
+		padding 1em 2em 0 0
+	#editors-tabs
+		padding .5em 2em 0 0
+
+#connectivity
+	div
+		display none
+	&.offline
+		div
+			display initial
+			color white
+
+// For all displays
+.navigation
+	height 100%
+	position relative
+	h1
+		letter-spacing -0.2em
+		text-align right
+		color white
+		font-family helvetica
+		font-weight bold
+		margin 1em 2em 0 0
+		opacity .8
+		span
+			font-size 3em
+		.one
+			color cCyan
+	h2
+		text-align right
+		color white
+		font-weight bold
+		font-family Helvetica
+		margin 1em 2em 0 0
+		text-transform uppercase
+		opacity 0.5
+		span
+			margin 0 0 0 1em
+	.browse
+		#nav
+			color white
+			font-family Dense
+			text-align right
+			li
+				opacity .4
+				font-size 2.5em
+				padding 0 calc(.3em + 10px) 0 0
+				background-color rgba(255, 255, 255, 0.1)
+				margin .1em 0
+				&.selected
+					opacity .8
+					padding 0 .3em 0 0
+					border-right 10px solid cCyan
+				&:hover:not(.selected)
+					cursor pointer
+					padding 0 .3em 0 0
+					border-right 10px solid rgba(255, 255, 255, .5)
+				&:active
+					opacity .8
+					padding 0 .3em 0 0
+					border-right 10px solid cCyan
+		#editors-tabs
+			color #FFF
+			font-family Helvetica, Arial
+			text-align right
+			li
+				display table
+				width calc(100% - 1em - 10px)
+				font-size 1em
+				letter-spacing -.05em
+				opacity .4
+				padding 0 calc(1em + 10px) 0 0
+				background-color rgba(255, 255, 255, 0.1)
+				margin .25em 0
+				& > span
+					display table-cell
+					vertical-align middle
+					&.close
+						width 2.5em
+						text-align center
+						height 2.5em
+						&:hover
+							color cyan
+					&:not(.close)
+						white-space nowrap
+						text-overflow ellipsis
+						overflow hidden
+						max-width 1em
+				&:hover:not(.selected), &:active, &.selected
+					padding 0 1em 0 0
+				&:hover:not(.selected)
+					cursor pointer
+					border-right 10px solid rgba(255, 255, 255, .5)
+				&:hover
+					.close
+						cursor pointer
+				&.selected, &:active
+					opacity .8
+					border-right 10px solid #0093FF
+	.misc
+		position absolute
+		bottom 0
+		right 0
+		margin 0 0 1em
+		h2:hover
+			cursor pointer
+
+// Hacks for mobile design
+@media screen and (max-width: 768px) // to detect mobile phones
+	#nav
+		padding 1em 0 0 0
+	#editors-tabs
+		padding .5em 0 0 0
+	.navigation
+		background black url("../images/bg.jpg") no-repeat fixed left bottom
+		width 3em
+		transition width .4s ease
+		height 3em
+		overflow hidden
+		.command
+			margin auto
+			.close
+				display none
+			.open
+				display block
+				height 3em
+				width 3em
+				background-color cInputBg0
+				border none
+				font-size 1em
+				span
+					font-size 1.5em
+		.navigation-options
+			display none
+	#main.navigating
+		& > .content
+			height 100%
+		& > .navigation
+			width 80%
+			z-index 1
+			position absolute
+			height 100%
+			background-color rgba(16, 30, 32, 0.95)
+			color white
+			box-shadow 0 0 30px black
+			.navigation-options
+				display initial
+			.command
+				.close
+					display block
+					width 3em
+					height 3em
+					background-color transparent
+					border 1px solid rgba(255, 255, 255, 0.1)
+					span
+						font-size 2em
+				.open
+					display none
+
+/*===================================================================================
+------- EDITOR DESIGN ---------------------------------------------------------------
+=====================================================================================*/
+#editors
+	height 100%
+	display none
+	&.active
+		display initial
+	.editor
+		display none
+	.editor.active
+		display initial
+	.editor
+		height 100%
+		.header
+			display table
+			width 100%
+			height 3em
+			& > div
+				display table-cell
+				vertical-align middle
+			.close
+				margin 0 .5em 0 0
+				width 1em
+				button
+					padding .5em
+					background-color transparent
+					border none
+					color cButtonColor0
+					transition color .2s ease
+					&:hover
+						cursor pointer
+						color cButtonColor1
+					&:active
+						color cButtonColor2
+			.title
+				max-width 1em
+				font-size .9em
+				text-overflow ellipsis
+				overflow hidden
+				font-family Helvetica
+				white-space nowrap
+				color cButtonColor0
+				padding 1em 0
+			.actions
+				text-align right
+				width 17em
+				button
+					font-size 0.8em
+					margin 0
+					padding 0
+					margin .2em
+					background none
+					color cButtonColor0
+					transition color .4s ease
+					border none
+					span
+						font-family Arial
+						margin 0 0 0 .5em
+					&:hover
+						cursor pointer
+						color cButtonColor1
+					&:active
+						color cButtonColor2
+		.body
+			height calc(100% - 3em)
+			box-shadow 0 0 30px rgba(0, 0, 0, .5)
+			.left
+				padding 0
+				margin 0 5px 0 0
+			.right
+				padding 0 0 0 0
+				margin 0 0 0 5px
+			.left, .right
+				float left
+				width calc(50% - 5px)
+				height 100%
+				background-color white
+				h1, h2, h3, h4
+					font-family moon
+					font-size 2em
+					margin .5em 0 .5em 0
+				h1:first-child, h2:first-child, h3:first-child, h4:first-child, h5:first-child
+					margin 0 0 .5em 0
+				h2
+					font-size 1.7em
+				h3
+					font-size 1.4em
+				h4
+					font-size 1.1em
+				ul
+					list-style-type circle
+					list-style-position inside
+			.content
+				height calc(100% - 6.6em)
+				overflow auto
+				:not(h1), :not(h2), :not(h3), :not(h4)
+					line-height 1.1em
+			.left, .right
+				overflow hidden
+				position relative
+				.summary, .content, .text-editor
+					position absolute
+				.summary
+					top 0
+				.content
+					top 3.6em
+					padding 0 0 0 1em
+				.text-editor
+					top calc(100% - 3em)
+				.summary
+					padding 0 0 0 1.5em
+				.content
+					.task, .tag
+						input
+							border-radius 5px
+							border-left 1px solid rgba(0, 0, 0, .6)
+							border-right 1px solid rgba(0, 0, 0, .6)
+							border-top none
+							border-bottom none
+							padding 0 0.3em
+							margin 0 0 0 .2em
+							background-color transparent
+							font-style italic
+							font-family Helvetica
+							font-size 1em
+					.task
+						display block
+						position relative
+						padding .5em .1em .5em 1.5em
+						margin .2em 0
+						font-size 0.9em
+						font-family Helvetica
+						font-style italic
+						opacity .8
+						&:hover
+							cursor pointer
+							text-decoration line-through
+							.fa
+								left .2em
+						&:active
+							opacity 1
+						.fa
+							height 1em
+							transition left .3s ease
+							top calc(50% - 0.5em)
+							left 0
+							position absolute
+					.tag
+						opacity .8
+						display inline-block
+						color black
+						margin 0 .5em
+						font-size .9em
+						font-style italic
+						font-family Helvetica
+						.circle
+							content ''
+							display inline-block
+							background-color red
+							border-radius 20px
+							width .7em
+							height .7em
+							border 1px solid black
+							margin 0 .4em 0 0
+							transition margin .3s ease, width .3s ease, height .3s ease
+						&:hover
+							opacity 1
+							text-decoration line-through
+							cursor pointer
+							.circle
+								margin 0 .1em .2em .7em
+								width .3em
+								height .3em
+						&:active
+							text-decoration line-through
+							opacity 1							
+				.text-editor
+					width 100%
+					height 3em
+					overflow hidden
+					transition top .5s ease
+					display table
+					box-shadow 0px 1px 10px rgba(0, 0, 0, 0.4)
+					& > div
+						display table-cell
+						vertical-align middle
+						height 100%
+						&:not(.spacer)
+							width 1em
+						.info
+							display none
+						&:hover, &.active
+							.info
+								overflow hidden
+								text-overflow ellipsis
+								white-space nowrap
+								max-width calc(100% - 16em)
+								opacity .9
+								top 0
+								right 0
+								display block
+								position absolute
+								font-size .7em
+								font-family Helvetica
+								line-height 4.28em
+								padding 0 1em 0 0
+						button
+							display block
+							height 100%
+							padding 0 .5em
+							opacity .6
+							color black
+							background none
+							border none
+							&:hover, &:active, &.hover
+								padding 0 .5em 5px .5em
+								opacity .8
+								cursor pointer
+							&:hover, &.hover
+								border-top 5px solid grey
+							&:active
+								opacity 1
+								border-top 5px solid cCyan
+				.summary
+					height 3.6em
+					ul
+						li
+							display inline-block
+							a
+								display block
+								color black
+								text-decoration none
+								padding 1em .5em 1em .5em
+								opacity .7
+								font-family Dense
+								font-size 1.2em
+								&:hover
+									padding calc(1em - 5px) .5em 1em .5em
+									border-top 5px solid grey
+									cursor pointer
+								&:active, &.active
+									color black
+									padding calc(1em - 5px) .5em 1em .5em
+									opacity 1
+									border-top 5px solid cCyan
+							
+
+
+// Hacks for mobile design
+@media screen and (max-width: 768px) // to detect mobile phones
+	#main .editor
+		.header, .body
+			position relative
+			top -3em
+		.header
+			padding 0 0 0 10px
+			background-color rgba(0, 0, 0, 0.2)
+			left calc(3em - 10px)
+			width calc(100% - 3em + 10px)
+			.actions
+				width 11em
+		.body
+			height 100%
+			position relative
+			.summary
+				padding 0 0 0 2em
+			.left
+				position absolute
+				width calc(100% - 1em - 10px)
+				left 0px
+				top 0px
+				transition left .4s ease, width .4s ease
+				.content
+					padding 0 1.5em 0 2em
+			.right
+				position absolute
+				top 0px
+				width 100%
+				left calc(100% - 1em)
+				transition left .4s ease, width .4s ease
+			&.swiped
+				.left
+					width 100%
+					left calc( (100% - 1em + 5px) * (-1) )
+				.right
+					width calc(100% - 1em - 10px)
+					left calc(1em + 5px)
+					.content
+						padding 0 1.5em 0 2em
+	#main.navigating #editors > .editor
+		.header, .body
+			top 0
+		.body
+			height calc(100% - 3em)
+			
+		
+// Il vaut mieux décaler tout le content plutôt que les header, sinon les cacluls de hauteur sont 
+// plus complexes encore
+
+/*===================================================================================
+------- BROWSER DESIGN --------------------------------------------------------------
+=====================================================================================*/
+
+#browser
+	display none
+	&.active
+		display initial
+	.tab
+		display none
+		&.active
+			display initial
+
+// For classic displays
+.search-box, .listobjects
+	position relative
+	top 1em
+
+.search-box
+	display table
+	width 100%
+	height 3em
+	background-color cInputBg0
+	color rgba(255, 255, 255, 0.5)
+	margin 0 0 .5em
+	& > div
+		display table-cell
+		vertical-align middle		
+	.looking-glass
+		width 1.5em
+		padding 0 0 .2em .7em
+		font-size 1.2em
+	.tags
+		width 1%
+		white-space nowrap
+		button
+			border-radius 20px
+			border 1px solid cButtonBorder0
+			background-color transparent
+			margin 0 .4em 0 0
+			padding .2em .7em
+			color cButtonColor0
+			&:hover
+				background-color cButtonBg1
+				cursor pointer
+				text-decoration	line-through
+				border 1px solid cButtonBorder1
+			&:active
+				border 1px solid cButtonBorder2
+				background-color cButtonBg2
+				color white
+	.input
 		input
 			width 100%
-		ul
-			list-style none
-			padding 0
-			margin 0
-			display block
-			border-top 1px cDarkGrey solid
-			li
-				border-top 3px transparent solid
-				color cDarkGrey
-				display inline-block
-				padding .5em
-				vertical-align middle
-				opacity .7
-				&.selected,&:hover,&:active
-					border-top-color cDarkGrey
-					opacity 1
-					cursor pointer
-				&:before
-					margin-right 10px
-					font-size .9em
-
-.listobjects
-	display none
-	height 89%
-	height '-moz-calc(%s - %s)' % (100% 4em)
-	height '-webkit-calc(%s - %s)' % (100% 4em)
-	height 'calc(%s - %s)' % (100% 4em)
-	&.selected
-		display block
-		overflow-y scroll
-	.super-input
-			border 1px solid grey
-			padding 6px 5px
-			margin 0 10px 0 0
-		.objectButtons span
-			background lightgrey
-			padding 2px 5px
-			margin 0 5px 0 0
-		input.search
+			background-color transparent
 			border none
-		input.autocomplete
-			border 1px dotted grey
-			margin 0 5px
-	.filter-editor
-		li
-			display inline-block
-			opacity 0.6
-			padding 0.3em
-			margin 0 0.5em 0 0
-			font-size 0.9em
-			&.active, &:hover
-				opacity 1
+			color white
+	.reset
+		width 5em
+		button
+			padding 0px
+			margin 0px
+			width 100%
+			text-align right
+			background-color transparent
+			border medium none
+			color cButtonColor0
+			span
+				margin 0 1em 0 .6em
 			&:hover
 				cursor pointer
-			&:before
-				opacity 0.6
-				margin-right 0.5em
-	ul.objects
-		list-style-type none
-		margin 1em 0 0
-		padding 0
+				color cButtonColor1
+			&:active
+				color white
+.listobjects
+	display none
+	&.selected
+		display block
+		height calc(100% - 4.5em)
+	.milestones
+		display block
+		height 3em
+		padding .5em 0
+		text-overflow ellipsis
+		overflow hidden
+		white-space nowrap
 		li
-			margin 0
-			padding 0.5em
-			&:hover
-				background-color rgba(0,0,0,0.1)
-			span.button
-				opacity 0
-				text-shadow 1px 1px 1px white
-				margin 0 0 0 10px
-				font-size 0.9em
-			&:hover span.button
-				opacity 0.5
-				&:before
-					font-family 'modernpics'
-					position relative
-					font-size 1.3em
-					margin 0 5px 0
-				&:hover
-					opacity 1
-					cursor pointer
-	.checkbox
-		margin 0 8px 0 0
-		display none
-	
-	// Contextual actions
-	.actions-contextual-trigger
-		display none
-		button
-			display none
-	.actions-contextual-selection
-		display none
-		.select-all, .action
 			display inline-block
-		.unselect-all
+			color cButtonMilestone0
+			transition color .3s
+			text-transform uppercase
+			letter-spacing .05em
+			font-family Dense
+			font-size 2em
+			&:hover
+				color cButtonMilestone05
+				cursor pointer
+			&:active, &.active
+				color cButtonMilestone1
+			&.target-hover
+				color orange
+				font-style italic
+	.filter-checked
+		padding .8em 0
+		button
+			float right
 			display none
-	.actions-contextual
-		.cancel
+			&.active
+				display block
+				padding 0.1em 0.8em
+				font-size 0.7em
+				border 1px solid cButtonBorder0
+				border-radius 1em
+				background-color transparent
+				color cButtonColor0
+				text-transform uppercase
+			&:hover
+				border 1px solid cButtonBorder1
+				background-color cButtonBg1
+				cursor pointer
+			&:active
+				border 1px solid cButtonBorder2
+				background-color cButtonBg2
+				color white
+	//-------------------------------------------------------
+	// Input to add new objects
+	.add
+		display table
+		border none
+		height 2.5em
+		background-color cInputBg0
+		&:hover
+			border none
+			background-color cInputBg1
+		& > div
+			display table-cell
+			vertical-align middle
+		& > div:first-child
+			width 1%
+			white-space nowrap
+			color white
+			font-size .9em
+			span
+				margin 0 .6em 0 1em
+				opacity .2
+		.buttons
 			display none
-
-
-	ul.objects
-		span.delete:before
-			content 'I'
-		/*span.edit:before
-			content 'e'*/
-	ul.notes
+		&.updated
+			.buttons
+				width 1%
+				white-space nowrap
+				display table-cell
+				button
+					border none
+					background-color transparent
+					color cButtonColor0
+					margin 0 1em 0 0
+					padding 0
+					span
+						margin 0 0 0 .6em
+					&:hover
+						cursor pointer
+						color cButtonColor1
+					&:active
+						color white
+		.input
+			input
+				width 100%
+				background-color transparent
+				border none
+				color white
+				font-size .9em
+				font-family Helvetica
+	.objects
+		display none
+		&.active
+			display block
+			height calc(100% - 5.5em)
+			overflow auto
+		input
+			font-size .9em
+			font-family Helvetica
 		li
-			p
-				margin 0
-				&.date
-					font-size 0.85em
-					opacity 0.5
-		span.tags span
-			color grey
+			font-size .9em
+			font-family Helvetica
+			height 3em
+			color white
+			//------------------------------------------------------------------------
+			// Initialization for tasks objects
+			// Afterwards, some adjustments will be made for notes and tags
+			&:nth-child(1) // The second item of the list (the first is the input to add new records)
+				border-top 1px solid cObjectBorder0
+			&:not(.add)
+				border-left 1px solid cObjectBorder0
+				border-right 1px solid cObjectBorder0
+				border-bottom 1px solid cObjectBorder0
+				display table
+				width calc(100% - 2px)
+				& > div
+					display table-cell
+					vertical-align middle
+					height 100%
+				.check, .move, .open, .delete, .colorpicker
+					display none
+				&.completed
+					.label
+						text-decoration line-through
+				&:hover:not(.expanded), &.hover
+					.check, .move, .open, .colorpicker
+						border-right 1px solid cObjectBorder0
+					.delete
+						border-left 1px solid cObjectBorder0
+					.check, .move, .open, .delete, .colorpicker
+						width 3em
+						height 3em
+						text-align center
+						display table-cell
+						.fa-trash-o
+							display initial
+						.fa-trash
+							display none
+						&:hover
+							cursor pointer
+							background-color cObjectBg1
+							.fa-trash-o
+								display none
+							.fa-trash
+								display initial
+						&:active
+							background-color cObjectBg2
+						button
+							display block
+							height 100%
+							width 100%
+							border none
+							background-color transparent
+							color white
+							&:hover
+								cursor pointer
+					.move
+						button:hover
+							cursor move
+						button:active
+							cursor grabbing
+				.content // display : table-cell
+					.overview .expand, .form
+						display none
+					.overview
+						display table
+						width 100%
+						height 100%
+						& > div
+							display table-cell
+							vertical-align middle
+					.overview, .form
+						.due
+							padding 0 .5em
+							width 2em
+							opacity 0.3
+							text-align center
+							.sync
+								display none
+							.date
+								input
+									display none
+								&:hover
+									cursor pointer
+							&.urgent
+								opacity 1
+							&.veryurgent
+								opacity 1
+								color orange
+							.day
+								display block
+								font-size .9em
+								font-weight bold
+							.month
+								display block
+								text-transform uppercase
+								font-size 0.7em
+					.overview
+						.label
+							max-width 1em
+							.text
+								overflow hidden
+								white-space nowrap
+								text-overflow ellipsis
+						.tags
+							width 1%
+							white-space nowrap
+							padding 0 .8em
+							button
+								color white
+								background-color transparent
+								border none
+								padding 0 0 0 .5em
+								span
+									display inline-block
+									width .8em
+									height .8em
+									margin 0 .5em 0 0
+									border-radius 1em
+									box-shadow 0 0 6px rgba(0,0,0,.6)
+								&:hover
+									text-decoration line-through
+									cursor pointer
+									span
+										opacity .8
+								&:active
+									span
+										opacity 1
+			&:hover:not(.expanded):not(.add), &.active, &.hover
+				background-color cObjectBg1
+				.content
+					.due
+						display none
+					.label
+						padding 0 0 0 1em
+					.expand
+						display table-cell
+						width 3em
+						text-align center
+						button
+							border none
+							background-color transparent
+							color white
+							&:hover
+								cursor pointer
+					.tags
+						display none
+					&:hover
+						background-color cObjectBg1
+						cursor pointer
+					&:active
+						background-color cObjectBg2
+			&.expanded
+				height auto
+				.content
+					.overview, .check, .move, .delete, .open
+						display none
+					.form
+						display block
+						width 100%
+						& > div:not(.reduce):not(.due) // label, tags and description
+							margin 0 0 0 3em // to update for notes
+							width calc(100% - 4em) // to update for notes
+							display table
+							border-top 1px solid cObjectBorder0
+							& > div:not(.actions) // inputs, but not actions
+								display table-cell
+								vertical-align middle
+								padding .7em 0
+						.reduce
+							width 100%
+							button
+								width 100%
+								display block
+								padding .7em 1em .7em 0
+								background none
+								border none
+								color white
+								text-align right
+								&:hover
+									background-color cButtonBg1
+									cursor pointer
+								&:active
+									background-color cButtonBg2
+						.due
+							float left
+							vertical-align top
+							padding-top 0.5em
+							position relative
+						input
+							background none
+							border none
+							color white
+							width 100%
+							font-size 1em
+						.description
+							.actions
+								vertical-align top
+						.label
+							.input
+								padding 0 1em 0 0
+								input
+									//padding .7em 0 .7em 0
+									white-space nowrap
+									text-overflow ellipsis
+									overflow hidden
+						.tags
+							.buttons
+								white-space nowrap
+								width 1%
+								button
+									padding 0 .5em 0 0
+							.input
+								input
+									width 100%
+									text-overflow ellipsis
+									border none
+									background none
+									color white
+						.description
+							.input
+								padding .7em 9em .7em 0
+								font-size 1em
+							&.updated
+								.input
+									padding .7em 0
+						// Commons action buttons
+						.label, .tags, .description
+							.actions
+								display none
+							&.updated
+								.actions
+									padding .7em 0
+									display table-cell
+									white-space nowrap
+									text-align right							
+									width 10em
+									button
+										padding 0.1em 0.8em
+										font-size 0.7em
+										border 1px solid cButtonBorder0
+										border-radius 1em
+										background-color transparent
+										color cButtonColor0
+										text-transform uppercase
+										span
+											margin 0 0 0 .6em
+										&:hover
+											border 1px solid cButtonBorder1
+											background-color cButtonBg1
+											cursor pointer
+										&:active
+											border 1px solid cButtonBorder2
+											background-color cButtonBg2
+											color white
+									button:last-child
+										margin 0 0 0 .5em
+						button.tag
+							color white
+							background-color transparent
+							border none
+							padding 0 0 0 .5em
+							span
+								display inline-block
+								opacity .5
+								width .8em
+								height .8em
+								border 1px solid white
+								margin 0 .5em 0 0
+								border-radius 1em
+								box-shadow 0 0 6px rgba(0,0,0,.6)
+							&:hover
+								text-decoration line-through
+								cursor pointer
+								span
+									opacity .8
+							&:active
+								span
+									opacity 1
+//-------------------------------------------------------
+// Specifics for Notes objects
+#browser .tab.notes
+	.listobjects 
+		height calc(100% - 2.5em)
+		margin 2em 0 0 0
+		.objects
+			height: calc(100% - 6em);
+			li
+				&:not(.add)
+					.open
+						.fa-folder-open
+							display none
+						.fa-folder
+							display initial
+						&:hover
+							.fa-folder
+								display none
+							.fa-folder-open
+								display initial
+					.overview .label
+						padding 0 0 0 1em
+					&.expanded .content .form
+						& > div:not(.reduce):not(.due) // label, tags and description
+							margin 0 1em
+							width calc(100% - 2em) // to update for notes
 
-.tab
-	.editable
-		opacity 0.7
-		&:hover, &:focus
-			opacity 1
-	h1
-		font-size: 2em
-	section.edit-content
-		margin 20px 0 0 0
+//-------------------------------------------------------
+// Specifics for Tags objects
+#browser .tab.tags
+	.listobjects 
+		height calc(100% - 2.5em)
+		margin 2em 0 0 0
+		.objects
+			height calc(100% - 6em)
+			li
+				&:not(.add)
+					display table
+					width calc(100% - 2px)
+					& > .colorpicker, & > .default
+						display table-cell
+						vertical-align middle
+						height 100%
+					.table
+						display table
+						width 100%
+						height 100%
+						& > div
+							display table-cell
+							vertical-align middle
+					.default
+						.form, .edit
+							display none
+						.color
+							width 1em
+							.globe
+								margin 0 1em
+								background-color red
+								opacity 1
+								width .8em
+								height .8em
+								border-radius 1em
+						& > div > .label
+							max-width 1em
+							white-space nowrap
+							text-overflow ellipsis
+							overflow hidden
+							padding 0 1em 0 0
+							.edit
+								display  none
+					.colorpicker
+						display none
+						.wip
+							display none
+				&:not(.add):hover, &:not(.add).editing, &:not(.add).coloring
+					.default
+						& > div
+							cursor pointer
+							& > .label
+								padding 0 1em
+						.color, .form
+							display none
+						.edit
+							width 3em
+					& > .colorpicker
+						display table-cell
+						width 3em
+					.colorpicker, .edit
+						display table-cell
+					.colorpicker
+						button.fa-eyedropper
+							display block
+						.colors, button.fa-remove
+							display none
+					& > div
+						border-right 1px solid cObjectBorder0
+						&:last-child
+							border none
+						&:hover
+							background-color cObjectBg1
+						&:active
+							background-color cObjectBg2
+					//.colorpicker
+					//	.color
+					//& > div:not(.delete) button
+					button
+						//display block
+						height 100%
+						width 100%
+						background none
+						border none
+						color white
+						&:hover
+							cursor pointer
+				&:not(.add).coloring
+					.default
+						display none
+					.colorpicker
+						position relative
+						width inherit
+						white-space nowrap
+						padding 0 .5em 0 1em
+						button.fa-eyedropper
+							display none
+						button.fa-remove
+							opacity .7
+							display inline-block
+							width 2em
+							position absolute
+							width 3em
+							margin 0
+							padding 0
+							top 0
+							right 0
+							&:hover
+								opacity 1
+								cursor pointer
+						.colors
+							padding 0
+							display inline-block
+							.color
+								display inline-block
+								width 1em
+								height 1em
+								opacity .6
+								margin 0 .3em 0 0
+								border-radius 1em
+								border 2px solid rgba(0, 0, 0, .6)
+								&:hover, &:active
+									cursor pointer
+									position relative
+									opacity 1
+									border 2px solid transparent
+				&:not(.add).editing
+					.default
+						& > div > .label
+							display none
+						.form
+							display table-cell
+							.label
+								.actions
+									display none
+								&.updated
+									.actions
+										display table-cell
+										width 9em
+										text-align right
+										padding 0 .5em 0 0
+							.table
+								.input
+									padding 0 1em
+									overflow hidden
+									text-overflow ellipsis
+									white-space nowrap
+									input
+										width 100%
+										padding 0
+										margin 0
+										white-space nowrap
+										overflow hidden
+										text-overflow ellipsis
+										border none
+										background none
+										color white
+								.actions button
+									display inline-block
+									width initial
+									padding 0.1em 0.8em
+									margin 0 .5em 0 0
+									font-size 0.7em
+									border 1px solid cButtonBorder0
+									border-radius 1em
+									background-color transparent
+									color cButtonColor0
+									text-transform uppercase
+									span
+										margin 0 0 0 .6em
+									&:hover
+										border 1px solid cButtonBorder1
+										background-color cButtonBg1
+										cursor pointer
+									&:active
+										border 1px solid cButtonBorder2
+										background-color cButtonBg2
+										color white
+								
+						.edit
+							display none
 
-.edit-content
-	&:focus
-		border 0
-	input
-		border 0
-		background-color transparent
-	.object
-		margin 5px
-		padding 0 5px
-		background-color lightgrey
-		opacity 0.7
-		border 1px dashed grey
-		text-shadow white 0 1px 0
-		border-radius 5px
-		&:before
-			margin 0 5px 0 0
-			font-size .8em
-			color grey
-			text-shadow white 0 1px 0
-	.locked
-		border 1px solid grey
-		opacity 1
-	.broken
-		border 1px solid red
-		opacity 0.7
 
-#footer
-	background-color rgba(0,0,0,.35);
-	color #FFF
-	clearfix()
-	p
-		margin 0
-		padding 1em
-	.current-action
-		float left
-	.sync-status
-		float right
-		width 15em
-		background-color rgba(0,0,0,.35)
+
+//--------------------------------------------------------------------------
+// Hacks for mobile design
+@media screen and (max-width: 768px) // to detect mobile phones
+	#main
+		height 100%
+		& > .content
+			height calc(100% - 3em)
+	.search-box
+		width calc(100% - 3em + 20px)
+		position relative
+		top -3em
+		left calc(3em - 10px)
+	.listobjects.selected
+		position relative
+		top -3em
+		height calc(100% - 0.5em)
+	#browser .tab.notes .listobjects .objects, #browser .tab.tags .listobjects .objects, #browser .tab.tasks .listobjects .objects
+		height calc(100% - 2em)

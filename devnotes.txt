@@ -19,17 +19,17 @@ SI tout ça ne donne rien, je peux réintégrer les tagLinks à l'intérieur des
 Ca pourrait donner cela :
 
 $.forum.Thread = Backbone.RelationalModel.extend({
-    urlRoot: '/api/thread',
-    idAttribute: '_id',
-    relations: [{
-        type: Backbone.HasMany,
-        key: 'messages', // tagLinks
-        relatedModel: '$.forum.Message',
-        reverseRelation: {
-            key: 'thread',
-            includeInJSON: '_id',
-        },
-    }]
+	urlRoot: '/api/thread',
+	idAttribute: '_id',
+	relations: [{
+		type: Backbone.HasMany,
+		key: 'messages', // tagLinks
+		relatedModel: '$.forum.Message',
+		reverseRelation: {
+			key: 'thread',
+			includeInJSON: '_id',
+		},
+	}]
 });
 
 je peux juste tester cela
@@ -110,9 +110,9 @@ Need to implement new collections to store links
 
 20/03/2014
 On va tester deux méthodes :
-    console.log('------ trying to link '+this.options.modelClass);
-    this.model.get('noteLinks').add( { note: this.options.note } );
-    this.model.save({},{ 
+	console.log('------ trying to link '+this.options.modelClass);
+	this.model.get('noteLinks').add( { note: this.options.note } );
+	this.model.save({},{ 
 Soit on sauvegarde depuis l'objet (AS IS) soit on sauvegarde depuis la note.
 Dans tous les cas on ne touche pas à la modélisation relational dans les models
 On regarde ce qui est envoyé à mongodb et comment ça stocke les liens
@@ -141,3 +141,534 @@ Attention le chargement asychrone des collections n'est pas terminé à l'initia
 11/04
 NoteFilters are fully working, with save on backend.
 Still need to make tagFilters and taskFilters work.
+
+24/04
+Objectif : mettre en place une hiérarchie pour les tasks. Le datamodel semble déjà OK au moins côté client. Next step : trouver un moyen de filtrer une collection de tasks, et de l'afficher sous forme de tree.
+
+### Besoin 1 : faire disparaître des tronçons de tasks qui ne m'intéressent pas
+### Besoin 2 : toujours afficher les parents (en grisé) des tasks qui sont filtrées avec succès pour pouvoir se repérer plus facilement
+### Besoin 3 : à la création d'une task ds une note, lui appliquer les mêmes tags de que la note par défaut.
+### Besoin 3bis : considérer qu'un fils a au moins les tags de son parent => TODO : modifier la fonction de filtrage des collections de tasks => trop compliqué, faire plus tard une fonction qui rajoute les tags du parent à l'enfant
+### Besoin 4 : le filtrage de lacollection n'incluera pas les parents
+### Besoin 5 : les parents sont rajoutés uniquement au moment de l'affichage
+
+	task 1 / NCD
+		task 2 / NCD / Neolane
+			task 21 / NCD / Neolane / 6#
+	task 3 / Perso
+		task 4 / Passeport
+		task 5 / Passeport
+		task 6 / Voyage
+	task 7 / Perso
+
+	==> filtre sur /Perso
+
+	task 3 / Perso
+		task 4 / Passeport
+		task 5 / Passeport
+		task 6 / Voyage
+	task 7 / Perso
+
+	==> filtre sur /Perso /Passeport
+
+	task 3 / Perso
+		task 4 / Passeport
+		task 5 / Passeport
+
+Question comment se passe le filtrage ?
+1. Je filtre toute la collection selon mes critères (en considérant les enfants avec les tags de leurs parents aussi)
+    1.1. Dev tasks.completeWithParents()
+        1.1.1. Je rajoute à la sélection tous les ancêtres de la sélection 
+        1.1.2. Je flagge (class = "secondary") tous les nouveaux parents rajoutés puisqu'ils ne sont en fait pas compliants
+2. Je transforme coll flat en tree
+    2.1. Dev getChildren // DONE (natif, Unit testing OK)
+    2.2. Dev sort siblings // DONE (natif + param, Unit testing OK)
+
+
+[0] task 1 / NCD
+	[0] task 2 / NCD / Neolane
+		[0] task 21 / NCD / Neolane / 6#
+[1] task 3 / Perso
+	[0] task 4 / Passeport
+	[1] task 5 / Passeport
+	[2] task 6 / Voyage
+[2] task 7 / Perso
+
+ID / Parent / Order
+    [1/0/0] task 1 / NCD
+    [4/1/0] task 2 / NCD / Neolane
+    [5/4/0] task 21 / NCD / Neolane / 6#
+    [2/0/1] task 3 / Perso
+    [6/2/0] task 4 / Passeport
+    [7/2/1] task 5 / Passeport
+    [8/2/2] task 6 / Voyage
+    [3/0/2] task 7 / Perso
+
+GetFirstSiblings
+    [1/0/0] task 1 / NCD
+    [3/0/2] task 7 / Perso
+    [2/0/1] task 3 / Perso
+
+SortSiblings
+    [1/0/0] task 1 / NCD
+    [2/0/1] task 3 / Perso
+    [3/0/2] task 7 / Perso
+
+
+11/07====================================
+Filtrage apparemment OK. Maintenant il faut faire donner un moyen de changer l'ordre et la parenté via le crud. De préférence via drag/drop.
+1. se renseigner sur le fonctionnement du module que j'ai d/l
+2. définir un plan d'action
+
+16/07
+Nested sortable plugin is clearer but one question remains : how can a view of task detect that its DOM node has been moved ? Which sortable event should we listen ?
+
+17/07
+Plan d'action:
+1. Créer une fonction qui permette de représenter l'arbre au format html selon les besoins de nested sortable
+	- voir comment cette fonction peut lancer la génération des subViews de tasks et bien rattacher les éléments de DOM
+	- créer un nouvel enfant pour renderCOllection dans browser-body.js qui s'adapte aux besoins particuliers des tasks
+	- ne pas oublier de trouver un moyen de flagger les tasks sélectionnées VS non sélectionnées (parents)
+
+
+Objectif :
+
+[0] task 1 / NCD
+	[0] task 2 / NCD / Neolane
+		[0] task 21 / NCD / Neolane / 6#
+[1] task 3 / Perso
+	[0] task 4 / Passeport
+	[1] task 5 / Passeport
+	[2] task 6 / Voyage
+[2] task 7 / Perso
+
+==> doit devenir : ==>
+
+<ol>
+	<li>
+		<div>task 1 / NCD</div>
+		<ol>
+			<li>
+				<div>task 2 / NCD / Neolane</div>
+				<ol>
+					<li><div>task 21 / NCD / Neolane / 6#</div></li>
+				</ol>
+			</li>
+		</ol>
+	</li>
+	<li>
+		<div>task 3 / Perso</div>
+		<ol>
+			<li><div>task 4 / Passeport</div></li>
+			<li><div>task 5 / Passeport</div></li>
+			<li><div>task 6 / Voyage</div></li>
+		</ol>
+	</li>
+	<li><div>task 7 / Perso</div></li>
+</ol>
+
+
+
+25/07====================================
+Le render des collections de task est fini, reste à le tester et à implémenter :
+- la màj du render de BrowserBodyTaskView // OK
+- la màj de la méthode renderCollection dans browser-body
+
+
+28/07========================================
+Abandon du datamodel avec hiérarchie
+1. Mettre en place le jquey sortable dès maintenant
+2. capter les evts pour sauvegarder la position
+3. Mettre en place l'ajout de tags dans les tasks
+4. Mettre en place le sort automatique par tags :
+4.1. Sort par défaut : position uniquement
+4.2. Sort alternatif : classement par tags puis par position (regroupement par famille de tags)
+==> le système le plus simple dépendra de l'ordre dans lequel les tags ont été appended
+
+http://stackoverflow.com/questions/11510490/sort-backbone-collection-based-on-model-attributes
+
+01/08))===========================================
+Processus de permutation pour assurer que les ordre sont conservés meme si reorder pendant filtrage :
+1. L'objet déplacé prend la position du suivant dans le DOM (sauf si dernier, prend alors pos du prev +1 et rien d'autre ne bouge)
+2. Tous les >>>autres<<< objets de la collection possédant une position égale ou supérieure à l'objet déplacé prennent +1 à leur position
+
+
+
+05/08=====================================
+Voir comment je peux m'assure que shiftDown est appelée après la création d'une nouvelle task
+
+07/08====================================
+- mettre en place un CRUD super simple pour modifier les tasks
+	- titre, description, tags // manque la mise à jour des tags
+	- le rendu des tags est fait, reste à mettre à jour le formulaire
+- affecter par défaut les tags de la note où la tâche est créée
+- afficher dans le browser les tags rattachés aux tasks (comme pour les notes)
+- mettre en place les tests d'intégration
+- Voir pourquoi on ne peut plus créer de nouveaux tags dans les notes => réparé
+_____________________________________
+Rajout de tags :
+- un autocomplete un par un, qui permet de selectionner existant ou de créer nouveau
+- une liste à gauche qui se met à jour et qu'on peut supprimer d'un click
+
+09/08=======================================
+Corriger bug au rajout de nvx tags :
+- suppr tags OK
+- lien de tags existants OK
+- saisir un tag sans l'autocomplete casse des choses
+	- si existant ça remplace
+	- si nv ça créé bien un nv mais ça remplace aussi
+Les nouveaux remplacent des liens existants vers des anciens
+Ca peut même enlever un ancien lien sans en enregistrer le nouveau modèle ???
+
+Quand le modèle vient d'être créé, ça remplace forcément un des liens existants. Ca ne peut pas créer
+de nouveaux liens et réutilise donc les anciens.
+Pourtant au moment où on le relie, il a déjà été sauvegardé dans la base...incohérent
+
+Piste : quand on appuie sur ENTER sans rien sélectionner et sur une valeur qui existe, ça supprime un lien...
+Problème identifié : la méthode UNLINK se déclenche lorsqu'on appuie sur ENTER et qu'il n'est pas catché par l'autocomplete...
+la touche ENTER déclenche un evt click sur le dernier tag button
+
+21/08=========================================
+Nouveau bug : la touche entrée n'a pas d'effet quand la dropdown de l'autcomplete est ouverte.
+
+
+28/08========================================
+tester :
+- unlink
+- link ENTER sur nouveau
+- link ENTER SUR nouveau avec liste absente
+- selection autocomplete
+>> bug du 21/08 corrigé
+
+30/08========================================
+Intégrer Backbone.RelationalModel dans le module Backbone
+>> notes et deps OK
+
+
+23/09========================================
+Passer à un Backbone AMD pour pouvoir l'utiliser avec Require.js
+
+26/09========================================
+Développer un module de stockage temporaire des variables de l'app : 
+les filtres loadés, les collections de base,...
+!!!!!!
+Les collections de base de l'app sont stockées dans mee./app. mais en plus elles sont repassées
+par paramètre dans browser-body, ce qui a priory n'a aucun sens...
+1. créé dans main.js
+2. fetché dans app.js
+3. passé dans browser
+4. passé dans browser-body
+==> tout doit être créé dans temp-store et appelé ailleurs
+
+30/09===========================================
+Prévoir un problème avec backbone.mousetrap et l18n (qui se chargera mal, cf local var dans index.jade)
+
+
+12/10===========================================
+Possibilités à valider pour le test
+
+Unit :
+	runner : Karma (avec son webdriver ou selenium) / lance un 1er server node
+	tester : Jasmine
+	browser : Selenium ?
+Integration :
+	runner : Jasmine-node, qui est aussi un runner
+	tester : Jasmine
+	browser : Zombie
+
+Rajouter des scripts npm pour télécommander la génération de la documentation
+
+
+21/10===========================================
+on doit forcément sacrifier model.spec.js puisque si on met un baseUrl != "/base/public/javascripts/", 
+on casse tous les require du code de l'app
+
+05/11===========================================
+Comme je ne lance pas l'App, les fonctions d'initialization ne sont pas lancées non plus (en particulier
+le Backbone.View.prototype.kill). Voir comment modulariser plus.
+Je peux dire par exemple que mes vues dépendent de ce fix (ce qui est bien le cas en fait) et ainsi
+je n'ai même pas à modifier mes specs.
+
+14/11==============================================
+Valider que app.js fonctionne bien avec backbone.custom.js
+
+06/01/2015==============================================
+Now starting to retest the Editor - refactoring all specs
+
+
+26/01/2015==============================================
+Je dois faire un render complet de toutes les tasks qd je fais checked
+Puis mettre le bouton de sélection de filtrage todo/done
+Je dois ensuite faire le filtrage de la vue, afficher todo seulement
+
+
+31/01====================================================
+Voir comment appliquer le filtre todo/done/both seulement au filtre utilisé par le browser pour
+son affichage. Il faut que les fonctions clone ne modifient pas ce paramètre au changement de filtre prédéfini !
+Fonctionnement :
+1. La personne choisit un filtre prédéfini NCD
+2. Elle choisit d'afficher les terminés seulement
+3. Elle change pour NAOS
+4. Ca doit toujours afficher les terminés uniquement
+A priori, il faut juste stocker le paramètre dans this.filters.
+Sauf que les filters a priori n'ont pas ce paramètre non ?
+
+Le filtrage par "completed" fonctionne bien mais dans le browser, il ne se passe rien si on modifie 
+this.filters.taskfilter....
+En fait c'est plus compliqué : le filtrage dans le browser est fonctionnel quand je change la valeur par défaut...
+mais pas quand j'update et refiltre... Pourquoi ???
+
+03/02====================================================
+Pour le mode offline, backbone.dualStorage permet bien la synchronisation différenciée au niveau collection+model
+Première version : 100% offline avec synchro online.
+Pré-requis :
+	- mettre en place un cookie de connexion ? ==> NON
+	- faire de l'uglify pour regrouper mes fichiers ? Voir grunt et brunch
+
+04/02====================================================
+Pour les due_dates :
+1. Mise en place calendrier
+2. "Intercalaires" qui s'affichent même si vides ==> plus pratique pour positionner les tasks rendered
+	si date > X et < Y => append sur box XY
+	si date > T et < U => append sur box TU
+	...
+	Les intercalaires ne peuvent pas être un autre div, il faut que ce soient des <li> un peu particuliers
+		data-start-date (>=)
+		data-end-date (<)
+	Le plus rapide serait de faire le render des tasks en premier, puis seulement après de placer les intercalaires
+
+Loop 1 : tasks, Loop 2 : intercalaires
+
+$inter = Today / Tomorrow / Next week / Later this month / Next Month (voir ce qu'il se passe si 2 points coïncident)
+
+Today = mercredi 4 février
+
+02/02 /// data-start > 02/02 && data-start > 03/02 == true ==> pas d'insert
+03/02 /// data-start > 03/02 && data-start > 05/02 == false ===> OK, 03/02.after(Today)
+>Today [04/12]
+>Tomorrow [05/12]
+05/02
+06/02
+06/02
+09/02
+10/02
+
+///// FAIRE TOUTES CES MANIPULATIONS HORS DU DOM AVANT LE RENDER DES TASKS !!!
+/// Copier les tasks sorted dans un simple array peut-être, qu'on rallonge ensuite
+
+var result = [];
+
+06/02====================================================
+La gestion des dates est améliorée.
+Reste à faire 
+	1. paramétrer le nouveau comparateur / sort
+	2. update model ?
+	3. paramétrer le rendu des milestones
+	4. paramétrer le plugin sortable
+
+
+08/02====================================================
+Due date non visible , sert juste à l'organisation des tâches. Ré attribuée avec le sortable.
+Commitment date visible, non influencée par l'organisation
+
+11/02====================================================
+Pattern : quand je met dans une dropzone, j'applique la date de début de la zone et le place à la position 0. Puis je shifte toute les suivantes, même si elles n'appartiennent pas à la même zone (leurs positions relatives restent donc inchangées). Il faudra dans ce cas utiliser shiftDown() sans anchor (position 0, on pousse tout)
+Pour le sort, il faut donc absolument tenir compte de la date
+
+1. je le mets à today
+2. le lendemain j'en mets une nouvelle à today mais en fait même en la posant à 0 elle arrivera après
+Ca marche pas avec les dates dans le passé
+
+Todo :
+1. [DONE] Fix de la model.spec.js (problème de gestion des formats de date)
+2. Mis à jour de sortableUpdate : voir déjà comment faire cohabiter sortable+droppable. Nouveau widget ?
+
+26/02===================================================
+Pour placer au premier jour de la prochaine semaine :
+var myDate = new Date();
+myDate.setDate(myDate.getDate() + 7);
+myDate.setDate(myDate.getDate() - myDate.getDay() + 1);
+
+==> Intercallaires par défaut
+Today
+Tomorrow
+Later this week (Today + 2, mais peut être en conflit avec Next week)
+Next week (Peut porter la même date que Tomorrow et Later this week)
+Later
+Les intercallaires portant sur la même date doivent être supprimés ou modifiés en fonction de la date du jour
+
+Si on est vendredi:
+Today : OK, vendredi
+Tomorrow : OK, samedi
+Later this week : OK, dimanche
+Next week : OK, lundi prochain
+Later : OK, lundi d'après
+
+Si on est samedi: (getDay = 6)
+Today : OK, samedi
+Tomorrow : OK, dimanche
+Later this week : **KO**, rien après dimanche dans cette semaine, intercallaire à retirer
+Next week : OK, lundi prochain
+Later : OK, lundi d'après
+
+Si on est dimanche: (getDay = 0)
+Today : OK, dimanche
+Tomorrow : **KO**, (lundi) car en doublon avec next week, à retirer
+Later this week : **KO**, (dimanche) rien après dimanche dans cette semaine, intercallaire à retirer
+Next week : OK, lundi prochain
+Later : OK, lundi d'après
+
+
+18/05===================================================
+Conflit entre drop et sortable, plus multiples re-render. Voir comment gérer tout ça.
+
+19/05===================================================
+#done-improvement
+A retenir pour améliorer les perfs : API REST à modifer pour faire le mass update qui se produit quand on réorganise des tâches plûtot que X appels unitaires.
+Autre piste : ne pas modifier toutes les autres tâches pour rien !!
+=> résolu. shiftDown n'est plus utilisée.
+
+#bug
+le conflit entre drop et sortable existe toujours.
+
+#fixed-bug
+problème quand on essaie d'afficher toutes les tâches (completed + todo)
+
+
+
+07/08===================================================
+#fixed-bug
+quand on créé plusieurs tâches à la position 0 (au moins 3) on ne peut plus les réorganiser puisque 0 + 0 / 2 = 0
+
+#fixed-bug
+Impossible to add more than one tag to a task ? TBC
+	add 1 existing tag is OK
+	add 2 existing tag is OK
+	remove 1 existing tag is OK
+	add 1 new existing is KO
+
+
+10/08===================================================
+#improvement
+Au survol du label : strikethrough (completed) => DONE
+Au survol de toute la tâche :
+	Afficher EDIT sur label
+	Afficher ADD TAG sur tags
+Au click sur un tag : suppression
+Au click sur due-date : mise à jour via calendrier
+
+09/09===================================================
+Reprendre le rendering des tâches : il doit tirer profit de mousetrap et d'un proxy keyboard.
+Ensuite valider que le ENter est bien détecté dans le label et dans le add tag
+Puis seulement commencer le dev
+
+
+17/9====================================================
+#fixed-bug
+taskFilters : au moment de la sauvegarde les tags ne sont pas pris.
+	avant la sauvegarde le filtre fonctionne (tant qu'il est en filtre actif)
+	le filtre casse pendant/après la sauvegarde
+	Vérifier si c'est pas le clonage qui disjoncte => non ça fonctionne le test passe.
+
+08/10====================================================
+#fixed-bug
+le classement des tags se fait mal à l'intérieur des milestones qui contiennent plusieurs dates. Ca merde surtout sur Today : 
+il met bien la position la plus basse, seulement il ne vérifie pas la date mini qui correspond à Today...du coup, impossible
+de repasser devant dès qu'un tâche est loin dans le passé. C'est un problème pour les dropzones comme pour le sort.
+Pour le drag :
+	trouver la date mini dans la collection et l'imposer (si drop sur today)
+Pour le sort :
+	Imposer la date du suivant avec position -1. 
+	Si pas de suivant, imposer date du précédent avec position +1 >>
+	Si pas de précédent, imposer la date du milestone précédent avec position 0
+
+
+
+Pbms à voir
+- bas de l'écran qui descend trop bas (scroll caché)
+- décalage des textes au survol des tâches
+
+28/10====================================================
+#bug probable lié à editor-object : apparemment c'est la dernière vue qui se déclenche avant le bug de sauvegarde.
+Serait-ce parce qu'il essaie de sauver un objet dans la note qui n'existe plus ? Apparemment il y a avait des
+sauvegardes et maintenant plus du tout. C'est problabement parceque j'ai détruit un embedded-object.
+
+
+01/12====================================================
+To detect any change made to the contenteditable (whether its keypress, pasting text, droppping text,...) use the HTML5 input event : http://jsfiddle.net/ch6yn/
+document.getElementById("editor").addEventListener("input", function() {
+    alert("input event fired");
+}, false);
+
+
+06/12====================================================
+Version mobile : uniformiser browser et editors ; revoir la proposition de browser qui n'est pas très propre
+(relative -3em)
+
+
+15/12====================================================
+Pour le WYSIWYG :
+document.execCommand('formatBlock',false,'<h1>')
+Voir comment protéger les tags et les tasks du reformatage... => contenteditable = false forcé sur tous les tags/tasks
+
+window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName pour détecter le type de node (h1, h2,...)
+
+On pourra utiliser pasteHTMLAtCaret mais il faut avant tester qu'on n'est pas dans un tag/task 
+
+
+
+09/01====================================================
+Bug à résoudre sur browser-tag avec .actions/.controls qui ne s'affiche plus
+
+
+30/01====================================================
+Job mostly done on editor, still need to update objects within the editor when they are updated
+#fixed-bug impossible de créer et de lier un nouveau tag apparemment depuis une note
+
+01/02====================================================
+#fixed-bug sur les tâches dans les notes : si on renomme une tâche, elle est supprimée par le ObjectRepaint
+
+03/02====================================================
+#fixed-bug si je renomme une tâche ouverte dans un éditeur
+à partir du moment où une note est ouverte, tout renommage d'une tâche aboutit sur une duplication :
+	l'objet original n'est pas renommé
+	un nouvel object est créé avec le nouveau nom
+	même si la tâche n'apparaît pas dans la note ouverte
+
+render collection tasks browser.js:863:5
+Note successfully saved editor.js:145:7
+la note est sauvegardée avec un taskLink pointant sur une tâche qui n'existe pas dans l'éditeur !!
+
+03/02====================================================
+#bug Le div de sommaire se décale en dehors de son parent dès que je clique sur un chapitre
+
+
+
+
+stocker le secret dans une env variable
+
+Comment faire pour que le login soit exigé de nouveau à chaque fois qu"une requête échoue ?
+main.js pourrait écouter un évènement qui affiche le login !
+exemple : main:login => toggleAuth
+En gros, quand 403/401 => trigger main:login
+
+21/02====================================================
+Voir comment resynchroniser le serveur une fois qu'il est online !!!
+
+27/02====================================================
+dualStorage fonctionne, il reste seulement à mettre en place un jQury qui permette de tester la connexion régulièrement alive.js
+
+#bug : le DELETE est tenté deux fois de suite => le second échoue en 403
+
+En cas d'échec de GET notes, un seul DELETE note est lancé (echec 401)
+
+Reste à lancer l'appcache
+
+Todo:
+1. Avoir 2 index différents en PROD et DEV, qui appellent le js normal ou le built
+2. Rajouter au script post-receive de faire le build JS : node_modules/.bin/r.js -o build.js
+3. En DEV, un GET /cache.manifest doit retourner une erreur 404 pour éviter tout caching
+
+
+21/03=================================================
+Essayer de voir si dès l'uglify j'ai déjà un bug, cibler le fichier fautif et l'enlever

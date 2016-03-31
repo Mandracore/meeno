@@ -1,0 +1,9 @@
+{
+	"name": "Meeno source code documentation",
+	"version": "0.2.5",
+	"options": {
+		"linkNatives": "true",
+		"outdir": "./docs",
+		"paths": "./public/"
+	}
+}
