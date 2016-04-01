@@ -40,6 +40,8 @@ define ([
 				var self = this;
 				self.isOnline = true;
 
+				// Use ajaxComplete method to override behavior when an ajax request is completed
+				// Aims at reacting adequately to a connexion loss when querying the server
 				$( document ).ajaxComplete(function( event, request, settings ) {
 					// console.log('ajaxComplete: '+request)
 					if (request.status === 0) {
@@ -111,11 +113,24 @@ define ([
 				} else {
 					Alive.stop(this.AliveId); // stop pinging
 					this.$("#connectivity").removeClass('offline');
+					this.$("#connectivity").addClass('online-not-synced');
 					// Resync. with server
 					// all changes are sent to the server and localStorage is updated
-					temp.coll.tasks.syncDirtyAndDestroyed();
-					temp.coll.tags.syncDirtyAndDestroyed();
-					temp.coll.notes.syncDirtyAndDestroyed();
+					temp.coll.tasks.syncDirtyAndDestroyed({
+						success: function (coll, model, options) {
+							if (!options.dirty) { this.$("#connectivity").removeClass('online-not-synced');	}
+						},
+					});
+					temp.coll.tags.syncDirtyAndDestroyed({
+						success: function (coll, model, options) {
+							if (!options.dirty) { this.$("#connectivity").removeClass('online-not-synced');	}
+						},
+					});
+					temp.coll.notes.syncDirtyAndDestroyed({
+						success: function (coll, model, options) {
+							if (!options.dirty) { this.$("#connectivity").removeClass('online-not-synced');	}
+						},
+					});
 				}
 			},
 

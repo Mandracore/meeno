@@ -672,3 +672,24 @@ Todo:
 
 21/03=================================================
 Essayer de voir si dès l'uglify j'ai déjà un bug, cibler le fichier fautif et l'enlever
+
+31/03=================================================
+1. Le kill sh stop ne marche pas
+2. Le post-receive hook n'a pas changé les fichiers dans le www => peut-être faut-il vider le dossier avant ?
+3. Le post-receive hook devrait faire le build du javascript par lui-même
+4. Il faut valider qu'en prod/preprod le preprocessor CSS est désactivé
+
+01/04=================================================
+Besoin de savoir si les données sont synchronisées avec le serveur
+1. connexionState
+	online
+	working offline
+2. syncState
+	all data synced on server
+	data saved locally
+3. Process
+
+	
+
+
+

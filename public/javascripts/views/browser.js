@@ -288,7 +288,6 @@ define ([
 			 * @method milestonesSetupDrop
 			 */
 			milestonesSetupDrop: function () {
-				console.log('start milestonesSetupDrop');
 				var self = this;
 
 				// Store the right dates into the milestones and hide tomorrow in case we are sunday
@@ -848,7 +847,6 @@ define ([
 			 * @method renderCollection
 			 */
 			renderCollection: function (collName) {
-				console.log	('render collection ' + collName);
 				var self = this;
 				var filterName = collName == "notes" ? "noteFilter" : (collName == "tasks" ? "taskFilter" : "tagFilter");
 

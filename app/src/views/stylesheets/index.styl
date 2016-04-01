@@ -145,12 +145,26 @@ body
 		padding .5em 2em 0 0
 
 #connectivity
-	div
+	font-family Dense
+	text-align right
+	color white
+	font-size 1.2em
+	padding 0px 1.67em 0px 0px
+	.synced, .not-synced, .sync-in-progress
+		opacity .6
+		margin-right .15em
+	.offline, .not-synced, .sync-in-progress
 		display none
 	&.offline
-		div
+		.offline, .not-synced
 			display initial
-			color white
+		.online, .synced
+			display none
+	&.online-not-synced
+		.online, .sync-in-progress
+			display initial
+		.offline, .synced
+			display none
 
 // For all displays
 .navigation
