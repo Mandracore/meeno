@@ -674,10 +674,19 @@ Todo:
 Essayer de voir si dès l'uglify j'ai déjà un bug, cibler le fichier fautif et l'enlever
 
 31/03=================================================
-1. Le kill sh stop ne marche pas
+1. Le kill sh stop ne marche pas => en fait si. Pourquoi ? Aucune idée
 2. Le post-receive hook n'a pas changé les fichiers dans le www => peut-être faut-il vider le dossier avant ?
+	=> done. Impossible cependant de supprimer les logs pid/run car créés par sudo (monit)
 3. Le post-receive hook devrait faire le build du javascript par lui-même
 4. Il faut valider qu'en prod/preprod le preprocessor CSS est désactivé
+
+>>>> Problème résolu : le LISTEN était sur port 80 déjà occupé par nginx
+SOlution :
+1. Demander à monit de démarrer avec user www-node >> done
+2. Demander à monit de tester une requête http sur le port 3000 >> done
+2. Vérifier que le hook fasse le build JS
+3. Changer le port d'écoute dans appSrv.js
+4. Republier le tout
 
 01/04=================================================
 Besoin de savoir si les données sont synchronisées avec le serveur
@@ -688,6 +697,9 @@ Besoin de savoir si les données sont synchronisées avec le serveur
 	all data synced on server
 	data saved locally
 3. Process
+#DONE
+
+
 
 	
 

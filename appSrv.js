@@ -25,7 +25,7 @@ mas.configure('development', 'production', function(){
 	mas.set('mode', process.env.NODE_ENV || "development"); // To test in development mode
 	mas.set('port', process.env.PORT || 3000);
 	if (mas.get('mode') == "production") {
-		mas.set('port', 80);
+		mas.set('port', 3000); // Leave to port 3000 (80 is taken by nginx on production server)
 	}
 	mas.use(express.favicon());
 	mas.use(express.logger('dev'));
