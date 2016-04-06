@@ -684,9 +684,11 @@ Essayer de voir si dès l'uglify j'ai déjà un bug, cibler le fichier fautif et
 SOlution :
 1. Demander à monit de démarrer avec user www-node >> done
 2. Demander à monit de tester une requête http sur le port 3000 >> done
-2. Vérifier que le hook fasse le build JS
-3. Changer le port d'écoute dans appSrv.js
+2. Vérifier que le hook fasse le build JS >> done 
+3. Changer le port d'écoute dans appSrv.js >> done
 4. Republier le tout
+
+!!! Nv pbm : si le kill échoue, le  bash -ex sort directement => si le serveur n'a pas été lancé ça plante à chaque fois, il faut désactiver cette erreur
 
 01/04=================================================
 Besoin de savoir si les données sont synchronisées avec le serveur
