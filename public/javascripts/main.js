@@ -42,10 +42,10 @@ require.config ({
 			deps: ['backbone'],
 			exports: 'Backbone'
 		},
-		'backbone.relational': {
-			deps: ['backbone'],
-			exports: 'Backbone'
-		},
+		// 'backbone.relational': {
+		// 	deps: ['backbone'],
+		// 	exports: 'Backbone'
+		// },
 		'backbone.mousetrap': {
 			deps: ['backbone'],
 			exports: 'Backbone'
