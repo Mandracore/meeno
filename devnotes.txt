@@ -717,6 +717,13 @@ Besoin de savoir si les données sont synchronisées avec le serveur
 3. Process
 #DONE
 
+11/04=================================================
+#Bug-solved dès qu'on supprime tout le contenu d'une note on ne peut plus la remodifier à cause du conteneur qui rétrécit
+#Bug-solved impossible d'afficher le menu sur téléphone portable
+#Bug-solved Hauteur du bloc UL dans les tasks en mode mobile
+#Bug Manipulation des objets du browser peu adaptée au mobile car pas de hover...Trouver la meilleure interaction.
+
+
 
 
 	

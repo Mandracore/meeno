@@ -281,11 +281,14 @@ body
 				display block
 				height 3em
 				width 3em
+				padding 0
 				background-color cInputBg0
 				border none
 				font-size 1em
 				span
 					font-size 1.5em
+				&:hover
+					cursor pointer
 		.navigation-options
 			display none
 	#main.navigating
@@ -420,7 +423,8 @@ body
 					top 0
 				.content
 					top 3.6em
-					padding 0 0 0 1em
+					padding 0 1em
+					width calc(100% - 2em)
 				.text-editor
 					top calc(100% - 3em)
 				.summary
@@ -586,8 +590,6 @@ body
 				left 0px
 				top 0px
 				transition left .4s ease, width .4s ease
-				.content
-					padding 0 1.5em 0 2em
 			.right
 				position absolute
 				top 0px
@@ -601,8 +603,6 @@ body
 				.right
 					width calc(100% - 1em - 10px)
 					left calc(1em + 5px)
-					.content
-						padding 0 1.5em 0 2em
 	#main.navigating #editors > .editor
 		.header, .body
 			top 0
@@ -1302,5 +1302,5 @@ body
 		position relative
 		top -3em
 		height calc(100% - 0.5em)
-	#browser .tab.notes .listobjects .objects, #browser .tab.tags .listobjects .objects, #browser .tab.tasks .listobjects .objects
+	#browser .tab.notes .listobjects .objects, #browser .tab.tags .listobjects .objects
 		height calc(100% - 2em)
