@@ -34,24 +34,41 @@ require.config ({
 			deps: ['underscore', 'jquery'],
 			exports: 'Backbone'
 		},
-		'backbone.custom': {
-			deps: ['backbone'],
-			exports: 'Backbone'
-		},
 		'backbone.dualStorage': {
 			deps: ['backbone'],
-			exports: 'Backbone'
 		},
-		// 'backbone.relational': {
+		// 'backbone.custom': {
 		// 	deps: ['backbone'],
 		// 	exports: 'Backbone'
 		// },
-		'backbone.mousetrap': {
+		'backbone.relational': {
 			deps: ['backbone'],
-			exports: 'Backbone'
 		},
+		// 'backbone.mousetrap': {
+		// 	deps: ['backbone'],
+		// },
 	}
 });
+
+// Ce test ne génère plus d'erreur
+// require ([
+// 		'backbone', // Load the client-side application module stored in app.js (same folder as this file)
+// 		'backbone.relational', // Load the client-side application module stored in app.js (same folder as this file)
+// 		'backbone.dualStorage', // Load the client-side application module stored in app.js (same folder as this file)
+// 	], function (Backbone) {
+// 		console.log("underscore");
+// 		console.log(_);
+// 		console.log("Backbone");
+// 		console.log(Backbone);
+
+// 		var NoteTask = Backbone.RelationalModel.extend({
+// 			idAttribute: "_id"
+// 		});
+
+// 		console.log(new NoteTask());
+
+// 	}
+// );
 
 require ([
 		'app', // Load the client-side application module stored in app.js (same folder as this file)

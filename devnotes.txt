@@ -671,7 +671,25 @@ Todo:
 
 
 21/03=================================================
+#bug-fixed
 Essayer de voir si dès l'uglify j'ai déjà un bug, cibler le fichier fautif et l'enlever
+L'uglify n'est pas le pbm
+jQuery et Underscore sont bien chargés au moment ou Backbone.relational est lancé, mais pas Backbone
+Charger Backbone seul fonctionne, cela appelle bien jQ et _
+En revanche charger seulement Backbone.relational ne fonctionne pas : le build appelle bien Backbone, mais une fois le build réalisé Backbone est introuvable au moment de l'appel de Backbone.relational
+
+En utilisant 	wrapShim : true et en appelant juste Backbone.relational et Backbone ça foncitonne. Mais dès qu'on en rajoute ça plante
+
+#SOLUTION
+Apparemment seul link.js posait problème. Solution à retenir :
+define ([
+		'jquery',
+		'underscore',
+		'backbone',
+		'backbone.relational',
+	], function ($, _, Backbone) {
+
+Si je veux utiliser un Backbone modifié par relational dans un fichier, je dois charger Backbone ET le module Backbone. Dans le cas contraire, soit je charge une version normale de Backbone (et donc sans relational), soit je charge BackboneRelational mais sans Backbone ce qui plante également. Il faut bien mettre les 2.
 
 31/03=================================================
 1. Le kill sh stop ne marche pas => en fait si. Pourquoi ? Aucune idée

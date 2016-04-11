@@ -12,7 +12,6 @@ define ([
 	'backbone',
 	'views/main',
 	'routers/router',
-	'backbone.dualStorage',
 	], function ($, _, Backbone, MainView, Router) {
 
 		var initialize = function () {

@@ -12,4 +12,5 @@
 	// dir         : './public/javascripts-built',
 	out            : './public/javascripts-built/main.js',
 	optimize       : "none",
+	wrapShim       : true,
 })
