@@ -83,14 +83,14 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 
 // Serve cache manifest
-var version=7;
+var version=9;
 mas.get('/cache.manifest',function(req,res){
 	res.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
 	res.end([
 		'CACHE MANIFEST',
 		'#v'+version, // Store version number
-		'CACHE:', // Resources to cache
-		'/javascripts-built/main.notyet.js',
+		//'CACHE:', // Resources to cache
+		//'/javascripts-built/main.notyet.js',
 		'NETWORK:', // Resources that must never be cached
 		'/',
 		'/login',

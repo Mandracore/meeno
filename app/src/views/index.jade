@@ -15,7 +15,6 @@ block content
 	else
 		script(data-main="javascripts-built/main", src="javascripts/lib/require.js")
 		//script(src="javascripts-built/main.js")
-	h1= environment
 	// Login/Register
 	div#form-wrapper(style="display:none")
 		div
@@ -77,6 +76,7 @@ block content
 					span.sync-in-progress sync in progress /
 					span.online online
 					span.offline offline
+					div= environment
 				nav.browse
 					h2 browse
 						span.fa.fa-bookmark
