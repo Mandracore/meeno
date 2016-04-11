@@ -31,6 +31,7 @@ define ([
 				'submit #register'                : 'register',
 				'click #toregister'               : 'toggleLR',
 				'click #tologin'                  : 'toggleLR',
+				'click .navigation button.open'   : 'openMenu',
 				'click #nav .browse'              : 'browse',
 				'click #editors-tabs > li .open'  : 'editorOpen',
 				'click #editors-tabs > li .close' : 'editorClose',
@@ -39,6 +40,17 @@ define ([
 			initialize: function() {
 				var self = this;
 				self.isOnline = true;
+
+				// Put swipe mouvements listeners
+				$("#main > .navigation").on('flick', function(e) {
+
+					if (e.orientation == "horizontal") {
+						var way = (e.dx > 0) ? "left" : "right";
+						if (way == "right") {
+							$("#main").removeClass('navigating');
+						}
+					}
+				});
 
 				// Use ajaxComplete method to override behavior when an ajax request is completed
 				// Aims at reacting adequately to a connexion loss when querying the server
@@ -146,6 +158,15 @@ define ([
 				} else {
 					alert('Error: impossible to communicate with server');
 				}
+			},
+
+			/**
+			 * To save the token received after successful login or registering
+			 *
+			 * @method openMenu
+			 */
+			openMenu: function (event) {
+				$("#main").addClass('navigating');
 			},
 
 			fetchData: function() {
@@ -305,6 +326,7 @@ define ([
 			 */
 			browse: function (event) {
 				this.minEditors();
+				$("#main").removeClass('navigating');
 				var $button = $(event.target);
 				var type    = $button.attr("data-type");
 
