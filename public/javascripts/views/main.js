@@ -1,7 +1,6 @@
 define ([
 		'jquery',
 		'underscore',
-		'backbone',
 		'lib/auth',
 		'lib/alive',
 		'mousetrap',
@@ -10,8 +9,9 @@ define ([
 		'views/helper',
 		'views/browser',
 		'views/editor',
-		// 'lib/backbone.sync.jwt', // No custom Backbone Sync to send jwt (done via $.ajaxSend)
-	], function ($, _, Backbone, Auth, Alive, Mousetrap, channel, temp, HelperView, BrowserView, EditorView) {
+		'backbone',
+		'backbone.dualStorage',
+	], function ($, _, Auth, Alive, Mousetrap, channel, temp, HelperView, BrowserView, EditorView, Backbone) {
 
 		/**
 		 * This backbone view holds the entire UI.
@@ -41,6 +41,12 @@ define ([
 				var self = this;
 				self.isOnline = true;
 
+				self.syncStatus = {
+					"notes" : false,
+					"tasks" : false,
+					"tags"  : false,
+				};
+
 				// Put swipe mouvements listeners
 				$("#main > .navigation").on('flick', function(e) {
 
@@ -52,25 +58,10 @@ define ([
 					}
 				});
 
-				// Use ajaxComplete method to override behavior when an ajax request is completed
-				// Aims at reacting adequately to a connexion loss when querying the server
-				$( document ).ajaxComplete(function( event, request, settings ) {
-					// console.log('ajaxComplete: '+request)
-					if (request.status === 0) {
-						if (self.isOnline) {
-							channel.trigger('app:offline');
-							self.isOnline = false;
-						}
-					} else {
-						if (!self.isOnline) {
-							self.isOnline = true;
-							channel.trigger('app:online');
-						}
-					}
-				});
-
-				this.listenTo(channel, 'app:offline', function () { this.connectivity(false); } );
-				this.listenTo(channel, 'app:online', function () { this.connectivity(true); } );
+				this.listenTo(channel, 'app:offline', function () { this.connectivity(0); } );
+				this.listenTo(channel, 'app:online', function () { this.connectivity(1); } );
+				this.listenTo(channel, 'app:sync', function () { this.connectivity(2); } );
+				this.listenTo(channel, 'fetching:done', function () { this.syncBack(); } );
 
 				this.auth                 = false;
 				this.logging              = false;
@@ -102,66 +93,132 @@ define ([
 					channel.trigger('keyboard:enter');
 				}, 'keydown');
 
-				// Make sur that all sync errors are caught (probably because of missing authorization)
-				this.listenTo(temp.coll.tasks, 'error', this.syncCallback);
-				this.listenTo(temp.coll.tags, 'error', this.syncCallback);
-				this.listenTo(temp.coll.notes, 'error', this.syncCallback);
-				this.listenTo(temp.coll.noteFilters, 'error', this.syncCallback);
-				this.listenTo(temp.coll.taskFilters, 'error', this.syncCallback);
-				this.listenTo(temp.coll.tagFilters, 'error', this.syncCallback);
+				// All ajax requests once completed will trigger this callback to :
+				// 1. Display login forms is token is not provided (error 401)
+				// 2. Detect offline mode (error 0) and try to reach server => channel.trigger('app:offline');
+				// 3. Resync. data with server when connexion is restored (response 200/304) => channel.trigger('app:online');
+				$( document ).ajaxComplete(function( event, request, settings ) {
+					switch(request.status) {
+						// Server is not answering
+						case 0:
+							if (self.isOnline) {
+								self.isOnline = false;
+								channel.trigger('app:offline');
+							}
+							break;
+						// Server is answering OK
+						case 200: // OK
+						case 304: // Not modified
+							if (!self.isOnline) {
+								self.isOnline = true;
+								channel.trigger('app:online');
+							}
+							break;
+						// Server denied request (not authorized)
+						case 401:
+							console.log ("Unauthorized, displaying user authentification form");
+							self.toggleAuth();
+							break;
+						// Server is returning an unexpected value.
+						default:
+							alert('Impossible to sync. data with server (error code = '+request.status+'). Please provide the error code to the administrator so that the error can be corrected.');
+							//default code block
+					}
+				});
 
 				this.fetchData();
 			},
 
 			/**
-			 * To manage synchronization with backend in case of connectivity loss
+			 * To try to reconnect to backend in case of connectivity loss
 			 *
 			 * @method connectivity
 			 */
-			connectivity: function (online) {
-				if (!online) {
-					this.$("#connectivity").addClass('offline');
-					this.AliveId = Alive.start(); // start pinging
-				} else {
-					Alive.stop(this.AliveId); // stop pinging
-					this.$("#connectivity").removeClass('offline');
-					this.$("#connectivity").addClass('online-not-synced');
-					// Resync. with server
-					// all changes are sent to the server and localStorage is updated
-					temp.coll.tasks.syncDirtyAndDestroyed({
-						success: function (coll, model, options) {
-							if (!options.dirty) { this.$("#connectivity").removeClass('online-not-synced');	}
-						},
-					});
-					temp.coll.tags.syncDirtyAndDestroyed({
-						success: function (coll, model, options) {
-							if (!options.dirty) { this.$("#connectivity").removeClass('online-not-synced');	}
-						},
-					});
+			connectivity: function (status) {
+				switch (status) {
+					case 0:
+						this.$("#connectivity").addClass('offline');
+						this.AliveId = Alive.start(); // start pinging
+						break;
+					case 1:
+						Alive.stop(this.AliveId); // stop pinging
+						this.$("#connectivity").removeClass('offline');
+						this.$("#connectivity").addClass('online-not-synced');
+						this.syncBack();
+						break;
+					case 2:
+						if(this.syncStatus.notes && this.syncStatus.tasks && this.syncStatus.tags) {
+							this.$("#connectivity").removeClass('online-not-synced');
+						} else {
+							if(!this.$("#connectivity").hasClass('online-not-synced')) {
+								this.$("#connectivity").addClass('online-not-synced');
+							}
+						}
+						break;
+				}
+			},
+
+			/**
+			 * To sync models on localstorage with those on backend database
+			 *
+			 * @method connectivity
+			 */
+			syncBack: function () {
+				var self = this;
+				// Resync. with server
+				// all changes are sent to the server and localStorage is updated
+				if(temp.coll.notes.destroyedModelIds().length > 0 || temp.coll.notes.dirtyModels().length > 0) {
+					console.log('sync / start syncing notes');
 					temp.coll.notes.syncDirtyAndDestroyed({
 						success: function (coll, model, options) {
-							if (!options.dirty) { this.$("#connectivity").removeClass('online-not-synced');	}
+							if (!options.dirty) {
+								console.log('sync / notes synced successfully');
+								self.syncStatus.notes = true
+								channel.trigger('app:sync');
+							}
 						},
 					});
-				}
-			},
-
-			/**
-			 * To save the token received after successful login or registering
-			 *
-			 * @method syncCallback
-			 */
-			syncCallback: function (coll, resp, options) {
-				if (resp.status == 401) {
-					console.log ("Unauthorized, displaying user authentification form");
-					this.toggleAuth();
 				} else {
-					alert('Error: impossible to communicate with server');
+					console.log ('sync / notes already synced');
+					self.syncStatus.notes = true
+					channel.trigger('app:sync');
+				}
+
+				if(temp.coll.tasks.destroyedModelIds().length > 0 || temp.coll.tasks.dirtyModels().length > 0) {
+					console.log('sync / start syncing tasks');
+					temp.coll.tasks.syncDirtyAndDestroyed({
+						success: function (coll, model, options) {
+							if (!options.dirty) {
+								console.log('sync / tasks synced successfully');
+								self.syncStatus.tasks = true
+							}
+						},
+					});
+				} else {
+					console.log ('sync / tasks already synced');
+					self.syncStatus.tasks = true
+					channel.trigger('app:sync');
+				}
+
+				if(temp.coll.tags.destroyedModelIds().length > 0 || temp.coll.tags.dirtyModels().length > 0) {
+					console.log('sync / start syncing tags');
+					temp.coll.tags.syncDirtyAndDestroyed({
+						success: function (coll, model, options) {
+							if (!options.dirty) {
+								console.log('sync / tags synced successfully');
+								self.syncStatus.tags = true
+							}
+						},
+					});
+				} else {
+					console.log ('sync / tags already synced');
+					self.syncStatus.tags = true
+					channel.trigger('app:sync');
 				}
 			},
 
 			/**
-			 * To save the token received after successful login or registering
+			 * To open the menu when in mobile mode
 			 *
 			 * @method openMenu
 			 */

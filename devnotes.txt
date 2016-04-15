@@ -726,7 +726,6 @@ Besoin de savoir si les données sont synchronisées avec le serveur
 
 
 
-	
+La fonction syncback doit être utilisée après le fetch initial sinon àa marche pas au chargement d ela page...
 
-
-
+temp.coll.tasks.syncDirtyAndDestroyed // semble ne rien faire du tout... tester plutôt dirtymodels ?
