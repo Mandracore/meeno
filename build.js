@@ -11,6 +11,7 @@
 	// Use out instead to minify a whole folder and to uglify the resulting file
 	// dir         : './public/javascripts-built',
 	out            : './public/javascripts-built/main.js',
-	optimize       : "none",
+	// Should be uglified per default
+	// optimize       : "none",
 	wrapShim       : true,
 })

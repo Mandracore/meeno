@@ -702,9 +702,11 @@ Si je veux utiliser un Backbone modifié par relational dans un fichier, je dois
 SOlution :
 1. Demander à monit de démarrer avec user www-node >> done
 2. Demander à monit de tester une requête http sur le port 3000 >> done
-2. Vérifier que le hook fasse le build JS
-3. Changer le port d'écoute dans appSrv.js
+2. Vérifier que le hook fasse le build JS >> done 
+3. Changer le port d'écoute dans appSrv.js >> done
 4. Republier le tout
+
+!!! Nv pbm : si le kill échoue, le  bash -ex sort directement => si le serveur n'a pas été lancé ça plante à chaque fois, il faut désactiver cette erreur
 
 01/04=================================================
 Besoin de savoir si les données sont synchronisées avec le serveur
@@ -722,14 +724,3 @@ Besoin de savoir si les données sont synchronisées avec le serveur
 #Bug-solved impossible d'afficher le menu sur téléphone portable
 #Bug-solved Hauteur du bloc UL dans les tasks en mode mobile
 #Bug Manipulation des objets du browser peu adaptée au mobile car pas de hover...Trouver la meilleure interaction.
-
-
-
-
-La fonction syncback doit être utilisée après le fetch initial sinon àa marche pas au chargement d ela page...
-
-temp.coll.tasks.syncDirtyAndDestroyed // semble ne rien faire du tout... tester plutôt dirtymodels ?
-
-
-
-Rajouter le code 202
