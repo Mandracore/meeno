@@ -18,9 +18,7 @@ define ([
 					url: '/api/notes',
 					timeout: 500,
 					success: function(data, textStatus, request) {
-						if (request.status == 200) {
-							channel.trigger('app:online');
-						}
+						console.log('alive / server reached successfully');
 					}
 				})
 			}, 2000);

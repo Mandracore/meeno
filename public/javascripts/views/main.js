@@ -108,6 +108,7 @@ define ([
 							break;
 						// Server is answering OK
 						case 200: // OK
+						case 202: // OK used by login page
 						case 304: // Not modified
 							if (!self.isOnline) {
 								self.isOnline = true;
