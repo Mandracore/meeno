@@ -138,22 +138,28 @@ define ([
 			connectivity: function (status) {
 				switch (status) {
 					case 0:
-						this.$("#connectivity").addClass('offline');
+						this.$("#connectivity").addClass('state0'); // offline
+						this.$("#connectivity").removeClass('state1'); // online - sync in progress
+						this.$("#connectivity").removeClass('state2'); // online - synced
 						this.AliveId = Alive.start(); // start pinging
 						break;
 					case 1:
 						Alive.stop(this.AliveId); // stop pinging
-						this.$("#connectivity").removeClass('offline');
-						this.$("#connectivity").addClass('online-not-synced');
+						this.$("#connectivity").removeClass('state0');
+						this.$("#connectivity").removeClass('state2');
+						this.$("#connectivity").addClass('state1');
 						this.syncBack();
 						break;
 					case 2:
+						if (!this.isOnline) return;
 						if(this.syncStatus.notes && this.syncStatus.tasks && this.syncStatus.tags) {
-							this.$("#connectivity").removeClass('online-not-synced');
+							this.$("#connectivity").removeClass('state0'); // offline
+							this.$("#connectivity").removeClass('state1'); // online - sync in progress
+							this.$("#connectivity").addClass('state2'); // online - synced
 						} else {
-							if(!this.$("#connectivity").hasClass('online-not-synced')) {
-								this.$("#connectivity").addClass('online-not-synced');
-							}
+							this.$("#connectivity").removeClass('state0'); // offline
+							this.$("#connectivity").removeClass('state2'); // online - synced
+							this.$("#connectivity").addClass('state1'); // online - sync in progress
 						}
 						break;
 				}

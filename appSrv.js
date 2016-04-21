@@ -83,14 +83,24 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 
 // Serve cache manifest
-var version=9;
+var version=12;
 mas.get('/cache.manifest',function(req,res){
 	res.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
 	res.end([
 		'CACHE MANIFEST',
 		'#v'+version, // Store version number
-		//'CACHE:', // Resources to cache
-		//'/javascripts-built/main.notyet.js',
+		'CACHE:', // Resources to cache
+		'/font/Dense-Regular.otf',
+		'/font/font-awesome-4.4.0/fonts/fontawesome-webfont.woff2?v=4.4.0',
+		'/images/bg.jpg',
+		'/stylesheets/jquery-ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png',
+		'/font/font-awesome-4.4.0/css/font-awesome.css',
+		'/stylesheets/jquery-ui-lightness/jquery-ui-1.10.3.custom.min.css',
+		'/stylesheets/lib/unsemantic-grid-responsive.css',
+		'/javascripts/lib/jquery-simplecolorpicker/jquery.simplecolorpicker.css',
+		'/stylesheets/index.css',
+		'/javascripts/lib/require.js',
+		'/javascripts-built/main.js',
 		'NETWORK:', // Resources that must never be cached
 		'/',
 		'/login',

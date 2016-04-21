@@ -150,20 +150,25 @@ body
 	color white
 	font-size 1.2em
 	padding 0px 1.67em 0px 0px
-	.synced, .not-synced, .sync-in-progress
+	& > span
+		display none
+	.synced, .save-local, .sync-in-progress
 		opacity .6
 		margin-right .15em
-	.offline, .not-synced, .sync-in-progress
-		display none
-	&.offline
-		.offline, .not-synced
+	&.state0 // offline - data saved locally
+		.offline, .save-local
 			display initial
-		.online, .synced
+		.online, .synced, .sync-in-progress
 			display none
-	&.online-not-synced
+	&.state1 // online - sync in progress
 		.online, .sync-in-progress
 			display initial
-		.offline, .synced
+		.offline, .synced, .save-local
+			display none
+	&.state2 // online - synced
+		.online, .synced
+			display initial
+		.offline, .save-local, .sync-in-progress
 			display none
 
 // For all displays
