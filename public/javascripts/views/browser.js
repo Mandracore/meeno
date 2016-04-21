@@ -430,16 +430,20 @@ define ([
 
 					case "tasks" :
 						temp.coll.tasks.sort();
-
 						var position = 0
 						var todo_at  = new Date();
-						if (temp.coll.tasks.length > 0) {
-							var todos        = temp.coll.tasks.pluck('todo_at');
-							var todos_nonull = todos.filter(function (date) { return date !== null; });
-							var todos_dates  = todos_nonull.map(function (date) { return new Date(date); });
 
-							position = _.min(temp.coll.tasks.pluck('position'))-1;
-							todo_at  = _.min(todos_dates);
+						if ($('#browser .tab.tasks .milestones > .active').attr('data-mile') != "today") {
+							todo_at = $('#browser .tab.tasks .milestones > .active').attr('data-todo');
+						} else {
+							if (temp.coll.tasks.length > 0) {
+								var todos        = temp.coll.tasks.pluck('todo_at');
+								var todos_nonull = todos.filter(function (date) { return date !== null; });
+								var todos_dates  = todos_nonull.map(function (date) { return new Date(date); });
+
+								position = _.min(temp.coll.tasks.pluck('position'))-1;
+								todo_at  = _.min(todos_dates);
+							}
 						}
 
 						var newModel = new Task ({
