@@ -57,6 +57,8 @@ define ([
 
 				this.lastSave = new Date();
 
+				this.listenTo(channel, 'keyboard:list-outdent', function () {this.textEditor("list-outdent");});
+				this.listenTo(channel, 'keyboard:list-indent', function () {this.textEditor("list-indent");});
 				this.listenTo(channel, 'keyboard:tag', function () {this.textEditor("tag");});
 				this.listenTo(channel, 'keyboard:task', function () {this.textEditor("task");});
 				this.listenTo(channel, 'keyboard:entity', function () {this.textEditor("entity");});
@@ -159,9 +161,7 @@ define ([
 					content     :this.$(".left .content").html(),
 					content_sec :this.$(".right .content").html()
 				}).save({},{
-					success: function() {
-						console.log('Note successfully saved');
-					},
+					success: function() {},
 					error  : function() {
 						console.log('Saving note modifications failed');
 					}
@@ -262,8 +262,20 @@ define ([
 						this.tocRebuild();
 						this.save();
 						break;
-					case "list": // Not in use for now
-						//document.execCommand('insertUnorderedList');
+					case "list-indent": // Not in use for now
+						var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
+						console.log(nodeType)
+						if (nodeType == "LI") {
+							document.execCommand('indent');
+							console.log('indent');
+						} else {
+							document.execCommand('insertOrderedList');
+							console.log('insert list');
+						}
+						break;
+					case "list-outdent": // Not in use for now
+						console.log('outdent');
+						document.execCommand('outdent');
 						break;
 					case "task":
 						this.objectInsert("task", fromButton);
