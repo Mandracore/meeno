@@ -67,6 +67,14 @@ define ([
 				this.logging              = false;
 				this.registering          = false;
 
+				Mousetrap.bind('ctrl+maj+right', function() {
+					channel.trigger('keyboard:list-indent');
+					return false; // return false to prevent default browser behavior and stop event from bubbling
+				});
+				Mousetrap.bind('ctrl+maj+left', function() {
+					channel.trigger('keyboard:list-outdent');
+					return false; // return false to prevent default browser behavior and stop event from bubbling
+				});
 				Mousetrap.bind('# #', function() {
 					channel.trigger('keyboard:tag');
 					return false; // return false to prevent default browser behavior and stop event from bubbling
