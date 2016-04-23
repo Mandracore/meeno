@@ -342,6 +342,54 @@ body
 			& > div
 				display table-cell
 				vertical-align middle
+			.text-editor
+				display table
+				position relative
+				width 100%
+				height 3em
+				overflow hidden
+				transition top .5s ease
+				& > div
+					display table-cell
+					vertical-align middle
+					height 100%
+					&:not(.spacer)
+						width 1em
+					.info
+						display none
+					&:hover, &.active
+						.info
+							display block
+							position absolute
+							top 0
+							right 0
+							color white
+							overflow hidden
+							text-overflow ellipsis
+							white-space nowrap
+							max-width calc(100% - 16em)
+							opacity .9
+							font-size .7em
+							font-family Helvetica
+							line-height 4.28em
+							padding 0 1em 0 0
+					button
+						display block
+						height 100%
+						padding 0 .5em
+						opacity .5
+						color white
+						background none
+						border none
+						&:hover, &:active, &.hover
+							padding 0 .5em 5px .5em
+							opacity .8
+							cursor pointer
+						&:hover, &.hover
+							border-top 5px solid grey
+						&:active
+							opacity 1
+							border-top 5px solid cCyan
 			.close
 				margin 0 .5em 0 0
 				width 1em
@@ -415,7 +463,7 @@ body
 					list-style-type circle
 					list-style-position inside
 			.content
-				height calc(100% - 6.6em)
+				height calc(100% - 3.6em)
 				overflow auto
 				:not(h1), :not(h2), :not(h3), :not(h4)
 					line-height 1.1em
@@ -515,53 +563,6 @@ body
 						&:active
 							text-decoration line-through
 							opacity 1							
-				.text-editor
-					width 100%
-					height 3em
-					overflow hidden
-					transition top .5s ease
-					display table
-					box-shadow 0px 1px 10px rgba(0, 0, 0, 0.4)
-					& > div
-						display table-cell
-						vertical-align middle
-						height 100%
-						&:not(.spacer)
-							width 1em
-						.info
-							display none
-						&:hover, &.active
-							.info
-								overflow hidden
-								text-overflow ellipsis
-								white-space nowrap
-								max-width calc(100% - 16em)
-								opacity .9
-								top 0
-								right 0
-								display block
-								position absolute
-								font-size .7em
-								font-family Helvetica
-								line-height 4.28em
-								padding 0 1em 0 0
-						button
-							display block
-							height 100%
-							padding 0 .5em
-							opacity .6
-							color black
-							background none
-							border none
-							&:hover, &:active, &.hover
-								padding 0 .5em 5px .5em
-								opacity .8
-								cursor pointer
-							&:hover, &.hover
-								border-top 5px solid grey
-							&:active
-								opacity 1
-								border-top 5px solid cCyan
 				.summary
 					height 3.6em
 					ul

@@ -217,17 +217,28 @@
 <!-- #############################################################-->
 <script type="text/template" id="editor-body-template" style="display: none;">
 	<div class="header">
-		<div class="close">
-			<button class="fa fa-remove"></button>
-		</div>
-		<div class="title"><%= title %></div>
-		<div class="actions hide-on-mobile">
-			<button class="fa fa-trash-o">
-				<span>DELETE</span>
-			</button>
-			<button class="fa fa-clone">
-				<span>DUPLICATE</span>
-			</button>
+		<div class="text-editor">
+			<div class="tag">
+				<button data-action="tag" class="fa fa-tag"></button>
+				<div class="info">Insert tag (tt)</div>
+			</div>
+			<div class="task">
+				<button data-action="task" class="fa fa-tasks"></button>
+				<div class="info">Insert task (&amp;&amp;)</div>
+			</div>
+			<div class="font-header">
+				<button data-action="header" class="fa fa-header"></button>
+				<div class="info">Toggle headers (§§)</div>
+			</div>
+			<div class="font-list-indent">
+				<button data-action="list-indent" class="fa fa-indent"></button>
+				<div class="info">Indent (Ctrl + Maj + &#8594;)</div>
+			</div>
+			<div class="font-list-outdent">
+				<button data-action="list-outdent" class="fa fa-outdent"></button>
+				<div class="info">Outdent (Ctrl + Maj + &#8592;)</div>
+			</div>
+			<div class="spacer"></div>
 		</div>
 	</div>
 	<div class="body grid-container grid-parent">
@@ -240,29 +251,6 @@
 				</ul>
 			</div>
 			<div tabindex=1 class="content mousetrap" contenteditable="true"><%= content %></div>
-			<div class="text-editor">
-				<div class="tag">
-					<button data-action="tag" class="fa fa-tag"></button>
-					<div class="info">Insert tag (tt)</div>
-				</div>
-				<div class="task">
-					<button data-action="task" class="fa fa-tasks"></button>
-					<div class="info">Insert task (&amp;&amp;)</div>
-				</div>
-				<div class="font-header">
-					<button data-action="header" class="fa fa-header"></button>
-					<div class="info">Toggle headers (§§)</div>
-				</div>
-				<div class="font-list-indent">
-					<button data-action="list" class="fa fa-indent"></button>
-					<div class="info">Indent (Ctrl + Maj + &#8594;)</div>
-				</div>
-				<div class="font-list-outdent">
-					<button data-action="list" class="fa fa-outdent"></button>
-					<div class="info">Outdent (Ctrl + Maj + &#8592;)</div>
-				</div>
-				<div class="spacer"></div>
-			</div>
 		</div>
 		<div class="right column focus">
 			<div class="summary">
@@ -274,29 +262,6 @@
 				</ul>
 			</div>
 			<div tabindex=1 class="content mousetrap" contenteditable="true"><%= content_sec %></div>
-			<div class="text-editor">
-				<div class="tag">
-					<button data-action="tag" class="fa fa-tag"></button>
-					<div class="info">Insert tag (tt)</div>
-				</div>
-				<div class="task">
-					<button data-action="task" class="fa fa-tasks"></button>
-					<div class="info">Insert task (&amp;&amp;)</div>
-				</div>
-				<div class="font-header">
-					<button data-action="header" class="fa fa-header"></button>
-					<div class="info">Toggle headers (§§)</div>
-				</div>
-				<div class="font-list-indent">
-					<button data-action="list" class="fa fa-indent"></button>
-					<div class="info">Indent (Ctrl + Maj + &#8594;)</div>
-				</div>
-				<div class="font-list-outdent">
-					<button data-action="list" class="fa fa-outdent"></button>
-					<div class="info">Outdent (Ctrl + Maj + &#8592;)</div>
-				</div>
-				<div class="spacer"></div>
-			</div>
 		</div>
 	</div>
 </script>
