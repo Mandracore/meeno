@@ -730,3 +730,6 @@ Faire en sorte que le cache ne soit actif qu'en prod/preprod et pas en dev
 
 
 Connectivity indicators CSS is now OK, but javascript command is crappy : en mode production, à cause du cache, le passage en offline n'est pas détecté correctement. Le problème ne se produit pas en DEV
+
+
+ON peut utiliser wysiwyg seul, pas besoin de shim.

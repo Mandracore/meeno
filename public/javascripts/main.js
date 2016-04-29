@@ -8,6 +8,8 @@ require.config ({
 		'jquery.ui'            : 'lib/jquery-ui-1.10.3.custom.min',
 		'jquery.finger'        : 'lib/jquery.finger.min',
 		'jquery.dateFormat'    : 'lib/jquery.dateFormat-1.0',
+		'wysiwyg'              : 'lib/wysiwyg',
+		// 'wysiwyg'              : 'lib/wysiwyg.min',
 		underscore             : 'lib/underscore',
 		backbone               : 'lib/backbone',
 		'backbone.relational'  : 'lib/backbone-relational',

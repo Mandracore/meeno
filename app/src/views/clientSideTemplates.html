@@ -250,7 +250,7 @@
 					<li>3</li>
 				</ul>
 			</div>
-			<div tabindex=1 class="content mousetrap" contenteditable="true"><%= content %></div>
+			<div tabindex=1 id="left_<%= _id %>" class="content mousetrap" contenteditable="true"><%= content %></div>
 		</div>
 		<div class="right column focus">
 			<div class="summary">
@@ -261,7 +261,7 @@
 					<li>4</li>
 				</ul>
 			</div>
-			<div tabindex=1 class="content mousetrap" contenteditable="true"><%= content_sec %></div>
+			<div tabindex=1 id="right_<%= _id %>" class="content mousetrap" contenteditable="true"><%= content_sec %></div>
 		</div>
 	</div>
 </script>

@@ -10,7 +10,8 @@ define ([
 		'models/tag',
 		'models/task',
 		'models/filter',
-	], function ($, $, $, _, Backbone, tools, temp, channel, Tag, Task, Filter) {
+		'wysiwyg',
+	], function ($, $, $, _, Backbone, tools, temp, channel, Tag, Task, Filter, wysiwyg) {
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
@@ -59,6 +60,7 @@ define ([
 
 				this.listenTo(channel, 'keyboard:list-outdent', function () {this.textEditor("list-outdent");});
 				this.listenTo(channel, 'keyboard:list-indent', function () {this.textEditor("list-indent");});
+
 				this.listenTo(channel, 'keyboard:tag', function () {this.textEditor("tag");});
 				this.listenTo(channel, 'keyboard:task', function () {this.textEditor("task");});
 				this.listenTo(channel, 'keyboard:entity', function () {this.textEditor("entity");});
@@ -112,6 +114,22 @@ define ([
 					}
 				});
 
+				// Activate the 2 wysiwyg editors
+				_.defer(function(){
+					// $('#left_'+data._id).wysiwyg({});
+					// $('#right_'+data._id).wysiwyg({});
+
+					// User defer to wait until the current call stack has cleared
+					// => which means waiting until the view is appended to the DOM
+					self.wysiwygeditor = {
+						left : wysiwyg({
+							element: 'left_'+data._id || document.getElementById('left_'+data._id),
+						}),
+						right : wysiwyg({
+							element: 'right_'+data._id || document.getElementById('right_'+data._id),
+						}),
+					};
+				});
 
 				return this;
 			},
@@ -232,6 +250,7 @@ define ([
 				// event can come from :
 				// 1. Click : we use $(event.target).attr('data-action') to know which action to do
 				// 2. Keypress : we use directly event, which should be a simple string
+				var self       = this;
 				var action     = !event.target ? event : $(event.target).attr('data-action');
 				var fromButton = (event.target != undefined);
 
@@ -263,19 +282,24 @@ define ([
 						this.save();
 						break;
 					case "list-indent": // Not in use for now
+						var side = $(window.getSelection().getRangeAt(0).commonAncestorContainer).closest(".column").hasClass('left') ? "left" : "right";
 						var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
 						console.log(nodeType)
 						if (nodeType == "LI") {
-							document.execCommand('indent');
+							self.wysiwygeditor[side].indent();
+							// document.execCommand('indent');
 							console.log('indent');
 						} else {
-							document.execCommand('insertOrderedList');
+							self.wysiwygeditor[side].insertList("ordered");
+							// document.execCommand('insertOrderedList');
 							console.log('insert list');
 						}
 						break;
 					case "list-outdent": // Not in use for now
 						console.log('outdent');
-						document.execCommand('outdent');
+						var side = $(window.getSelection().getRangeAt(0).commonAncestorContainer).closest(".column").hasClass('left') ? "left" : "right";
+						self.wysiwygeditor[side].indent("outdent");
+						// document.execCommand('outdent');
 						break;
 					case "task":
 						this.objectInsert("task", fromButton);
