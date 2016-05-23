@@ -11,6 +11,8 @@ block content
 	//- Client-side application's scripts
 	//- Load the script "js/main.js" as our entry point
 	if environment == "development"
+		// To test ckeditor
+		script(src="javascripts-nobuild/lib/ckeditor/ckeditor.js")
 		script(data-main="javascripts/main", src="javascripts/lib/require.js")
 	else
 		script(data-main="javascripts-built/main", src="javascripts/lib/require.js")

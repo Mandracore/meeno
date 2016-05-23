@@ -733,3 +733,50 @@ Connectivity indicators CSS is now OK, but javascript command is crappy : en mod
 
 
 ON peut utiliser wysiwyg seul, pas besoin de shim.
+
+13/05=================================================
+CKEditor fonctionne, mais il faudrait :
+1. Refaire un package avec seulement le minimum pour être sur qu'aucun plugin ne soit appelé en async.
+2. Au minmum, CKE va charger :
+http://localhost:3000/javascripts/lib/ckeditor/config.js?t=G2VC
+http://localhost:3000/javascripts/lib/ckeditor/skins/moono/editor_gecko.css?t=G2VC
+http://localhost:3000/javascripts/lib/ckeditor/lang/en.js?t=G2VC
+http://localhost:3000/javascripts/lib/ckeditor/styles.js?t=G2VC
+http://localhost:3000/javascripts/lib/ckeditor/lang/en.js?t=G2VC
+http://localhost:3000/javascripts-nobuild/lib/ckeditor/skins/moono/icons.png?t=a35abfe
+
+?t=G4CD
+
+Essayer de voir s'il est possible de les mettre en cache
+3. Voir si on peut cacher la barre et juste utiliser les raccourcis clavier et les actions comme insérer liste
+
+Pour lancer l'éditor :
+CKEDITOR.disableAutoInline = true;
+CKEDITOR.inline( 'left_57113dec15ff15740d4ac16e' );
+
+Pour rappeler l'editor
+CKEDITOR.instances['left_57113dec15ff15740d4ac16e'].execCommand( 'numberedlist' );
+CKEDITOR.instances.editor1.execCommand( 'numberedlist' );
+
+Commandes possibles
+CKEDITOR.instances['left_57113dec15ff15740d4ac16e'].execCommand( 'numberedlist' );
+CKEDITOR.instances['left_57113dec15ff15740d4ac16e'].execCommand( 'indent' );
+CKEDITOR.instances['left_57113dec15ff15740d4ac16e'].execCommand( 'outdent' );
+CKEDITOR.instances['left_57113dec15ff15740d4ac16e'].execCommand( 'bold' );
+CKEDITOR.instances['left_57113dec15ff15740d4ac16e'].execCommand( 'undo' );
+
+bold => strong
+italic => em
+
+Pour que l'editor soit toujours caché
+$('#left_57113dec15ff15740d4ac16e').on('focus', function (event)
+{
+	$('#cke_left_57113dec15ff15740d4ac16e').hide()
+});
+
+Todo 
+1. Initialiser les 2 editeurs à l'ouverture de la note
+2. Faire en sorte que les boutons activent le bon éditeur et la bonne fonction
+
+Comment activer la bonn instance ?
+1. Option 1 : détecter la présence du cursor
