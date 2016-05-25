@@ -10,8 +10,7 @@ define ([
 		'models/tag',
 		'models/task',
 		'models/filter',
-		'wysiwyg',
-	], function ($, $, $, _, Backbone, tools, temp, channel, Tag, Task, Filter, wysiwyg) {
+	], function ($, $, $, _, Backbone, tools, temp, channel, Tag, Task, Filter) {
 
 		/**
 		 * This backbone view holds the body of a note editor (where the note is actually rendered)
@@ -58,8 +57,9 @@ define ([
 
 				this.lastSave = new Date();
 
-				this.listenTo(channel, 'keyboard:list-outdent', function () {this.textEditor("list-outdent");});
-				this.listenTo(channel, 'keyboard:list-indent', function () {this.textEditor("list-indent");});
+				this.listenTo(channel, 'keyboard:bold', function () {this.textEditor("bold");});
+				this.listenTo(channel, 'keyboard:strike', function () {this.textEditor("strike");});
+				this.listenTo(channel, 'keyboard:list', function () {this.textEditor("numberedlist");});
 
 				this.listenTo(channel, 'keyboard:tag', function () {this.textEditor("tag");});
 				this.listenTo(channel, 'keyboard:task', function () {this.textEditor("task");});
@@ -116,19 +116,37 @@ define ([
 
 				// Activate the 2 wysiwyg editors
 				_.defer(function(){
-					// $('#left_'+data._id).wysiwyg({});
-					// $('#right_'+data._id).wysiwyg({});
-
 					// User defer to wait until the current call stack has cleared
 					// => which means waiting until the view is appended to the DOM
-					self.wysiwygeditor = {
-						left : wysiwyg({
-							element: 'left_'+data._id || document.getElementById('left_'+data._id),
-						}),
-						right : wysiwyg({
-							element: 'right_'+data._id || document.getElementById('right_'+data._id),
-						}),
-					};
+					CKEDITOR.disableAutoInline = true;
+
+					CKEDITOR.inline( 'left_' + data._id , {
+						extraAllowedContent: 's u h1 h2 h3 h4 h5',
+						toolbar: [
+							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
+							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },
+							{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
+						],
+					});
+
+					CKEDITOR.inline( 'right_'+data._id , {
+						extraAllowedContent: 's u h1 h2 h3 h4 h5',
+						toolbar: [
+							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
+							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },
+							{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent' ] }
+						],
+					});
+
+					_.defer(function(){
+						// Pour que l'editor soit toujours caché
+						$('#left_'+data._id).on('focus', function (event) {
+							$('#cke_left_' + data._id).hide();
+						});
+						$('#right_'+data._id).on('focus', function (event) {
+							$('#cke_right_' + data._id).hide();
+						});
+					});
 				});
 
 				return this;
@@ -281,75 +299,32 @@ define ([
 						this.tocRebuild();
 						this.save();
 						break;
-					case "list-indent": // Not in use for now
-						var side = $(window.getSelection().getRangeAt(0).commonAncestorContainer).closest(".column").hasClass('left') ? "left" : "right";
-						var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
-						console.log(nodeType)
-						if (nodeType == "LI") {
-							self.wysiwygeditor[side].indent();
-							// document.execCommand('indent');
-							console.log('indent');
-						} else {
-							self.wysiwygeditor[side].insertList("ordered");
-							// document.execCommand('insertOrderedList');
-							console.log('insert list');
-						}
-						break;
-					case "list-outdent": // Not in use for now
-						console.log('outdent');
-						var side = $(window.getSelection().getRangeAt(0).commonAncestorContainer).closest(".column").hasClass('left') ? "left" : "right";
-						self.wysiwygeditor[side].indent("outdent");
-						// document.execCommand('outdent');
-						break;
 					case "task":
 						this.objectInsert("task", fromButton);
 						break;
 					case "tag":
 						this.objectInsert("tag", fromButton);
 						break;
+					// Using CKEditor
+					case "numberedlist":
+					case "indent":
+					case "outdent":
+					case "bold":
+					case "italic":
+					case "undo":
+					case "redo":
+					case "underline":
+					case "strike":
+						console.log(action);
+						var $editorDom = $(window.getSelection().getRangeAt(0).commonAncestorContainer).closest(".content");
+						// We need to now which CKEditor to use
+						if ($editorDom.length) {
+							console.log("editor focused");
+							CKEDITOR.instances[$editorDom.attr('id')].execCommand( action );
+						}
+						break;
 				}
 			},
-
-			/**
-			 * All functions required to provide simple WYSIWYG text edition
-			 * 
-			 * @method textEditor
-			 */
-			// textEditor: function(event) {
-			// 	var action = $(event.target).attr('data-action');
-			// 	switch (action) {
-			// 		case "header":
-			// 			var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
-			// 			// This will allow to switch header styles from H1 to H4
-			// 			switch (nodeType) {
-			// 				case "H1":
-			// 					document.execCommand('formatBlock',false,'<h2>');
-			// 					break;
-			// 				case "H2":
-			// 					document.execCommand('formatBlock',false,'<h3>');
-			// 					break;
-			// 				case "H3":
-			// 					document.execCommand('formatBlock',false,'<h4>');
-			// 					break;
-			// 				case "H4":
-			// 					document.execCommand('formatBlock',false,'<p>');
-			// 					break;
-			// 				default:
-			// 					document.execCommand('formatBlock',false,'<h1>');
-			// 					break;
-			// 			}
-			// 			break;
-			// 		case "list": // Not in use for now
-			// 			document.execCommand('insertUnorderedList');
-			// 			break;
-			// 		case "task":
-			// 			this.objectInsert("task", true);
-			// 			break;
-			// 		case "tag":
-			// 			this.objectInsert("tag", true);
-			// 			break;
-			// 	}
-			// },
 
 
 			/**

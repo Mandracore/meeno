@@ -324,6 +324,10 @@ body
 /*===================================================================================
 ------- EDITOR DESIGN ---------------------------------------------------------------
 =====================================================================================*/
+body
+	.cke
+		display none
+
 #editors
 	height 100%
 	display none
@@ -447,6 +451,7 @@ body
 				width calc(50% - 5px)
 				height 100%
 				background-color white
+				font-size .9em
 				h1, h2, h3, h4
 					font-family moon
 					font-size 2em
@@ -476,13 +481,17 @@ body
 					top 0
 				.content
 					top 3.6em
-					padding 0 1em
-					width calc(100% - 2em)
+					padding 0 1.5em
+					width calc(100% - 3em)
 				.text-editor
 					top calc(100% - 3em)
 				.summary
 					padding 0 0 0 1.5em
 				.content
+					em
+						font-style italic
+					strong
+						font-weight bold
 					ol
 						// display table
 						margin-left 0

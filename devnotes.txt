@@ -774,9 +774,54 @@ $('#left_57113dec15ff15740d4ac16e').on('focus', function (event)
 	$('#cke_left_57113dec15ff15740d4ac16e').hide()
 });
 
-Todo 
-1. Initialiser les 2 editeurs à l'ouverture de la note
+Todo
+1. Initialiser les 2 editeurs à l'ouverture de la note >>> DONE
 2. Faire en sorte que les boutons activent le bon éditeur et la bonne fonction
 
 Comment activer la bonn instance ?
 1. Option 1 : détecter la présence du cursor
+
+if ($( document.activeElement ).hasClass('editor')) {
+	CKEDITOR.instances[$( document.activeElement ).attr('id')].execCommand( 'numberedlist' );
+}
+
+3. Colorer les boutons actifs : 
+	détecter le node actif avec 
+	$(window.getSelection().getRangeAt(0).commonAncestorContainer).closest('strong, em, s, h1, h2, h3, h4, h5, li, ol').prop('tagName');
+	Difficulté : il faut le calculer dès que le caret change de position !
+
+
+Piste de détection du mouvement du caret :
+http://stackoverflow.com/questions/19755633/detect-when-cursor-position-inside-input-change-in-jquery
+
+var last_position = 0;
+$(document.ready(function () {
+    $("#my_input").bind("keydown click focus", function() {
+        console.log(cursor_changed(this));
+    });
+});
+
+
+function cursor_changed(element) {
+    var new_position = getCursorPosition(element);
+    if (new_position !== last_position) {
+        last_position = new_position;
+        return true;
+    }
+        return false;
+}
+
+function getCursorPosition(element) {
+    var el = $(element).get(0);
+    var pos = 0;
+    if ('selectionStart' in el) {
+        pos = el.selectionStart;
+    } else if ('selection' in document) {
+        el.focus();
+        var Sel = document.selection.createRange();
+        var SelLength = document.selection.createRange().text.length;
+        Sel.moveStart('character', -el.value.length);
+        pos = Sel.text.length - SelLength;
+    }
+    return pos;
+}

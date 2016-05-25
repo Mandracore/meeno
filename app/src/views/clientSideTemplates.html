@@ -218,25 +218,41 @@
 <script type="text/template" id="editor-body-template" style="display: none;">
 	<div class="header">
 		<div class="text-editor">
-			<div class="tag">
+			<div>
 				<button data-action="tag" class="fa fa-tag"></button>
 				<div class="info">Insert tag (tt)</div>
 			</div>
-			<div class="task">
+			<div>
 				<button data-action="task" class="fa fa-tasks"></button>
 				<div class="info">Insert task (&amp;&amp;)</div>
 			</div>
-			<div class="font-header">
+			<div>
 				<button data-action="header" class="fa fa-header"></button>
-				<div class="info">Toggle headers (§§)</div>
+				<div class="info">Toggle headers (Ctrl + up)</div>
 			</div>
-			<div class="font-list-indent">
-				<button data-action="list-indent" class="fa fa-indent"></button>
-				<div class="info">Indent (Ctrl + Maj + &#8594;)</div>
+			<div>
+				<button data-action="bold" class="fa fa-bold "></button>
+				<div class="info">Bold (Ctrl + b)</div>
 			</div>
-			<div class="font-list-outdent">
-				<button data-action="list-outdent" class="fa fa-outdent"></button>
-				<div class="info">Outdent (Ctrl + Maj + &#8592;)</div>
+			<div>
+				<button data-action="italic" class="fa fa-italic "></button>
+				<div class="info">Italic</div>
+			</div>
+			<div>
+				<button data-action="strike" class="fa fa-strikethrough "></button>
+				<div class="info">Strikethrough (Ctrl Ctrl)</div>
+			</div>
+			<div class="font-list">
+				<button data-action="numberedlist" class="fa fa-list-ol"></button>
+				<div class="info">Numbered list (Ctrl + l)</div>
+			</div>
+			<div>
+				<button data-action="indent" class="fa fa-indent"></button>
+				<div class="info">Indent (Tab)</div>
+			</div>
+			<div>
+				<button data-action="outdent" class="fa fa-outdent"></button>
+				<div class="info">Outdent (Shift + Tab)</div>
 			</div>
 			<div class="spacer"></div>
 		</div>
