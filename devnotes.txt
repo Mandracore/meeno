@@ -825,3 +825,46 @@ function getCursorPosition(element) {
     }
     return pos;
 }
+
+Option1
+Insérer mes tags : HTML Buttons ?
+Faire en sorte que mes tags soient uniquement inline pour pas casser le html
+
+Option2
+si on peut rajouter des classes aux i / u, les utiliser directement
+
+CKEditor
+Pour avoir droit à ts les attributs et ttes les classes : [*](*)
+
+var dialog = this;
+var srcURL = dialog.getValueOf( 'tab-basic', 'srcURL' );
+var div = editor.document.createElement('div');
+var mp3Object = '<object width="300" height="42">';
+mp3Object += '<param name="src" value="' + srcURL + '">';
+mp3Object += '<param name="autoplay" value="false">';
+mp3Object += '<param name="controller" value="true">';
+mp3Object += '<param name="bgcolor" value="#FFFFFF">';
+mp3Object += '<embed src="' + srcURL + '" autostart="false" loop="false" width="300" height="42" controller="true" bgcolor="#FFFFFF">';
+mp3Object += '</object>';
+div.setHtml(mp3Object);
+editor.insertElement( div );
+
+var div = editor.document.createElement('div');
+div.setHtml("mp3Object");
+editor.insertElement( div );
+
+Process
+1. && >> ajout de la classe tâche ou task
+2. tout le p / li / em / b / i / s / u change de couleur. On peut imaginer de revenir au p ou li qui engloberait un em / b / i / s / u
+3. on n'insère pas d'input
+3.1. Pour annuler sans sauvegarder on fait échap ou on refait &&
+3.2. POur save/linker, on fait entrée. 
+4. Tous les entrée sont détectés :
+4.1. si dans un task
+4.1.1. on enleve l'option contenteditable sur l'objet, on rajoute une classe freeze
+4.1.2. on e
+
+
+écouter le keyup
+au keydown on set une option ds la vue
+au keyup on la lit, si elle vaut true, on enlève les classes

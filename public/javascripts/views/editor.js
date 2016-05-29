@@ -66,6 +66,7 @@ define ([
 				this.listenTo(channel, 'keyboard:entity', function () {this.textEditor("entity");});
 				this.listenTo(channel, 'keyboard:header', function () {this.textEditor("header");});
 				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
+				this.listenTo(channel, 'keyboard:enter:keyup', function () {this.kbEventProxy("enter:keyup");});
 				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
 
 				this.listenTo(channel, 'editors:close:' + this.model.cid , function () {this.close();});
@@ -121,7 +122,9 @@ define ([
 					CKEDITOR.disableAutoInline = true;
 
 					CKEDITOR.inline( 'left_' + data._id , {
-						extraAllowedContent: 's u h1 h2 h3 h4 h5',
+						// allowedContent: 'div[*] span[*] s u h1 h2 h3 h4 h5',
+						// allowedContent: true,
+						extraAllowedContent: 'span p li [*](*); s; u; h1; h2; h3; h4; h5',
 						toolbar: [
 							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
 							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },
@@ -130,7 +133,7 @@ define ([
 					});
 
 					CKEDITOR.inline( 'right_'+data._id , {
-						extraAllowedContent: 's u h1 h2 h3 h4 h5',
+						extraAllowedContent: 's; u; h1; h2; h3; h4; h5',
 						toolbar: [
 							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
 							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },
@@ -274,9 +277,6 @@ define ([
 
 				switch (action) {
 					case "header":
-						if (!fromButton) {
-							document.execCommand("delete", null, false); // to remove last character like ! !
-						}
 						var nodeType = window.getSelection().getRangeAt(0).commonAncestorContainer.parentNode.nodeName;
 						// This will allow to switch header styles from H1 to H4
 						switch (nodeType) {
@@ -326,6 +326,24 @@ define ([
 				}
 			},
 
+			/**
+			 * Returns the closest P or LI element from the caret position
+			 * 
+			 * @method caretGetClosestWrapper
+			 */
+			caretGetClosestWrapper: function ($element) {
+				switch ($element[0].nodeName) {
+					case "#text":
+					case "EM":
+					case "STRONG":
+					case "U":
+						console.log($element[0].nodeName);
+						return this.caretGetClosestWrapper($element.parent());
+				}
+
+				return $element;
+			},
+
 
 			/**
 			 * Insert a new object (tag, task,...) into the note content. Will just insert a form into the editor at the
@@ -350,15 +368,27 @@ define ([
 						'</div>';
 						break;
 					case "task":
-						var hObject = '<div class="task object" id ="' + iObjectID +'" contenteditable="true">'+
-							'<div class="fa fa-tasks"></div>'+
-							'<input class="mousetrap noteEditor" placeholder="Describe here your task">'+
-						'</div>';
+						var hObject = '<span class="yellow task object" id ="' + iObjectID +'" contenteditable="true">TEST SAPN</span>';
+						// var hObject = '<div class="task object" id ="' + iObjectID +'" contenteditable="true">'+
+						// 	'<div class="fa fa-tasks"></div>'+
+						// 	'<input class="mousetrap noteEditor" placeholder="Describe here your task">'+
+						// '</div>';
 						break;
 				}
 
+				var $caretsNode    = $(window.getSelection().getRangeAt(0).commonAncestorContainer);
+				var $caretsWrapper = this.caretGetClosestWrapper($caretsNode);
 
-				tools.pasteHtmlAtCaret(hObject); // Insert the object where the caret stands
+				if ($caretsWrapper.hasClass('yellow')) {
+					$caretsWrapper.removeClass('yellow');
+				} else {
+					$caretsWrapper.addClass('yellow');
+				}
+
+				// window.getSelection().getRangeAt(0).commonAncestorContainer.nodeName;
+				//$(window.getSelection().getRangeAt(0).commonAncestorContainer).html('romain').addClass('yellow');
+				//tools.pasteHtmlAtCaret(hObject); // Insert the object where the caret stands
+
 				var $objectInput = this.$('#'+iObjectID+' input');
 
 				$objectInput.focus(); // Put the focus into the input so that the user can name the object
@@ -439,6 +469,15 @@ define ([
 			 * @method kbEventProxy
 			 */
 			kbEventProxy: function (event) {
+				// 2. The user wants to submit the new object (creation + linking or just linking)
+				if (event == "enter:keyup") {
+					var $caretsNode = this.caretGetClosestWrapper($(window.getSelection().getRangeAt(0).commonAncestorContainer));
+					$caretsNode.removeClass('yellow');
+					console.log('yellow removed on ' + $caretsNode[0].nodeName);
+				}
+
+
+				// Old code
 				var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
 
 				if (($focused.prop("tagName") != "INPUT") || !$focused.hasClass('noteEditor')) { return; } // No action if no focus in some object input
@@ -603,7 +642,8 @@ define ([
 
 					if (!model) {
 						// The model does not exist
-						$task.remove();
+						// $task.remove();
+						// Removed for now, it was tampering with tests
 						console.log("Object destroyed !");
 						return true; // Skip to the next iteration
 					}

@@ -470,6 +470,8 @@ body
 			.content
 				height calc(100% - 3.6em)
 				overflow auto
+				p
+					margin-top .3em
 				:not(h1), :not(h2), :not(h3), :not(h4)
 					line-height 1.1em
 			.left, .right
@@ -499,7 +501,10 @@ body
 						list-style-type none
 						counter-reset section
 					li
+						color black
+						background-color transparent
 						display table-row
+						padding 0 0 .5em 0
 						&:before
 							display table-cell
 							text-align right
@@ -508,6 +513,23 @@ body
 							padding-right .5em
 							font-size .7em
 							color grey
+							border-top 4px solid transparent // to simulate a padding impossible to render with table-cell
+						&.yellow
+							color rgb(31, 57, 134)
+							&:before
+								content ""
+								font-family FontAwesome
+								color rgb(31, 57, 134)
+							
+					p.yellow
+						color rgb(31, 57, 134)
+						margin .5em 0
+						&:before
+							padding 0 .5em 0 0
+							content: ""
+							color rgb(31, 57, 134)
+							float left
+							font-family FontAwesome
 					.task, .tag
 						input
 							border-radius 5px
