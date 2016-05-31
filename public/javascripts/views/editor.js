@@ -30,7 +30,6 @@ define ([
 			events: {
 				'click .header .close'      : 'close',
 				'click .text-editor button' : 'textEditor',
-				'blur input'                : 'objectInputDestroy',
 				'click .content .tag'       : 'objectUnLink',
 				'click .content .task'      : 'objectUnLink',
 
@@ -124,7 +123,7 @@ define ([
 					CKEDITOR.inline( 'left_' + data._id , {
 						// allowedContent: 'div[*] span[*] s u h1 h2 h3 h4 h5',
 						// allowedContent: true,
-						extraAllowedContent: 'span p li [*](*); s; u; h1; h2; h3; h4; h5',
+						extraAllowedContent: 'span p li [*](*); em ; s; u; h1; h2; h3; h4; h5',
 						toolbar: [
 							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
 							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },
@@ -133,7 +132,7 @@ define ([
 					});
 
 					CKEDITOR.inline( 'right_'+data._id , {
-						extraAllowedContent: 's; u; h1; h2; h3; h4; h5',
+						extraAllowedContent: 'span p li [*](*); em ; s; u; h1; h2; h3; h4; h5',
 						toolbar: [
 							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
 							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },
@@ -153,6 +152,34 @@ define ([
 				});
 
 				return this;
+			},
+
+			/**
+			 * A proxy to handle ENTER/ESCAPE keyboard events :
+			 * 1. To cancel object creation
+			 * 2. To submit new object or to link existing object 
+			 * 
+			 * @method kbEventProxy
+			 */
+			kbEventProxy: function (event) {
+				var $caretsNode = this.caretGetClosestWrapper($(window.getSelection().getRangeAt(0).commonAncestorContainer));
+				if ($caretsNode.hasClass('object')) {
+					switch (event) {
+						// To palliate CKEditor behavior : will remove the .object class from the new paragraphs created
+						// after the user hits the ENTER key
+						case "enter:keyup":
+						// The user wants to abort object insertion
+						case "escape":
+							$caretsNode.removeClass('object');
+							$caretsNode.removeClass('done');
+							$caretsNode.removeClass('tag');
+							$caretsNode.removeClass('task');
+							break;
+						case "enter":
+							this.objectSubmit($caretsNode);
+							break;
+					}
+				}
 			},
 
 			/**
@@ -337,7 +364,6 @@ define ([
 					case "EM":
 					case "STRONG":
 					case "U":
-						console.log($element[0].nodeName);
 						return this.caretGetClosestWrapper($element.parent());
 				}
 
@@ -360,41 +386,24 @@ define ([
 
 				var iObjectID = (new Date()).getTime();
 
-				switch (className) {
-					case "tag":
-						var hObject = '<div class="tag object" id ="' + iObjectID +'" contenteditable="true">'+
-							'<div class="circle"></div>'+
-							'<input class="mousetrap noteEditor" placeholder="Name your tag here">'+
-						'</div>';
-						break;
-					case "task":
-						var hObject = '<span class="yellow task object" id ="' + iObjectID +'" contenteditable="true">TEST SAPN</span>';
-						// var hObject = '<div class="task object" id ="' + iObjectID +'" contenteditable="true">'+
-						// 	'<div class="fa fa-tasks"></div>'+
-						// 	'<input class="mousetrap noteEditor" placeholder="Describe here your task">'+
-						// '</div>';
-						break;
-				}
-
 				var $caretsNode    = $(window.getSelection().getRangeAt(0).commonAncestorContainer);
 				var $caretsWrapper = this.caretGetClosestWrapper($caretsNode);
 
-				if ($caretsWrapper.hasClass('yellow')) {
-					$caretsWrapper.removeClass('yellow');
-				} else {
-					$caretsWrapper.addClass('yellow');
+				if ($caretsWrapper.hasClass('object')) {
+					return;
 				}
 
-				// window.getSelection().getRangeAt(0).commonAncestorContainer.nodeName;
-				//$(window.getSelection().getRangeAt(0).commonAncestorContainer).html('romain').addClass('yellow');
-				//tools.pasteHtmlAtCaret(hObject); // Insert the object where the caret stands
+				$caretsWrapper.attr('id', iObjectID);
+				$caretsWrapper.addClass('object');
+				$caretsWrapper.addClass(className);
+				$caretsWrapper.attr('data-model', className);
 
-				var $objectInput = this.$('#'+iObjectID+' input');
+				// var $objectInput = this.$('#'+iObjectID+' input');
 
-				$objectInput.focus(); // Put the focus into the input so that the user can name the object
+				// $objectInput.focus(); // Put the focus into the input so that the user can name the object
 
 				if (className == "tag") {
-					this.objectAutocompleteInit($objectInput);
+					this.objectAutocompleteInit($caretsWrapper);
 				}
 
 				return false;
@@ -461,75 +470,36 @@ define ([
 				$parent.closest('.content').focus();
 			},
 
-			/**
-			 * A proxy to handle ENTER/ESCAPE keyboard events :
-			 * 1. To cancel object creation
-			 * 2. To submit new object or to link existing object 
-			 * 
-			 * @method kbEventProxy
-			 */
-			kbEventProxy: function (event) {
-				// 2. The user wants to submit the new object (creation + linking or just linking)
-				if (event == "enter:keyup") {
-					var $caretsNode = this.caretGetClosestWrapper($(window.getSelection().getRangeAt(0).commonAncestorContainer));
-					$caretsNode.removeClass('yellow');
-					console.log('yellow removed on ' + $caretsNode[0].nodeName);
-				}
-
-
-				// Old code
-				var $focused = $(document.activeElement); // most efficient way to retrieve currently focus element
-
-				if (($focused.prop("tagName") != "INPUT") || !$focused.hasClass('noteEditor')) { return; } // No action if no focus in some object input
-
-				if (event == "escape") {
-				// 1. The user wants to abort object insertion
-					$focused.blur();
-				}
-				// 2. The user wants to submit the new object (creation + linking or just linking)
-				if (event == "enter") {
-					this.objectSubmit($focused);
-				}
-			},
-
-			/**
-			 * Remove the object from DOM if the user wants to cancel
-			 * 
-			 * @method objectInputDestroy
-			 */
-			objectInputDestroy: function (event) {
-				$(event.target).parent().remove();
-			},
 
 			/**
 			 * To create/link new object
 			 * 
 			 * @method objectSubmit
 			 */
-			objectSubmit: function ($focused) {
+			objectSubmit: function ($object) {
 				var self        = this;
-				var className   = $focused.closest('div').hasClass('tag') ? 'tag' : 'task';
+				var className   = $object.hasClass('tag') ? 'tag' : 'task';
 				var objectModel = {};
 
-				if ($focused.val().length < 2) { return; } // Do not do anything if label is too short
+				if ($object.val().length < 2) { return; } // Do not do anything if label is too short
 
 				if (className == "task") {
 				// 2.1 For tasks, always create + link
 					objectModel = new Task ({
-						label : $focused.val(),
+						label : $object.val(),
 					});
 					temp.coll.tasks.add(objectModel);
 				} else {
 				// 2.2 If we are dealing with a tag, we can link or create + link => requires to check
 					// 2.2.0 Check whether the object already exists or not
 					objectModel = temp.coll.tags.find(function (model) {
-						return model.get('label') == $focused.val();
+						return model.get('label') == $object.val();
 					});
 
 					if (!objectModel) {
 					// 2.2.1 The model does not exist in the DB so we create it first
 						objectModel = new Tag ({
-							label : $focused.val(),
+							label : $object.val(),
 						});
 						temp.coll.tags.add(objectModel);
 					}
@@ -655,52 +625,6 @@ define ([
 
 				this.save();
 			},
-
-			/*
-			delegatedKill: function() {
-				this.save();
-				_.map (this.children, function(child) {return child.kill();});
-				this.options.parent.kill();
-			},
-
-			delete: function() {
-				this.model.destroy({
-					success: function() {console.log("Object successfully deleted.");},
-					error  : function() {console.log("Deleting failed.");}
-				});
-				this.options.parent.kill();
-			},
-
-			clone: function() {
-				this.save();
-				var cloneModel = this.model.clone();
-				mee.Notes.add(cloneModel);
-				var newEditor = new EditorView ({ model: cloneModel });
-				newEditor.toggle();
-			},
-
-
-			checkFocus: function () {
-				var $caretsNode = $(tools.getCaretsNode());
-				if (
-					!($caretsNode.hasClass("edit-content")) && 
-					$caretsNode.parents("section.edit-content").length === 0) {
-					console.log('Editor not focused');
-					return false;
-				} else {
-					return true;
-				}
-			},
-
-
-			toggle: function() {
-				// First, deactivate the other tabs' content
-				$("#tabs").children().each(function(i,child){
-					$(child).removeClass("selected");
-				});
-				// Then activate this one
-				this.$el.addClass('selected');
-			}*/
 		});
 
 		//_.extend(EditorBodyView.prototype, mee.l18n.EditorBodyView);

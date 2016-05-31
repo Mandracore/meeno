@@ -514,22 +514,51 @@ body
 							font-size .7em
 							color grey
 							border-top 4px solid transparent // to simulate a padding impossible to render with table-cell
-						&.yellow
-							color rgb(31, 57, 134)
-							&:before
-								content ""
-								font-family FontAwesome
-								color rgb(31, 57, 134)
-							
-					p.yellow
-						color rgb(31, 57, 134)
+					p.object
 						margin .5em 0
 						&:before
-							padding 0 .5em 0 0
-							content: ""
+							margin 0 .5em 0 0
 							color rgb(31, 57, 134)
 							float left
+					.object
+						color rgba(0, 0, 0, 0.6)
+						&:before
+							position relative
+							top 0
+							right 0							
+							color rgba(0, 0, 0, 0.6)
 							font-family FontAwesome
+							content ""
+						&.tag:before
+							content ""
+						&:hover
+							color rgba(0, 0, 0, 0.9)
+							&:before
+								content: ""
+								transition all .5s
+								color rgba(0, 0, 0, 0.9)
+								top 0
+								right 5px
+					p.object
+						&:hover
+							&:before
+								top 0
+								right 0
+								transform rotate(360deg)
+								transform-origin 50% 50%
+					.object.done
+						color rgb(0, 84, 255)
+						&:before
+							color rgb(0, 84, 255)
+						&:hover
+							color rgb(255, 135, 0)
+							transition all .5s
+							text-decoration line-through
+							cursor pointer
+							&:before
+								color rgb(255, 135, 0)
+								text-decoration none
+								content: ""
 					.task, .tag
 						input
 							border-radius 5px
@@ -543,57 +572,6 @@ body
 							font-style italic
 							font-family Helvetica
 							font-size 1em
-					.task
-						display block
-						position relative
-						padding .5em .1em .5em 1.5em
-						margin .2em 0
-						font-size 0.9em
-						font-family Helvetica
-						font-style italic
-						opacity .8
-						&:hover
-							cursor pointer
-							text-decoration line-through
-							.fa
-								left .2em
-						&:active
-							opacity 1
-						.fa
-							height 1em
-							transition left .3s ease
-							top calc(50% - 0.5em)
-							left 0
-							position absolute
-					.tag
-						opacity .8
-						display inline-block
-						color black
-						margin 0 .5em
-						font-size .9em
-						font-style italic
-						font-family Helvetica
-						.circle
-							content ''
-							display inline-block
-							background-color red
-							border-radius 20px
-							width .7em
-							height .7em
-							border 1px solid black
-							margin 0 .4em 0 0
-							transition margin .3s ease, width .3s ease, height .3s ease
-						&:hover
-							opacity 1
-							text-decoration line-through
-							cursor pointer
-							.circle
-								margin 0 .1em .2em .7em
-								width .3em
-								height .3em
-						&:active
-							text-decoration line-through
-							opacity 1							
 				.summary
 					height 3.6em
 					ul
