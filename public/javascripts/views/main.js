@@ -103,9 +103,6 @@ define ([
 				});
 				Mousetrap.bind('enter', function() {
 					channel.trigger('keyboard:enter');
-				}, 'keydown');
-				Mousetrap.bind('enter', function() {
-					channel.trigger('keyboard:enter:keyup');
 				}, 'keyup');
 
 				// All ajax requests once completed will trigger this callback to :

@@ -30,6 +30,10 @@ cButtonActive      = rgba(255, 255, 255, 1)
 cButtonMilestone0  = rgba(255, 255, 255, .1)
 cButtonMilestone05 = rgba(255, 255, 255, .5)
 cButtonMilestone1  = rgba(255, 255, 255, 1)
+cEditorObjEdit0    = rgba(0, 0, 0, .6)
+cEditorObjEdit1    = rgb(255, 135, 0)
+cEditorObjFrozen0  = rgb(0, 84, 255)
+cEditorObjFrozen1  = rgba(255, 0, 0, 1)
 cCyan              = #0093FF
 cInputBg0          = rgba(0, 0, 0, 0.2)
 cInputBg1          = rgba(0, 0, 0, 0.3)
@@ -518,25 +522,27 @@ body
 						margin .5em 0
 						&:before
 							margin 0 .5em 0 0
-							color rgb(31, 57, 134)
 							float left
 					.object
-						color rgba(0, 0, 0, 0.6)
+						color cEditorObjEdit0
+						&.error
+							background-color rgba(255, 0, 0, 0.3)
+							color rgba(255, 0, 0, 1)
 						&:before
 							position relative
 							top 0
 							right 0							
-							color rgba(0, 0, 0, 0.6)
+							color cEditorObjEdit0
 							font-family FontAwesome
 							content ""
 						&.tag:before
 							content ""
 						&:hover
-							color rgba(0, 0, 0, 0.9)
+							color cEditorObjEdit1
 							&:before
 								content: ""
 								transition all .5s
-								color rgba(0, 0, 0, 0.9)
+								color cEditorObjEdit1
 								top 0
 								right 5px
 					p.object
@@ -547,16 +553,16 @@ body
 								transform rotate(360deg)
 								transform-origin 50% 50%
 					.object.done
-						color rgb(0, 84, 255)
+						color cEditorObjFrozen0
 						&:before
-							color rgb(0, 84, 255)
+							color cEditorObjFrozen0
 						&:hover
-							color rgb(255, 135, 0)
+							color cEditorObjFrozen1
 							transition all .5s
 							text-decoration line-through
 							cursor pointer
 							&:before
-								color rgb(255, 135, 0)
+								color cEditorObjFrozen1
 								text-decoration none
 								content: ""
 					.task, .tag

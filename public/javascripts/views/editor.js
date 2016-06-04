@@ -28,17 +28,9 @@ define ([
 
 			// The DOM events specific to an item.
 			events: {
-				'click .header .close'      : 'close',
-				'click .text-editor button' : 'textEditor',
-				'click .content .tag'       : 'objectUnLink',
-				'click .content .task'      : 'objectUnLink',
-
-				// 'click .title'      : 'show',
-				// 'click .delete'        : 'delete',
-				// 'click .clone'         : 'clone',
-				// 'keypress'             : 'trySave',
-				// 'blur .edit-content'   : 'save',
-				// 'blur .edit-title'     : 'save'
+				'click .header .close'        : 'close',
+				'click .text-editor button'   : 'textEditor',
+				'click .content .object.done' : 'objectUnLink',
 			},
 
 			/**
@@ -65,14 +57,14 @@ define ([
 				this.listenTo(channel, 'keyboard:entity', function () {this.textEditor("entity");});
 				this.listenTo(channel, 'keyboard:header', function () {this.textEditor("header");});
 				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
-				this.listenTo(channel, 'keyboard:enter:keyup', function () {this.kbEventProxy("enter:keyup");});
+				//this.listenTo(channel, 'keyboard:enter:keyup', function () {this.kbEventProxy("enter:keyup");});
 				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
 
 				this.listenTo(channel, 'editors:close:' + this.model.cid , function () {this.close();});
 				
 				// Listeners allowing to automatically update note content in case the embedded objects change
-				this.listenTo(temp.coll.tags, 'delete change:label change:color', function () { this.objectsRepaint(); });
-				this.listenTo(temp.coll.tasks, 'delete change:label', function () { this.objectsRepaint(); });
+				this.listenTo(temp.coll.tags, 'destroy change:label', function () { this.objectsRepaint(); });
+				this.listenTo(temp.coll.tasks, 'destroy change:label', function () { this.objectsRepaint(); });
 			},
 
 			render: function() {
@@ -96,7 +88,7 @@ define ([
 				// Generate ToC
 				this.tocRebuild();
 
-				// Generate ToC
+				// Update objects
 				this.objectsRepaint();
 
 				this.$(".body").on('flick', function(e) {
@@ -167,16 +159,17 @@ define ([
 					switch (event) {
 						// To palliate CKEditor behavior : will remove the .object class from the new paragraphs created
 						// after the user hits the ENTER key
-						case "enter:keyup":
+						case "enter":
 						// The user wants to abort object insertion
 						case "escape":
 							$caretsNode.removeClass('object');
 							$caretsNode.removeClass('done');
 							$caretsNode.removeClass('tag');
 							$caretsNode.removeClass('task');
-							break;
-						case "enter":
-							this.objectSubmit($caretsNode);
+
+							if (event == "enter") {
+								this.objectSubmit($caretsNode.prev());
+							}
 							break;
 					}
 				}
@@ -444,32 +437,6 @@ define ([
 				return false;
 			},
 
-			/**
-			 * Once the object has been created or just linked to the current note,
-			 * We update the DOM to show the user that the job is done
-			 * 
-			 * @method objectFreeze
-			 */
-			objectFreeze: function ($input, objectModelCid, objectModelId, objectModelColor) {
-				var $parent = $input.parent();
-				var sParentNewHtml = "";
-				
-				if ($parent.hasClass('task')) {
-					sParentNewHtml += '<div class="fa fa-tasks"></div>';
-				} else {
-					sParentNewHtml += '<div class="circle" style="background-color: '+objectModelColor+';"></div>';
-				}
-
-				sParentNewHtml += '<span class="label">' + $input.val() + '</span>';
-
-				$input.remove();
-				$parent.html(sParentNewHtml);
-				$parent.attr('contenteditable',false); // To prevent the user from editing the object once linked
-				$parent.attr('data-cid',objectModelCid);
-				$parent.attr('data-model-id',objectModelId);
-				$parent.closest('.content').focus();
-			},
-
 
 			/**
 			 * To create/link new object
@@ -481,25 +448,33 @@ define ([
 				var className   = $object.hasClass('tag') ? 'tag' : 'task';
 				var objectModel = {};
 
-				if ($object.val().length < 2) { return; } // Do not do anything if label is too short
+				if ($object.text().length < 2) { // Do not do anything if label is too short
+					$object.removeClass('object');
+					$object.removeClass('done');
+					$object.removeClass('tag');
+					$object.removeClass('task');
+					return; 
+				}
+
+				$object.attr('contenteditable',false); // To prevent the user from editing the object once linked
 
 				if (className == "task") {
 				// 2.1 For tasks, always create + link
 					objectModel = new Task ({
-						label : $object.val(),
+						label : $object.text(),
 					});
 					temp.coll.tasks.add(objectModel);
 				} else {
 				// 2.2 If we are dealing with a tag, we can link or create + link => requires to check
 					// 2.2.0 Check whether the object already exists or not
 					objectModel = temp.coll.tags.find(function (model) {
-						return model.get('label') == $object.val();
+						return model.get('label') == $object.text();
 					});
 
 					if (!objectModel) {
 					// 2.2.1 The model does not exist in the DB so we create it first
 						objectModel = new Tag ({
-							label : $object.val(),
+							label : $object.text(),
 						});
 						temp.coll.tags.add(objectModel);
 					}
@@ -507,41 +482,45 @@ define ([
 
 				objectModel.save({}, {
 					success: function () {
-						// Only link the object when we are sure it has been saved in the DB (in case it's new)
-						self.objectLink($focused, objectModel, className);
-						return false;
+
+						// 2. Creating the link to the note
+						//-------------------------------------
+						switch (className) {
+							case "tag":
+								var link = self.model.get('tagLinks').find(function (link) {
+									return link.get("tag") == objectModel;
+								});
+
+								if (link) { // No need to link if it's already linked
+									alert('this tag is already linked to the current note.');
+									return false;
+								}
+								self.model.get('tagLinks').add({ tag: objectModel });
+								break;
+							case "task":
+								self.model.get('taskLinks').add({ task: objectModel });
+								break;
+						}
+
+						self.model.save({}, {
+							success: function () {
+								$object.addClass('done');
+								$object.attr('data-cid',objectModel.cid);
+								$object.attr('data-model-id',objectModel.id);
+								self.save();
+							},
+							error: function () {
+								alert('Impossible to create object, please contact the site administrator. Error message : impossible to save link');
+								$object.addClass('error');
+								self.save();
+							},
+						});
+					},
+					error: function () {
+						alert('Impossible to create object, please contact the site administrator. Error message : impossible to save model');
+						$object.addClass('error');
 					},
 				});
-			},
-
-			/**
-			 * To link an object
-			 * 
-			 * @method objectLink
-			 */
-			objectLink: function ($focused, objectModel, className) {
-				var color = undefined;
-				switch (className) {
-					case "tag":
-						var link = this.model.get('tagLinks').find(function (link) {
-							return link.get("tag") == objectModel;
-						});
-
-						if (link) { // No need to link if it's already linked
-							alert('This tag is already linked to the current note.');
-							return false;
-						}
-						this.model.get('tagLinks').add({ tag: objectModel });
-						color = objectModel.get('color');
-						break;
-					case "task":
-						this.model.get('taskLinks').add({ task: objectModel });
-						break;
-				}
-
-				this.objectFreeze($focused, objectModel.cid, objectModel.id, color);
-				this.model.save();
-				this.save();
 			},
 
 			/**
@@ -551,7 +530,7 @@ define ([
 			 */
 			objectUnLink: function (event) {
 				var self        = this;
-				var $object     = $(event.target).parent();
+				var $object     = $(event.target);
 				var className   = $object.hasClass("task") ? "task" : "tag";
 				var objectModel = temp.coll[className+"s"].get($object.attr('data-cid'));
 				var link        = {};
@@ -578,12 +557,12 @@ define ([
 			/**
 			 * This method will ensure the content of the note is updated in case :
 			 * 1. A tag or task is deleted
-			 * 2. A tag color changes
-			 * 3. A tag or task label changes
+			 * 2. A tag or task label changes
 			 * 
 			 * @method objectsRepaint
 			 */
-			objectsRepaint: function (event) {
+			objectsRepaint: function (event) {						
+
 				this.$('.content .tag').each(function (index) {
 					var $tag = $(this);
 
@@ -597,11 +576,8 @@ define ([
 						return true; // Skip to the next iteration
 					}
 
-					// 2. Second, update the color
-					$tag.find(".circle").css("background-color", model.get('color'));
-
 					// 3. Third, update the label
-					$tag.find(".label").text(model.get('label'));
+					$tag.html(model.get('label'));
 				});
 
 				this.$('.content .task').each(function (index) {
@@ -612,16 +588,14 @@ define ([
 
 					if (!model) {
 						// The model does not exist
-						// $task.remove();
-						// Removed for now, it was tampering with tests
+						$task.remove();
 						console.log("Object destroyed !");
 						return true; // Skip to the next iteration
 					}
 
 					// 2. Second, update the label
-					$task.find(".label").text(model.get('label'));
+					$task.html(model.get('label'));
 				});
-
 
 				this.save();
 			},

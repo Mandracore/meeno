@@ -879,3 +879,4 @@ au keyup on la lit, si elle vaut true, on enlève les classes
 
 5. Réactiver la recherche d'id + suppression des modèles non présents de la page
 
+REACTIVER objectsRepaint
