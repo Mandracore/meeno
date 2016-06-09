@@ -83,13 +83,15 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 
 // Serve cache manifest
-var version=13;
+var version=17;
 mas.get('/cache.manifest',function(req,res){
 	res.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
+	res.setHeader('Cache-Control','must-revalidate'); // Header type cache-manifest mandatory
 	res.end([
 		'CACHE MANIFEST',
 		'#v'+version, // Store version number
 		'CACHE:', // Resources to cache
+		'/font/Moon-Light.otf',
 		'/font/Dense-Regular.otf',
 		'/font/font-awesome-4.4.0/fonts/fontawesome-webfont.woff2?v=4.4.0',
 		'/images/bg.jpg',
@@ -101,8 +103,13 @@ mas.get('/cache.manifest',function(req,res){
 		'/stylesheets/index.css',
 		'/javascripts/lib/require.js',
 		'/javascripts-built/main.js',
+		// CKEDITOR Resources
+		'javascripts-nobuild/lib/ckeditor/ckeditor.js',
+		'javascripts-nobuild/lib/ckeditor/styles.js?t=G4CD',
+		'javascripts-nobuild/lib/ckeditor/lang/en.js?t=G4CD',
+		'javascripts-nobuild/lib/ckeditor/skins/moono/editor_gecko.css?t=G4CD',
+		'javascripts-nobuild/lib/ckeditor/config.js?t=G4CD',
 		'NETWORK:', // Resources that must never be cached
-		'/',
 		'/login',
 		'/logout',
 		'/register',
