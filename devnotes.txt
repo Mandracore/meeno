@@ -903,3 +903,7 @@ res.writeHead(200, {
   'Accept-Ranges': 'bytes',
   'Cache-Control': 'no-cache'
 });
+
+--------------------------------------------------
+#bug Unlinking tags in a note does not break the link
+#bug Mauvaise réaction AJAX à la réponse 502 de nginx lorsque node est down

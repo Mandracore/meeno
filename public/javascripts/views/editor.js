@@ -115,7 +115,9 @@ define ([
 					CKEDITOR.inline( 'left_' + data._id , {
 						// allowedContent: 'div[*] span[*] s u h1 h2 h3 h4 h5',
 						// allowedContent: true,
-						extraAllowedContent: 'span p li [*](*); em ; s; u; h1; h2; h3; h4; h5',
+						pasteFilter: 'plain-text',
+						extraAllowedContent: 'p li [data-model-id,data-cid,data-model,id,autocomplete,contenteditable](*); em ; s; u; h1; h2; h3; h4; h5',
+						// extraAllowedContent: 'span p li [*](*); em ; s; u; h1; h2; h3; h4; h5',
 						toolbar: [
 							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
 							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },
@@ -124,6 +126,7 @@ define ([
 					});
 
 					CKEDITOR.inline( 'right_'+data._id , {
+						pasteFilter: 'plain-text',
 						extraAllowedContent: 'span p li [*](*); em ; s; u; h1; h2; h3; h4; h5',
 						toolbar: [
 							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
@@ -162,10 +165,9 @@ define ([
 						case "enter":
 						// The user wants to abort object insertion
 						case "escape":
-							$caretsNode.removeClass('object');
-							$caretsNode.removeClass('done');
-							$caretsNode.removeClass('tag');
-							$caretsNode.removeClass('task');
+							$caretsNode.removeAttr("autocomplete");
+							$caretsNode.removeAttr("data-model");
+							$caretsNode.removeAttr("class");
 
 							if (event == "enter") {
 								this.objectSubmit($caretsNode.prev());

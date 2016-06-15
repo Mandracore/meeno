@@ -22,6 +22,7 @@ mas.jwt              = require('jsonwebtoken'); // used to create, sign, and ver
 
 mas.configure('development', 'production', function(){
 	// mas.set('mode', process.env.NODE_ENV || "preproduction"); // To test the pre-production mode
+	mas.set('version', "meeno v0.3.1"); // To test in development mode
 	mas.set('mode', process.env.NODE_ENV || "development"); // To test in development mode
 	mas.set('port', process.env.PORT || 3000);
 	if (mas.get('mode') == "production") {
@@ -83,13 +84,13 @@ require('./app/src/models/index.js')(mas, mongoose);
 //------------------------------------------
 
 // Serve cache manifest
-var version=17;
 mas.get('/cache.manifest',function(req,res){
 	res.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
 	res.setHeader('Cache-Control','must-revalidate'); // Header type cache-manifest mandatory
 	res.end([
 		'CACHE MANIFEST',
-		'#v'+version, // Store version number
+		// The timestamp below is meant to force cache expiration
+		'#:::timestamp::: 2016/06/10 21:01:33 ',
 		'CACHE:', // Resources to cache
 		'/font/Moon-Light.otf',
 		'/font/Dense-Regular.otf',

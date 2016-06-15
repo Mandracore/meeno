@@ -11,6 +11,7 @@ module.exports = function(mas) {
 		negotiator = new Negotiator(req);
 		res.render('index', {
 			environment : mas.get('mode'),
+			version     : mas.get('version'),
 			title       : 'Meeno',
 			css         : '/stylesheets/index.css',
 			locale      : negotiator.preferredLanguage(availableLanguages) || 'en'
