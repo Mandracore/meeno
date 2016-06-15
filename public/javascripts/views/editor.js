@@ -127,7 +127,7 @@ define ([
 
 					CKEDITOR.inline( 'right_'+data._id , {
 						pasteFilter: 'plain-text',
-						extraAllowedContent: 'span p li [*](*); em ; s; u; h1; h2; h3; h4; h5',
+						extraAllowedContent: 'p li [*](*); em ; s; u; h1; h2; h3; h4; h5',
 						toolbar: [
 							{ name: 'undo', items: [ 'Undo', 'Redo' ] },
 							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline','Strike' ] },

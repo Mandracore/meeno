@@ -112,6 +112,7 @@ define ([
 				$( document ).ajaxComplete(function( event, request, settings ) {
 					switch(request.status) {
 						// Server is not answering
+						case 502: // Nginx says that Meeno is not responding => we go offline
 						case 0:
 							if (self.isOnline) {
 								self.isOnline = false;
@@ -133,6 +134,7 @@ define ([
 							self.toggleAuth();
 							break;
 						// Server is returning an unexpected value.
+						// A 400 error code has been triggered once, to be investigated
 						default:
 							alert('Impossible to sync. data with server (error code = '+request.status+'). Please provide the error code to the administrator so that the error can be corrected.');
 							//default code block
