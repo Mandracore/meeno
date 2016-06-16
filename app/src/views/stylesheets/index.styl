@@ -32,8 +32,20 @@ cButtonMilestone05 = rgba(255, 255, 255, .5)
 cButtonMilestone1  = rgba(255, 255, 255, 1)
 cEditorObjEdit0    = rgba(0, 0, 0, .6)
 cEditorObjEdit1    = rgb(255, 135, 0)
+cEditorObjEdit1Bg  = rgba(255, 135, 0, .2)
 cEditorObjFrozen0  = rgb(0, 84, 255)
 cEditorObjFrozen1  = rgba(255, 0, 0, 1)
+/////////////////////////////////////
+//cEditorObjDone1font = rgba(209, 12, 40, 0.9) // RED
+cEditorObjEdit0font = rgba(0, 0, 0, .8) // temporary so grey
+cEditorObjEdit0bg   = rgba(0, 0, 0, .1)
+cEditorObjEdit1font = rgba(0, 0, 0, 1)
+cEditorObjEdit1bg   = rgba(0, 0, 0, .2)
+cEditorObjDone0font = rgba(0, 0, 0, 1)
+cEditorObjDone0bg   = rgba(0, 0, 0, .1)
+cEditorObjDone1font = rgba(209, 12, 40, 0.9) // Hover means delete
+cEditorObjDone1bg   = rgba(209, 12, 40, 0.1) // Hover means delete
+////////////////////////////////////////
 cCyan              = #0093FF
 cInputBg0          = rgba(0, 0, 0, 0.2)
 cInputBg1          = rgba(0, 0, 0, 0.3)
@@ -508,43 +520,56 @@ body
 						color black
 						background-color transparent
 						display table-row
-						padding 0 0 .5em 0
 						&:before
 							display table-cell
 							text-align right
 							counter-increment section
 							content counters(section, ".")
 							padding-right .5em
-							font-size .7em
+							font-size .9em
 							color grey
 							border-top 4px solid transparent // to simulate a padding impossible to render with table-cell
-					p.object
+					.important
+						color cEditorObjDone1font
+						background-color cEditorObjDone1bg
+						border-radius 5px
+					li.object, li.important
+						display block
+						padding .2em 1em .5em .8em
+						margin .2em 0 0 0
+						&:before
+							display inline-block
+					p.object, p.important
 						margin .5em 0
+						padding .7em
+					p.object
 						&:before
 							margin 0 .5em 0 0
 							float left
-					.object
-						color cEditorObjEdit0
+					.object // in edition mode
+						color cEditorObjEdit0font
+						border 1px dashed cEditorObjEdit0bg
+						border-radius 5px
 						&.error
 							background-color rgba(255, 0, 0, 0.3)
 							color rgba(255, 0, 0, 1)
 						&:before
 							position relative
 							top 0
-							right 0							
-							color cEditorObjEdit0
+							right 0
 							font-family FontAwesome
 							content ""
 						&.tag:before
 							content ""
 						&:hover
-							color cEditorObjEdit1
+							border 1px solid cEditorObjEdit1bg
+							color cEditorObjEdit1font
+							transition all .5s
 							&:before
 								content: ""
+								color cEditorObjEdit1font
 								transition all .5s
-								color cEditorObjEdit1
 								top 0
-								right 5px
 					p.object
 						&:hover
 							&:before
@@ -553,16 +578,20 @@ body
 								transform rotate(360deg)
 								transform-origin 50% 50%
 					.object.done
-						color cEditorObjFrozen0
+						border-radius 5px
+						border none
+						color cEditorObjDone0font
+						background-color cEditorObjDone0bg
 						&:before
-							color cEditorObjFrozen0
+							color cEditorObjDone0font
 						&:hover
-							color cEditorObjFrozen1
+							color cEditorObjDone1font
+							background-color cEditorObjDone1bg
 							transition all .5s
 							text-decoration line-through
 							cursor pointer
 							&:before
-								color cEditorObjFrozen1
+								color cEditorObjDone1font
 								text-decoration none
 								content: ""
 					.task, .tag

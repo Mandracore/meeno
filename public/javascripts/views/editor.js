@@ -56,6 +56,7 @@ define ([
 				this.listenTo(channel, 'keyboard:task', function () {this.textEditor("task");});
 				this.listenTo(channel, 'keyboard:entity', function () {this.textEditor("entity");});
 				this.listenTo(channel, 'keyboard:header', function () {this.textEditor("header");});
+				this.listenTo(channel, 'keyboard:important', function () {this.textEditor("important");});
 				this.listenTo(channel, 'keyboard:enter', function () {this.kbEventProxy("enter");});
 				//this.listenTo(channel, 'keyboard:enter:keyup', function () {this.kbEventProxy("enter:keyup");});
 				this.listenTo(channel, 'keyboard:escape', function () {this.kbEventProxy("escape");});
@@ -326,6 +327,15 @@ define ([
 						break;
 					case "tag":
 						this.objectInsert("tag", fromButton);
+						break;
+					case "important":
+						var $node = $(window.getSelection().getRangeAt(0).commonAncestorContainer);
+						$node = this.caretGetClosestWrapper($node);
+						if (!$node.hasClass('important')) {
+							$node.addClass('important');
+						} else {
+							$node.removeClass('important');
+						}
 						break;
 					// Using CKEditor
 					case "numberedlist":
