@@ -32,6 +32,6 @@
   "scripts": {
     "start": "nodejs appSrv.js",
     "doc": "yuidoc",
-    "test": "./node_modules/karma/bin/karma start"
+    "test": "./node_modules/karma/bin/karma start",
   }
 }

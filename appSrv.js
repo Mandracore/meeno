@@ -86,11 +86,12 @@ require('./app/src/models/index.js')(mas, mongoose);
 // Serve cache manifest
 mas.get('/cache.manifest',function(req,res){
 	res.setHeader('content-type','text/cache-manifest'); // Header type cache-manifest mandatory
-	res.setHeader('Cache-Control','must-revalidate'); // Header type cache-manifest mandatory
+	// res.setHeader('Cache-Control','must-revalidate'); // Header type cache-manifest mandatory
+	res.setHeader('Cache-Control','no-cache'); // Header type cache-manifest mandatory
 	res.end([
 		'CACHE MANIFEST',
 		// The timestamp below is meant to force cache expiration
-		'#:::timestamp::: 2016/06/16 08:19:15 ',
+		'#:::timestamp::: 2016/06/16 12:19:15 ',
 		'CACHE:', // Resources to cache
 		'/font/Moon-Light.otf',
 		'/font/Dense-Regular.otf',
@@ -111,6 +112,8 @@ mas.get('/cache.manifest',function(req,res){
 		'javascripts-nobuild/lib/ckeditor/skins/moono/editor_gecko.css?t=G4CD',
 		'javascripts-nobuild/lib/ckeditor/config.js?t=G4CD',
 		'NETWORK:', // Resources that must never be cached
+		'/cache.manifest',
+		'/',
 		'/login',
 		'/logout',
 		'/register',
