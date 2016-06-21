@@ -91,7 +91,7 @@ mas.get('/cache.manifest',function(req,res){
 	res.end([
 		'CACHE MANIFEST',
 		// The timestamp below is meant to force cache expiration
-		'#:::timestamp::: 2016/06/21 18:59:17 ',
+		'#:::timestamp::: 2016/06/21 19:00:42 ',
 		'CACHE:', // Resources to cache
 		'/font/Moon-Light.otf',
 		'/font/Dense-Regular.otf',

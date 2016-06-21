@@ -5,12 +5,12 @@
 # Remove the .sh extension and make it executable by anyone
 
 echo "============="
-echo ">>>Updating timestamp to force cache expiration in production mode..."
+echo ">>> Updating timestamp to force cache expiration in production mode..."
 FILE="/opt/git/meeno/appSrv.js"
 NOW="$(date +"%Y/%m/%d %T")"
 sed -i "s|\(:::timestamp:::\)\(.*\)|\1 $NOW ',|g" $FILE
 echo ">>> Timestamp below should correspond to current time:"
 sed -n -e 's/^.*:::timestamp::: //p' $FILE
 echo ">>> Indexing changes"
-git add .
+git add . -v
 echo "============="
