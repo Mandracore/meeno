@@ -104,8 +104,9 @@ define ([
 				Mousetrap.bind('enter', function() {
 					channel.trigger('keyboard:enter');
 				}, 'keyup');
-				Mousetrap.bind('shift shift', function() {
+				Mousetrap.bind('! !', function() {
 					channel.trigger('keyboard:important');
+					return false; // return false to prevent default browser behavior and stop event from bubbling
 				});
 
 				// All ajax requests once completed will trigger this callback to :

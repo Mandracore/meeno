@@ -1,0 +1,53 @@
+#!/bin/sh -e
+# -e means script will stop at any error
+# Remove the .sh extension and make it executable by anyone
+## store the arguments given to the script
+read prevCommitSHA latestCommitSHA fullbranchName
+
+BRANCH=${fullbranchName##*/}
+LOGFILE="/opt/www/meeno/git.deploy.log"
+DEPLOYDIR="/opt/www/meeno/"
+
+echo "branch: $BRANCH"
+echo "log: $LOGFILE"
+
+##  Record the fact that the push has been received
+echo "$(date +"%Y/%m/%d, %T") | Received push request for branch $BRANCH" >> $LOGFILE
+echo "$(date +"%Y/%m/%d, %T") | Received push request for branch $BRANCH"
+
+echo "---------------------------Deploy Start-------------------------------------"
+{ # Try stopping server
+	/etc/init.d/node.meeno.sh stop && echo "Stopped server at $( date +"%F %T" )"
+} || {
+ # In case it fails
+	echo "Impossible to stop server, it was probably not running."
+}
+
+echo "Deploying to $DEPLOYDIR"
+
+rm -rf ${DEPLOYDIR}*
+echo " - Deploy dir cleaned up"
+echo " - Starting code checkout" 
+GIT_WORK_TREE="$DEPLOYDIR" git checkout -f master
+echo " - Finished code checkout"
+
+echo " - Starting npm install"
+cd "$DEPLOYDIR"
+rm -rf node_modules
+npm install
+echo " - Finished npm install"
+echo " - Starting building javascript"
+node_modules/.bin/r.js -o build.js
+echo " - Finished building javascript"
+
+echo "Restarting server at $( date +"%F %T" )"
+{ # Try starting server
+		/etc/init.d/node.meeno.sh start && echo "Restart completed at $( date +"%F %T" )"
+} || {
+ # In case it fails
+        echo "Impossible to start server."
+}
+
+echo "---------------------------Deploy Complete---------------------------------"
+
+echo "$(date +"%Y/%m/%d, %T") | New version deployed successfully" >> $LOGFILE

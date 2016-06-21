@@ -329,12 +329,15 @@ define ([
 						this.objectInsert("tag", fromButton);
 						break;
 					case "important":
-						var $node = $(window.getSelection().getRangeAt(0).commonAncestorContainer);
-						$node = this.caretGetClosestWrapper($node);
+						var $node = this.caretGetClosestWrapper($(window.getSelection().getRangeAt(0).commonAncestorContainer));
+						if (($node[0].nodeName != "P") && ($node[0].nodeName != "LI")) { return; }
 						if (!$node.hasClass('important')) {
 							$node.addClass('important');
 						} else {
 							$node.removeClass('important');
+						}
+						if (!fromButton) { // To distinguish between the two trigger cases (through keypress or through click)
+							document.execCommand("delete", null, false); // to remove last character like !!
 						}
 						break;
 					// Using CKEditor
@@ -368,6 +371,7 @@ define ([
 					case "#text":
 					case "EM":
 					case "STRONG":
+					case "S":
 					case "U":
 						return this.caretGetClosestWrapper($element.parent());
 				}
