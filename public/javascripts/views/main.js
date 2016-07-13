@@ -115,14 +115,6 @@ define ([
 				// 3. Resync. data with server when connexion is restored (response 200/304) => channel.trigger('app:online');
 				$( document ).ajaxComplete(function( event, request, settings ) {
 					switch(request.status) {
-						// Server is not answering
-						case 502: // Nginx says that Meeno is not responding => we go offline
-						case 0:
-							if (self.isOnline) {
-								self.isOnline = false;
-								channel.trigger('app:offline');
-							}
-							break;
 						// Server is answering OK
 						case 200: // OK
 						case 202: // OK used by login page
@@ -137,11 +129,17 @@ define ([
 							console.log ("Unauthorized, displaying user authentification form");
 							self.toggleAuth();
 							break;
-						// Server is returning an unexpected value.
-						// A 400 error code has been triggered once, to be investigated
-						default:
-							alert('Impossible to sync. data with server (error code = '+request.status+'). Please provide the error code to the administrator so that the error can be corrected.');
-							//default code block
+						// Server or reverse proxy is returning an undesired value.
+						case 502: // Nginx says that Meeno is not responding => we go offline
+						case 504: // Nginx says that there is an issue with Meeno => we go offline
+						case 0: // Offline mode
+						default: // Unhandled error status
+							if (self.isOnline) {
+								self.isOnline = false;
+								channel.trigger('app:offline');
+							}
+							console.log('Impossible to sync. data with server (error code = '+request.status+'). Please provide the error code to the administrator so that the error can be corrected.');
+							break;
 					}
 				});
 
