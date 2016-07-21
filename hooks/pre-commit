@@ -4,13 +4,14 @@
 # Meant to force cache expiration in production mode
 # Remove the .sh extension and make it executable by anyone
 
-echo "============="
-echo ">>> Updating timestamp to force cache expiration in production mode..."
+echo "================"
+echo "\033[94m>>> Updating timestamp to force cache expiration in production mode...\033[0m"
 FILE="/opt/git/meeno/appSrv.js"
 NOW="$(date +"%Y/%m/%d %T")"
 sed -i "s|\(:::timestamp:::\)\(.*\)|\1 $NOW ',|g" $FILE
-echo ">>> Timestamp below should correspond to current time:"
+echo "Timestamp below should correspond to current time:"
 sed -n -e 's/^.*:::timestamp::: //p' $FILE
-echo ">>> Indexing changes"
+# Indexing changes is necessary to ensure new timestamp will be saved
+echo "\033[94m>>> Indexing changes\033[0m"
 git add . -v
-echo "============="
+echo "================"
