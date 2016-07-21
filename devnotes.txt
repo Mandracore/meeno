@@ -911,3 +911,11 @@ res.writeHead(200, {
 
     "build1": "rm -Rf public/javascripts-built/",
     "build2": "node_modules/.bin/r.js -o build.js",
+
+
+--------------------------------------------------
+Node not in monit anymore and monit restarted
+Node added to systemcl
+
+Pending tasks
+	add journalctl to papertrail

@@ -15,13 +15,8 @@ echo "log: $LOGFILE"
 echo "$(date +"%Y/%m/%d, %T") | Received push request for branch $BRANCH" >> $LOGFILE
 echo "$(date +"%Y/%m/%d, %T") | Received push request for branch $BRANCH"
 
-echo "---------------------------Deploy Start-------------------------------------"
-{ # Try stopping server
-	/etc/init.d/node.meeno.sh stop && echo "Stopped server at $( date +"%F %T" )"
-} || {
- # In case it fails
-	echo "Impossible to stop server, it was probably not running."
-}
+echo "\033[94m---------------------------Deploy Start-------------------------------------\033[0m"
+
 
 echo "Deploying to $DEPLOYDIR"
 
@@ -41,13 +36,23 @@ node_modules/.bin/r.js -o build.js
 echo " - Finished building javascript"
 
 echo "Restarting server at $( date +"%F %T" )"
-{ # Try starting server
-		/etc/init.d/node.meeno.sh start && echo "Restart completed at $( date +"%F %T" )"
+
+RESTART=TRUE
+{ # Try stopping server
+	systemctl restart meeno && echo "Stopped server at $( date +"%F %T" )"
 } || {
  # In case it fails
-        echo "Impossible to start server."
+	RESTART=FALSE
+	echo "Impossible to restart server."
 }
 
-echo "---------------------------Deploy Complete---------------------------------"
+echo "\033[94m---------------------------Deploy Complete-------------------------------------\033[0m"
 
-echo "$(date +"%Y/%m/%d, %T") | New version deployed successfully" >> $LOGFILE
+if [ $RESTART ]
+then
+	echo "\033[33m$(date +"%Y/%m/%d, %T")\033[0m | New code deployed successfully"
+	echo "\033[33m$(date +"%Y/%m/%d, %T")\033[0m | New code deployed successfully" >> $LOGFILE
+else
+	echo "\033[33m$(date +"%Y/%m/%d, %T")\033[0m | New code deployed but server did not restart"
+	echo "\033[33m$(date +"%Y/%m/%d, %T")\033[0m | New code deployed but server did not restart" >> $LOGFILE
+fi
