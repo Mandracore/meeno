@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 //==========================================
 // DEFINING SERVER SIDE APPLICATION
 //==========================================
@@ -91,7 +93,7 @@ mas.get('/cache.manifest',function(req,res){
 	res.end([
 		'CACHE MANIFEST',
 		// The timestamp below is meant to force cache expiration
-		'#:::timestamp::: 2016/07/13 18:55:57 ',
+		'#:::timestamp::: 2016/07/21 13:59:30 ',
 		'CACHE:', // Resources to cache
 		'/font/Moon-Light.otf',
 		'/font/Dense-Regular.otf',
